@@ -1,0 +1,16 @@
+{
+  "name": "console",
+  "version": "1.0.0",
+  "description": "An Oracle JavaScript Extension Toolkit(JET) web app",
+  "dependencies": {
+    "@oracle/oraclejet": "~9.0.0"
+  },
+  "devDependencies": {
+    "@oracle/oraclejet-tooling": "~9.0.0",
+    "typescript": "^3.8.3"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "private": true
+}
