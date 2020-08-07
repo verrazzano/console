@@ -6,6 +6,7 @@
 */
 'use strict';
 
+const fs = require('fs');
 module.exports = function (configObj) {
   return new Promise((resolve) => {
     console.log("Running before_app_typescript hook.");
