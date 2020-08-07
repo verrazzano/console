@@ -5,7 +5,7 @@
 
 module.exports = function (configObj) {
   return new Promise((resolve, reject) => {
-  	console.log("Running after_build hook.");
-  	resolve(configObj);
+      console.log("Running after_build hook.");
+      resolve(configObj);
   });
 };
