@@ -30,12 +30,11 @@ endif
 
 .PHONY: ojet_build
 ojet_build:
-	node --version
-	npm config set "strict-ssl" false
-	npm config set registry https://artifacthub-tip.oraclecorp.com/api/npm/npmjs-remote
-	npm install
-	npm install @oracle/ojet-cli
-	PATH=./node_modules/.bin:${PATH}
+	npm config set "strict-ssl" false && \
+	npm config set registry https://artifacthub-tip.oraclecorp.com/api/npm/npmjs-remote && \
+	npm install && \
+	npm install @oracle/ojet-cli && \
+	PATH=./node_modules/.bin:${PATH} && \
 	ojet build
 
 
