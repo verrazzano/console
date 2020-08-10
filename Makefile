@@ -33,8 +33,8 @@ ojet_build:
 	node --version
 	npm config set "strict-ssl" false
 	npm config set registry https://artifacthub-tip.oraclecorp.com/api/npm/npmjs-remote
-	npm -g install @oracle/ojet-cli
 	npm install
+	npm install @oracle/ojet-cli
 	PATH=./node_modules/.bin:${PATH}
 	ojet build
 
