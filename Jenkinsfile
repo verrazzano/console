@@ -52,6 +52,8 @@ pipeline {
             steps {
                 withDockerRegistry(credentialsId: params.DOCKER_REPO_CREDS, url: env.DOCKER_REPO_URL) {
                     sh """
+                        . $HOME/.nvm/nvm.sh
+                        nvm use 14.7.0
                         make push DOCKER_REPO=${params.DOCKER_REPO} DOCKER_NAMESPACE=${params.DOCKER_NAMESPACE} DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME} DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG} HTTP_PROXY=${HTTP_PROXY} HTTPS_PROXY=${HTTPS_PROXY} NO_PROXY=${NO_PROXY}
                     """
                 }
