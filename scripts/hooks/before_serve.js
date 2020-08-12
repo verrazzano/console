@@ -6,10 +6,11 @@
 */
 
 'use strict';
-
+const fs = require('fs');
 module.exports = function (configObj) {
   return new Promise((resolve, reject) => {
-  	console.log("Running before_serve hook.");
+    console.log("Running before_serve hook.");
+    //fs.unlinkSync('web/ts');
   	resolve(configObj);
   });
 };

@@ -9,7 +9,8 @@
       "styles": "css",
       "themes": "themes"
     },
-    "staging": { "web": "web", "hybrid": "hybrid", "themes": "staged-themes" }
+    "staging": { "web": "web", "hybrid": "hybrid", "themes": "staged-themes" },
+    "composites": "jet-composites"
   },
   "defaultBrowser": "chrome",
   "sassVer": "4.13.0",

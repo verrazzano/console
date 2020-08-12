@@ -60,10 +60,10 @@ class RootViewModel {
     }
 
     const navData = [
-      { path: "", redirect: "vzModels" },
+      { path: "", redirect: "instance" },
       { path: "vzModels", detail: { label: "Application Models", iconClass: "" } },
       { path: "vzBindings", detail: { label: "Application Bindings", iconClass: "" } },
-      { path: "clusters", detail: { label: "Clusters", iconClass: "" } }
+      { path: "instance", detail: { label: "Verrazzano", iconClass: "" } }
 //      { path: "about", detail: { label: "About", iconClass: "oj-ux-ico-information-s" } }
     ];
     // router setup

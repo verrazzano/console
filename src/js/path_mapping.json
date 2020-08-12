@@ -291,6 +291,36 @@
         "path": "libs/require-css/css.min.js",
         "cdnPath": "require-css/css.min"
       }
+    },
+
+    "uuid": {
+      "cdn": "3rdparty",
+      "cwd": "node_modules/uuid/dist",
+      "debug": {
+        "src":  "uuid-bin.js",
+        "path": "libs/uuid/uuid-bin.js",
+        "cdnPath": "uuid/uuid"
+      },
+      "release": {
+        "src":  "uuid-bin.js",
+        "path": "libs/uuid/uuid-bin.js",
+        "cdnPath": "uuid/uuid"
+      }
+    },
+
+    "js-yaml": {
+      "cdn": "3rdparty",
+      "cwd": "node_modules/js-yaml/dist",
+      "debug": {
+        "src":  "js-yaml.min.js",
+        "path": "libs/js-yaml/js-yaml.min.js",
+        "cdnPath": "js-yaml/js-yaml"
+      },
+      "release": {
+        "src":  "js-yaml.js",
+        "path": "libs/js-yaml/js-yaml.js",
+        "cdnPath": "js-yaml/js-yaml"
+      }
     }
 
   }

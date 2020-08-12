@@ -16,6 +16,7 @@ class VzBindingViewModel {
   connected(): void {
     AccUtils.announce("Incidents page loaded.");
     document.title = "Incidents";
+    console.log("hello");
     // implement further logic if needed
   }
 

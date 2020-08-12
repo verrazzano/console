@@ -47,7 +47,8 @@
         'touchr': 'libs/touchr/touchr',
         'corejs' : 'libs/corejs/shim',
         'chai': 'libs/chai/chai-4.2.0',
-        'regenerator-runtime' : 'libs/regenerator-runtime/runtime'
+        'regenerator-runtime' : 'libs/regenerator-runtime/runtime',
+        'instance': 'jet-composites/vz-instance'
       }
       // endinjector
     }

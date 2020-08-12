@@ -1,5 +1,6 @@
+import "vz-instance/loader";
 import * as AccUtils from "../accUtils";
-class ClustersViewModel {
+class InstanceViewModel {
 
   constructor() {
 
@@ -19,6 +20,8 @@ class ClustersViewModel {
     // implement further logic if needed
   }
 
+  
+
   /**
    * Optional ViewModel method invoked after the View is disconnected from the DOM.
    */
@@ -35,4 +38,4 @@ class ClustersViewModel {
   }
 }
 
-export = ClustersViewModel;
+export = InstanceViewModel;
