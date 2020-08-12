@@ -36,6 +36,13 @@ pipeline {
             }
         }
 
+        stage('Copyright Compliance Check') {
+            when { not { buildingTag() } }
+            steps {
+                copyrightScan "${WORKSPACE}"
+            }
+        }
+
         stage('Scan Image') {
             when { not { buildingTag() } }
             steps {
