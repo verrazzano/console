@@ -26,19 +26,19 @@ pipeline {
     }
 
     stages {
+        stage('Copyright Compliance Check') {
+            when { not { buildingTag() } }
+            steps {
+                copyrightScan "${WORKSPACE}"
+            }
+        }
+        
         stage('Build') {
             when { not { buildingTag() } }
             steps {
                 sh """
                     make push DOCKER_REPO=${env.DOCKER_REPO} DOCKER_NAMESPACE=${env.DOCKER_NAMESPACE} DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME} CREATE_LATEST_TAG=${CREATE_LATEST_TAG}
                    """
-            }
-        }
-
-        stage('Copyright Compliance Check') {
-            when { not { buildingTag() } }
-            steps {
-                copyrightScan "${WORKSPACE}"
             }
         }
 
