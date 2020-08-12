@@ -28,7 +28,7 @@ all: build
 ojet-build:
 	sudo yum install -y bzip2 && \
 	npm install && \
-	npm install -g @oracle/ojet-cli && \
+	npm install @oracle/ojet-cli && \
 	PATH=./node_modules/.bin:${PATH} && \
 	ojet build --release
 
