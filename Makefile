@@ -26,6 +26,8 @@ all: build
 
 .PHONY: ojet-build
 ojet-build:
+	sudo yum update && \
+	sudo yum install -y bzip2 && \
 	npm install && \
 	npm install -g @oracle/ojet-cli && \
 	PATH=./node_modules/.bin:${PATH} && \
