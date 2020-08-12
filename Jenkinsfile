@@ -29,11 +29,9 @@ pipeline {
 
         stage('Build') {
             steps {
-                withDockerRegistry(credentialsId: params.DOCKER_REPO_CREDS, url: env.DOCKER_REPO_URL) {
-                    sh """
-                        make push DOCKER_REPO=${params.DOCKER_REPO} DOCKER_NAMESPACE=${params.DOCKER_NAMESPACE} DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME} DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG} HTTP_PROXY=${HTTP_PROXY} HTTPS_PROXY=${HTTPS_PROXY} NO_PROXY=${NO_PROXY}
-                    """
-                }
+                sh """
+                    make push DOCKER_REPO=${env.DOCKER_REPO} DOCKER_NAMESPACE=${env.DOCKER_NAMESPACE} DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME} CREATE_LATEST_TAG=${CREATE_LATEST_TAG}
+                   """
             }
         }
 
