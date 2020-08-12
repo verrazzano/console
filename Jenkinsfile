@@ -38,9 +38,6 @@ pipeline {
         stage('Copyright Compliance Check') {
             when { not { buildingTag() } }
             steps {
-                sh """
-                    rm -rf staged-themes web
-                   """
                 copyrightScan "${WORKSPACE}"
             }
         }
