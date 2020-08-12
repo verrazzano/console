@@ -7,8 +7,11 @@ const fs = require('fs');
 module.exports = function (configObj) {
   return new Promise((resolve, reject) => {
     console.log("Running after_app_typescript hook.");
+    // JET does not support the use of process.env in Javascript/Typescript runtime code.
+    // Instead, they recommend using these build time hooks to replace env vars in code,
+    // using placeholders if needed.
     const authConstantsFile = 'web/js/auth/AuthConstants.js';
-    console.log(`Reading authconstants file ${authConstantsFile}, going to replace keycloak url with ${process.env.VZ_KEYCLOAK_URL}`);
+    console.log(`Reading authconstants file ${authConstantsFile} to replace environment variable placeholders`);
     fs.readFile(authConstantsFile, 'utf8', (err, data) => {
       if (err) {
         console.log(err);
@@ -16,7 +19,7 @@ module.exports = function (configObj) {
       } else {
         const result = data.replace('@@VZ_CLIENT_ID@@', process.env.VZ_CLIENT_ID || '')
             .replace('@@VZ_UI_URL@@', process.env.VZ_UI_URL || '')
-            .replace('@@VZ_AUTH@@', process.env.VZ_AUTH || 'false')
+            .replace('@@VZ_AUTH@@', process.env.VZ_AUTH || 'true')
             .replace('@@VZ_KEYCLOAK_URL@@', process.env.VZ_KEYCLOAK_URL || "");
         fs.writeFile(authConstantsFile, result, err => {
           if (err) {

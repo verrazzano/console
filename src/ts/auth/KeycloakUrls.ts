@@ -1,8 +1,9 @@
+// Copyright (C) 2020, Oracle and/or its affiliates.
+// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 import { AuthConstants } from "./AuthConstants";
 
-// Copyright (C) 2020, Oracle and/or its affiliates.
-// This is the ENV runtime override, see server.js. It will
-// override the webpack env var
+// This is the ENV runtime override, see server.js.
 const vzAuth = (window as any).vzAuth;
 const vzKeycloakUrl = (window as any).vzKeycloakUrl;
 const vzUiUrl = (window as any).vzUiUrl;
@@ -40,7 +41,7 @@ export class KeycloakUrls {
   private keycloakUrl: string;
 
   // URL home page
-  private uiUrl: string = "http://localhost:8183";
+  private uiUrl: string = window.location.protocol + '//' + window.location.host;
 
   // Client ID. let env override for dev
   private clientId: string = "webui";
@@ -79,8 +80,6 @@ export class KeycloakUrls {
     }
     console.log("VZ - Auth enabled = " + this.authEnabled);
     console.log("VZ - UI URL = " + this.uiUrl);
-    console.log("VZ - Keycloak URL = " + this.keycloakUrl);
-    console.log("VZ - Client ID = " + this.clientId);
   }
 
   public isAuthEnabled(): boolean {

@@ -1,4 +1,6 @@
 // Copyright (C) 2020, Oracle and/or its affiliates.
+// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 import { AuthStorage } from "./AuthStorage";
 import {KeycloakUrls} from "./KeycloakUrls";
 import {KeycloakJwt} from "./KeycloakJwt";
@@ -100,7 +102,6 @@ export class Keycloak {
         // Wait for body, then get access tokem, refresh token, id token
         const json = await response.json();
 
-        console.log(`Keycloak.ts: Got access token ${json.access_token} and refresh token ${json.refresh_token}`);
         // Save the expire timestamps, accounting for the Keycloak server clock skew
         AuthStorage.setAccessTokenExpiryTsMillis(KeycloakJwt.calcExpiryTsMillis(json.access_token));
         AuthStorage.setRefreshTokenExpiryTsMillis(KeycloakJwt.calcExpiryTsMillis(json.refresh_token));

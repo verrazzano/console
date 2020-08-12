@@ -1,16 +1,6 @@
-<<<<<<< HEAD
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-=======
-/**
- * @license
- * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * Licensed under The Universal Permissive License (UPL), Version 1.0
- * as shown at https://oss.oracle.com/licenses/upl/
- * @ignore
- */
->>>>>>> Keycloak OAuth integration implemented, with Login/Logout functionality and menu item. Method for creating authorized requests to the API added.
 'use strict';
 
 /**

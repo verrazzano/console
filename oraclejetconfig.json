@@ -9,15 +9,7 @@
       "styles": "css",
       "themes": "themes"
     },
-<<<<<<< HEAD
     "staging": { "web": "web", "hybrid": "hybrid", "themes": "staged-themes" }
-=======
-    "staging": {
-      "web": "web",
-      "hybrid": "hybrid",
-      "themes": "staged-themes"
-    }
->>>>>>> Keycloak OAuth integration implemented, with Login/Logout functionality and menu item. Method for creating authorized requests to the API added.
   },
   "defaultBrowser": "chrome",
   "sassVer": "4.13.0",
