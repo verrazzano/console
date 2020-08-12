@@ -28,6 +28,7 @@ pipeline {
     stages {
 
         stage('Build') {
+            when { not { buildingTag() } }
             steps {
                 sh """
                     make push DOCKER_REPO=${env.DOCKER_REPO} DOCKER_NAMESPACE=${env.DOCKER_NAMESPACE} DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME} CREATE_LATEST_TAG=${CREATE_LATEST_TAG}
@@ -36,12 +37,7 @@ pipeline {
         }
 
         stage('Scan Image') {
-            when {
-                allOf {
-                    not { buildingTag() }
-                    equals expected: false, actual: skipBuild
-                }
-            }
+            when { not { buildingTag() } }
             steps {
                 script {
                     HEAD_COMMIT = sh(returnStdout: true, script: "git rev-parse HEAD").trim()
