@@ -1,58 +1,47 @@
 # Copyright (C) 2020, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 NAME:=console
 DOCKER_IMAGE_NAME ?= ${NAME}-dev
-TAG:=$(shell git rev-parse HEAD)
-DOCKER_IMAGE_TAG ?= ${TAG}
-DOCKER_IMAGE_FULLNAME = ${DOCKER_REPO}/${DOCKER_NAMESPACE}/${DOCKER_IMAGE_NAME}
-ifeq ($(DOCKER_IMAGE_TAG),)
-        $(error DOCKER_IMAGE_TAG is undefined)
+TAG=$(shell git rev-parse HEAD)
+DOCKER_IMAGE_TAG = ${TAG}
+
+CREATE_LATEST_TAG=0
+
+ifeq ($(MAKECMDGOALS),$(filter $(MAKECMDGOALS),push))
+	ifndef DOCKER_REPO
+		$(error DOCKER_REPO must be defined as the name of the docker repository where image will be pushed)
+	endif
+	ifndef DOCKER_NAMESPACE
+		$(error DOCKER_NAMESPACE must be defined as the name of the docker namespace where image will be pushed)
+	endif
+	ifndef DOCKER_IMAGE_NAME
+		$(error DOCKER_IMAGE_NAME must be defined as the name of the docker image that will be pushed)
+	endif
+	DOCKER_IMAGE_FULLNAME = ${DOCKER_REPO}/${DOCKER_NAMESPACE}/${DOCKER_IMAGE_NAME}
 endif
 
-PROXY_ARGS=
-ifdef http_proxy
-	PROXY_ARGS += --build-arg http_proxy=${http_proxy}
-endif
-ifdef https_proxy
-	PROXY_ARGS += --build-arg https_proxy=${https_proxy}
-endif
-ifdef no_proxy
-	PROXY_ARGS += --build-arg no_proxy=${no_proxy}
-endif
-ifdef HTTP_PROXY
-	PROXY_ARGS += --build-arg HTTP_PROXY=${HTTP_PROXY}
-endif
-ifdef HTTPS_PROXY
-	PROXY_ARGS += --build-arg HTTPS_PROXY=${HTTPS_PROXY}
-endif
-ifdef NO_PROXY
-	PROXY_ARGS += --build-arg NO_PROXY=${NO_PROXY}
-endif
+.PHONY: all
+all: build
 
-.PHONY: ojet_build
-ojet_build:
-	npm config set "strict-ssl" false && \
-	npm config set registry https://artifacthub-tip.oraclecorp.com/api/npm/npmjs-remote && \
+.PHONY: ojet-build
+ojet-build:
 	npm install && \
-	npm install @oracle/ojet-cli && \
+	npm install -g @oracle/ojet-cli && \
 	PATH=./node_modules/.bin:${PATH} && \
-	ojet build
-
+	ojet build --release
 
 .PHONY: build
-build: ojet_build
-	docker build \
-	--no-cache \
-	$(PROXY_ARGS) \
-	-t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} \
-	-f Dockerfile \
-	.
+build: ojet-build
+	docker build --pull \
+		-t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
 
 .PHONY: push
 push: build
 	docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_FULLNAME}:${DOCKER_IMAGE_TAG}
 	docker push ${DOCKER_IMAGE_FULLNAME}:${DOCKER_IMAGE_TAG}
 
-	if [ ${CREATE_LATEST_TAG} ]; then \
+	if [ "${CREATE_LATEST_TAG}" == "1" ]; then \
 		docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_FULLNAME}:latest; \
 		docker push ${DOCKER_IMAGE_FULLNAME}:latest; \
 	fi

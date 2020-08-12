@@ -1,3 +1,6 @@
+# Copyright (c) 2020, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 /jet_components
 /node_modules
 /bower_components
@@ -18,3 +21,4 @@ hybrid/plugins/*
 .npmrc
 .DS_Store
 Thumbs.db
+package-lock.json
