@@ -3,13 +3,11 @@
 
 path = require('path');
 express = require('express');
-cors = require('cors')
 
 const port = 8183;
 const app = express();
 const staticPath = path.join(__dirname, 'web');
 
-app.use(cors());
 app.use(express.static(staticPath));
 app.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {

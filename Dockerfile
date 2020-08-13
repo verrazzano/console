@@ -11,7 +11,7 @@ COPY start.sh /verrazzano/
 COPY server.js /verrazzano/
 RUN cd /verrazzano/
 RUN npm init -y
-RUN npm install --save express@4.17.1 cors
+RUN npm install --save express@4.17.1
 HEALTHCHECK --interval=1m --timeout=10s \
   CMD /verrazzano/livenessProbe.sh
 
