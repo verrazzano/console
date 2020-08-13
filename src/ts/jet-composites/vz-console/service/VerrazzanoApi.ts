@@ -57,8 +57,7 @@ export class VerrazzanoApi {
     });
   }
 
-  public async getInstance(instanceId: string): Promise<ResponseWithData<Instance>> {
-    console.log(process);
+  getInstance(instanceId: string): Promise<ResponseWithData<Instance>> {
     // Currently API only supports instance id O
     console.log("Fetching instance details " + instanceId);
     return this.fetchApi(this.url + "/instance")
