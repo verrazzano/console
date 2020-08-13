@@ -4,9 +4,7 @@
   "description": "An Oracle JavaScript Extension Toolkit(JET) web app",
   "dependencies": {
     "@oracle/oraclejet": "~9.0.0",
-    "@types/js-yaml": "^3.12.5",
-    "@types/node": "^14.0.27",
-    "js-yaml": "^3.14.0"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "@oracle/oraclejet-tooling": "~9.0.0",

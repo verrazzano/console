@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Copyright (C) 2020, Oracle and/or its affiliates.
+# Copyright (c) 2020, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 #
-# check that the node process is running
 TEST=`ps | grep node | wc -l | awk ' { print $1; } '`
 
 # if it is not, then send liveness failre (i.e. non-zero exit code)
