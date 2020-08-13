@@ -24,8 +24,9 @@ ojet serve
 
 ## Developing the UI
 
-### Adding Oracle-approved library dependencies
-First, make sure that the library dependency you want to add is Oracle-approved for distribution. Otherwise, please do not proceed.
+### Introducing a new dependency
+Please be aware that pull requests that seek to introduce a new dependency will be subject to additional review. In general, contributors should avoid dependencies with incompatible licenses, and should try to use recent versions of dependencies. Standard security vulnerability checklists will be consulted before accepting a new dependency. Dependencies on closed-source code, including Oracle's, will most likely be rejected.
 
-This involves more than just installing your library. We need to edit a JSON file to tell JET to bundle the third party library with our application.
-Please either copy and edit one of the existing entries in `src/js/path_mapping.json` (instructions for Oracle JET 9 are here: https://docs.oracle.com/en/middleware/developer-tools/jet/9/develop/add-third-party-tools-or-libraries-your-oracle-jet-application.html)
+Dependencies that satisfy all those constraints, can be added by:
+* Installing the dependency using `npm i <dep@version> --save`
+* Editing the `src/js/path_mapping.json` file to tell JET to bundle the library with the application. Instructions for Oracle JET 9 are here: https://docs.oracle.com/en/middleware/developer-tools/jet/9/develop/add-third-party-tools-or-libraries-your-oracle-jet-application.html
