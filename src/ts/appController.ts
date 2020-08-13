@@ -15,6 +15,7 @@ import "ojs/ojknockout";
 import "ojs/ojmodule-element";
 import { ojNavigationList } from "ojs/ojnavigationlist";
 import { ojModule } from "ojs/ojmodule-element";
+import { KeycloakJet } from "./auth/KeycloakJet";
 
 interface CoreRouterDetail {
   label: string;
@@ -39,11 +40,17 @@ class RootViewModel {
     modality?: "modal" | "modeless";
   };
   appName: ko.Observable<string>;
-  userLogin: ko.Observable<string>;
+  userDisplayName: ko.Observable<string>;
+  userEmail: ko.Observable<string>;
   footerLinks: Array<object>;
   selection: KnockoutRouterAdapter<CoreRouterDetail>;
 
+  oauth: KeycloakJet
+
   constructor() {
+    //OAuth initialization
+    this.oauth = new KeycloakJet();
+
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
     this.message = ko.observable();
@@ -109,7 +116,9 @@ class RootViewModel {
     this.appName = ko.observable("App Name");
     // user Info used in Global Navigation area
 
-    this.userLogin = ko.observable("john.hancock@oracle.com");
+    this.userEmail = ko.observable(this.oauth.getUserEmail());
+    this.userDisplayName = ko.observable(this.oauth.getUsername());
+
     // footer
     this.footerLinks = [
       {name: 'About Oracle', linkId: 'aboutOracle', linkTarget:'http://www.oracle.com/us/corporate/index.html#menu-about'},
@@ -123,12 +132,16 @@ class RootViewModel {
   announcementHandler = (event: any): void => {
       this.message(event.detail.message);
       this.manner(event.detail.manner);
-  }
+  };
 
   // called by navigation drawer toggle button and after selection of nav drawer item
   toggleDrawer = (): Promise<boolean> => {
     return OffcanvasUtils.toggle(this.drawerParams);
-  }
+  };
+
+  logout = () => {
+    this.oauth.logout();
+  };
 }
 
 export default new RootViewModel();

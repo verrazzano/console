@@ -291,7 +291,19 @@
         "path": "libs/require-css/css.min.js",
         "cdnPath": "require-css/css.min"
       }
-    }
+    },
 
+    "jwt_decode": {
+      "cdn": "3rdparty",
+      "cwd": "node_modules/jwt-decode/build",
+      "debug": {
+        "src": "jwt-decode.min.js",
+        "path": "libs/jwt_decode/jwt-decode.min.js"
+      },
+      "release": {
+        "src": "jwt-decode.min.js",
+        "path": "libs/jwt_decode/jwt-decode.min.js"
+      }
+    }
   }
 }

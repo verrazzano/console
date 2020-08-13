@@ -50,7 +50,7 @@
   );
 }());
 
-require(['ojs/ojbootstrap', 'root'], function (Bootstrap, Root) {
+require(['ojs/ojbootstrap', 'jwt_decode', 'root'], function (Bootstrap, Jwt, Root) {
   // this callback gets executed when all required modules are loaded
   Bootstrap.whenDocumentReady().then(function(){
     Root.init();
