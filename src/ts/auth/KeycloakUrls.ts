@@ -1,8 +1,6 @@
 // Copyright (C) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { AuthConstants } from "./AuthConstants";
-
 // This is the ENV runtime override, see server.js.
 const vzAuth = (window as any).vzAuth;
 const vzKeycloakUrl = (window as any).vzKeycloakUrl;
@@ -54,29 +52,26 @@ export class KeycloakUrls {
 
   // Private constructor to enforce singleton
   private constructor() {
-    let authConstantVal: any;
-
-    authConstantVal = AuthConstants.VZ_CLIENT_ID || vzClientId;
-    if (authConstantVal && authConstantVal !== "") {
-      this.clientId = authConstantVal;
+    if (vzClientId && vzClientId !== "") {
+      this.clientId = vzClientId;
     }
 
-    authConstantVal  = AuthConstants.VZ_UI_URL || vzUiUrl;
-    if (authConstantVal && authConstantVal !== "") {
-      this.uiUrl = authConstantVal;
+    if (vzUiUrl && vzUiUrl !== "") {
+      this.uiUrl = vzUiUrl;
     }
     
-    authConstantVal = AuthConstants.VZ_AUTH || vzAuth;
-    if (authConstantVal && authConstantVal !== "") {
-      this.authEnabled = authConstantVal.toLowerCase() !== "false";
+    if (vzAuth && vzAuth !== "") {
+      this.authEnabled = vzAuth.toLowerCase() !== "false";
     }
 
     if (this.authEnabled) {
-      authConstantVal = AuthConstants.VZ_KEYCLOAK_URL || vzKeycloakUrl;
-      if (authConstantVal && authConstantVal !== "") {
-        this.keycloakUrl = authConstantVal.toLowerCase();
+      if (vzKeycloakUrl && vzKeycloakUrl !== "") {
+        this.keycloakUrl = vzKeycloakUrl.toLowerCase();
+        this.keycloakProxyUrl = this.keycloakUrl;
       }
-      this.keycloakProxyUrl = AuthConstants.VZ_KEYCLOAK_URL || "/keycloak";     
+      if (!this.keycloakProxyUrl) {
+        this.keycloakProxyUrl = "/keycloak"; 
+      }
     }
     console.log("VZ - Auth enabled = " + this.authEnabled);
     console.log("VZ - UI URL = " + this.uiUrl);
