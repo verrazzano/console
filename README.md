@@ -12,7 +12,7 @@ npm install -g @oracle/ojet-cli
 To run with authentication enabled, you will need the following environment variables set:
 ```
 export VZ_AUTH=true
-export VZ_KEYCLOAK_URL=<your keycloak url> e.g. https://keycloak.default.152.67.132.89.xip.io
+export VZ_KEYCLOAK_URL=<your keycloak url> e.g. https://keycloak.default.11.22.33.44.xip.io
 export VZ_UI_URL=http://localhost:8000
 export VZ_CLIENT_ID=<your client id which allows redirect uri on localhost:8000>
 ```
