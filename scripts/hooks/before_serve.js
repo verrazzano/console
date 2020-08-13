@@ -3,6 +3,10 @@
 
 'use strict';
 
+/**
+ * Uses environment variables specified at build time to generate an env.js file in the Javascript output directory
+ * The env.js file is sourced by index.html to make those values available to the application at runtime.
+ */
 function createEnvJs() {
   const fs = require('fs');
   const envJsFilePath = 'web/js/env.js';
@@ -22,7 +26,7 @@ function createEnvJs() {
     console.log("Creating env.js.");
     fs.writeFileSync(
       `${envJsFilePath}`,
-      `const vzUiUrl = "${process.env.VZ_UI_URL}"; const vzKeycloakUrl = "${process.env.VZ_KEYCLOAK_URL}"; const vzAuth = "${process.env.VZ_AUTH || true}"; const vzClientId = "${process.env.VZ_CLIENT_ID}";`,
+      `var vzUiUrl = "${process.env.VZ_UI_URL}"; var vzKeycloakUrl = "${process.env.VZ_KEYCLOAK_URL}"; var vzAuth = "${process.env.VZ_AUTH || true}"; var vzClientId = "${process.env.VZ_CLIENT_ID}";`,
       { flag: 'wx' }
     );
     console.log(`${envJsFilePath} created.`);
