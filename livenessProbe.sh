@@ -5,7 +5,7 @@
 #
 TEST=`ps | grep node | wc -l | awk ' { print $1; } '`
 
-# if it is not, then send liveness failre (i.e. non-zero exit code)
+# if NodeJS process is not alive, then send liveness failure (i.e. non-zero exit code)
 if [ "$TEST" != "0" ]; then
     exit 0
 else
