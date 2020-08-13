@@ -1,0 +1,70 @@
+// Copyright (c) 2020, Oracle and/or its affiliates.
+// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+def HEAD_COMMIT
+
+pipeline {
+    options {
+      disableConcurrentBuilds()
+    }
+
+    agent {
+       docker {
+            image "${RUNNER_DOCKER_IMAGE}"
+            args "${RUNNER_DOCKER_ARGS}"
+            registryUrl "${RUNNER_DOCKER_REGISTRY_URL}"
+            registryCredentialsId 'ocir-pull-and-push-account'
+        }
+    }
+
+    environment {
+        DOCKER_CI_IMAGE_NAME = 'console-jenkins'
+        DOCKER_PUBLISH_IMAGE_NAME = 'console'
+        DOCKER_IMAGE_NAME = "${env.BRANCH_NAME == 'master' ? env.DOCKER_PUBLISH_IMAGE_NAME : env.DOCKER_CI_IMAGE_NAME}"
+        CREATE_LATEST_TAG = "${env.BRANCH_NAME == 'master' ? '1' : '0'}"
+        DOCKER_CREDS = credentials('ocir-pull-and-push-account')
+    }
+
+    stages {
+        stage('Copyright Compliance Check') {
+            when { not { buildingTag() } }
+            steps {
+                copyrightScan "${WORKSPACE}"
+            }
+        }
+        
+        stage('Build') {
+            when { not { buildingTag() } }
+            steps {
+                sh """
+                    make push DOCKER_REPO=${env.DOCKER_REPO} DOCKER_NAMESPACE=${env.DOCKER_NAMESPACE} DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME} CREATE_LATEST_TAG=${CREATE_LATEST_TAG}
+                   """
+            }
+        }
+
+        stage('Scan Image') {
+            when { not { buildingTag() } }
+            steps {
+                script {
+                    HEAD_COMMIT = sh(returnStdout: true, script: "git rev-parse HEAD").trim()
+                    clairScanTemp "${env.DOCKER_REPO}/${env.DOCKER_NAMESPACE}/${DOCKER_IMAGE_NAME}:${HEAD_COMMIT}"
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/scanning-report.json', allowEmptyArchive: true
+                }
+            }
+        }
+
+    }
+
+    post {
+        failure {
+            mail to: "${env.BUILD_NOTIFICATION_TO_EMAIL}", from: "${env.BUILD_NOTIFICATION_FROM_EMAIL}",
+            subject: "Verrazzano: ${env.JOB_NAME} - Failed",
+            body: "Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
+        }
+    }
+}
+

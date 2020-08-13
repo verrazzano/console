@@ -1,11 +1,6 @@
-/**
- * @license
- * Copyright (c) 2014, 2018, Oracle and/or its affiliates.
- * The Universal Permissive License (UPL), Version 1.0
- */
-/*
- * Your application specific code will go here
- */
+// Copyright (c) 2020, Oracle and/or its affiliates.
+// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 
 /**
  * Method for sending notifications to the aria-live region for Accessibility.
