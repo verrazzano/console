@@ -1,8 +1,0 @@
-{
-  "name": "vz-instance",
-  "version": "1.0.0",
-  "jetVersion": "^9.0.0",
-  "type": "pack",
-  "displayName": "Console VComponents",
-  "description": "A collection of console components."
-}

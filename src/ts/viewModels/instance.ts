@@ -1,4 +1,4 @@
-import "vz-instance/loader";
+import "vz-console/instance/loader";
 import * as AccUtils from "../accUtils";
 class InstanceViewModel {
 

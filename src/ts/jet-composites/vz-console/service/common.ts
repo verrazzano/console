@@ -18,7 +18,6 @@ import {
   Ingress,
   Status, ModelComponent, ModelSecret, ModelPartialSecret, SecretUsage
 } from "../service/types";
-import { v4 as uuid } from "uuid";
 import { load } from "js-yaml";
 
 export const extractInstances = (instances: any[]): Instance[] => {
@@ -285,7 +284,7 @@ export const extractPlacementsFromApplications = (
         if (component.placement) {
           if (component.placement.namespace) {
             const p = <Placement>{};
-            p.id = uuid();
+            p.id = component.name;
             p.component = component.name;
             p.namespace = component.placement.namespace;
             p.cluster = component.placement.cluster;
@@ -659,7 +658,7 @@ export const mockInstances = (): Instance[] => {
   const instances: Instance[] = [];
   instances.push(
     {
-      id: uuid(),
+      id: "dev",
       name: "dev",
       mgmtPlatform: "OCI",
       mgmtCluster: "devoke-mgmt",
@@ -670,7 +669,7 @@ export const mockInstances = (): Instance[] => {
       vzApiUri: ""
     },
     {
-      id: uuid(),
+      id: "prod",
       name: "prod",
       mgmtPlatform: "OCI",
       mgmtCluster: "prodoke-mgmt",
@@ -883,7 +882,7 @@ export const extractDomains = (domains: any[]): Domain[] => {
         adminPort = split[2];
       }
     }
-    const id = uuid();
+    const id = domain.id;
     const name = domain.id;
     result.push({ id, name, adminPort, t3Port });
   });
@@ -911,7 +910,7 @@ export const extractHelidonApps = (helidonApps: any[]): HelidonApp[] => {
   const result: HelidonApp[] = [];
   helidonApps.forEach(helidonApp => {
     result.push({
-      id: uuid(),
+      id: helidonApp.name,
       name: helidonApp.name,
       cluster: helidonApp.cluster,
       namespace: helidonApp.namespace,
@@ -956,7 +955,7 @@ function generateId(...args: string[]): string {
 export const mockVmis = (bindingName: string, hostSuffix: string): VMI[] => {
   const vmis: VMI[] = [];
   vmis.push({
-    id: uuid(),
+    id: bindingName+"-kibana",
     type: VMIType.Kibana,
     url:
       "https://" +
@@ -966,7 +965,7 @@ export const mockVmis = (bindingName: string, hostSuffix: string): VMI[] => {
       bindingName.toLowerCase().replace(" ","") +
       hostSuffix
   },{
-    id: uuid(),
+    id: bindingName+"-grafana",
     type: VMIType.Grafana,
     url:
       "https://" +
@@ -976,7 +975,7 @@ export const mockVmis = (bindingName: string, hostSuffix: string): VMI[] => {
       bindingName.toLowerCase().replace(" ","") +
       hostSuffix
   },{
-    id: uuid(),
+    id: bindingName+"-prom",
     type: VMIType.Prometheus,
     url:
       "https://" +
@@ -986,7 +985,7 @@ export const mockVmis = (bindingName: string, hostSuffix: string): VMI[] => {
       bindingName.toLowerCase().replace(" ","") +
       hostSuffix
   },{
-    id: uuid(),
+    id: bindingName+"-es",
     type: VMIType.ElasticSearch,
     url:
       "https://" +

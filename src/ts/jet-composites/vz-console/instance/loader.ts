@@ -1,0 +1,1 @@
+export { ConsoleInstance } from  "./instance";

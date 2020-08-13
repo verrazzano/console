@@ -48,14 +48,14 @@
         'corejs' : 'libs/corejs/shim',
         'chai': 'libs/chai/chai-4.2.0',
         'regenerator-runtime' : 'libs/regenerator-runtime/runtime',
-        'instance': 'jet-composites/vz-instance'
+        'vz-console': 'jet-composites/vz-console',
       }
       // endinjector
     }
   );
 }());
 
-require(['ojs/ojbootstrap', 'root'], function (Bootstrap, Root) {
+require(['ojs/ojbootstrap', 'root', 'js-yaml'], function (Bootstrap, Root) {
   // this callback gets executed when all required modules are loaded
   Bootstrap.whenDocumentReady().then(function(){
     Root.init();

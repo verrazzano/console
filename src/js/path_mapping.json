@@ -293,21 +293,6 @@
       }
     },
 
-    "uuid": {
-      "cdn": "3rdparty",
-      "cwd": "node_modules/uuid/dist",
-      "debug": {
-        "src":  "uuid-bin.js",
-        "path": "libs/uuid/uuid-bin.js",
-        "cdnPath": "uuid/uuid"
-      },
-      "release": {
-        "src":  "uuid-bin.js",
-        "path": "libs/uuid/uuid-bin.js",
-        "cdnPath": "uuid/uuid"
-      }
-    },
-
     "js-yaml": {
       "cdn": "3rdparty",
       "cwd": "node_modules/js-yaml/dist",

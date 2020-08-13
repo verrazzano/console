@@ -1,0 +1,12 @@
+{
+  "name": "vz-console",
+  "version": "1.0.0",
+  "jetVersion": "^9.0.0",
+  "type": "pack",
+  "displayName": "Console VComponents",
+  "description": "Console and its related components.",
+  "dependencies": {
+    "vz-console-instance": "1.0.0",
+    "vz-console-service": "1.0.0"
+  }
+}

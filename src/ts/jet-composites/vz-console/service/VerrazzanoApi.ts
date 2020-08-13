@@ -21,7 +21,7 @@ import {
   mockInstances,
   extractBindingsFromApplications,
   mockVmis
-} from "../utils/common";
+} from "./common";
 
 export declare type ResponseWithData<T> = {
   response: Response;
@@ -49,7 +49,7 @@ export class VerrazzanoApi {
   private instances: Instance[];
   private fetchApi: FetchApiSignature;
 
-  private url: string = "https://api.default.158.101.39.117.xip.io/";
+  private url: string = (window as any).apiUrl ? (window as any).apiUrl : "/plugin/api";
 
   public async listInstances(): Promise<ResponseWithData<Instance[]>> {
     return withDelay(() => {
