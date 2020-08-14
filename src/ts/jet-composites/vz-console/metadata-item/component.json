@@ -1,0 +1,7 @@
+{
+  "name": "vz-console-metadata-item",
+  "version": "1.0.0",
+  "jetVersion": "^9.0.0",
+  "displayName": "Service Components",
+  "description": "service components."
+}

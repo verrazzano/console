@@ -1,30 +1,30 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h } from 'ojs/ojvcomponent';
-import { VerrazzanoApi }  from 'vz-console/service/loader';
-import { Instance } from 'vz-console/service/types'
+import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { VerrazzanoApi } from "vz-console/service/loader";
+import { Instance } from "vz-console/service/types";
+import { ConsoleMetadataItem } from "vz-console/metadata-item/loader"
 
-class Props {
-}
+class Props {}
 
 class State {
-  instance? : Instance
-  loading? : boolean = true
+  instance?: Instance;
+  loading?: boolean = true;
 }
 
 /**
  * @ojmetadata pack "vz-console"
-*/
-@customElement('vz-console-instance')
+ */
+@customElement("vz-console-instance")
 export class ConsoleInstance extends VComponent {
-  verrazzanoApi : VerrazzanoApi;
+  verrazzanoApi: VerrazzanoApi;
   state: State = {
-    loading: true
-  }
+    loading: true,
+  };
 
   constructor() {
-    super(new Props())
+    super(new Props());
     this.verrazzanoApi = new VerrazzanoApi();
   }
   protected mounted() {
@@ -32,9 +32,13 @@ export class ConsoleInstance extends VComponent {
     console.log("hello ji");
   }
 
-  async getData() { 
-    this.updateState({loading: true})
-    this.verrazzanoApi.getInstance("0").then((response) => this.updateState({loading: false, instance: response.data}))
+  async getData() {
+    this.updateState({ loading: true });
+    this.verrazzanoApi
+      .getInstance("0")
+      .then((response) =>
+        this.updateState({ loading: false, instance: response.data })
+      );
   }
 
   protected render() {
@@ -42,8 +46,43 @@ export class ConsoleInstance extends VComponent {
     if (this.state.loading) {
       return <p>Loading..</p>;
     } else {
-      return <p>{this.state.instance.elasticUrl}</p>;
+      return (
+        <div>
+          <div class="oj-flex">
+            <div class="oj-sm-12 oj-flex-item">
+              <h2>{this.state.instance.name}</h2>
+            </div>
+          </div>
+          <div class="oj-flex">
+            <div class="oj-sm-12 oj-panel oj-flex-item">
+              <div class="oj-flex">
+                <div class="oj-sm-12 oj-flex-item">
+                  <h4>Instance Details</h4>
+                </div>
+                <div class="oj-sm-6 oj-flex-item">
+                  <h3>General Information</h3>
+                  <ConsoleMetadataItem label="Status" value={this.state.instance.status}/>
+                  <ConsoleMetadataItem label="Version" value={this.state.instance.version}/>
+                  <ConsoleMetadataItem label="Management Cluster" value={this.state.instance.mgmtCluster}/>
+                  <ConsoleMetadataItem label="Rancher" value={this.state.instance.rancherUrl} link={true}/>
+                  <ConsoleMetadataItem label="Keycloak" value={this.state.instance.keyCloakUrl} link={true}/>
+                </div>
+                <div class="oj-sm-6 oj-flex-item">
+                  <h3>System Telemetry</h3>
+                  <ConsoleMetadataItem label="Kibana" value={this.state.instance.kibanaUrl} link={true}/>
+                  <ConsoleMetadataItem label="Grafana" value={this.state.instance.grafanaUrl} link={true}/>
+                  <ConsoleMetadataItem label="Prometheus" value={this.state.instance.prometheusUrl} link={true}/>
+                  <ConsoleMetadataItem label="Elasticsearch" value={this.state.instance.elasticUrl} link={true}/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="oj-flex">
+            <div class="oj-sm-4 oj-flex-item">Resource List</div>
+            <div class="oj-sm-8 oj-flex-item">Resource details</div>
+          </div>
+        </div>
+      );
     }
-    
   }
 }
