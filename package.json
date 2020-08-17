@@ -4,6 +4,7 @@
   "description": "An Oracle JavaScript Extension Toolkit(JET) web app",
   "dependencies": {
     "@oracle/oraclejet": "~9.0.0",
+    "express-http-proxy": "^1.6.2",
     "jwt-decode": "^2.2.0"
   },
   "devDependencies": {
