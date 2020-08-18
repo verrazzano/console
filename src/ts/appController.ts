@@ -71,8 +71,8 @@ class RootViewModel {
 
     const navData = [
       { path: "", redirect: "instance" },
-      { path: "vzModels", detail: { label: "Application Models", iconClass: "" } },
-      { path: "vzBindings", detail: { label: "Application Bindings", iconClass: "" } },
+      { path: "model", detail: { label: "Application Model", iconClass: "" } },
+      { path: "binding", detail: { label: "Application Binding", iconClass: "" } },
       { path: "instance", detail: { label: "Verrazzano", iconClass: "" } }
 //      { path: "about", detail: { label: "About", iconClass: "oj-ux-ico-information-s" } }
     ];

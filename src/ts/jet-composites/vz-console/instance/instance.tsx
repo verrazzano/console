@@ -1,10 +1,11 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/loader";
 import { Instance } from "vz-console/service/types";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader"
+import { ConsoleInstanceResources } from "vz-console/instance-resources/loader"
 
 class Props {}
 
@@ -29,7 +30,6 @@ export class ConsoleInstance extends VComponent {
   }
   protected mounted() {
     this.getData();
-    console.log("hello ji");
   }
 
   async getData() {
@@ -42,7 +42,6 @@ export class ConsoleInstance extends VComponent {
   }
 
   protected render() {
-    console.log("render");
     if (this.state.loading) {
       return <p>Loading..</p>;
     } else {
@@ -77,10 +76,7 @@ export class ConsoleInstance extends VComponent {
               </div>
             </div>
           </div>
-          <div class="oj-flex">
-            <div class="oj-sm-4 oj-flex-item">Resource List</div>
-            <div class="oj-sm-8 oj-flex-item">Resource details</div>
-          </div>
+          <ConsoleInstanceResources/>
         </div>
       );
     }

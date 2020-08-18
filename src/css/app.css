@@ -45,5 +45,11 @@ h4 {
 }
 
 .link {
-  z-index: 1
+  z-index: 1;
+  color: blue;
+  cursor: pointer
+}
+
+.res {
+  margin-top: 15px;
 }

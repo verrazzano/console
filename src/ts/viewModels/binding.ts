@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as AccUtils from "../accUtils";
-class VzBindingViewModel {
+class BindingViewModel {
 
   constructor() {
 
@@ -17,10 +17,8 @@ class VzBindingViewModel {
    * after being disconnected.
    */
   connected(): void {
-    AccUtils.announce("Incidents page loaded.");
-    document.title = "Incidents";
-    console.log("hello");
-    // implement further logic if needed
+    AccUtils.announce("Bindings page loaded.");
+    document.title = "Verrazzano Binding";
   }
 
   /**
@@ -39,4 +37,4 @@ class VzBindingViewModel {
   }
 }
 
-export = VzBindingViewModel;
+export = BindingViewModel;

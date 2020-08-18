@@ -17,8 +17,8 @@ class InstanceViewModel {
    * after being disconnected.
    */
   connected(): void {
-    AccUtils.announce("Clusters page loaded.");
-    document.title = "Clusters";
+    AccUtils.announce("Instance page loaded.");
+    document.title = "Verrazzano";
     // implement further logic if needed
   }
 
