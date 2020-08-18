@@ -7,15 +7,31 @@ import { AuthStorage } from './AuthStorage';
 import { KeycloakUrls } from './KeycloakUrls';
 
 /**
- * Class KeycloakJet provides Oracle JET oauth integration with Keycloak
+ * The signature of the fetch API method
+ */
+interface FetchApiSignature {
+    (input: string | Request, init?: RequestInit): Promise<Response>;
+}
+/**
+ * Singleton Class KeycloakJet provides Oracle JET oauth integration with Keycloak
  */
 export class KeycloakJet {
+    private static keycloakJetInstance: KeycloakJet;
+
     jetOauth: OjModel.OAuth
     keycloak: Keycloak
-    constructor() {
+
+    public static getInstance(): KeycloakJet {
+        if (!KeycloakJet.keycloakJetInstance) {
+            KeycloakJet.keycloakJetInstance = new KeycloakJet();
+            KeycloakJet.keycloakJetInstance.initAuth().then(() => console.log('VZ - KeycloakJet auth initialized'));
+        }
+        return KeycloakJet.keycloakJetInstance;
+    }
+
+    private constructor() {
         this.keycloak = new Keycloak();
         this.jetOauth = new OjModel.OAuth({}, 'Authorization');
-        this.initAuth().then(() => console.log('VZ - KeycloakJet auth initialized'));
     }
 
     async initAuth(): Promise<void> {
@@ -40,6 +56,39 @@ export class KeycloakJet {
                 // This is the keycloak callback, get the tokens and save them.
                 await Keycloak.fetchToken();
             }
+        }
+    }
+
+    /**
+     * Get an authentication-enabled version of the fetch API, for use with Verrazzano API
+     */
+    public getAuthenticatedFetchApi(): FetchApiSignature {
+        if (KeycloakUrls.getInstance().isAuthEnabled) {
+            return this.authenticatedFetch.bind(this);
+        } else {
+            return window.fetch.bind(window);
+        }
+    }
+
+    /**
+     * A fetch wrapper to make authenticated requests to the Verrazzano API.
+     * @param input - The url or Request object
+     * @param init - If url is provided, init is a RequestInit object that provides additional options for the Request
+     * @return The http response promise.
+     */
+    private async authenticatedFetch(input: string | Request, init?: RequestInit): Promise<Response> {
+        try {
+            if (input) {
+                let request = (input instanceof Request) ? input : new Request(input, init);
+                let authRequest = await this.keycloak.createAuthorizedRequest(request);
+                return window.fetch(authRequest);
+            }
+        } catch (error) {
+            let errorMessage = error;
+            if (error && error.message) {
+                errorMessage = error.message;
+            }
+            throw new Error(`Failed to perform fetch ${errorMessage}`);
         }
     }
 

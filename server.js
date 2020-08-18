@@ -3,12 +3,63 @@
 
 path = require('path');
 express = require('express');
+proxy = require('express-http-proxy');
 
-const port = 8183;
+const port = 8000;
 const app = express();
 const staticPath = path.join(__dirname, 'web');
+let apiUrl = process.env.VZ_API_URL;
+if (!apiUrl) {
+  if (process.env.VERRAZZANO_OPERATOR_SERVICE_HOST && process.env.VERRAZZANO_OPERATOR_SERVICE_PORT_API) {
+    apiUrl = "http://" + process.env.VERRAZZANO_OPERATOR_SERVICE_HOST + ":" + process.env.VERRAZZANO_OPERATOR_SERVICE_PORT_API;
+  } else {
+    throw "VZ_API_URL not specified and in-pod environment variables VERRAZZANO_OPERATOR_SERVICE_HOST/VERRAZZANO_OPERATOR_SERVICE_PORT_API not available. Aborting..";
+  }
+}
 
+/**
+ * Uses environment variables specified at build time to generate an env.js file in the Javascript output directory
+ * The env.js file is sourced by index.html to make those values available to the application at runtime.
+ */
+function createEnvJs() {
+  const fs = require('fs');
+  const envJsFilePath = path.join(staticPath, 'js/env.js');
+  try {
+    fs.unlinkSync(envJsFilePath);
+    console.log(`Removed existing environment file ${envJsFilePath}`);
+  } catch (e) {
+    if (e.message.includes('ENOENT')) {
+      console.log(`No existing ${envJsFilePath} found`)
+    } else {
+      console.log(`Error deleting existing ${envJsFilePath}: ${e}`)
+      throw e
+    }
+  }
+
+  try {
+    console.log("Creating env.js.");
+    fs.writeFileSync(
+      `${envJsFilePath}`,
+      `var vzUiUrl = "${process.env.VZ_UI_URL}"; var vzKeycloakUrl = "${process.env.VZ_KEYCLOAK_URL}"; var vzAuth = "${process.env.VZ_AUTH || true}"; var vzClientId = "${process.env.VZ_CLIENT_ID}"; var vzApiUrl = "${apiUrl}"`,
+      { flag: 'wx' }
+    );
+    console.log(`${envJsFilePath} created.`);
+  } catch (e) {
+    console.log(`Failed creating ${envJsFilePath}: ${e}`);
+    throw e
+  }
+}
+
+createEnvJs();
 app.use(express.static(staticPath));
+
+app.use('/api', proxy(apiUrl, {
+  proxyReqOptDecorator: function(proxyReqOpts, _) {
+    proxyReqOpts.rejectUnauthorized = false // Don't do 2-way SSL verification
+    return proxyReqOpts;
+  }
+}));
+
 app.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
     console.log(err);
