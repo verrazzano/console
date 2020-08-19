@@ -31,7 +31,7 @@ export const ServicePrefix = "instances";
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
 
-  private url: string = (window as any).vzApiUrl ? (window as any).vzApiUrl : "/plugin/api";
+  private url: string = (window as any).vzApiUrl ? (window as any).vzApiUrl : "/api";
 
   public async listInstances(): Promise<Instance[]> {
       return mockInstances();
