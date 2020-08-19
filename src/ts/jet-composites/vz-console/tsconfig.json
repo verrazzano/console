@@ -1,17 +1,7 @@
 {
     "extends": "../../../../tsconfig.json",
-    "compileOnSave": true,
     "compilerOptions": {
         "baseUrl": "../../../../",
-        "target": "es6",
-        "module": "amd",
-        "moduleResolution": "node",
-        "jsx": "react",
-        "jsxFactory": "h",
-        "lib": ["es2015", "dom", "esnext.asynciterable"],
-        "declaration": true,
-        "noEmitOnError": true,
-        "experimentalDecorators": true
     },
     "include": ["./**/*"]
 }

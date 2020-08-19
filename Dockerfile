@@ -5,13 +5,16 @@ FROM container-registry.oracle.com/os/oraclelinux:7-slim@sha256:9b86d1332a883ee8
 RUN yum install -y oracle-nodejs-release-el7
 RUN yum install -y nodejs
 RUN mkdir /verrazzano
+RUN mkdir /license
+COPY LICENSE.txt /license/
+COPY THIRD_PARTY_LICENSES.txt /license/
 COPY web /verrazzano/web
 COPY livenessProbe.sh /verrazzano/
 COPY start.sh /verrazzano/
 COPY server.js /verrazzano/
+COPY package.json /verrazzano/
 RUN cd /verrazzano/
-RUN npm init -y
-RUN npm install --save express@4.17.1
+RUN npm install --save express express-http-proxy 
 HEALTHCHECK --interval=1m --timeout=10s \
   CMD /verrazzano/livenessProbe.sh
 
