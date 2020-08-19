@@ -49,8 +49,11 @@ class RootViewModel {
 
   constructor() {
     //OAuth initialization
-    this.oauth = new KeycloakJet();
+    this.oauth = KeycloakJet.getInstance();
 
+    this.userEmail = ko.observable(this.oauth.getUserEmail());
+    this.userDisplayName = ko.observable(this.oauth.getUsername());
+    
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
     this.message = ko.observable();
@@ -114,10 +117,6 @@ class RootViewModel {
 
     // application Name used in Branding Area
     this.appName = ko.observable("App Name");
-    // user Info used in Global Navigation area
-
-    this.userEmail = ko.observable(this.oauth.getUserEmail());
-    this.userDisplayName = ko.observable(this.oauth.getUsername());
 
     // footer
     this.footerLinks = [

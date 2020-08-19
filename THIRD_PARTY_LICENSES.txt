@@ -4,8 +4,6 @@ console
 # Copyright (c) 2020, Oracle and/or its affiliates.
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Copyright (C) 2020, Oracle and/or its affiliates.
-    // Copyright (c) 2020, Oracle and/or its affiliates.
-        // Copyright (c) 2020, Oracle and/or its affiliates.
   copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
  * Copyright (c) 2015, 2017, Oracle and/or its affiliates.
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
@@ -49,92 +47,6 @@ console
  * Copyright (c) 2010 Seznam.cz, a.s.
 
 ======== License
-console
--------- Copyrights
-# Copyright (C) 2020, Oracle and/or its affiliates.
-# Copyright (c) 2020, Oracle and/or its affiliates.
-// Copyright (c) 2020, Oracle and/or its affiliates.
-console
--------- Copyrights
-# Copyright (C) 2020, Oracle and/or its affiliates.
-# Copyright (c) 2020, Oracle and/or its affiliates.
-// Copyright (c) 2020, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2018, Oracle and/or its affiliates.
-=======
- * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
-// Copyright (C) 2020, Oracle and/or its affiliates.
-  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates.
- * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
- * Copyright (c) 2016 Jorik Tangelder;
- * Copyright 2014 jQuery Foundation and other contributors
-        // From https://github.com/petkaantonov/bluebird * Copyright (c) 2014 Petka Antonov * License: MIT
-        // From https://github.com/YuzuJS/setImmediate * Copyright (c) 2012 Barnesandnoble.com, llc, Donavon West, and Domenic Denicola * License: MIT
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates.
- * Copyright (c) 2008 2020, Oracle and/or its affiliates.
- * Copyright (c) 2011 2020, Oracle and/or its affiliates.
- * Copyright (c) 2013 2020, Oracle and/or its affiliates.
- * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016, Oracle and/or its affiliates.
- * Copyright (c) 2015 2020, Oracle and/or its affiliates.
- * Copyright (c) 2012 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016 2020, Oracle and/or its affiliates.
- * @license RequireJS i18n 2.0.2 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
- * @preserve Copyright 2013 jQuery Foundation and other contributors
-     * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
-    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2014 Tim Wood
-    * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright 2013 jQuery Foundation and other contributors
-   * Copyright (c) 2004 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * @preserve Copyright 2012 Igor Vaynberg
- * Copyright 2011-2014, Dave Furfero
- * "Copyright (c) 2010 Ivan Bozhanov (vakata.com)
-   * Copyright (c) 2008 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2011 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2013 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2017 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2015 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2012 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2016 2020, Oracle and/or its affiliates.
-  Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2017, Oracle and/or its affiliates.
- * Copyright (c) 2014-2016 GitHub, Inc.
- * Copyright (c) 2014-present, Facebook, Inc.
- * Copyright (c) 2010 Seznam.cz, a.s.
- Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-
-======== License
-console
--------- Copyrights
-# Copyright (C) 2020, Oracle and/or its affiliates.
-  Copyright (c) 2015, 2020, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2018, Oracle and/or its affiliates.
- * @preserve Copyright 2013 jQuery Foundation and other contributors
- * @license RequireJS i18n 2.0.2 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates.
- * Copyright (c) 2016 Jorik Tangelder;
- * Copyright 2014 jQuery Foundation and other contributors
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates.
- * Copyright (c) 2016, Oracle and/or its affiliates.
-     * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * Copyright (c) 2014 Tim Wood
-    * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright 2013 jQuery Foundation and other contributors
-   * Copyright (c) 2004 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * "Copyright (c) 2010 Ivan Bozhanov (vakata.com)
-   * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright (c) 2017, Oracle and/or its affiliates.
- * Copyright (c) 2014-2016 GitHub, Inc.
- * Copyright (c) 2014-present, Facebook, Inc.
- * Copyright (c) 2010 Seznam.cz, a.s.
- Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-
-======== License
-=======
 SPDX:MIT
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation files
@@ -152,1939 +64,6 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@types/geojson
--------- Copyrights
-
--------- Dependency
-@types/signals
--------- Copyrights
-
-======== Dependencies Summary
-@types/geojson
-@types/signals
-
-======== License used by Dependencies
--------- Dependency
-@webcomponents/custom-elements
--------- Copyrights
-Copyright (c) 2015 The Polymer Authors. All rights reserved.
- Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
- * Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-   Copyright 2014 Christian Robertson
- * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-
-======== Dependencies Summary
-@webcomponents/custom-elements
-
-======== License used by Dependencies
-# License
-
-Everything in this repo is BSD style license unless otherwise specified.
-
-Copyright (c) 2015 The Polymer Authors. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following disclaimer
-in the documentation and/or other materials provided with the
-distribution.
-* Neither the name of Google Inc. nor the names of its
-contributors may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@oracle/oraclejet
--------- Copyrights
-Copyright (c) 2020 Oracle and/or its affiliates.
-Copyright (c) 2020 Oracle and/or its affiliates and released  under the 
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2012-2015 Sakthipriyan Vairamani <thechargingvolcano@gmail.com>
- * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
- * Copyright(c) 2012-2016 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
-  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates.
- * Copyright (c) 2008 2020, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * Copyright (c) 2011 2020, Oracle and/or its affiliates.
- * Copyright (c) 2013 2020, Oracle and/or its affiliates.
- * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016, Oracle and/or its affiliates.
- * Copyright (c) 2015 2020, Oracle and/or its affiliates.
- * Copyright (c) 2012 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016 2020, Oracle and/or its affiliates.
- * @license RequireJS i18n 2.0.2 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
- * @preserve Copyright 2013 jQuery Foundation and other contributors
-     * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
-    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2014 Tim Wood
-    * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright 2013 jQuery Foundation and other contributors
-   * Copyright (c) 2004 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * @preserve Copyright 2012 Igor Vaynberg
- * Copyright 2011-2014, Dave Furfero
- * "Copyright (c) 2010 Ivan Bozhanov (vakata.com)
-   * Copyright (c) 2008 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2011 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2013 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2017 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2015 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2012 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2016 2020, Oracle and/or its affiliates.
-  Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2017, Oracle and/or its affiliates.
- * Copyright (c) 2014-2016 GitHub, Inc.
- * Copyright (c) 2014-present, Facebook, Inc.
- * Copyright (c) 2010 Seznam.cz, a.s.
-// Copyright (c) 2014, 2020, Oracle and/or its affiliates.  Licensed under The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
-
-======== Dependencies Summary
-@oracle/oraclejet
-
-======== License used by Dependencies
-# Oracle JET
-
-Copyright (c) 2020 Oracle and/or its affiliates.
-
-The Universal Permissive License (UPL), Version 1.0
-
-Subject to the condition set forth below, permission is hereby granted to any
-person obtaining a copy of this software, associated documentation and/or data
-(collectively the "Software"), free of charge and under any and all copyright
-rights in the Software, and any and all patent rights owned or freely
-licensable by each licensor hereunder covering either (i) the unmodified
-Software as contributed to or provided by such licensor, or (ii) the Larger
-Works (as defined below), to deal in both
-
-(a) the Software, and
-(b) any piece of software and/or hardware listed in the lrgrwrks.txt file if
-one is included with the Software (each a "Larger Work" to which the Software
-is contributed by such licensors),
-
-without restriction, including without limitation the rights to copy, create
-derivative works of, display, perform, and distribute the Software and make,
-use, sell, offer for sale, import, export, have made, and have sold the
-Software and the Larger Work(s), and to sublicense the foregoing rights on
-either these or other terms.
-
-This license is subject to the following condition:
-The above copyright notice and either this complete permission notice or at
-a minimum a reference to the UPL must be included in all copies or
-substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-proj4
--------- Copyrights
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
--------- Dependency
-wkt-parser
--------- Copyrights
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
-======== Dependencies Summary
-proj4
-wkt-parser
-
-======== License used by Dependencies
-## Proj4js -- Javascript reprojection library. 
- 
-Authors:
-- Mike Adair madairATdmsolutions.ca
-- Richard Greenwood richATgreenwoodmap.com
-- Didier Richard didier.richardATign.fr
-- Stephen Irons stephen.ironsATclear.net.nz
-- Olivier Terral oterralATgmail.com
-- Calvin Metcalf cmetcalfATappgeo.com
-
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
- Permission is hereby granted, free of charge, to any person obtaining a
- copy of this software and associated documentation files (the "Software"),
- to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included
- in all copies or substantial portions of the Software.
-
- _THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- DEALINGS IN THE SOFTWARE._
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-mgrs
--------- Copyrights
-Copyright (c) 2012, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral, Calvin Metcalf
-
-======== Dependencies Summary
-mgrs
-
-======== License used by Dependencies
-Copyright (c) 2012, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral, Calvin Metcalf
-
- Permission is hereby granted, free of charge, to any person obtaining a
- copy of this software and associated documentation files (the "Software"),
- to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included
- in all copies or substantial portions of the Software.
-
- _THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- DEALINGS IN THE SOFTWARE._
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-cors
--------- Copyrights
-Copyright (c) 2013 Troy Goode <troygoode@gmail.com>
-
--------- Dependency
-es6-promise
--------- Copyrights
-Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
- * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
-
--------- Dependency
-hammerjs
--------- Copyrights
-Copyright (C) 2011-2014 by Jorik Tangelder (Eight Media)
- * Copyright (c) 2016 Jorik Tangelder;
-  Copyright (C) 2012 Ariya Hidayat <ariya.hidayat@gmail.com>
-  Copyright (C) 2012 Mathias Bynens <mathias@qiwi.be>
-  Copyright (C) 2012 Joost-Wim Boekesteijn <joost-wim@boekesteijn.nl>
-  Copyright (C) 2012 Kris Kowal <kris.kowal@cixar.com>
-  Copyright (C) 2012 Yusuke Suzuki <utatane.tea@gmail.com>
-  Copyright (C) 2012 Arpad Borsos <arpad.borsos@googlemail.com>
-  Copyright (C) 2011 Ariya Hidayat <ariya.hidayat@gmail.com>
- * Copyright 2012-2013 The Dojo Foundation <http://dojofoundation.org/>
- * Copyright 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Copyright 2013 jQuery Foundation and other contributors
- * jsDump Copyright (c) 2008 Ariel Flesler - aflesler(at)gmail(dot)com |
-
--------- Dependency
-jquery
--------- Copyrights
-
--------- Dependency
-jquery-ui
--------- Copyrights
-Copyright 2014 jQuery Foundation and other contributors
-Copyright 2013 jQuery Foundation and other contributors
- * Copyright 2005, 2013 jQuery Foundation, Inc. and other contributors
- * Copyright 2013 jQuery Foundation, Inc. and other contributors
- * Copyright 2005, 2014 jQuery Foundation, Inc. and other contributors
- * Copyright 2008, 2014 jQuery Foundation, Inc. and other contributors
-Copyright (c) 2011 John Resig, http://jquery.com/
- * Copyright 2011, John Resig
- * Copyright 2011, The Dojo Foundation
- *  Copyright 2011, The Dojo Foundation
-Copyright 2012 jQuery Foundation and other contributors
- * Copyright 2012 jQuery Foundation and other contributors
- *  Copyright 2012 jQuery Foundation and other contributors
- * Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors
-Copyright (c) 2013, Brandon Aaron (http://brandon.aaron.sh)
-/*! Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
-Copyright 2007, 2014 jQuery Foundation and other contributors,
-Copyright 2012 Anton Kovalyov (http://jshint.com)
-// Copyright (c) 2009 Thomas Robinson <280north.com>
- *   Copyright (c) 2002 Douglas Crockford  (www.JSLint.com)
- * Copyright 2006 Google Inc.
-Copyright (c) 2015 Alexander Schmitz
- * @license RequireJS 2.1.14 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
- * Copyright 2014 jQuery Foundation and other contributors
-
--------- Dependency
-knockout
--------- Copyrights
-Copyright (c) 2010 Steven Sanderson, the Knockout.js team, and other contributors
-        // From https://github.com/petkaantonov/bluebird * Copyright (c) 2014 Petka Antonov * License: MIT
-        // From https://github.com/YuzuJS/setImmediate * Copyright (c) 2012 Barnesandnoble.com, llc, Donavon West, and Domenic Denicola * License: MIT
-
--------- Dependency
-object-assign
--------- Copyrights
-
--------- Dependency
-require-css
--------- Copyrights
-Copyright (C) 2013 Guy Bedford
- * Copyright 2011, John Resig
- * Copyright 2011, The Dojo Foundation
- *  Copyright 2011, The Dojo Foundation
- * @license RequireJS text 1.0.8 Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
- * @license RequireJS 2.1.10 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
-
--------- Dependency
-requirejs
--------- Copyrights
- * prim 0.0.1 Copyright (c) 2012-2014, The Dojo Foundation All Rights Reserved.
-	 * Copyright 2009-2011 Mozilla Foundation and contributors
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Copyright 2011 The Closure Compiler Authors. All rights reserved.
-	 * Copyright 2014 Mozilla Foundation and contributors
-//Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-    Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-
--------- Dependency
-requirejs-text
--------- Copyrights
-
--------- Dependency
-signals
--------- Copyrights
-
--------- Dependency
-vary
--------- Copyrights
-Copyright (c) 2014-2017 Douglas Christopher Wilson
- * Copyright(c) 2014-2017 Douglas Christopher Wilson
-
-======== Dependencies Summary
-cors
-es6-promise
-hammerjs
-jquery
-jquery-ui
-knockout
-object-assign
-require-css
-requirejs
-requirejs-text
-signals
-vary
-
-======== License used by Dependencies
-SPDX:MIT
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation files
-(the "Software"), to deal in the Software without restriction, including without
-limitation the rights to use, copy, modify, merge, publish, distribute,
-sublicense, and/or sell copies of the Software, and to permit persons to whom
-the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@types/geojson
--------- Copyrights
-
--------- Dependency
-@types/signals
--------- Copyrights
-
-======== Dependencies Summary
-@types/geojson
-@types/signals
-
-======== License used by Dependencies
-    MIT License
-
-    Copyright (c) Microsoft Corporation. All rights reserved.
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@oracle/oraclejet
--------- Copyrights
-Copyright (c) 2020 Oracle and/or its affiliates.
-Copyright (c) 2020 Oracle and/or its affiliates and released  under the 
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2012-2015 Sakthipriyan Vairamani <thechargingvolcano@gmail.com>
- * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
- * Copyright(c) 2012-2016 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
-  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates.
- * Copyright (c) 2008 2020, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * Copyright (c) 2011 2020, Oracle and/or its affiliates.
- * Copyright (c) 2013 2020, Oracle and/or its affiliates.
- * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016, Oracle and/or its affiliates.
- * Copyright (c) 2015 2020, Oracle and/or its affiliates.
- * Copyright (c) 2012 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016 2020, Oracle and/or its affiliates.
- * @license RequireJS i18n 2.0.2 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
- * @preserve Copyright 2013 jQuery Foundation and other contributors
-     * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
-    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2014 Tim Wood
-    * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright 2013 jQuery Foundation and other contributors
-   * Copyright (c) 2004 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * @preserve Copyright 2012 Igor Vaynberg
- * Copyright 2011-2014, Dave Furfero
- * "Copyright (c) 2010 Ivan Bozhanov (vakata.com)
-   * Copyright (c) 2008 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2011 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2013 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2017 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2015 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2012 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2016 2020, Oracle and/or its affiliates.
-  Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2017, Oracle and/or its affiliates.
- * Copyright (c) 2014-2016 GitHub, Inc.
- * Copyright (c) 2014-present, Facebook, Inc.
- * Copyright (c) 2010 Seznam.cz, a.s.
-// Copyright (c) 2014, 2020, Oracle and/or its affiliates.  Licensed under The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
-
-======== Dependencies Summary
-@oracle/oraclejet
-
-======== License used by Dependencies
-# Oracle JET
-
-Copyright (c) 2020 Oracle and/or its affiliates.
-
-The Universal Permissive License (UPL), Version 1.0
-
-Subject to the condition set forth below, permission is hereby granted to any
-person obtaining a copy of this software, associated documentation and/or data
-(collectively the "Software"), free of charge and under any and all copyright
-rights in the Software, and any and all patent rights owned or freely
-licensable by each licensor hereunder covering either (i) the unmodified
-Software as contributed to or provided by such licensor, or (ii) the Larger
-Works (as defined below), to deal in both
-
-(a) the Software, and
-(b) any piece of software and/or hardware listed in the lrgrwrks.txt file if
-one is included with the Software (each a "Larger Work" to which the Software
-is contributed by such licensors),
-
-without restriction, including without limitation the rights to copy, create
-derivative works of, display, perform, and distribute the Software and make,
-use, sell, offer for sale, import, export, have made, and have sold the
-Software and the Larger Work(s), and to sublicense the foregoing rights on
-either these or other terms.
-
-This license is subject to the following condition:
-The above copyright notice and either this complete permission notice or at
-a minimum a reference to the UPL must be included in all copies or
-substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-proj4
--------- Copyrights
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
--------- Dependency
-wkt-parser
--------- Copyrights
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
-======== Dependencies Summary
-proj4
-wkt-parser
-
-======== License used by Dependencies
-## Proj4js -- Javascript reprojection library. 
- 
-Authors:
-- Mike Adair madairATdmsolutions.ca
-- Richard Greenwood richATgreenwoodmap.com
-- Didier Richard didier.richardATign.fr
-- Stephen Irons stephen.ironsATclear.net.nz
-- Olivier Terral oterralATgmail.com
-- Calvin Metcalf cmetcalfATappgeo.com
-
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
- Permission is hereby granted, free of charge, to any person obtaining a
- copy of this software and associated documentation files (the "Software"),
- to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included
- in all copies or substantial portions of the Software.
-
- _THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- DEALINGS IN THE SOFTWARE._
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-mgrs
--------- Copyrights
-Copyright (c) 2012, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral, Calvin Metcalf
-
-======== Dependencies Summary
-mgrs
-
-======== License used by Dependencies
-Copyright (c) 2012, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral, Calvin Metcalf
-
- Permission is hereby granted, free of charge, to any person obtaining a
- copy of this software and associated documentation files (the "Software"),
- to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included
- in all copies or substantial portions of the Software.
-
- _THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- DEALINGS IN THE SOFTWARE._
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@webcomponents/custom-elements
--------- Copyrights
-Copyright (c) 2015 The Polymer Authors. All rights reserved.
- Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
- * Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-   Copyright 2014 Christian Robertson
- * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-
-======== Dependencies Summary
-@webcomponents/custom-elements
-
-======== License used by Dependencies
-SPDX:BSD-3-Clause--modified-by-Google
-Redistribution and use in source and binary forms, with 
-or without modification, are permitted provided that the following conditions
-are met:
-
-   * Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following disclaimer
-in the documentation and/or other materials provided with the
-distribution.
-   * Neither the name of Google Inc. nor the names of its
-contributors may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-cors
--------- Copyrights
-Copyright (c) 2013 Troy Goode <troygoode@gmail.com>
-
--------- Dependency
-es6-promise
--------- Copyrights
-Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
- * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
-
--------- Dependency
-hammerjs
--------- Copyrights
-Copyright (C) 2011-2014 by Jorik Tangelder (Eight Media)
- * Copyright (c) 2016 Jorik Tangelder;
-  Copyright (C) 2012 Ariya Hidayat <ariya.hidayat@gmail.com>
-  Copyright (C) 2012 Mathias Bynens <mathias@qiwi.be>
-  Copyright (C) 2012 Joost-Wim Boekesteijn <joost-wim@boekesteijn.nl>
-  Copyright (C) 2012 Kris Kowal <kris.kowal@cixar.com>
-  Copyright (C) 2012 Yusuke Suzuki <utatane.tea@gmail.com>
-  Copyright (C) 2012 Arpad Borsos <arpad.borsos@googlemail.com>
-  Copyright (C) 2011 Ariya Hidayat <ariya.hidayat@gmail.com>
- * Copyright 2012-2013 The Dojo Foundation <http://dojofoundation.org/>
- * Copyright 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Copyright 2013 jQuery Foundation and other contributors
- * jsDump Copyright (c) 2008 Ariel Flesler - aflesler(at)gmail(dot)com |
-
--------- Dependency
-jquery
--------- Copyrights
-
--------- Dependency
-jquery-ui
--------- Copyrights
-Copyright 2014 jQuery Foundation and other contributors
-Copyright 2013 jQuery Foundation and other contributors
- * Copyright 2005, 2013 jQuery Foundation, Inc. and other contributors
- * Copyright 2013 jQuery Foundation, Inc. and other contributors
- * Copyright 2005, 2014 jQuery Foundation, Inc. and other contributors
- * Copyright 2008, 2014 jQuery Foundation, Inc. and other contributors
-Copyright (c) 2011 John Resig, http://jquery.com/
- * Copyright 2011, John Resig
- * Copyright 2011, The Dojo Foundation
- *  Copyright 2011, The Dojo Foundation
-Copyright 2012 jQuery Foundation and other contributors
- * Copyright 2012 jQuery Foundation and other contributors
- *  Copyright 2012 jQuery Foundation and other contributors
- * Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors
-Copyright (c) 2013, Brandon Aaron (http://brandon.aaron.sh)
-/*! Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
-Copyright 2007, 2014 jQuery Foundation and other contributors,
-Copyright 2012 Anton Kovalyov (http://jshint.com)
-// Copyright (c) 2009 Thomas Robinson <280north.com>
- *   Copyright (c) 2002 Douglas Crockford  (www.JSLint.com)
- * Copyright 2006 Google Inc.
-Copyright (c) 2015 Alexander Schmitz
- * @license RequireJS 2.1.14 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
- * Copyright 2014 jQuery Foundation and other contributors
-
--------- Dependency
-knockout
--------- Copyrights
-Copyright (c) 2010 Steven Sanderson, the Knockout.js team, and other contributors
-        // From https://github.com/petkaantonov/bluebird * Copyright (c) 2014 Petka Antonov * License: MIT
-        // From https://github.com/YuzuJS/setImmediate * Copyright (c) 2012 Barnesandnoble.com, llc, Donavon West, and Domenic Denicola * License: MIT
-
--------- Dependency
-object-assign
--------- Copyrights
-
--------- Dependency
-require-css
--------- Copyrights
-Copyright (C) 2013 Guy Bedford
- * Copyright 2011, John Resig
- * Copyright 2011, The Dojo Foundation
- *  Copyright 2011, The Dojo Foundation
- * @license RequireJS text 1.0.8 Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
- * @license RequireJS 2.1.10 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
-
--------- Dependency
-requirejs
--------- Copyrights
- * prim 0.0.1 Copyright (c) 2012-2014, The Dojo Foundation All Rights Reserved.
-	 * Copyright 2009-2011 Mozilla Foundation and contributors
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Copyright 2011 The Closure Compiler Authors. All rights reserved.
-	 * Copyright 2014 Mozilla Foundation and contributors
-//Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-    Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-
--------- Dependency
-requirejs-text
--------- Copyrights
-
--------- Dependency
-signals
--------- Copyrights
-
--------- Dependency
-vary
--------- Copyrights
-Copyright (c) 2014-2017 Douglas Christopher Wilson
- * Copyright(c) 2014-2017 Douglas Christopher Wilson
-
-======== Dependencies Summary
-cors
-es6-promise
-hammerjs
-jquery
-jquery-ui
-knockout
-object-assign
-require-css
-requirejs
-requirejs-text
-signals
-vary
-
-======== License used by Dependencies
-SPDX:MIT
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation files
-(the "Software"), to deal in the Software without restriction, including without
-limitation the rights to use, copy, modify, merge, publish, distribute,
-sublicense, and/or sell copies of the Software, and to permit persons to whom
-the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@types/geojson
--------- Copyrights
-
--------- Dependency
-@types/signals
--------- Copyrights
-
-======== Dependencies Summary
-@types/geojson
-@types/signals
-
-======== License used by Dependencies
-    MIT License
-
-    Copyright (c) Microsoft Corporation. All rights reserved.
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@oracle/oraclejet
--------- Copyrights
-Copyright (c) 2020 Oracle and/or its affiliates.
-Copyright (c) 2020 Oracle and/or its affiliates and released  under the 
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2012-2015 Sakthipriyan Vairamani <thechargingvolcano@gmail.com>
- * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
- * Copyright(c) 2012-2016 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
-  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates.
- * Copyright (c) 2008 2020, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * Copyright (c) 2011 2020, Oracle and/or its affiliates.
- * Copyright (c) 2013 2020, Oracle and/or its affiliates.
- * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016, Oracle and/or its affiliates.
- * Copyright (c) 2015 2020, Oracle and/or its affiliates.
- * Copyright (c) 2012 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016 2020, Oracle and/or its affiliates.
- * @license RequireJS i18n 2.0.2 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
- * @preserve Copyright 2013 jQuery Foundation and other contributors
-     * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
-    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2014 Tim Wood
-    * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright 2013 jQuery Foundation and other contributors
-   * Copyright (c) 2004 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * @preserve Copyright 2012 Igor Vaynberg
- * Copyright 2011-2014, Dave Furfero
- * "Copyright (c) 2010 Ivan Bozhanov (vakata.com)
-   * Copyright (c) 2008 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2011 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2013 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2017 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2015 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2012 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2016 2020, Oracle and/or its affiliates.
-  Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2017, Oracle and/or its affiliates.
- * Copyright (c) 2014-2016 GitHub, Inc.
- * Copyright (c) 2014-present, Facebook, Inc.
- * Copyright (c) 2010 Seznam.cz, a.s.
-// Copyright (c) 2014, 2020, Oracle and/or its affiliates.  Licensed under The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
-
-======== Dependencies Summary
-@oracle/oraclejet
-
-======== License used by Dependencies
-# Oracle JET
-
-Copyright (c) 2020 Oracle and/or its affiliates.
-
-The Universal Permissive License (UPL), Version 1.0
-
-Subject to the condition set forth below, permission is hereby granted to any
-person obtaining a copy of this software, associated documentation and/or data
-(collectively the "Software"), free of charge and under any and all copyright
-rights in the Software, and any and all patent rights owned or freely
-licensable by each licensor hereunder covering either (i) the unmodified
-Software as contributed to or provided by such licensor, or (ii) the Larger
-Works (as defined below), to deal in both
-
-(a) the Software, and
-(b) any piece of software and/or hardware listed in the lrgrwrks.txt file if
-one is included with the Software (each a "Larger Work" to which the Software
-is contributed by such licensors),
-
-without restriction, including without limitation the rights to copy, create
-derivative works of, display, perform, and distribute the Software and make,
-use, sell, offer for sale, import, export, have made, and have sold the
-Software and the Larger Work(s), and to sublicense the foregoing rights on
-either these or other terms.
-
-This license is subject to the following condition:
-The above copyright notice and either this complete permission notice or at
-a minimum a reference to the UPL must be included in all copies or
-substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-proj4
--------- Copyrights
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
--------- Dependency
-wkt-parser
--------- Copyrights
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
-======== Dependencies Summary
-proj4
-wkt-parser
-
-======== License used by Dependencies
-## Proj4js -- Javascript reprojection library. 
- 
-Authors:
-- Mike Adair madairATdmsolutions.ca
-- Richard Greenwood richATgreenwoodmap.com
-- Didier Richard didier.richardATign.fr
-- Stephen Irons stephen.ironsATclear.net.nz
-- Olivier Terral oterralATgmail.com
-- Calvin Metcalf cmetcalfATappgeo.com
-
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
- Permission is hereby granted, free of charge, to any person obtaining a
- copy of this software and associated documentation files (the "Software"),
- to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included
- in all copies or substantial portions of the Software.
-
- _THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- DEALINGS IN THE SOFTWARE._
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-mgrs
--------- Copyrights
-Copyright (c) 2012, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral, Calvin Metcalf
-
-======== Dependencies Summary
-mgrs
-
-======== License used by Dependencies
-Copyright (c) 2012, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral, Calvin Metcalf
-
- Permission is hereby granted, free of charge, to any person obtaining a
- copy of this software and associated documentation files (the "Software"),
- to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included
- in all copies or substantial portions of the Software.
-
- _THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- DEALINGS IN THE SOFTWARE._
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-qs
--------- Copyrights
-Copyright (c) 2014 Nathan LaFreniere and other contributors.
-
-======== Dependencies Summary
-qs
-
-======== License used by Dependencies
-Copyright (c) 2014 Nathan LaFreniere and other contributors.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * The names of any contributors may not be used to endorse or promote
-      products derived from this software without specific prior written
-      permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS AND CONTRIBUTORS BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-                                  *   *   *
-
-The complete list of contributors can be found at: https://github.com/hapijs/qs/graphs/contributors
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@webcomponents/custom-elements
--------- Copyrights
-Copyright (c) 2015 The Polymer Authors. All rights reserved.
- Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
- * Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-   Copyright 2014 Christian Robertson
- * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-
-======== Dependencies Summary
-@webcomponents/custom-elements
-
-======== License used by Dependencies
-SPDX:BSD-3-Clause--modified-by-Google
-Redistribution and use in source and binary forms, with 
-or without modification, are permitted provided that the following conditions
-are met:
-
-   * Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following disclaimer
-in the documentation and/or other materials provided with the
-distribution.
-   * Neither the name of Google Inc. nor the names of its
-contributors may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-inherits
--------- Copyrights
-
--------- Dependency
-setprototypeof
--------- Copyrights
-Copyright (c) 2015, Wes Todd
-
-======== Dependencies Summary
-inherits
-setprototypeof
-
-======== License used by Dependencies
-SPDX:ISC
-Permission to use, copy, modify, and/or distribute this 
-software for any purpose with or without fee is hereby granted, provided that 
-the above copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH 
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY 
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, 
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR 
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR 
-PERFORMANCE OF THIS SOFTWARE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-accepts
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
-Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2014 Jonathan Ong
- * Copyright(c) 2015 Douglas Christopher Wilson
-
--------- Dependency
-array-flatten
--------- Copyrights
-Copyright (c) 2014 Blake Embrey (hello@blakeembrey.com)
-
--------- Dependency
-body-parser
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
-Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2014-2015 Douglas Christopher Wilson
- * Copyright(c) 2014 Jonathan Ong
-
--------- Dependency
-bytes
--------- Copyrights
-Copyright (c) 2012-2014 TJ Holowaychuk <tj@vision-media.ca>
-Copyright (c) 2015 Jed Watson <jed.watson@me.com>
- * Copyright(c) 2012-2014 TJ Holowaychuk
- * Copyright(c) 2015 Jed Watson
-
--------- Dependency
-content-disposition
--------- Copyrights
-Copyright (c) 2014-2017 Douglas Christopher Wilson
- * Copyright(c) 2014-2017 Douglas Christopher Wilson
-
--------- Dependency
-content-type
--------- Copyrights
-Copyright (c) 2015 Douglas Christopher Wilson
- * Copyright(c) 2015 Douglas Christopher Wilson
-
--------- Dependency
-cookie
--------- Copyrights
-Copyright (c) 2012-2014 Roman Shtylman <shtylman@gmail.com>
-Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2012-2014 Roman Shtylman
- * Copyright(c) 2015 Douglas Christopher Wilson
-
--------- Dependency
-cookie-signature
--------- Copyrights
-Copyright (c) 2012 LearnBoost &lt;tj@learnboost.com&gt;
-
--------- Dependency
-debug
--------- Copyrights
-Copyright (c) 2014 TJ Holowaychuk <tj@vision-media.ca>
-Copyright (c) 2014-2016 TJ Holowaychuk &lt;tj@vision-media.ca&gt;
-
--------- Dependency
-depd
--------- Copyrights
-Copyright (c) 2014-2017 Douglas Christopher Wilson
- * Copyright(c) 2014-2017 Douglas Christopher Wilson
- * Copyright(c) 2015 Douglas Christopher Wilson
- * Copyright(c) 2014 Douglas Christopher Wilson
- * Copyright(c) 2014-2015 Douglas Christopher Wilson
-
--------- Dependency
-destroy
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong me@jongleberry.com
- * Copyright(c) 2014 Jonathan Ong
-
--------- Dependency
-ee-first
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong me@jongleberry.com
- * Copyright(c) 2014 Jonathan Ong
-
--------- Dependency
-encodeurl
--------- Copyrights
-Copyright (c) 2016 Douglas Christopher Wilson
- * Copyright(c) 2016 Douglas Christopher Wilson
-
--------- Dependency
-es6-promise
--------- Copyrights
-Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
- * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
-
--------- Dependency
-escape-html
--------- Copyrights
-Copyright (c) 2012-2013 TJ Holowaychuk
-Copyright (c) 2015 Andreas Lubbe
-Copyright (c) 2015 Tiancheng "Timothy" Gu
- * Copyright(c) 2012-2013 TJ Holowaychuk
- * Copyright(c) 2015 Andreas Lubbe
- * Copyright(c) 2015 Tiancheng "Timothy" Gu
-
--------- Dependency
-etag
--------- Copyrights
-Copyright (c) 2014-2016 Douglas Christopher Wilson
- * Copyright(c) 2014-2016 Douglas Christopher Wilson
-
--------- Dependency
-express
--------- Copyrights
-Copyright (c) 2009-2014 TJ Holowaychuk <tj@vision-media.ca>
-Copyright (c) 2013-2014 Roman Shtylman <shtylman+expressjs@gmail.com>
-Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2009-2013 TJ Holowaychuk
- * Copyright(c) 2013 Roman Shtylman
- * Copyright(c) 2014-2015 Douglas Christopher Wilson
-
--------- Dependency
-finalhandler
--------- Copyrights
-Copyright (c) 2014-2017 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2014-2017 Douglas Christopher Wilson
-
--------- Dependency
-forwarded
--------- Copyrights
-Copyright (c) 2014-2017 Douglas Christopher Wilson
- * Copyright(c) 2014-2017 Douglas Christopher Wilson
-
--------- Dependency
-fresh
--------- Copyrights
-Copyright (c) 2012 TJ Holowaychuk <tj@vision-media.ca>
-Copyright (c) 2016-2017 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2012 TJ Holowaychuk
- * Copyright(c) 2016-2017 Douglas Christopher Wilson
-
--------- Dependency
-hammerjs
--------- Copyrights
-Copyright (C) 2011-2014 by Jorik Tangelder (Eight Media)
- * Copyright (c) 2016 Jorik Tangelder;
-  Copyright (C) 2012 Ariya Hidayat <ariya.hidayat@gmail.com>
-  Copyright (C) 2012 Mathias Bynens <mathias@qiwi.be>
-  Copyright (C) 2012 Joost-Wim Boekesteijn <joost-wim@boekesteijn.nl>
-  Copyright (C) 2012 Kris Kowal <kris.kowal@cixar.com>
-  Copyright (C) 2012 Yusuke Suzuki <utatane.tea@gmail.com>
-  Copyright (C) 2012 Arpad Borsos <arpad.borsos@googlemail.com>
-  Copyright (C) 2011 Ariya Hidayat <ariya.hidayat@gmail.com>
- * Copyright 2012-2013 The Dojo Foundation <http://dojofoundation.org/>
- * Copyright 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Copyright 2013 jQuery Foundation and other contributors
- * jsDump Copyright (c) 2008 Ariel Flesler - aflesler(at)gmail(dot)com |
-
--------- Dependency
-http-errors
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong me@jongleberry.com
-Copyright (c) 2016 Douglas Christopher Wilson doug@somethingdoug.com
- * Copyright(c) 2014 Jonathan Ong
- * Copyright(c) 2016 Douglas Christopher Wilson
-
--------- Dependency
-iconv-lite
--------- Copyrights
-Copyright (c) 2011 Alexander Shtuchkin
-
--------- Dependency
-ipaddr.js
--------- Copyrights
-Copyright (C) 2011-2017 whitequark <whitequark@whitequark.org>
-
--------- Dependency
-jquery
--------- Copyrights
-
--------- Dependency
-jquery-ui
--------- Copyrights
-Copyright 2014 jQuery Foundation and other contributors
-Copyright 2013 jQuery Foundation and other contributors
- * Copyright 2005, 2013 jQuery Foundation, Inc. and other contributors
- * Copyright 2013 jQuery Foundation, Inc. and other contributors
- * Copyright 2005, 2014 jQuery Foundation, Inc. and other contributors
- * Copyright 2008, 2014 jQuery Foundation, Inc. and other contributors
-Copyright (c) 2011 John Resig, http://jquery.com/
- * Copyright 2011, John Resig
- * Copyright 2011, The Dojo Foundation
- *  Copyright 2011, The Dojo Foundation
-Copyright 2012 jQuery Foundation and other contributors
- * Copyright 2012 jQuery Foundation and other contributors
- *  Copyright 2012 jQuery Foundation and other contributors
- * Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors
-Copyright (c) 2013, Brandon Aaron (http://brandon.aaron.sh)
-/*! Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
-Copyright 2007, 2014 jQuery Foundation and other contributors,
-Copyright 2012 Anton Kovalyov (http://jshint.com)
-// Copyright (c) 2009 Thomas Robinson <280north.com>
- *   Copyright (c) 2002 Douglas Crockford  (www.JSLint.com)
- * Copyright 2006 Google Inc.
-Copyright (c) 2015 Alexander Schmitz
- * @license RequireJS 2.1.14 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
- * Copyright 2014 jQuery Foundation and other contributors
-
--------- Dependency
-knockout
--------- Copyrights
-Copyright (c) 2010 Steven Sanderson, the Knockout.js team, and other contributors
-        // From https://github.com/petkaantonov/bluebird * Copyright (c) 2014 Petka Antonov * License: MIT
-        // From https://github.com/YuzuJS/setImmediate * Copyright (c) 2012 Barnesandnoble.com, llc, Donavon West, and Domenic Denicola * License: MIT
-
--------- Dependency
-media-typer
--------- Copyrights
-Copyright (c) 2014 Douglas Christopher Wilson
- * Copyright(c) 2014 Douglas Christopher Wilson
-
--------- Dependency
-merge-descriptors
--------- Copyrights
-Copyright (c) 2013 Jonathan Ong <me@jongleberry.com>
-Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2014 Jonathan Ong
- * Copyright(c) 2015 Douglas Christopher Wilson
-
--------- Dependency
-methods
--------- Copyrights
-Copyright (c) 2013-2014 TJ Holowaychuk <tj@vision-media.ca>
-Copyright (c) 2015-2016 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2013-2014 TJ Holowaychuk
- * Copyright(c) 2015-2016 Douglas Christopher Wilson
-
--------- Dependency
-mime
--------- Copyrights
-Copyright (c) 2010 Benjamin Thomas, Robert Kieffer
-
--------- Dependency
-mime-db
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong me@jongleberry.com
- * Copyright(c) 2014 Jonathan Ong
-
--------- Dependency
-mime-types
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
-Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2014 Jonathan Ong
- * Copyright(c) 2015 Douglas Christopher Wilson
-
--------- Dependency
-ms
--------- Copyrights
-Copyright (c) 2016 Zeit, Inc.
-
--------- Dependency
-negotiator
--------- Copyrights
-Copyright (c) 2012-2014 Federico Romero
-Copyright (c) 2012-2014 Isaac Z. Schlueter
-Copyright (c) 2014-2015 Douglas Christopher Wilson
- * Copyright(c) 2012 Federico Romero
- * Copyright(c) 2012-2014 Isaac Z. Schlueter
- * Copyright(c) 2015 Douglas Christopher Wilson
- * Copyright(c) 2012 Isaac Z. Schlueter
- * Copyright(c) 2014 Federico Romero
- * Copyright(c) 2014-2015 Douglas Christopher Wilson
-
--------- Dependency
-on-finished
--------- Copyrights
-Copyright (c) 2013 Jonathan Ong <me@jongleberry.com>
-Copyright (c) 2014 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2013 Jonathan Ong
- * Copyright(c) 2014 Douglas Christopher Wilson
-
--------- Dependency
-parseurl
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
-Copyright (c) 2014-2017 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2014 Jonathan Ong
- * Copyright(c) 2014-2017 Douglas Christopher Wilson
-
--------- Dependency
-path-to-regexp
--------- Copyrights
-Copyright (c) 2014 Blake Embrey (hello@blakeembrey.com)
-
--------- Dependency
-proxy-addr
--------- Copyrights
-Copyright (c) 2014-2016 Douglas Christopher Wilson
- * Copyright(c) 2014-2016 Douglas Christopher Wilson
-
--------- Dependency
-range-parser
--------- Copyrights
-Copyright (c) 2012-2014 TJ Holowaychuk <tj@vision-media.ca>
-Copyright (c) 2015-2016 Douglas Christopher Wilson <doug@somethingdoug.com
- * Copyright(c) 2012-2014 TJ Holowaychuk
- * Copyright(c) 2015-2016 Douglas Christopher Wilson
-
--------- Dependency
-raw-body
--------- Copyrights
-Copyright (c) 2013-2014 Jonathan Ong <me@jongleberry.com>
-Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2013-2014 Jonathan Ong
- * Copyright(c) 2014-2015 Douglas Christopher Wilson
-
--------- Dependency
-require-css
--------- Copyrights
-Copyright (C) 2013 Guy Bedford
- * Copyright 2011, John Resig
- * Copyright 2011, The Dojo Foundation
- *  Copyright 2011, The Dojo Foundation
- * @license RequireJS text 1.0.8 Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
- * @license RequireJS 2.1.10 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
-
--------- Dependency
-requirejs
--------- Copyrights
- * prim 0.0.1 Copyright (c) 2012-2014, The Dojo Foundation All Rights Reserved.
-	 * Copyright 2009-2011 Mozilla Foundation and contributors
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Copyright 2011 The Closure Compiler Authors. All rights reserved.
-	 * Copyright 2014 Mozilla Foundation and contributors
-//Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-    Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-
--------- Dependency
-requirejs-text
--------- Copyrights
-
--------- Dependency
-safe-buffer
--------- Copyrights
-
--------- Dependency
-safer-buffer
--------- Copyrights
-Copyright (c) 2018 Nikita Skovoroda <chalkerx@gmail.com>
-
--------- Dependency
-send
--------- Copyrights
-Copyright (c) 2012 TJ Holowaychuk
-Copyright (c) 2014-2016 Douglas Christopher Wilson
- * Copyright(c) 2012 TJ Holowaychuk
- * Copyright(c) 2014-2016 Douglas Christopher Wilson
-
--------- Dependency
-serve-static
--------- Copyrights
-Copyright (c) 2010 Sencha Inc.
-Copyright (c) 2011 LearnBoost
-Copyright (c) 2011 TJ Holowaychuk
-Copyright (c) 2014-2016 Douglas Christopher Wilson
- * Copyright(c) 2010 Sencha Inc.
- * Copyright(c) 2011 TJ Holowaychuk
- * Copyright(c) 2014-2016 Douglas Christopher Wilson
-
--------- Dependency
-signals
--------- Copyrights
-
--------- Dependency
-statuses
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
-Copyright (c) 2016 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2014 Jonathan Ong
- * Copyright(c) 2016 Douglas Christopher Wilson
-
--------- Dependency
-toidentifier
--------- Copyrights
-Copyright (c) 2016 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2016 Douglas Christopher Wilson
-
--------- Dependency
-type-is
--------- Copyrights
-Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
-Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2014 Jonathan Ong
- * Copyright(c) 2014-2015 Douglas Christopher Wilson
-
--------- Dependency
-unpipe
--------- Copyrights
-Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
- * Copyright(c) 2015 Douglas Christopher Wilson
-
--------- Dependency
-utils-merge
--------- Copyrights
-Copyright (c) 2013-2017 Jared Hanson
-Copyright (c) 2013-2017 Jared Hanson <[http://jaredhanson.net/](http://jaredhanson.net/)>
-
--------- Dependency
-vary
--------- Copyrights
-Copyright (c) 2014-2017 Douglas Christopher Wilson
- * Copyright(c) 2014-2017 Douglas Christopher Wilson
-
-======== Dependencies Summary
-accepts
-array-flatten
-body-parser
-bytes
-content-disposition
-content-type
-cookie
-cookie-signature
-debug
-depd
-destroy
-ee-first
-encodeurl
-es6-promise
-escape-html
-etag
-express
-finalhandler
-forwarded
-fresh
-hammerjs
-http-errors
-iconv-lite
-ipaddr.js
-jquery
-jquery-ui
-knockout
-media-typer
-merge-descriptors
-methods
-mime
-mime-db
-mime-types
-ms
-negotiator
-on-finished
-parseurl
-path-to-regexp
-proxy-addr
-range-parser
-raw-body
-require-css
-requirejs
-requirejs-text
-safe-buffer
-safer-buffer
-send
-serve-static
-signals
-statuses
-toidentifier
-type-is
-unpipe
-utils-merge
-vary
-
-======== License used by Dependencies
-SPDX:MIT
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation files
-(the "Software"), to deal in the Software without restriction, including without
-limitation the rights to use, copy, modify, merge, publish, distribute,
-sublicense, and/or sell copies of the Software, and to permit persons to whom
-the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@types/geojson
--------- Copyrights
-
--------- Dependency
-@types/signals
--------- Copyrights
-
-======== Dependencies Summary
-@types/geojson
-@types/signals
-
-======== License used by Dependencies
-=======
-    MIT License
-
-    Copyright (c) Microsoft Corporation. All rights reserved.
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@oracle/oraclejet
--------- Copyrights
-Copyright (c) 2020 Oracle and/or its affiliates.
-Copyright (c) 2020 Oracle and/or its affiliates and released  under the 
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2012-2015 Sakthipriyan Vairamani <thechargingvolcano@gmail.com>
- * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
- * Copyright(c) 2012-2016 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
- * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
-  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
- * Copyright (c) 2015, 2017, Oracle and/or its affiliates.
- * Copyright (c) 2008 2020, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates.
- * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * Copyright (c) 2011 2020, Oracle and/or its affiliates.
- * Copyright (c) 2013 2020, Oracle and/or its affiliates.
- * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016, Oracle and/or its affiliates.
- * Copyright (c) 2015 2020, Oracle and/or its affiliates.
- * Copyright (c) 2012 2020, Oracle and/or its affiliates.
- * Copyright (c) 2016 2020, Oracle and/or its affiliates.
- * @license RequireJS i18n 2.0.2 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
- * @preserve Copyright 2013 jQuery Foundation and other contributors
-     * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
-    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2014 Tim Wood
-    * Copyright (c) 2017 2020, Oracle and/or its affiliates.
- * Copyright 2013 jQuery Foundation and other contributors
-   * Copyright (c) 2004 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- * @preserve Copyright 2012 Igor Vaynberg
- * Copyright 2011-2014, Dave Furfero
- * "Copyright (c) 2010 Ivan Bozhanov (vakata.com)
-   * Copyright (c) 2008 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2011 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2013 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2017 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2015 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2012 2020, Oracle and/or its affiliates.
-   * Copyright (c) 2016 2020, Oracle and/or its affiliates.
-  Copyright (c) 2014, Yahoo! Inc. All rights reserved.
- * Copyright (c) 2017, Oracle and/or its affiliates.
- * Copyright (c) 2014-2016 GitHub, Inc.
- * Copyright (c) 2014-present, Facebook, Inc.
- * Copyright (c) 2010 Seznam.cz, a.s.
-// Copyright (c) 2014, 2020, Oracle and/or its affiliates.  Licensed under The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
-
-======== Dependencies Summary
-@oracle/oraclejet
-
-======== License used by Dependencies
-# Oracle JET
-
-Copyright (c) 2020 Oracle and/or its affiliates.
-
-The Universal Permissive License (UPL), Version 1.0
-
-Subject to the condition set forth below, permission is hereby granted to any
-person obtaining a copy of this software, associated documentation and/or data
-(collectively the "Software"), free of charge and under any and all copyright
-rights in the Software, and any and all patent rights owned or freely
-licensable by each licensor hereunder covering either (i) the unmodified
-Software as contributed to or provided by such licensor, or (ii) the Larger
-Works (as defined below), to deal in both
-
-(a) the Software, and
-(b) any piece of software and/or hardware listed in the lrgrwrks.txt file if
-one is included with the Software (each a "Larger Work" to which the Software
-is contributed by such licensors),
-
-without restriction, including without limitation the rights to copy, create
-derivative works of, display, perform, and distribute the Software and make,
-use, sell, offer for sale, import, export, have made, and have sold the
-Software and the Larger Work(s), and to sublicense the foregoing rights on
-either these or other terms.
-
-This license is subject to the following condition:
-The above copyright notice and either this complete permission notice or at
-a minimum a reference to the UPL must be included in all copies or
-substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-proj4
--------- Copyrights
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
--------- Dependency
-wkt-parser
--------- Copyrights
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
-======== Dependencies Summary
-proj4
-wkt-parser
-
-======== License used by Dependencies
-## Proj4js -- Javascript reprojection library. 
- 
-Authors:
-- Mike Adair madairATdmsolutions.ca
-- Richard Greenwood richATgreenwoodmap.com
-- Didier Richard didier.richardATign.fr
-- Stephen Irons stephen.ironsATclear.net.nz
-- Olivier Terral oterralATgmail.com
-- Calvin Metcalf cmetcalfATappgeo.com
-
-Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
-
- Permission is hereby granted, free of charge, to any person obtaining a
- copy of this software and associated documentation files (the "Software"),
- to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included
- in all copies or substantial portions of the Software.
-
- _THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- DEALINGS IN THE SOFTWARE._
-
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-mgrs
--------- Copyrights
-Copyright (c) 2012, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral, Calvin Metcalf
-
-======== Dependencies Summary
-mgrs
-
-======== License used by Dependencies
-Copyright (c) 2012, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral, Calvin Metcalf
-
- Permission is hereby granted, free of charge, to any person obtaining a
- copy of this software and associated documentation files (the "Software"),
- to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included
- in all copies or substantial portions of the Software.
-
- _THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- DEALINGS IN THE SOFTWARE._
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-@webcomponents/custom-elements
--------- Copyrights
-Copyright (c) 2015 The Polymer Authors. All rights reserved.
- Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
- * Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-   Copyright 2014 Christian Robertson
- * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-
-======== Dependencies Summary
-@webcomponents/custom-elements
-
-======== License used by Dependencies
-SPDX:BSD-3-Clause--modified-by-Google
-Redistribution and use in source and binary forms, with 
-or without modification, are permitted provided that the following conditions
-are met:
-
-   * Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following disclaimer
-in the documentation and/or other materials provided with the
-distribution.
-   * Neither the name of Google Inc. nor the names of its
-contributors may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-======================= Dependencies Grouped by License ============
--------- Dependency
-es6-promise
--------- Copyrights
-Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
- * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
-
--------- Dependency
-hammerjs
--------- Copyrights
-Copyright (C) 2011-2014 by Jorik Tangelder (Eight Media)
- * Copyright (c) 2016 Jorik Tangelder;
-  Copyright (C) 2012 Ariya Hidayat <ariya.hidayat@gmail.com>
-  Copyright (C) 2012 Mathias Bynens <mathias@qiwi.be>
-  Copyright (C) 2012 Joost-Wim Boekesteijn <joost-wim@boekesteijn.nl>
-  Copyright (C) 2012 Kris Kowal <kris.kowal@cixar.com>
-  Copyright (C) 2012 Yusuke Suzuki <utatane.tea@gmail.com>
-  Copyright (C) 2012 Arpad Borsos <arpad.borsos@googlemail.com>
-  Copyright (C) 2011 Ariya Hidayat <ariya.hidayat@gmail.com>
- * Copyright 2012-2013 The Dojo Foundation <http://dojofoundation.org/>
- * Copyright 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Copyright 2013 jQuery Foundation and other contributors
- * jsDump Copyright (c) 2008 Ariel Flesler - aflesler(at)gmail(dot)com |
-
--------- Dependency
-jquery
--------- Copyrights
-
--------- Dependency
-jquery-ui
--------- Copyrights
-Copyright 2014 jQuery Foundation and other contributors
-Copyright 2013 jQuery Foundation and other contributors
- * Copyright 2005, 2013 jQuery Foundation, Inc. and other contributors
- * Copyright 2013 jQuery Foundation, Inc. and other contributors
- * Copyright 2005, 2014 jQuery Foundation, Inc. and other contributors
- * Copyright 2008, 2014 jQuery Foundation, Inc. and other contributors
-Copyright (c) 2011 John Resig, http://jquery.com/
- * Copyright 2011, John Resig
- * Copyright 2011, The Dojo Foundation
- *  Copyright 2011, The Dojo Foundation
-Copyright 2012 jQuery Foundation and other contributors
- * Copyright 2012 jQuery Foundation and other contributors
- *  Copyright 2012 jQuery Foundation and other contributors
- * Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors
-Copyright (c) 2013, Brandon Aaron (http://brandon.aaron.sh)
-/*! Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
-Copyright 2007, 2014 jQuery Foundation and other contributors,
-Copyright 2012 Anton Kovalyov (http://jshint.com)
-// Copyright (c) 2009 Thomas Robinson <280north.com>
- *   Copyright (c) 2002 Douglas Crockford  (www.JSLint.com)
- * Copyright 2006 Google Inc.
-Copyright (c) 2015 Alexander Schmitz
- * @license RequireJS 2.1.14 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
- * Copyright 2014 jQuery Foundation and other contributors
-
--------- Dependency
-knockout
--------- Copyrights
-Copyright (c) 2010 Steven Sanderson, the Knockout.js team, and other contributors
-        // From https://github.com/petkaantonov/bluebird * Copyright (c) 2014 Petka Antonov * License: MIT
-        // From https://github.com/YuzuJS/setImmediate * Copyright (c) 2012 Barnesandnoble.com, llc, Donavon West, and Domenic Denicola * License: MIT
-
--------- Dependency
-require-css
--------- Copyrights
-Copyright (C) 2013 Guy Bedford
- * Copyright 2011, John Resig
- * Copyright 2011, The Dojo Foundation
- *  Copyright 2011, The Dojo Foundation
- * @license RequireJS text 1.0.8 Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
- * @license RequireJS 2.1.10 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
-
--------- Dependency
-requirejs
--------- Copyrights
- * prim 0.0.1 Copyright (c) 2012-2014, The Dojo Foundation All Rights Reserved.
-	 * Copyright 2009-2011 Mozilla Foundation and contributors
-	 * Copyright 2011 Mozilla Foundation and contributors
-	 * Copyright 2011 The Closure Compiler Authors. All rights reserved.
-	 * Copyright 2014 Mozilla Foundation and contributors
-//Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-    Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-
--------- Dependency
-requirejs-text
--------- Copyrights
-
--------- Dependency
-signals
--------- Copyrights
-
-======== Dependencies Summary
-es6-promise
-hammerjs
-jquery
-jquery-ui
-knockout
-require-css
-requirejs
-requirejs-text
-signals
-
-======== License used by Dependencies
-SPDX:MIT
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation files
-(the "Software"), to deal in the Software without restriction, including without
-limitation the rights to use, copy, modify, merge, publish, distribute,
-sublicense, and/or sell copies of the Software, and to permit persons to whom
-the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 
 ======================= Dependencies Grouped by License ============
 -------- Dependency
@@ -2333,6 +312,46 @@ Copyright (c) 2012, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons
 
 ======================= Dependencies Grouped by License ============
 -------- Dependency
+qs
+-------- Copyrights
+Copyright (c) 2014 Nathan LaFreniere and other contributors.
+
+======== Dependencies Summary
+qs
+
+======== License used by Dependencies
+Copyright (c) 2014 Nathan LaFreniere and other contributors.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * The names of any contributors may not be used to endorse or promote
+      products derived from this software without specific prior written
+      permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS AND CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+                                  *   *   *
+
+The complete list of contributors can be found at: https://github.com/hapijs/qs/graphs/contributors
+
+
+======================= Dependencies Grouped by License ============
+-------- Dependency
 esprima
 -------- Copyrights
 
@@ -2405,16 +424,182 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ======================= Dependencies Grouped by License ============
 -------- Dependency
+inherits
+-------- Copyrights
+
+-------- Dependency
+setprototypeof
+-------- Copyrights
+Copyright (c) 2015, Wes Todd
+
+======== Dependencies Summary
+inherits
+setprototypeof
+
+======== License used by Dependencies
+SPDX:ISC
+Permission to use, copy, modify, and/or distribute this 
+software for any purpose with or without fee is hereby granted, provided that 
+the above copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH 
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY 
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, 
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR 
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR 
+PERFORMANCE OF THIS SOFTWARE.
+
+======================= Dependencies Grouped by License ============
+-------- Dependency
+accepts
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2015 Douglas Christopher Wilson
+
+-------- Dependency
 argparse
 -------- Copyrights
 Copyright (C) 2012 by Vitaly Puzrin
 Copyright (c) 2012 [Vitaly Puzrin](https://github.com/puzrin).
 
 -------- Dependency
+array-flatten
+-------- Copyrights
+Copyright (c) 2014 Blake Embrey (hello@blakeembrey.com)
+
+-------- Dependency
+body-parser
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014-2015 Douglas Christopher Wilson
+ * Copyright(c) 2014 Jonathan Ong
+
+-------- Dependency
+bytes
+-------- Copyrights
+Copyright (c) 2012-2014 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2015 Jed Watson <jed.watson@me.com>
+ * Copyright(c) 2012-2014 TJ Holowaychuk
+ * Copyright(c) 2015 Jed Watson
+
+-------- Dependency
+content-disposition
+-------- Copyrights
+Copyright (c) 2014-2017 Douglas Christopher Wilson
+ * Copyright(c) 2014-2017 Douglas Christopher Wilson
+
+-------- Dependency
+content-type
+-------- Copyrights
+Copyright (c) 2015 Douglas Christopher Wilson
+ * Copyright(c) 2015 Douglas Christopher Wilson
+
+-------- Dependency
+cookie
+-------- Copyrights
+Copyright (c) 2012-2014 Roman Shtylman <shtylman@gmail.com>
+Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2012-2014 Roman Shtylman
+ * Copyright(c) 2015 Douglas Christopher Wilson
+
+-------- Dependency
+cookie-signature
+-------- Copyrights
+Copyright (c) 2012 LearnBoost &lt;tj@learnboost.com&gt;
+
+-------- Dependency
+debug
+-------- Copyrights
+Copyright (c) 2014 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2014-2016 TJ Holowaychuk &lt;tj@vision-media.ca&gt;
+
+-------- Dependency
+depd
+-------- Copyrights
+Copyright (c) 2014-2017 Douglas Christopher Wilson
+ * Copyright(c) 2014-2017 Douglas Christopher Wilson
+ * Copyright(c) 2015 Douglas Christopher Wilson
+ * Copyright(c) 2014 Douglas Christopher Wilson
+ * Copyright(c) 2014-2015 Douglas Christopher Wilson
+
+-------- Dependency
+destroy
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong me@jongleberry.com
+ * Copyright(c) 2014 Jonathan Ong
+
+-------- Dependency
+ee-first
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong me@jongleberry.com
+ * Copyright(c) 2014 Jonathan Ong
+
+-------- Dependency
+encodeurl
+-------- Copyrights
+Copyright (c) 2016 Douglas Christopher Wilson
+ * Copyright(c) 2016 Douglas Christopher Wilson
+
+-------- Dependency
 es6-promise
 -------- Copyrights
 Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
+
+-------- Dependency
+escape-html
+-------- Copyrights
+Copyright (c) 2012-2013 TJ Holowaychuk
+Copyright (c) 2015 Andreas Lubbe
+Copyright (c) 2015 Tiancheng "Timothy" Gu
+ * Copyright(c) 2012-2013 TJ Holowaychuk
+ * Copyright(c) 2015 Andreas Lubbe
+ * Copyright(c) 2015 Tiancheng "Timothy" Gu
+
+-------- Dependency
+etag
+-------- Copyrights
+Copyright (c) 2014-2016 Douglas Christopher Wilson
+ * Copyright(c) 2014-2016 Douglas Christopher Wilson
+
+-------- Dependency
+express
+-------- Copyrights
+Copyright (c) 2009-2014 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2013-2014 Roman Shtylman <shtylman+expressjs@gmail.com>
+Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2009-2013 TJ Holowaychuk
+ * Copyright(c) 2013 Roman Shtylman
+ * Copyright(c) 2014-2015 Douglas Christopher Wilson
+
+-------- Dependency
+express-http-proxy
+-------- Copyrights
+Copyright (c) 2013 villadora <jky239@gmail.com>, contributors
+
+-------- Dependency
+finalhandler
+-------- Copyrights
+Copyright (c) 2014-2017 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014-2017 Douglas Christopher Wilson
+
+-------- Dependency
+forwarded
+-------- Copyrights
+Copyright (c) 2014-2017 Douglas Christopher Wilson
+ * Copyright(c) 2014-2017 Douglas Christopher Wilson
+
+-------- Dependency
+fresh
+-------- Copyrights
+Copyright (c) 2012 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2016-2017 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2012 TJ Holowaychuk
+ * Copyright(c) 2016-2017 Douglas Christopher Wilson
 
 -------- Dependency
 hammerjs
@@ -2432,6 +617,24 @@ Copyright (C) 2011-2014 by Jorik Tangelder (Eight Media)
  * Copyright 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Copyright 2013 jQuery Foundation and other contributors
  * jsDump Copyright (c) 2008 Ariel Flesler - aflesler(at)gmail(dot)com |
+
+-------- Dependency
+http-errors
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong me@jongleberry.com
+Copyright (c) 2016 Douglas Christopher Wilson doug@somethingdoug.com
+ * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2016 Douglas Christopher Wilson
+
+-------- Dependency
+iconv-lite
+-------- Copyrights
+Copyright (c) 2011 Alexander Shtuchkin
+
+-------- Dependency
+ipaddr.js
+-------- Copyrights
+Copyright (C) 2011-2017 whitequark <whitequark@whitequark.org>
 
 -------- Dependency
 jquery
@@ -2483,6 +686,108 @@ Copyright (c) 2010 Steven Sanderson, the Knockout.js team, and other contributor
         // From https://github.com/YuzuJS/setImmediate * Copyright (c) 2012 Barnesandnoble.com, llc, Donavon West, and Domenic Denicola * License: MIT
 
 -------- Dependency
+media-typer
+-------- Copyrights
+Copyright (c) 2014 Douglas Christopher Wilson
+ * Copyright(c) 2014 Douglas Christopher Wilson
+
+-------- Dependency
+merge-descriptors
+-------- Copyrights
+Copyright (c) 2013 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2015 Douglas Christopher Wilson
+
+-------- Dependency
+methods
+-------- Copyrights
+Copyright (c) 2013-2014 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2015-2016 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2013-2014 TJ Holowaychuk
+ * Copyright(c) 2015-2016 Douglas Christopher Wilson
+
+-------- Dependency
+mime
+-------- Copyrights
+Copyright (c) 2010 Benjamin Thomas, Robert Kieffer
+
+-------- Dependency
+mime-db
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong me@jongleberry.com
+ * Copyright(c) 2014 Jonathan Ong
+
+-------- Dependency
+mime-types
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2015 Douglas Christopher Wilson
+
+-------- Dependency
+ms
+-------- Copyrights
+Copyright (c) 2016 Zeit, Inc.
+
+-------- Dependency
+negotiator
+-------- Copyrights
+Copyright (c) 2012-2014 Federico Romero
+Copyright (c) 2012-2014 Isaac Z. Schlueter
+Copyright (c) 2014-2015 Douglas Christopher Wilson
+ * Copyright(c) 2012 Federico Romero
+ * Copyright(c) 2012-2014 Isaac Z. Schlueter
+ * Copyright(c) 2015 Douglas Christopher Wilson
+ * Copyright(c) 2012 Isaac Z. Schlueter
+ * Copyright(c) 2014 Federico Romero
+ * Copyright(c) 2014-2015 Douglas Christopher Wilson
+
+-------- Dependency
+on-finished
+-------- Copyrights
+Copyright (c) 2013 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2014 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2013 Jonathan Ong
+ * Copyright(c) 2014 Douglas Christopher Wilson
+
+-------- Dependency
+parseurl
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2014-2017 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2014-2017 Douglas Christopher Wilson
+
+-------- Dependency
+path-to-regexp
+-------- Copyrights
+Copyright (c) 2014 Blake Embrey (hello@blakeembrey.com)
+
+-------- Dependency
+proxy-addr
+-------- Copyrights
+Copyright (c) 2014-2016 Douglas Christopher Wilson
+ * Copyright(c) 2014-2016 Douglas Christopher Wilson
+
+-------- Dependency
+range-parser
+-------- Copyrights
+Copyright (c) 2012-2014 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2015-2016 Douglas Christopher Wilson <doug@somethingdoug.com
+ * Copyright(c) 2012-2014 TJ Holowaychuk
+ * Copyright(c) 2015-2016 Douglas Christopher Wilson
+
+-------- Dependency
+raw-body
+-------- Copyrights
+Copyright (c) 2013-2014 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2013-2014 Jonathan Ong
+ * Copyright(c) 2014-2015 Douglas Christopher Wilson
+
+-------- Dependency
 require-css
 -------- Copyrights
 Copyright (C) 2013 Guy Bedford
@@ -2508,22 +813,137 @@ requirejs-text
 -------- Copyrights
 
 -------- Dependency
+safe-buffer
+-------- Copyrights
+
+-------- Dependency
+safer-buffer
+-------- Copyrights
+Copyright (c) 2018 Nikita Skovoroda <chalkerx@gmail.com>
+
+-------- Dependency
+send
+-------- Copyrights
+Copyright (c) 2012 TJ Holowaychuk
+Copyright (c) 2014-2016 Douglas Christopher Wilson
+ * Copyright(c) 2012 TJ Holowaychuk
+ * Copyright(c) 2014-2016 Douglas Christopher Wilson
+
+-------- Dependency
+serve-static
+-------- Copyrights
+Copyright (c) 2010 Sencha Inc.
+Copyright (c) 2011 LearnBoost
+Copyright (c) 2011 TJ Holowaychuk
+Copyright (c) 2014-2016 Douglas Christopher Wilson
+ * Copyright(c) 2010 Sencha Inc.
+ * Copyright(c) 2011 TJ Holowaychuk
+ * Copyright(c) 2014-2016 Douglas Christopher Wilson
+
+-------- Dependency
 signals
 -------- Copyrights
 
+-------- Dependency
+statuses
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2016 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2016 Douglas Christopher Wilson
+
+-------- Dependency
+toidentifier
+-------- Copyrights
+Copyright (c) 2016 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2016 Douglas Christopher Wilson
+
+-------- Dependency
+type-is
+-------- Copyrights
+Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2014-2015 Douglas Christopher Wilson
+
+-------- Dependency
+unpipe
+-------- Copyrights
+Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2015 Douglas Christopher Wilson
+
+-------- Dependency
+utils-merge
+-------- Copyrights
+Copyright (c) 2013-2017 Jared Hanson
+Copyright (c) 2013-2017 Jared Hanson <[http://jaredhanson.net/](http://jaredhanson.net/)>
+
+-------- Dependency
+vary
+-------- Copyrights
+Copyright (c) 2014-2017 Douglas Christopher Wilson
+ * Copyright(c) 2014-2017 Douglas Christopher Wilson
+
 ======== Dependencies Summary
+accepts
 argparse
+array-flatten
+body-parser
+bytes
+content-disposition
+content-type
+cookie
+cookie-signature
+debug
+depd
+destroy
+ee-first
+encodeurl
 es6-promise
+escape-html
+etag
+express
+express-http-proxy
+finalhandler
+forwarded
+fresh
 hammerjs
+http-errors
+iconv-lite
+ipaddr.js
 jquery
 jquery-ui
 js-yaml
 jwt-decode
 knockout
+media-typer
+merge-descriptors
+methods
+mime
+mime-db
+mime-types
+ms
+negotiator
+on-finished
+parseurl
+path-to-regexp
+proxy-addr
+range-parser
+raw-body
 require-css
 requirejs
 requirejs-text
+safe-buffer
+safer-buffer
+send
+serve-static
 signals
+statuses
+toidentifier
+type-is
+unpipe
+utils-merge
+vary
 
 ======== License used by Dependencies
 SPDX:MIT

@@ -78,10 +78,10 @@ export class AuthStorage {
    * User info
    */
   public static getUsername(): string {
-    return window.localStorage.getItem(KEY_USERNAME) as string;
+    return window.localStorage.getItem(KEY_USERNAME) || "" as string;
   }
   public static getEmail(): string {
-    return window.localStorage.getItem(KEY_EMAIL) as string;
+    return window.localStorage.getItem(KEY_EMAIL) || "" as string;
   }
 
   /**
