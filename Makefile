@@ -30,7 +30,7 @@ ojet-build:
 	npm install && \
 	npm install @oracle/ojet-cli && \
 	PATH=./node_modules/.bin:${PATH} && \
-	ojet build --release
+	ojet build
 
 .PHONY: build
 build: ojet-build
