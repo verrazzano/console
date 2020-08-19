@@ -13,7 +13,13 @@
             "ojs/*": ["./node_modules/@oracle/oraclejet/dist/types/*"],
             "vz-console/*": [
                 "./src/ts/jet-composites/vz-console/*"
-              ]
+              ],
+            "auth/*": [
+                "./src/ts/auth/*"
+              ],
+            "service/*": [
+                "./src/ts/service/*"
+            ]
         },
         "declaration": true,
         "noEmitOnError": true,

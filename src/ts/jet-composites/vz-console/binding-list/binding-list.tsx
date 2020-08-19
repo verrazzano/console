@@ -2,9 +2,9 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
-import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
-import { Binding } from "vz-console/service/types";
-import { extractBindingsFromApplications } from "vz-console/service/common";
+import { VerrazzanoApi } from "service/VerrazzanoApi";
+import { Binding } from "service/types";
+import { extractBindingsFromApplications } from "service/common";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
 import * as ko from "knockout";
@@ -70,7 +70,7 @@ export class ConsoleBindingList extends VComponent {
     if (this.state.error) {
       return <ConsoleError context={"Error displaying binding list"} error={this.state.error}/>
     }
-    
+
     this.data(
       new ArrayDataProvider(this.state.bindings ? this.state.bindings : [], {
         keyAttributes: "name",

@@ -24,7 +24,7 @@ import {
   extractBindingsFromApplications,
   mockVmis
 } from "./common";
-import { KeycloakJet } from "vz-console/auth/KeycloakJet"
+import { KeycloakJet } from "../auth/KeycloakJet"
 
 export const ServicePrefix = "instances";
 

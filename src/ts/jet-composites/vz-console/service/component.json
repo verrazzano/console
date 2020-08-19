@@ -1,7 +1,0 @@
-{
-  "name": "vz-console-service",
-  "version": "1.0.0",
-  "jetVersion": "^9.0.0",
-  "displayName": "Service VComponents",
-  "description": "Service components."
-}
