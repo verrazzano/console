@@ -24,6 +24,7 @@ import {
   extractBindingsFromApplications,
   mockVmis
 } from "./common";
+import { KeycloakJet } from "vz-console/auth/KeycloakJet"
 
 export declare type ResponseWithData<T> = {
   response: Response;
@@ -51,7 +52,7 @@ export class VerrazzanoApi {
   private instances: Instance[];
   private fetchApi: FetchApiSignature;
 
-  private url: string = (window as any).apiUrl ? (window as any).apiUrl : "/plugin/api";
+  private url: string = (window as any).vzApiUrl ? (window as any).vzApiUrl : "/plugin/api";
 
   public async listInstances(): Promise<ResponseWithData<Instance[]>> {
     return withDelay(() => {
@@ -319,14 +320,8 @@ export class VerrazzanoApi {
     return new Response();
   }
 
-  // This must be called before using the API so that
-  // the console plugin runtime fetch API can be used.
-  public setFetch(api: FetchApiSignature): void {
-    this.fetchApi = api;
-  }
-
   public constructor() {
-    this.fetchApi = window.fetch.bind(window);
+    this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
     this.listInstances = this.listInstances.bind(this);
     this.listClusters = this.listClusters.bind(this);
     this.listApplications = this.listApplications.bind(this);

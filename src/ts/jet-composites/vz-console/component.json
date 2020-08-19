@@ -7,10 +7,11 @@
   "description": "Console and its related components.",
   "dependencies": {
     "vz-console-instance": "1.0.0",
-    "vz-console-service": "1.0.0",
     "vz-console-metadata-item": "1.0.0",
     "vz-console-binding-list": "1.0.0",
     "vz-console-model-list": "1.0.0",
-    "vz-console-instance-resources": "1.0.0"
+    "vz-console-instance-resources": "1.0.0",
+    "vz-console-service": "1.0.0",
+    "vz-console-auth": "1.0.0"
   }
 }
