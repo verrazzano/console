@@ -26,174 +26,116 @@ import {
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet"
 
-export declare type ResponseWithData<T> = {
-  response: Response;
-  data: T;
-};
-
-const makeResponseWithData = <T>(t: T): ResponseWithData<T> => ({
-  response: new Response(),
-  data: t
-});
-const withDelay = <T>(
-  cb: (reject: (e: Error) => void) => T,
-  baseDelay?: number
-) =>
-  new Promise<T>((resolve, reject) => {
-    setTimeout(
-      () => resolve(cb(reject)),
-      Math.random() * 1000 + (baseDelay || 500)
-    );
-  });
-
 export const ServicePrefix = "instances";
 
 export class VerrazzanoApi {
-  private instances: Instance[];
   private fetchApi: FetchApiSignature;
 
   private url: string = (window as any).vzApiUrl ? (window as any).vzApiUrl : "/plugin/api";
 
-  public async listInstances(): Promise<ResponseWithData<Instance[]>> {
-    return withDelay(() => {
-      return makeResponseWithData(mockInstances());
-    });
+  public async listInstances(): Promise<Instance[]> {
+      return mockInstances();
   }
 
-  getInstance(instanceId: string): Promise<ResponseWithData<Instance>> {
+  public async getInstance(instanceId: string): Promise<Instance> {
     // Currently API only supports instance id O
     console.log("Fetching instance details " + instanceId);
     return this.fetchApi(this.url + "/instance")
-      .then(res => res.clone())
       .then((response: Response) => response.json())
       .then((data: Instance) => {
-        return makeResponseWithData(data);
+        return data;
       });
   }
 
-  public async listClusters(): Promise<ResponseWithData<Cluster[]>> {
+  public async listClusters(): Promise<Cluster[]> {
     return this.fetchApi(this.url + "/clusters")
-      .then(res => res.clone())
       .then((response: Response) => response.json())
       .then((data: Cluster[]) => {
-        return makeResponseWithData(data);
+        return data;
       });
   }
 
-  public async registerCluster(clusterId: string): Promise<Response> {
-    // TODO Change this to real api call
-    console.log("Register cluster " + clusterId);
-    return new Response();
-  }
-  public async unregisterCluster(clusterId: string): Promise<Response> {
-    // TODO Change this to real api call
-    console.log("Unregister cluster " + clusterId);
-    return new Response();
-  }
-
-  public async getCluster(clusterId: string): Promise<ResponseWithData<Cluster>> {
-    console.log("Fetching cluster details " + clusterId);
-    return this.fetchApi(this.url + "/clusters/" + clusterId)
-      .then(res => res.clone())
-      .then((response: Response) => response.json())
-      .then((data: Cluster) => {
-        return makeResponseWithData(data);
-      });
-  }
-
-  public async listApplications(): Promise<ResponseWithData<Application[]>> {
+  public async listApplications(): Promise<Application[]> {
     return this.fetchApi(this.url + "/applications")
-      .then(res => res.clone())
       .then((response: Response) => response.json())
       .then((data: Application[]) => {
-        return makeResponseWithData(data);
+        return data;
       });
   }
 
-  public async getModel(modelId: string): Promise<ResponseWithData<Model>> {
+  public async getModel(modelId: string): Promise<Model> {
     // TODO Change this to real getModelById api
     console.log("Fetching model details " + modelId);
     return this.fetchApi(this.url + "/applications")
-      .then(res => res.clone())
       .then((response: Response) => response.json())
       .then((data: Application[]) => {
         const applications: Application[] = data;
         const models = extractModelsFromApplications(applications);
         for (const model of models) {
           if (modelId && model.id === modelId) {
-            return makeResponseWithData(model);
+            return model;
           }
         }
-        // This will only happen if there is a logic bug
-        console.log("ERROR: unable to find model match in application list");
-        return makeResponseWithData(null);
       });
   }
 
   public async getBinding(
     bindingId: string
-  ): Promise<ResponseWithData<Binding>> {
+  ): Promise<Binding> {
     // TODO Change this to real getBindingById api
     console.log("Fetching binding details " + bindingId);
     return this.fetchApi(this.url + "/applications")
-      .then(res => res.clone())
       .then((response: Response) => response.json())
       .then((data: Application[]) => {
         const applications: Application[] = data;
         const bindings = extractBindingsFromApplications(applications);
         for (const binding of bindings) {
           if (binding.id === bindingId) {
-            return makeResponseWithData(binding);
+            return binding;
           }
         }
-        // This will only happen if there is a logic bug
-        console.log("ERROR: unable to find binding match in application list");
-        return makeResponseWithData(null);
       });
   }
 
   public async getDomains(
     modelId: string
-  ): Promise<ResponseWithData<Domain[]>> {
+  ): Promise<Domain[]> {
     // TODO Change this to real getDomainsByModel api
     console.log("Fetching domains for model " + modelId);
     return this.fetchApi(this.url + "/domains")
-      .then(res => res.clone())
       .then((response: Response) => response.json())
       .then((data: any[]) => {
-        return makeResponseWithData(extractDomains(data));
+        return extractDomains(data);
       });
   }
 
   public async getCohClusters(
     modelId: string
-  ): Promise<ResponseWithData<CohCluster[]>> {
+  ): Promise<CohCluster[]> {
     // TODO Change this to real getCohClustersByModel api
     console.log("Fetching Coherence clusters for model " + modelId);
     return this.fetchApi(this.url + "/grids")
-      .then(res => res.clone())
       .then((response: Response) => response.json())
       .then((data: any[]) => {
-        return makeResponseWithData(extractCohClusters(data));
+        return extractCohClusters(data);
       });
   }
 
   public async getHelidonApps(
     modelId: string
-  ): Promise<ResponseWithData<HelidonApp[]>> {
+  ): Promise<HelidonApp[]> {
     // TODO Change this to real getHelidonAppsByModel api
     console.log("Fetching Helidon applications for model " + modelId);
     return this.fetchApi(this.url + "/microservices")
-      .then(res => res.clone())
       .then((response: Response) => response.json())
       .then((data: any[]) => {
-        return makeResponseWithData(extractHelidonApps(data));
+        return extractHelidonApps(data);
       });
   }
 
   public async getComponentStatus(
     component: BindingComponent
-  ): Promise<ResponseWithData<Status>> {
+  ): Promise<Status> {
     let status = Status.Unknown;
     if (component) {
       // TODO Change this to real getComponentStatus(componentType, componentId) api
@@ -205,21 +147,20 @@ export class VerrazzanoApi {
       );
       status = Status.Running;
     }
-    return makeResponseWithData(status);
+    return status;
   }
 
   public async getVMInstances(
     bindingId: string
-  ): Promise<ResponseWithData<VMI[]>> {
+  ): Promise<VMI[]> {
     // TODO Change this to real getVMInstancesByBindingId api
     console.log("Fetching VMI details for binding" + bindingId);
     return this.getBinding(bindingId)
-      .then((response: ResponseWithData<Binding>) => {
-        const binding = response.data;
+      .then((binding: Binding) => {
         const host = this.url.startsWith("/") ? location.host : new URL(this.url).host;
         const hostSuffix = this.url.startsWith("/") ? host.substring(host.indexOf("console.") + "console".length) :
              host.substring(host.indexOf("api.") + "api".length);
-        return makeResponseWithData(mockVmis(binding.name, hostSuffix));
+        return mockVmis(binding.name, hostSuffix);
       });
   }
 
@@ -247,12 +188,11 @@ export class VerrazzanoApi {
     return new Response();
   }
 
-  public async listSecrets(): Promise<ResponseWithData<Secret[]>> {
+  public async listSecrets(): Promise<Secret[]> {
     return this.fetchApi(this.url + "/secrets")
-      .then(res => res.clone())
       .then((response: Response) => response.json())
       .then((data: Secret[]) => {
-        return makeResponseWithData(data);
+        return data;
       });
   }
 
@@ -326,7 +266,6 @@ export class VerrazzanoApi {
     this.listClusters = this.listClusters.bind(this);
     this.listApplications = this.listApplications.bind(this);
     this.getInstance = this.getInstance.bind(this);
-    this.getCluster = this.getCluster.bind(this);
     this.getModel = this.getModel.bind(this);
     this.getDomains = this.getDomains.bind(this);
     this.getCohClusters = this.getCohClusters.bind(this);
