@@ -43,14 +43,15 @@
         'touchr': 'libs/touchr/touchr',
         'corejs' : 'libs/corejs/shim',
         'chai': 'libs/chai/chai-4.2.0',
-        'regenerator-runtime' : 'libs/regenerator-runtime/runtime'
+        'regenerator-runtime' : 'libs/regenerator-runtime/runtime',
+        'vz-console': 'jet-composites/vz-console',
       }
       // endinjector
     }
   );
 }());
 
-require(['ojs/ojbootstrap', 'jwt_decode', 'root'], function (Bootstrap, Jwt, Root) {
+require(['ojs/ojbootstrap', 'jwt_decode', 'js-yaml', 'root'], function (Bootstrap, Jwt, JsYaml, Root) {
   // this callback gets executed when all required modules are loaded
   Bootstrap.whenDocumentReady().then(function(){
     Root.init();

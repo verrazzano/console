@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as AccUtils from "../accUtils";
-class VzModelViewModel {
+class ModelViewModel {
 
   constructor() {
 
@@ -17,9 +17,8 @@ class VzModelViewModel {
    * after being disconnected.
    */
   connected(): void {
-    AccUtils.announce("Verrazzano Models page loaded.");
+    AccUtils.announce("Models page loaded.");
     document.title = "Verrazzano Models";
-    // implement further logic if needed
   }
 
   /**
@@ -38,4 +37,4 @@ class VzModelViewModel {
   }
 }
 
-export = VzModelViewModel;
+export = ModelViewModel;

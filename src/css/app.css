@@ -18,3 +18,38 @@
   height: 1px;
   overflow: hidden;
 }
+
+h1, h2, h3, h4 {
+  margin-top: 0;
+  word-break: break-word;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  color: #222;
+  text-transform: none;
+}
+
+h1 {
+  font-size : 250%;
+}
+
+h2 {
+  font-size : 200%;
+}
+
+h3 {
+  font-size : 150%;
+}
+
+h4 {
+  font-size : 100%;
+}
+
+.link {
+  z-index: 1;
+  color: blue;
+  cursor: pointer
+}
+
+.res {
+  margin-top: 15px;
+}

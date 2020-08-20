@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as AccUtils from "../accUtils";
-class ClustersViewModel {
+class BindingViewModel {
 
   constructor() {
 
@@ -17,9 +17,8 @@ class ClustersViewModel {
    * after being disconnected.
    */
   connected(): void {
-    AccUtils.announce("Clusters page loaded.");
-    document.title = "Clusters";
-    // implement further logic if needed
+    AccUtils.announce("Bindings page loaded.");
+    document.title = "Verrazzano Binding";
   }
 
   /**
@@ -38,4 +37,4 @@ class ClustersViewModel {
   }
 }
 
-export = ClustersViewModel;
+export = BindingViewModel;

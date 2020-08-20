@@ -1,8 +1,8 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
-
+import "vz-console/instance/loader";
 import * as AccUtils from "../accUtils";
-class VzBindingViewModel {
+class InstanceViewModel {
 
   constructor() {
 
@@ -17,10 +17,12 @@ class VzBindingViewModel {
    * after being disconnected.
    */
   connected(): void {
-    AccUtils.announce("Incidents page loaded.");
-    document.title = "Incidents";
+    AccUtils.announce("Instance page loaded.");
+    document.title = "Verrazzano";
     // implement further logic if needed
   }
+
+  
 
   /**
    * Optional ViewModel method invoked after the View is disconnected from the DOM.
@@ -38,4 +40,4 @@ class VzBindingViewModel {
   }
 }
 
-export = VzBindingViewModel;
+export = InstanceViewModel;
