@@ -5,13 +5,9 @@ import * as OjModel from 'ojs/ojmodel';
 import { Keycloak } from './Keycloak';
 import { AuthStorage } from './AuthStorage';
 import { KeycloakUrls } from './KeycloakUrls';
+import { FetchApiSignature } from 'vz-console/service/types'
 
-/**
- * The signature of the fetch API method
- */
-interface FetchApiSignature {
-    (input: string | Request, init?: RequestInit): Promise<Response>;
-}
+
 /**
  * Singleton Class KeycloakJet provides Oracle JET oauth integration with Keycloak
  */
