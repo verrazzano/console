@@ -34,6 +34,7 @@ ojet-build:
 	npm install && \
 	npm install @oracle/ojet-cli && \
 	PATH=./node_modules/.bin:${PATH} && \
+	nvm use 14.7 && \
 	ojet build --release
 
 .PHONY: build
