@@ -26,7 +26,11 @@ all: build
 
 .PHONY: ojet-build
 ojet-build:
-	sudo yum install -y bzip2 && \
+	sudo yum install -y bzip2
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+	export NVM_DIR="$$HOME/.nvm" && \
+	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
+	nvm install 14.7 && \
 	npm install && \
 	npm install @oracle/ojet-cli && \
 	PATH=./node_modules/.bin:${PATH} && \
