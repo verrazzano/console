@@ -15,7 +15,7 @@ import "ojs/ojknockout";
 import "ojs/ojmodule-element";
 import { ojNavigationList } from "ojs/ojnavigationlist";
 import { ojModule } from "ojs/ojmodule-element";
-import { KeycloakJet } from "./auth/KeycloakJet";
+import { KeycloakJet } from "vz-console/auth/loader";
 
 interface CoreRouterDetail {
   label: string;

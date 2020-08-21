@@ -2,8 +2,8 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { VerrazzanoApi } from "service/VerrazzanoApi";
-import { Instance } from "service/types";
+import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
+import { Instance } from "vz-console/service/types";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader"
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader"
 import { ConsoleError } from "vz-console/error/loader"
