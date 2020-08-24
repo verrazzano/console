@@ -2,9 +2,9 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { VerrazzanoApi } from "service/VerrazzanoApi";
-import { Model } from "service/types";
-import { extractModelsFromApplications } from "service/common";
+import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
+import { Model } from "vz-console/service/types";
+import { extractModelsFromApplications } from "vz-console/service/common";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
 import * as ko from "knockout";
