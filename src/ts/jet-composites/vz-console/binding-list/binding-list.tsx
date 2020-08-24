@@ -54,7 +54,7 @@ export class ConsoleBindingList extends VComponent {
       .then((response) =>
         this.updateState({
           loading: false,
-          bindings: extractBindingsFromApplications(response),
+          bindings: extractBindingsFromApplications(response, this.props.modelId),
         })
       )
       .catch((error) => {

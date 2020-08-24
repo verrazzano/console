@@ -92,7 +92,7 @@ export class ConsoleModelList extends VComponent {
         <template slot="rowTemplate" data-oj-as="row">
           <tr>
             <td>
-            <a href="?ojr=model"><oj-bind-text value="[[row.data.name]]"></oj-bind-text></a>
+            <a href="?ojr=model/row.data.name"><oj-bind-text value="[[row.data.name]]"></oj-bind-text></a>
             </td>
             <td>
             <oj-bind-for-each data='[[row.data.bindings || []]]'>
