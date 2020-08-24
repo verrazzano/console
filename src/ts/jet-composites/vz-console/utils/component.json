@@ -1,0 +1,7 @@
+{
+  "name": "vz-console-utils",
+  "version": "1.0.0",
+  "jetVersion": "^9.0.0",
+  "displayName": "Utils resource component.",
+  "description": "Utils resource component."
+}

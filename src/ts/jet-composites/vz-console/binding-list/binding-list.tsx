@@ -2,9 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
-import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
-import { Binding } from "vz-console/service/types";
-import { extractBindingsFromApplications } from "vz-console/service/common";
+import { VerrazzanoApi, Binding,  extractBindingsFromApplications} from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
 import * as ko from "knockout";
@@ -24,7 +22,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-binding-list")
-export class ConsoleBindingList extends VComponent {
+export class ConsoleBindingList extends VComponent<Props> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
@@ -54,7 +52,7 @@ export class ConsoleBindingList extends VComponent {
       .then((response) =>
         this.updateState({
           loading: false,
-          bindings: extractBindingsFromApplications(response, this.props.modelId),
+          bindings: extractBindingsFromApplications(response, "", this.props.modelId),
         })
       )
       .catch((error) => {
@@ -93,13 +91,13 @@ export class ConsoleBindingList extends VComponent {
         <template slot="rowTemplate" data-oj-as="row">
           <tr>
             <td>
-              <a href="?ojr=binding"><oj-bind-text value="[[row.data.name]]"></oj-bind-text></a>
+            <a data-bind="attr: {href: '?ojr=binding&bindingId=' + row.data.id}"><oj-bind-text value="[[row.data.name]]"></oj-bind-text></a>
             </td>
             <td>
               <oj-bind-text value="[[row.data.state]]"></oj-bind-text>
             </td>
             <td>
-            <a href="?ojr=model"><oj-bind-text value="[[row.data.model.name]]"></oj-bind-text></a>
+            <a data-bind="attr: {href: '?ojr=model&modelId=' + row.data.model.id}"><oj-bind-text value="[[row.data.model.name]]"></oj-bind-text></a>
             </td>
           </tr>
         </template>

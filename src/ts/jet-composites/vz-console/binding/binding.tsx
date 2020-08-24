@@ -2,17 +2,17 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { VerrazzanoApi, Model } from "vz-console/service/loader";
+import { VerrazzanoApi, Binding } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
-import { ConsoleModelResources } from "vz-console/model-resources/loader";
+import { ConsoleBindingResources } from "vz-console/binding-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
 
 class Props {
-  modelId?: string;
+  bindingId?: string;
 }
 
 class State {
-  model?: Model;
+  binding?: Binding;
   loading?: boolean;
   error?: string;
 }
@@ -20,15 +20,15 @@ class State {
 /**
  * @ojmetadata pack "vz-console"
  */
-@customElement("vz-console-model")
-export class ConsoleModel extends VComponent<Props> {
+@customElement("vz-console-binding")
+export class ConsoleBinding extends VComponent<Props> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
   };
 
   props: Props = {
-    modelId: "",
+    bindingId: "",
   };
 
   constructor() {
@@ -37,8 +37,8 @@ export class ConsoleModel extends VComponent<Props> {
   }
 
   protected mounted() {
-    if (!this.props.modelId) {
-      this.updateState({ error: "Invalid Model Id." });
+    if (!this.props.bindingId) {
+      this.updateState({ error: "Invalid Binding Id." });
       return;
     }
 
@@ -48,9 +48,9 @@ export class ConsoleModel extends VComponent<Props> {
   async getData() {
     this.updateState({ loading: true });
     this.verrazzanoApi
-      .getModel(this.props.modelId)
+      .getBinding(this.props.bindingId)
       .then((response) => {
-        this.updateState({ loading: false, model: response });
+        this.updateState({ loading: false, binding: response });
       })
       .catch((error) => {
         let errorMessage = error;
@@ -66,7 +66,7 @@ export class ConsoleModel extends VComponent<Props> {
       return (
         <ConsoleError
           context={
-            "Error displaying verrazzano model " + this.props.modelId + "."
+            "Error displaying verrazzano binding " + this.props.bindingId + "."
           }
           error={this.state.error}
         />
@@ -81,27 +81,27 @@ export class ConsoleModel extends VComponent<Props> {
       <div>
         <div class="oj-flex">
           <div class="oj-sm-12 oj-flex-item">
-            <h2>{this.state.model.name}</h2>
+            <h2>{this.state.binding.name}</h2>
           </div>
         </div>
         <div class="oj-flex">
           <div class="oj-sm-12 oj-panel oj-flex-item">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">
-                <h3>Application Model Details</h3>
+                <h3>Application Binding Details</h3>
                 <ConsoleMetadataItem
                   label="Name"
-                  value={this.state.model.name}
+                  value={this.state.binding.name}
                 />
                 <ConsoleMetadataItem
                   label="Description"
-                  value={this.state.model.description}
+                  value={this.state.binding.description}
                 />
               </div>
             </div>
           </div>
         </div>
-        <ConsoleModelResources modelId={this.props.modelId} />
+        <ConsoleBindingResources modelId={this.props.bindingId} />
       </div>
     );
   }

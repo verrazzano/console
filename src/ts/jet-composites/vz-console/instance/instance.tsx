@@ -20,7 +20,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-instance")
-export class ConsoleInstance extends VComponent {
+export class ConsoleInstance extends VComponent<Props> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,

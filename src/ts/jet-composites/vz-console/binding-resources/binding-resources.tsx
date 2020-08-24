@@ -2,27 +2,26 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { ConsoleBindingList } from "vz-console/binding-list/loader";
 
 class State {
   selectedItem: string;
 }
 
 class Props {
-  modelId: string;
+  bindingId: string;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
-@customElement("vz-console-model-resources")
-export class ConsoleModelResources extends VComponent<Props> {
+@customElement("vz-console-binding-resources")
+export class ConsoleBindingResources extends VComponent<Props> {
   state: State = {
-    selectedItem: "models",
+    selectedItem: "components",
   };
 
   props: Props = {
-    modelId: "",
+    bindingId: "",
   };
 
   @listener({ capture: true, passive: true })
@@ -33,11 +32,6 @@ export class ConsoleModelResources extends VComponent<Props> {
   protected render() {
     let ResourceList;
     switch (this.state.selectedItem) {
-      case "bindings": {
-        ResourceList = <ConsoleBindingList modelId={this.props.modelId} />;
-        break;
-      }
-
       case "components": {
         ResourceList = <div/>;
         break;
@@ -75,9 +69,6 @@ export class ConsoleModelResources extends VComponent<Props> {
             aria-labelledby="resources"
           >
             <ul>
-              <li id="bindings">
-                <a href="#">Bindings</a>
-              </li>
               <li id="components">
                 <a href="#">Components</a>
               </li>
