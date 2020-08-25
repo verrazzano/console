@@ -1,3 +1,6 @@
+// Copyright (C) 2020, Oracle and/or its affiliates.
+// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 // Karma configuration
 // Generated on Thu Aug 20 2020 14:35:31 GMT-0400 (Eastern Daylight Time)
 
