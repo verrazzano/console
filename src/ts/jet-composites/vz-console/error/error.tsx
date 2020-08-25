@@ -17,7 +17,7 @@ class Props {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-error")
-export class ConsoleError extends VComponent {
+export class ConsoleError extends VComponent<Props> {
   props: Props = {
   };
 

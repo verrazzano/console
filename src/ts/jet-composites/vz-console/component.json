@@ -13,6 +13,11 @@
     "vz-console-instance-resources": "1.0.0",
     "vz-console-error": "1.0.0",
     "vz-console-auth": "1.0.0",
-    "vz-console-service": "1.0.0"
+    "vz-console-service": "1.0.0",
+    "vz-console-model": "1.0.0",
+    "vz-console-model-resources": "1.0.0",
+    "vz-console-utils": "1.0.0",
+    "vz-console-binding": "1.0.0",
+    "vz-console-binding-resources": "1.0.0"
   }
 }
