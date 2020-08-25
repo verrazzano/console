@@ -88,7 +88,10 @@ export class ConsoleModel extends VComponent<Props> {
           <div class="oj-sm-12 oj-panel oj-flex-item">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">
-                <h3>Application Model Details</h3>
+                  <h3>Application Model Details</h3>
+              </div>
+              <div class="oj-sm-12 oj-flex-item">
+                <h3>General Information</h3>
                 <ConsoleMetadataItem
                   label="Name"
                   value={this.state.model.name}

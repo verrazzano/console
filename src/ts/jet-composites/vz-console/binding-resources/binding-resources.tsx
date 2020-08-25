@@ -2,6 +2,9 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+import { ConsoleConnectionList } from "vz-console/connection-list/loader";
+import { ConsoleIngressList } from "vz-console/ingress-list/loader";
+import { ConsoleSecretList } from "vz-console/secret-list/loader";
 
 class State {
   selectedItem: string;
@@ -9,6 +12,7 @@ class State {
 
 class Props {
   bindingId: string;
+  modelId: string;
 }
 
 /**
@@ -18,10 +22,6 @@ class Props {
 export class ConsoleBindingResources extends VComponent<Props> {
   state: State = {
     selectedItem: "components",
-  };
-
-  props: Props = {
-    bindingId: "",
   };
 
   @listener({ capture: true, passive: true })
@@ -38,17 +38,17 @@ export class ConsoleBindingResources extends VComponent<Props> {
       }
 
       case "connections": {
-        ResourceList = <div/>;
+        ResourceList = <ConsoleConnectionList modelId={this.props.modelId} bindingId={this.props.bindingId}/>;
         break;
       }
 
       case "ingresses": {
-        ResourceList = <div/>;
+        ResourceList = <ConsoleIngressList modelId={this.props.modelId} bindingId={this.props.bindingId}/>;
         break;
       }
 
       case "secrets": {
-        ResourceList = <div/>;
+        ResourceList = <ConsoleSecretList modelId={this.props.modelId} bindingId={this.props.bindingId}/>;
         break;
       }
 

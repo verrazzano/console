@@ -18,6 +18,10 @@
     "vz-console-model-resources": "1.0.0",
     "vz-console-utils": "1.0.0",
     "vz-console-binding": "1.0.0",
-    "vz-console-binding-resources": "1.0.0"
+    "vz-console-binding-resources": "1.0.0",
+    "vz-console-connection-list": "1.0.0",
+    "vz-console-ingress-list": "1.0.0",
+    "vz-console-secret-list": "1.0.0",
+    "vz-console-binding-vmi-links": "1.0.0"
   }
 }

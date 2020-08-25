@@ -3,6 +3,10 @@
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import { ConsoleBindingList } from "vz-console/binding-list/loader";
+import { ConsoleConnectionList } from "vz-console/connection-list/loader";
+import { ConsoleIngressList } from "vz-console/ingress-list/loader";
+import { ConsoleSecretList } from "vz-console/secret-list/loader";
+
 
 class State {
   selectedItem: string;
@@ -44,17 +48,17 @@ export class ConsoleModelResources extends VComponent<Props> {
       }
 
       case "connections": {
-        ResourceList = <div/>;
+        ResourceList = <ConsoleConnectionList modelId={this.props.modelId}/>;
         break;
       }
 
       case "ingresses": {
-        ResourceList = <div/>;
+        ResourceList = <ConsoleIngressList modelId={this.props.modelId}/>;
         break;
       }
 
       case "secrets": {
-        ResourceList = <div/>;
+        ResourceList = <ConsoleSecretList modelId={this.props.modelId}/>;
         break;
       }
 
