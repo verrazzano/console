@@ -32,17 +32,19 @@ setup-npm:
 	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
 	nvm install 14.7 && \
 	npm install && \
-	npm install @oracle/ojet-cli && \
-	PATH=./node_modules/.bin:${PATH} && \
-	nvm use 14.7
+	npm install @oracle/ojet-cli
 
 .PHONY: test
 test: setup-npm
-	ojet build
+	PATH=./node_modules/.bin:${PATH} && \
+	nvm use 14.7 && \
+	ojet build && \
 	npm test
 
 .PHONY: ojet-build
 ojet-build: setup-npm
+	PATH=./node_modules/.bin:${PATH} && \
+	nvm use 14.7 && \
 	ojet build --release
 
 .PHONY: build
