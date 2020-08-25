@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: '..',
 
 
     // frameworks to use
@@ -14,6 +14,7 @@ module.exports = function(config) {
       'requirejs',
       'mocha',
       'chai',
+      'sinon',
       'fixture',
       'karma-typescript'
     ],
@@ -22,17 +23,30 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // RequireJS bootstrap
-      'test-main.js',
+      'test/test-main.js',
 
       // Test files
-      { pattern: 'specs/**/*.spec.ts', included: false },
+      { pattern: 'test/specs/**/*.spec.ts', included: false },
 
       // Project files
-      { pattern: '../web/js/**/*', included: false },
+      { pattern: 'web/*/jet-composites/**/*', included: false },
 
       // JET/3rd party libs
       {
-        pattern: '../web/js/libs/**/*.js',
+        pattern: 'web/js/libs/**/*.js',
+        included: false,
+        watched: false
+      },
+
+      {
+        pattern: 'web/css/**/oj-alta-notag.css',
+        included: false,
+        watched: false
+      },
+
+      // 3rd party testing libs
+      {
+        pattern: 'node_modules/sinon/**',
         included: false,
         watched: false
       }
@@ -40,25 +54,36 @@ module.exports = function(config) {
 
 
     // list of files / patterns to exclude
-    exclude: [
-    ],
+    exclude: [],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "**/*.ts": ["karma-typescript"]
+      "test/**/*.ts": ["karma-typescript"],
+      "web/js/jet-composites/**/*.js": ["coverage"]
     },
 
     karmaTypescriptConfig: {
-      tsconfig: './tsconfig.json'
+      tsconfig: 'test/tsconfig.json'
     },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['coverage', 'mocha'],
 
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/',
+      file : 'index.html'
+    },
+
+    client: {
+      mocha: {
+        timeout: 30000
+      }
+    },
 
     // web server port
     port: 9876,

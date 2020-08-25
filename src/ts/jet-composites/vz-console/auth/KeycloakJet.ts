@@ -26,7 +26,7 @@ export class KeycloakJet {
     }
 
     private constructor() {
-        this.keycloak = new Keycloak();
+        this.keycloak = Keycloak.getInstance();
         this.jetOauth = new OjModel.OAuth({}, 'Authorization');
     }
 
