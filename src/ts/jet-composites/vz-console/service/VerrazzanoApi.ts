@@ -158,7 +158,7 @@ export class VerrazzanoApi {
     return this.getBinding(bindingId)
       .then((binding: Binding) => {
         const host = this.url.startsWith("/") ? location.host : new URL(this.url).host;
-        const hostSuffix = this.url.startsWith("/") ? host.substring(host.indexOf(".") + 1) :
+        const hostSuffix = this.url.startsWith("/") ? host.substring(host.indexOf(".")) :
              host.substring(host.indexOf("api.") + "api".length);
         return mockVmis(binding.name, hostSuffix);
       });
