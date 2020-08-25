@@ -24,8 +24,8 @@ endif
 .PHONY: all
 all: build
 
-.PHONY: ojet-build
-ojet-build:
+.PHONY: setup-npm
+setup-npm:
 	sudo yum install -y bzip2
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 	export NVM_DIR="$$HOME/.nvm" && \
@@ -34,7 +34,15 @@ ojet-build:
 	npm install && \
 	npm install @oracle/ojet-cli && \
 	PATH=./node_modules/.bin:${PATH} && \
-	nvm use 14.7 && \
+	nvm use 14.7
+
+.PHONY: test
+test: setup-npm
+	ojet build
+	npm test
+
+.PHONY: ojet-build
+ojet-build: setup-npm
 	ojet build --release
 
 .PHONY: build
