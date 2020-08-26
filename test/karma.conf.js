@@ -18,7 +18,6 @@ module.exports = function(config) {
       'mocha',
       'chai',
       'sinon',
-      'fixture',
       'karma-typescript'
     ],
 
@@ -37,12 +36,6 @@ module.exports = function(config) {
       // JET/3rd party libs
       {
         pattern: 'web/js/libs/**/*.js',
-        included: false,
-        watched: false
-      },
-
-      {
-        pattern: 'web/css/**/oj-alta-notag.css',
         included: false,
         watched: false
       },
@@ -74,7 +67,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['coverage', 'mocha'],
+    reporters: ['coverage','mocha'],
 
     coverageReporter: {
       type : 'html',
