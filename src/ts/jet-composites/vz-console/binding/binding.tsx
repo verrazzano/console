@@ -6,6 +6,7 @@ import { VerrazzanoApi, Binding } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleBindingResources } from "vz-console/binding-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
+import { ConsoleBindingVmiLinks } from "vz-console/binding-vmi-links/loader";
 
 class Props {
   bindingId?: string;
@@ -88,7 +89,10 @@ export class ConsoleBinding extends VComponent<Props> {
           <div class="oj-sm-12 oj-panel oj-flex-item">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">
-                <h3>Application Binding Details</h3>
+                  <h3>Application Binding Details</h3>
+              </div>
+              <div class="oj-sm-6 oj-flex-item">
+                <h3>General Information</h3>
                 <ConsoleMetadataItem
                   label="Name"
                   value={this.state.binding.name}
@@ -97,11 +101,22 @@ export class ConsoleBinding extends VComponent<Props> {
                   label="Description"
                   value={this.state.binding.description}
                 />
+                <ConsoleMetadataItem
+                  label="Model"
+                  value={this.state.binding.model.name}
+                  target={"?ojr=model&modelId=" + this.state.binding.model.id}
+                  link={true}
+                  replace={true}
+                />
+              </div>
+              <div class="oj-sm-6 oj-flex-item">
+                <h3>Application Telemetry</h3>
+                <ConsoleBindingVmiLinks bindingId={this.props.bindingId}/>
               </div>
             </div>
           </div>
         </div>
-        <ConsoleBindingResources modelId={this.props.bindingId} />
+        <ConsoleBindingResources bindingId={this.state.binding.id} modelId={this.state.binding.model.id}/>
       </div>
     );
   }
