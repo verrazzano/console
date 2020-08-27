@@ -24,15 +24,36 @@ endif
 .PHONY: all
 all: build
 
-.PHONY: ojet-build
-ojet-build:
+.PHONY: setup-npm
+setup-npm:
 	sudo yum install -y bzip2
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 	export NVM_DIR="$$HOME/.nvm" && \
 	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
 	nvm install 14.7 && \
 	npm install && \
-	npm install @oracle/ojet-cli && \
+	npm install @oracle/ojet-cli
+
+.PHONY: unit-test
+unit-test: setup-npm
+	curl -o google-chrome.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+	sudo yum install -y ./google-chrome.rpm
+	export NVM_DIR="$$HOME/.nvm" && \
+	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
+	export PATH=./node_modules/.bin:${PATH} && \
+	nvm use 14.7 && \
+	ojet build && \
+	pwd && \
+	ls -l node_modules/\@oracle/oraclejet/dist/types/ojmodel && \
+	ls -l web/js/libs/oj
+	echo $$PATH
+	sudo env "PATH=$$PATH" npm test
+	#echo 'kernel.unprivileged_userns_clone=1' > /etc/sysctl.d/00-local-userns.conf
+	#service procps restart
+.PHONY: ojet-build
+ojet-build: setup-npm
+	export NVM_DIR="$$HOME/.nvm" && \
+	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
 	PATH=./node_modules/.bin:${PATH} && \
 	nvm use 14.7 && \
 	ojet build --release

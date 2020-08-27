@@ -19,6 +19,7 @@
 hybrid/plugins/*
 !hybrid/plugins/fetch.json
 
+chrome_version.js
 .npmrc
 .DS_Store
 Thumbs.db

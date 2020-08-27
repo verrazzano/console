@@ -22,6 +22,7 @@ function _ojIsIE11() {
 var _ojNeedsES5 = _ojIsIE11();
 console.log("ALL TEST FILES");
 console.log(allTestFiles);
+
 require.config({
   // Karma serves files under /base, which is the basePath from your config file
   baseUrl: '/base/web/js',
@@ -35,9 +36,9 @@ require.config({
     "promise":"libs/es6-promise/es6-promise",
     "hammerjs":"libs/hammer/hammer-2.0.8",
     "ojdnd":"libs/dnd-polyfill/dnd-polyfill-1.0.1",
-    "ojs":"libs/oj/v9.0.2/debug" + (_ojNeedsES5 ? "_es5" : ""),
-    "ojL10n":"libs/oj/v9.0.2/ojL10n",
-    "ojtranslations":"libs/oj/v9.0.2/resources",
+    "ojs":"libs/oj/current/debug" + (_ojNeedsES5 ? "_es5" : ""),
+    "ojL10n":"libs/oj/current/ojL10n",
+    "ojtranslations":"libs/oj/current/resources",
     "persist":"libs/persist/debug",
     "text":"libs/require/text",
     "signals":"libs/js-signals/signals",
