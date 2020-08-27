@@ -95,12 +95,32 @@ export class ConsoleBindingList extends VComponent<Props> {
             </td>
             <td>
               <p>
-                <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
-                  <span class="oj-icon-circle-inner status-icon">
+              <oj-bind-if test="[[row.data.state === 'Running']]">
+                  <span>
+                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
+                      <span class="oj-icon-circle-inner status-icon"></span>
+                    </span>
+                    &nbsp;
                   </span>
-                </span>
-                &nbsp;
-                <oj-bind-text value="[[row.data.state]]"></oj-bind-text></p>
+                </oj-bind-if>
+                <oj-bind-if test="[[row.data.state === 'Terminated']]">
+                  <span>
+                    <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
+                      <span class="oj-icon-circle-inner status-icon"></span>
+                    </span>
+                    &nbsp;
+                  </span>
+                </oj-bind-if>
+                <oj-bind-if test="[[row.data.state === 'Creating']]">
+                  <span>
+                    <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
+                      <span class="oj-icon-circle-inner status-icon"></span>
+                    </span>
+                    &nbsp;
+                  </span>
+                </oj-bind-if>
+                <oj-bind-text value="[[row.data.state]]"></oj-bind-text>
+              </p>
             </td>
             <td>
               <p><a data-bind="attr: {href: '?ojr=model&modelId=' + row.data.model.id}"><oj-bind-text value="[[row.data.model.name]]"></oj-bind-text></a></p>

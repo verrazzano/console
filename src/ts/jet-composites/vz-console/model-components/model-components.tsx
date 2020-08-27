@@ -56,7 +56,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
 
   currentSort = ko.observable(this.defaultSort);
 
-  currentTypeFilter = ko.observable(["Any"]);
+  currentTypeFilter = ko.observable([ComponentType.ANY]);
 
   constructor() {
     super(new Props());
@@ -105,7 +105,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
       models = models.filter((model) => {
         let component = model.attributes as ModelComponent;
         let typeFilter = this.currentTypeFilter();
-        if (typeFilter.includes("Any") || typeFilter.includes(component.type)) {
+        if (typeFilter.includes(ComponentType.ANY) || typeFilter.includes(component.type)) {
           return true;
         }
       });
@@ -158,7 +158,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
       event.detail.previousValue.length > 0 &&
       event.detail.value.length === 0
     ) {
-      this.currentTypeFilter(["Any"]);
+      this.currentTypeFilter([ComponentType.ANY]);
     } else {
       this.currentTypeFilter(event.detail.value);
     }

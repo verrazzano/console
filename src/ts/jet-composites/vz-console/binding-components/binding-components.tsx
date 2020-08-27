@@ -59,9 +59,9 @@ export class ConsoleBindingComponents extends VComponent<Props> {
 
   currentSort = ko.observable(this.defaultSort);
 
-  currentTypeFilter = ko.observable(["Any"]);
+  currentTypeFilter = ko.observable([ComponentType.ANY]);
 
-  currentStatusFilter = ko.observable(["Any"]);
+  currentStatusFilter = ko.observable([Status.Any]);
 
   constructor() {
     super(new Props());
@@ -131,8 +131,8 @@ export class ConsoleBindingComponents extends VComponent<Props> {
         let typeFilter = this.currentTypeFilter();
         let statusFilter = this.currentStatusFilter();
         if (
-          (typeFilter.includes("Any") || typeFilter.includes(component.type)) &&
-          (statusFilter.includes("Any") ||
+          (typeFilter.includes(ComponentType.ANY) || typeFilter.includes(component.type)) &&
+          (statusFilter.includes(Status.Any) ||
             statusFilter.includes(component.status))
         ) {
           return true;
@@ -190,7 +190,7 @@ export class ConsoleBindingComponents extends VComponent<Props> {
       event.detail.previousValue.length > 0 &&
       event.detail.value.length === 0
     ) {
-      this.currentStatusFilter(["Any"]);
+      this.currentStatusFilter([Status.Any]);
     } else {
       this.currentStatusFilter(event.detail.value);
     }
@@ -203,7 +203,7 @@ export class ConsoleBindingComponents extends VComponent<Props> {
       event.detail.previousValue.length > 0 &&
       event.detail.value.length === 0
     ) {
-      this.currentTypeFilter(["Any"]);
+      this.currentTypeFilter([ComponentType.ANY]);
     } else {
       this.currentTypeFilter(event.detail.value);
     }
@@ -314,17 +314,33 @@ export class ConsoleBindingComponents extends VComponent<Props> {
                         <strong>
                           <span>Status:&nbsp;</span>
                         </strong>
-                        <span>
-                          <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
-                            <span class="oj-icon-circle-inner status-icon">
+                        <oj-bind-if test="[[item.data.status === 'Running']]">
+                          <span>
+                            <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
+                              <span class="oj-icon-circle-inner status-icon"></span>
                             </span>
+                            &nbsp;
                           </span>
-                          &nbsp;
-                          <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
-                        </span>
+                        </oj-bind-if>
+                        <oj-bind-if test="[[item.data.status === 'Terminated']]">
+                          <span>
+                            <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
+                              <span class="oj-icon-circle-inner status-icon"></span>
+                            </span>
+                            &nbsp;
+                          </span>
+                        </oj-bind-if>
+                        <oj-bind-if test="[[item.data.status === 'Creating']]">
+                          <span>
+                            <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
+                              <span class="oj-icon-circle-inner status-icon"></span>
+                            </span>
+                            &nbsp;
+                          </span>
+                        </oj-bind-if>
+                        <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
                       </div>
                     </div>
-
                     <div class="oj-flex">
                       <div class="oj-sm-10 oj-flex-item">
                         <strong>

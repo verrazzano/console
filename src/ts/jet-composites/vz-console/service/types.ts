@@ -166,7 +166,8 @@ export enum ComponentType {
   DB = "Database",
   WLS = "WebLogic Domain",
   MS = "Helidon Microservice",
-  COH = "Coherence cluster"
+  COH = "Coherence cluster",
+  ANY = "Any"
 }
 
 export enum VMIType {
