@@ -68,7 +68,7 @@ export class ConsoleInstance extends VComponent<Props> {
           </div>
         </div>
         <div class="oj-flex">
-          <div class="oj-sm-12 oj-panel oj-flex-item">
+          <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">
                 <h4>Instance Details</h4>

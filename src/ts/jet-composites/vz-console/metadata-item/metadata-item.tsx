@@ -31,10 +31,10 @@ export class ConsoleMetadataItem extends VComponent<Props> {
 
   protected render() {
     return (
-      <div class="oj-flex-item oj-sm-12">
+      <div class="oj-flex-item oj-sm-12 metadata-item">
           <strong>{this.props.label}:&nbsp;</strong>
         {this.props.link ? 
-           <a onClick={this.openLink}>{this.props.value}</a> : this.props.value}
+           <a onClick={this.openLink} href={this.props.target ? this.props.target : this.props.value}>{this.props.value}</a> : this.props.value}
       </div>
     );
   }

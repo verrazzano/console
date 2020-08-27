@@ -6,6 +6,7 @@ import { ConsoleBindingList } from "vz-console/binding-list/loader";
 import { ConsoleConnectionList } from "vz-console/connection-list/loader";
 import { ConsoleIngressList } from "vz-console/ingress-list/loader";
 import { ConsoleSecretList } from "vz-console/secret-list/loader";
+import { ConsoleModelComponents } from "vz-console/model-components/loader";
 
 
 class State {
@@ -22,7 +23,7 @@ class Props {
 @customElement("vz-console-model-resources")
 export class ConsoleModelResources extends VComponent<Props> {
   state: State = {
-    selectedItem: "models",
+    selectedItem: "bindings",
   };
 
   props: Props = {
@@ -43,7 +44,7 @@ export class ConsoleModelResources extends VComponent<Props> {
       }
 
       case "components": {
-        ResourceList = <div/>;
+        ResourceList = <ConsoleModelComponents modelId={this.props.modelId} />;
         break;
       }
 

@@ -5,6 +5,7 @@ import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import { ConsoleConnectionList } from "vz-console/connection-list/loader";
 import { ConsoleIngressList } from "vz-console/ingress-list/loader";
 import { ConsoleSecretList } from "vz-console/secret-list/loader";
+import { ConsoleBindingComponents } from "vz-console/binding-components/loader";
 
 class State {
   selectedItem: string;
@@ -30,10 +31,10 @@ export class ConsoleBindingResources extends VComponent<Props> {
   }
 
   protected render() {
-    let ResourceList;
+    let ResourceList: Element;
     switch (this.state.selectedItem) {
       case "components": {
-        ResourceList = <div/>;
+        ResourceList = <ConsoleBindingComponents bindingId={this.props.bindingId}/>;
         break;
       }
 

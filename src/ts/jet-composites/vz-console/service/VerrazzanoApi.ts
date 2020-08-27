@@ -22,7 +22,7 @@ import {
   extractHelidonApps,
   mockInstances,
   extractBindingsFromApplications,
-  mockVmis
+  getVmiInstancesForBinding
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet"
 
@@ -160,7 +160,7 @@ export class VerrazzanoApi {
         const host = this.url.startsWith("/") ? location.host : new URL(this.url).host;
         const hostSuffix = this.url.startsWith("/") ? host.substring(host.indexOf(".")) :
              host.substring(host.indexOf("api.") + "api".length);
-        return mockVmis(binding.name, hostSuffix);
+        return getVmiInstancesForBinding(binding.name, hostSuffix);
       });
   }
 

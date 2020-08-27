@@ -27,7 +27,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
-    <link rel="icon" href="css/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="css/images/Verrazzano_logo_black.svg" type="image/x-icon" />
 
     <!-- This is the main css file for the default theme -->
     <!-- injector:theme -->
@@ -84,15 +84,14 @@
               </oj-button>
             </div>
             <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
-              <span role="img" class="oj-icon demo-oracle-icon" title="Oracle Logo" alt="Oracle Logo"></span>
-              <h1 class="oj-sm-only-hide oj-web-applayout-header-title" title="Application Name"><oj-bind-text value="[[appName]]"></oj-bind-text></h1>
+              <span role="img" class="oj-icon vz-icon" title="Verrazzano" alt="Verrazzano Logo" onclick="window.location='/'"></span>
             </div>
             <div class="oj-flex-bar-end">
               <!-- Responsive Toolbar -->
               <oj-toolbar>
                 <oj-menu-button id="userMenu" display="[[smScreen() ? 'icons' : 'all']]" chroming="borderless">
                   <span><oj-bind-text value="[[userEmail]]"></oj-bind-text></span>
-                  <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon oj-button-menu-dropdown-icon': !smScreen()}]]"></span>
+                  <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon demo-appheader-avatar': !smScreen()}]]"></span>
                   <oj-menu id="menu1" slot="menu">
                     <oj-option id="out" value="out" on-oj-action="[[logout]]">Sign Out</oj-option>
                   </oj-menu>

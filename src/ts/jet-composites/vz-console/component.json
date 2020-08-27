@@ -22,6 +22,9 @@
     "vz-console-connection-list": "1.0.0",
     "vz-console-ingress-list": "1.0.0",
     "vz-console-secret-list": "1.0.0",
-    "vz-console-binding-vmi-links": "1.0.0"
+    "vz-console-binding-vmi-links": "1.0.0",
+    "vz-console-binding-components": "1.0.0",
+    "vz-console-model-components": "1.0.0",
+    "vz-console-filter":"1.0.0"
   }
 }
