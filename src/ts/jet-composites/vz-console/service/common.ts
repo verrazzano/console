@@ -954,7 +954,7 @@ function generateId(...args: string[]): string {
     .toLowerCase();
 }
 
-export const mockVmis = (bindingName: string, hostSuffix: string): VMI[] => {
+export const getVmiInstancesForBinding = (bindingName: string, hostSuffix: string): VMI[] => {
   const vmis: VMI[] = [];
   vmis.push({
     id: bindingName+"-kibana",
