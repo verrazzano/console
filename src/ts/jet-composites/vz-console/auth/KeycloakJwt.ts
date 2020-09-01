@@ -88,12 +88,9 @@ export interface IdentityToken {
  * and determining if tokens are expired.
  */
 export class KeycloakJwt {
-
-  static jwtDecode = require('jwt_decode');
-
   public static decodeIdToken(token: string): IdentityToken{
-    // const jwtDecode = require('jwt_decode');
-    return KeycloakJwt.jwtDecode(token) as IdentityToken;
+    const jwtDecode = require('jwt_decode');
+    return jwtDecode(token) as IdentityToken;
   }
 
   /**
@@ -117,7 +114,8 @@ export class KeycloakJwt {
    * to the Verazzano API.
    */
   public static calcExpiryTsMillis(token: string): number {
-    const decoded: CommonToken = KeycloakJwt.jwtDecode(token) as CommonToken;
+    const jwtDecode = require('jwt_decode');
+    const decoded: CommonToken = jwtDecode(token) as CommonToken;
 
     // The JWT timestamps are in secs
     const createdTs: number = decoded.iat * 1000; // convert to mills

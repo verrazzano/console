@@ -1,0 +1,20 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": ["../src/ts/jet-composites/*", "../node_modules/*"],
+      "ojs/*": ["../node_modules/@oracle/oraclejet/dist/types/*"],
+    },
+    "typeRoots": [
+      "../node_modules/@types",
+      "../node_modules/@oracle/oraclejet/dist/types"
+    ],
+    "lib": ["dom", "es2018"]
+  },
+  "include": [
+    "./specs/**/*.ts",
+    "../src/ts/jet-composites/**/*.ts",
+    "../node_modules/@oracle/oraclejet/dist/types/requirejs-plugins.d.ts"
+  ]
+}

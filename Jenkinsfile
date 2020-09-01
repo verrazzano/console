@@ -32,8 +32,7 @@ pipeline {
                 copyrightScan "${WORKSPACE}"
             }
         }
-        
-        stage('Build') {
+        stage('Docker Build') {
             when { not { buildingTag() } }
             steps {
                 sh """
