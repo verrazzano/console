@@ -1,3 +1,6 @@
+// Copyright (c) 2020, Oracle and/or its affiliates.
+// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 import * as AppResource from 'ojL10n!./resources/nls/strings';
 import Translations = require('ojs/ojtranslation')
 import * as DefaultBundle from 'ojL10n!ojtranslations/nls/ojtranslations'
