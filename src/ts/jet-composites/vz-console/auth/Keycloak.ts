@@ -25,6 +25,19 @@ import {KeycloakJwt} from "./KeycloakJwt";
  *       Verrazzzano API.
  */
 export class Keycloak {
+
+  private static instance: Keycloak;
+  public static getInstance() {
+    if (!Keycloak.instance) {
+      Keycloak.instance = new Keycloak();
+    }
+    return Keycloak.instance;
+  }
+
+  private constructor() {
+
+  }
+
   /**
    * Logon user, by redirecting to Keycloak.
    * This function purposely return a promise that will never resolved except if there is an error,
@@ -56,7 +69,7 @@ export class Keycloak {
           + "&code_challenge_method=S256"
           + "&redirect_uri=" + encCallback;
 
-        window.location.replace(loginUrl);
+        Keycloak.replaceWindowLocation(loginUrl);
 
         // Purposely do not resolve promise to give enough time for "window.location.replace" to do its job
       } catch (error) {
@@ -110,7 +123,7 @@ export class Keycloak {
         AuthStorage.removeVerifier();
 
         const s = urls.getCallbackUrl();
-        window.location.replace(s);
+        Keycloak.replaceWindowLocation(s);
 
       } catch (error) {
         Keycloak.goToErrorPage("Error getting access token: " +  error.toString());
@@ -202,7 +215,7 @@ export class Keycloak {
           Keycloak.goToErrorPage("Error logging out: " +  response.statusText);
         }
 
-        window.location.replace(urls.getCallbackUrl());
+        Keycloak.replaceWindowLocation(urls.getCallbackUrl());
 
       } catch (error) {
         Keycloak.goToErrorPage("Error logging out: " + error.toString())
@@ -241,7 +254,7 @@ export class Keycloak {
           // active then the user will just be sent to home page,
           // otherwise a keycloak login page will be shown.
           AuthStorage.clearAuthStorage();
-          window.location.replace(KeycloakUrls.getInstance().getHomePageUrl());
+          Keycloak.replaceWindowLocation(KeycloakUrls.getInstance().getHomePageUrl());
       }
     }
   }
@@ -322,6 +335,14 @@ export class Keycloak {
 
     const s = KeycloakUrls.getInstance().getHomePageUrl();
     console.log("VZ - error calling keycloak " + errMsg);
-    window.location.replace(s);
+    Keycloak.replaceWindowLocation(s);
+  }
+
+  /**
+   * Wrapper function for window.location, to allow unit test stubbing
+   * @param loc Location to go to.
+   */
+  public static replaceWindowLocation(loc: string) {
+    window.location.replace(loc);
   }
 }
