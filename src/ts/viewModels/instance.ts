@@ -2,10 +2,12 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 import "vz-console/instance/loader";
 import * as AccUtils from "../accUtils";
+import * as Messages from "vz-console/utils/Messages";
+import * as ko from "knockout";
 class InstanceViewModel {
-
+  instanceHeading: ko.Observable<string|undefined>;
   constructor() {
-
+    this.instanceHeading = ko.observable(Messages.Instance.instanceHeading())
   }
 
   /**
@@ -17,7 +19,7 @@ class InstanceViewModel {
    * after being disconnected.
    */
   connected(): void {
-    AccUtils.announce("Instance page loaded.");
+    AccUtils.announce(Messages.Instance.instancePageLoaded());
     document.title = "Verrazzano";
     // implement further logic if needed
   }

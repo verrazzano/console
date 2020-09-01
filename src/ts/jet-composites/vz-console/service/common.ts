@@ -274,7 +274,6 @@ export const extractPlacementsFromApplications = (
     applications: Application[],
     bindingId?: string
 ): Placement[] => {
-  console.log("get placements " + (bindingId ? "for binding " + bindingId : ""));
   const placements: Placement[] = [];
   const modelMap = processApplications(applications);
   for (const model of modelMap.values()) {
@@ -654,35 +653,6 @@ export const processBindingIngresses = (
     }
   }
   return ingresses;
-};
-
-export const mockInstances = (): Instance[] => {
-  const instances: Instance[] = [];
-  instances.push(
-    {
-      id: "dev",
-      name: "dev",
-      mgmtPlatform: "OCI",
-      mgmtCluster: "devoke-mgmt",
-      status: "",
-      version: "",
-      keyCloakUrl: "",
-      rancherUrl: "",
-      vzApiUri: ""
-    },
-    {
-      id: "prod",
-      name: "prod",
-      mgmtPlatform: "OCI",
-      mgmtCluster: "prodoke-mgmt",
-      status: "",
-      version: "",
-      keyCloakUrl: "",
-      rancherUrl: "",
-      vzApiUri: ""
-    }
-  );
-  return instances;
 };
 
 function processConnections(

@@ -7,6 +7,7 @@ import { ConsoleConnectionList } from "vz-console/connection-list/loader";
 import { ConsoleIngressList } from "vz-console/ingress-list/loader";
 import { ConsoleSecretList } from "vz-console/secret-list/loader";
 import { ConsoleModelComponents } from "vz-console/model-components/loader";
+import * as Messages from "vz-console/utils/Messages"
 
 
 class State {
@@ -71,7 +72,7 @@ export class ConsoleModelResources extends VComponent<Props> {
       <div class="oj-flex">
         <div class="oj-sm-2 oj-flex-item">
           <h4 id="resources" class="res">
-            Resources
+            {Messages.Labels.resources()}
           </h4>
           <div class="oj-navigationlist-category-divider"></div>
           <oj-navigation-list
@@ -81,19 +82,19 @@ export class ConsoleModelResources extends VComponent<Props> {
           >
             <ul>
               <li id="bindings">
-                <a href="#">Bindings</a>
+                <a href="#">{Messages.Labels.modelBindings()}</a>
               </li>
               <li id="components">
-                <a href="#">Components</a>
+                <a href="#">{Messages.Labels.components()}</a>
               </li>
               <li id="connections">
-                <a href="#">Connections</a>
+                <a href="#">{Messages.Labels.connections()}</a>
               </li>
               <li id="ingresses">
-                <a href="#">Ingresses</a>
+                <a href="#">{Messages.Labels.ingresses()}</a>
               </li>
               <li id="secrets">
-                <a href="#">Secrets</a>
+                <a href="#">{Messages.Labels.secrets()}</a>
               </li>
             </ul>
           </oj-navigation-list>

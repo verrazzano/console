@@ -11,6 +11,7 @@ import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
 import * as ko from "knockout";
 import { ConsoleError } from "vz-console/error/loader";
+import * as Messages from "vz-console/utils/Messages"
 
 class Props {
   modelId: string;
@@ -34,10 +35,10 @@ export class ConsoleConnectionList extends VComponent<Props> {
   };
 
   columnArray = [
-    { headerText: "Name", sortable: "enabled", sortProperty: "name" },
-    { headerText: "Type", sortable: "enabled", sortProperty: "type" },
-    { headerText: "Component", sortable: "enabled", sortProperty: "component" },
-    { headerText: "Target", sortable: "enabled", sortProperty: "target" },
+    { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: "name" },
+    { headerText: Messages.Labels.type(), sortable: "enabled", sortProperty: "type" },
+    { headerText: Messages.Labels.comp(), sortable: "enabled", sortProperty: "component" },
+    { headerText: Messages.Labels.target(), sortable: "enabled", sortProperty: "target" },
   ];
 
   data: ko.Observable = ko.observable();
@@ -78,7 +79,7 @@ export class ConsoleConnectionList extends VComponent<Props> {
     if (this.state.error) {
       return (
         <ConsoleError
-          context={"Error displaying connections list"}
+          context={Messages.Error.errRenderConnectionList()}
           error={this.state.error}
         />
       );
@@ -95,7 +96,7 @@ export class ConsoleConnectionList extends VComponent<Props> {
     );
 
     if (this.state.loading) {
-      return <p>Loading..</p>;
+      return <p>{Messages.Labels.loading()}</p>;
     }
 
     return (

@@ -23,7 +23,7 @@
   ***************************** IMPORTANT INFORMATION ************************************ -->
 <html lang="en-us">
   <head>
-    <title>Oracle JET Starter Template - Web Nav Drawer</title>
+    <title>Verrazzano</title>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
@@ -80,7 +80,7 @@
             <div class="oj-flex-bar-start oj-md-hide">
               <oj-button id="drawerToggleButton" class="oj-button-lg" on-oj-action="[[toggleDrawer]]" chroming="borderless" display="icons">
                 <span slot="startIcon" class="oj-web-applayout-offcanvas-icon"></span>
-                <span>Application Navigation</span>
+                <span><oj-bind-text value="[[appNav]]"></oj-bind-text></span>
               </oj-button>
             </div>
             <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
@@ -93,7 +93,7 @@
                   <span><oj-bind-text value="[[userEmail]]"></oj-bind-text></span>
                   <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon demo-appheader-avatar': !smScreen()}]]"></span>
                   <oj-menu id="menu1" slot="menu">
-                    <oj-option id="out" value="out" on-oj-action="[[logout]]">Sign Out</oj-option>
+                    <oj-option id="out" value="out" on-oj-action="[[logout]]"><oj-bind-text value="[[signOut]]"></oj-bind-text></oj-option>
                   </oj-menu>
                 </oj-menu-button>
               </oj-toolbar>
@@ -115,9 +115,6 @@
                 </template>
               </oj-bind-for-each>
             </ul>
-          </div>
-          <div class="oj-web-applayout-footer-item oj-web-applayout-max-width oj-text-secondary-color oj-text-sm">
-            Copyright © 2014, 2020 Oracle and/or its affiliates All rights reserved.
           </div>
         </footer>
       </div>

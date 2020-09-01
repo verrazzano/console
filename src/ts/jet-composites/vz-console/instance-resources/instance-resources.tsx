@@ -4,6 +4,7 @@
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import { ConsoleBindingList } from "vz-console/binding-list/loader";
 import { ConsoleModelList } from "vz-console/model-list/loader";
+import * as Messages from "vz-console/utils/Messages"
 
 class State {
   selectedItem: string;
@@ -33,7 +34,7 @@ export class ConsoleInstanceResources extends VComponent {
     return (
       <div class="oj-flex">
         <div class="oj-sm-2 oj-flex-item">
-          <h4 id="resources" class="res">Resources</h4>
+          <h4 id="resources" class="res">{Messages.Labels.resources()}</h4>
           <div class="oj-navigationlist-category-divider"></div>
           <oj-navigation-list
             selection={this.state.selectedItem}
@@ -42,10 +43,10 @@ export class ConsoleInstanceResources extends VComponent {
           >
             <ul>
               <li id="models">
-                <a href="#">Application Models</a>
+                <a href="#">{Messages.Instance.appModels()}</a>
               </li>
               <li id="bindings">
-                <a href="#">Application Bindings</a>
+                <a href="#">{Messages.Instance.appBindings()}</a>
               </li>
             </ul>
           </oj-navigation-list>

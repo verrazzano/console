@@ -6,6 +6,7 @@ import { VerrazzanoApi, VMI } from "vz-console/service/loader";
 import "ojs/ojtable";
 import { ConsoleError } from "vz-console/error/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
+import * as Messages from "vz-console/utils/Messages"
 
 class Props {
   bindingId: string;
@@ -59,34 +60,34 @@ export class ConsoleBindingVmiLinks extends VComponent<Props> {
     if (this.state.error) {
       return (
         <ConsoleError
-          context={"Error displaying Binding telemetry links."}
+          context={Messages.Error.errRenderBindingTelemetry()}
           error={this.state.error}
         />
       );
     }
 
     if (this.state.loading) {
-      return <p>Loading..</p>;
+      return <p>{Messages.Labels.loading()}</p>;
     }
 
     return (
       <div>
         <ConsoleMetadataItem
-          label="Kibana"
+          label={Messages.Labels.kibana()}
           value={
             this.state.vmiLinks.find((link: VMI) => link.type === "Kibana").url
           }
           link={true}
         />
         <ConsoleMetadataItem
-          label="Grafana"
+          label={Messages.Labels.grafana()}
           value={
             this.state.vmiLinks.find((link: VMI) => link.type === "Grafana").url
           }
           link={true}
         />
         <ConsoleMetadataItem
-          label="Prometheus"
+          label={Messages.Labels.prom()}
           value={
             this.state.vmiLinks.find((link: VMI) => link.type === "Prometheus")
               .url
@@ -94,7 +95,7 @@ export class ConsoleBindingVmiLinks extends VComponent<Props> {
           link={true}
         />
         <ConsoleMetadataItem
-          label="Elasticsearch"
+          label={Messages.Labels.es()}
           value={
             this.state.vmiLinks.find(
               (link: VMI) => link.type === "Elasticsearch"
