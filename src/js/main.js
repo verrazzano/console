@@ -45,6 +45,14 @@
         'chai': 'libs/chai/chai-4.2.0',
         'regenerator-runtime' : 'libs/regenerator-runtime/runtime',
         'vz-console': 'jet-composites/vz-console',
+      },
+
+      config: {
+        ojL10n: {
+          merge: {
+            'ojtranslations/nls/ojtranslations': 'vz-console/utils/resources/nls/strings'
+          }
+        }
       }
       // endinjector
     }

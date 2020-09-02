@@ -6,6 +6,7 @@ import { Keycloak } from './Keycloak';
 import { AuthStorage } from './AuthStorage';
 import { KeycloakUrls } from './KeycloakUrls';
 import { FetchApiSignature } from 'vz-console/service/types'
+import * as Messages from "vz-console/utils/Messages"
 
 
 /**
@@ -20,7 +21,7 @@ export class KeycloakJet {
     public static getInstance(): KeycloakJet {
         if (!KeycloakJet.keycloakJetInstance) {
             KeycloakJet.keycloakJetInstance = new KeycloakJet();
-            KeycloakJet.keycloakJetInstance.initAuth().then(() => console.log('VZ - KeycloakJet auth initialized'));
+            KeycloakJet.keycloakJetInstance.initAuth().then(() => console.log(Messages.Auth.msgAuthInit()));
         }
         return KeycloakJet.keycloakJetInstance;
     }
@@ -39,16 +40,16 @@ export class KeycloakJet {
         // If the access token doesn't exist, we need to login, OR finish the login
         // steps when keycloak is calling back to this code.
         if (!AuthStorage.accessTokenExists()) {
-            console.log("Access token does not exist in storage");
+            console.log(Messages.Auth.msgTokenNotInStorage());
             // If this is not the callback from keycloak then the user needs to be authenticated
             if (!Keycloak.isReturnFromKeycloakLogin()) {
-                console.log('VZ - KeycloakJet: logging in via keycloak');
+                console.log(Messages.Auth.msgLogInKeyCloak());
                 // Send the auth GET request to keycloak to authenticate the user
                 // This will result in the keycloak login page being displayed if
                 // the user session doesn't exist.
                 this.keycloak.sendAuthRequest();
             } else {
-                console.log('VZ - KeycloakJet returning from keycloak, getting acess token');
+                console.log(Messages.Auth.msgGetAccessToken());
                 // This is the keycloak callback, get the tokens and save them.
                 await Keycloak.fetchToken();
             }
@@ -84,7 +85,7 @@ export class KeycloakJet {
             if (error && error.message) {
                 errorMessage = error.message;
             }
-            throw new Error(`Failed to perform fetch ${errorMessage}`);
+            throw new Error(Messages.Error.errFetchFailed(`${errorMessage}`));
         }
     }
 

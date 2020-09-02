@@ -1,6 +1,8 @@
 // Copyright (C) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
+import * as Messages from "vz-console/utils/Messages"
+
 // This is the ENV runtime override, see server.js.
 const vzAuth = (window as any).vzAuth;
 const vzKeycloakUrl = (window as any).vzKeycloakUrl;
@@ -73,8 +75,8 @@ export class KeycloakUrls {
         this.keycloakProxyUrl = "/keycloak"; 
       }
     }
-    console.log("VZ - Auth enabled = " + this.authEnabled);
-    console.log("VZ - UI URL = " + this.uiUrl);
+    console.log(Messages.Auth.msgAuthEnabled(this.authEnabled));
+    console.log(Messages.Auth.msgUiUrl(this.uiUrl));
   }
 
   public isAuthEnabled(): boolean {

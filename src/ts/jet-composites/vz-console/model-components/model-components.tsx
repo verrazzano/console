@@ -20,6 +20,7 @@ import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import { ConsoleError } from "vz-console/error/loader";
 import { ConsoleFilter } from "vz-console/filter/loader";
+import * as Messages from "vz-console/utils/Messages"
 
 class Props {
   modelId: string;
@@ -175,14 +176,14 @@ export class ConsoleModelComponents extends VComponent<Props> {
     if (this.state.error) {
       return (
         <ConsoleError
-          context={"Error displaying model components."}
+          context={Messages.Error.errRenderModelComponents()}
           error={this.state.error}
         />
       );
     }
 
     if (this.state.loading) {
-      return <p>Loading..</p>;
+      return <p>{Messages.Labels.loading()}</p>;
     }
 
     this.dataProvider(
@@ -202,7 +203,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
             <div class="oj-sm-2 oj-sm-only-hide oj-flex-item">
               <h4 class="res">Refine by</h4>
               <ConsoleFilter
-                label={"Type"}
+                label={Messages.Labels.type()}
                 options={[
                   { label: ComponentType.WLS, value: ComponentType.WLS },
                   { label: ComponentType.COH, value: ComponentType.COH },
@@ -215,7 +216,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
               <div class="oj-flex components-align-right">
                 <div class="oj-sm-6 oj-flex-item">
                   <oj-label for="sortBy" class="oj-label-inline">
-                    Sort by:
+                    {Messages.Labels.sortBy()}
                   </oj-label>
                   <oj-select-single
                     id="sortBy"
@@ -250,7 +251,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
                      oj-flex-item"
                       >
                         <strong>
-                          <span>Name:&nbsp;</span>
+                          <span>{Messages.Labels.name()}:&nbsp;</span>
                         </strong>
                         <span>
                           <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
@@ -261,7 +262,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
                     <div class="oj-flex">
                       <div class="oj-sm-12 oj-flex-item">
                         <strong>
-                          <span>Type:&nbsp;</span>
+                          <span>{Messages.Labels.type()}:&nbsp;</span>
                         </strong>
                         <span>
                           <oj-bind-text value="[[item.data.type]]"></oj-bind-text>
@@ -272,7 +273,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
                     <div class="oj-flex">
                       <div class="oj-sm-12 oj-flex-item">
                         <strong>
-                          <span>Image:&nbsp;</span>
+                          <span>{Messages.Labels.image()}:&nbsp;</span>
                         </strong>
                         <span>
                           <oj-bind-text value="[[item.data.image]]"></oj-bind-text>

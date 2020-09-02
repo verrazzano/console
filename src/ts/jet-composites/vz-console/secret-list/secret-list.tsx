@@ -11,6 +11,7 @@ import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
 import * as ko from "knockout";
 import { ConsoleError } from "vz-console/error/loader";
+import * as Messages from "vz-console/utils/Messages"
 
 class Props {
   modelId: string;
@@ -34,11 +35,11 @@ export class ConsoleSecretList extends VComponent<Props> {
   };
 
   columnArray = [
-    { headerText: "Name", sortable: "enabled", sortProperty: "name" },
-    { headerText: "Type", sortable: "enabled", sortProperty: "type" },
-    { headerText: "Component", sortable: "enabled", sortProperty: "componentName" },
-    { headerText: "Component Type", sortable: "enabled", sortProperty: "componentType" },
-    { headerText: "Usage", sortable: "enabled", sortProperty: "usage" },
+    { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: "name" },
+    { headerText: Messages.Labels.type(), sortable: "enabled", sortProperty: "type" },
+    { headerText: Messages.Labels.comp(), sortable: "enabled", sortProperty: "componentName" },
+    { headerText: Messages.Labels.compType(), sortable: "enabled", sortProperty: "componentType" },
+    { headerText: Messages.Labels.usage(), sortable: "enabled", sortProperty: "usage" },
   ];
 
   data: ko.Observable = ko.observable();
@@ -79,7 +80,7 @@ export class ConsoleSecretList extends VComponent<Props> {
     if (this.state.error) {
       return (
         <ConsoleError
-          context={"Error displaying secret list."}
+          context={Messages.Error.errRenderSecretList()}
           error={this.state.error}
         />
       );

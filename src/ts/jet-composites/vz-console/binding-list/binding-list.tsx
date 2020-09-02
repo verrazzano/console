@@ -6,7 +6,8 @@ import { VerrazzanoApi, Binding,  extractBindingsFromApplications} from "vz-cons
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
 import * as ko from "knockout";
-import { ConsoleError } from "vz-console/error/loader"
+import { ConsoleError } from "vz-console/error/loader";
+import * as Messages from "vz-console/utils/Messages"
 
 class Props {
   modelId?: string;
@@ -29,9 +30,9 @@ export class ConsoleBindingList extends VComponent<Props> {
   };
 
   columnArray = [
-    { headerText: "Name", sortable: "enabled", sortProperty: 'name' },
-    { headerText: "State", sortable: "enabled", sortProperty: 'state' },
-    { headerText: "Model", sortable: "enabled", sortProperty: 'model.name' },
+    { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: 'name' },
+    { headerText: Messages.Labels.state(), sortable: "enabled", sortProperty: 'state' },
+    { headerText: Messages.Labels.model(), sortable: "enabled", sortProperty: 'model.name' },
   ];
 
   data: ko.Observable = ko.observable();
@@ -66,7 +67,7 @@ export class ConsoleBindingList extends VComponent<Props> {
 
   protected render() {
     if (this.state.error) {
-      return <ConsoleError context={"Error displaying binding list"} error={this.state.error}/>
+      return <ConsoleError context={Messages.Error.errRenderBindingList()} error={this.state.error}/>
     }
 
     this.data(

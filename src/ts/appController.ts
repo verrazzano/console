@@ -16,6 +16,8 @@ import "ojs/ojmodule-element";
 import { ojNavigationList } from "ojs/ojnavigationlist";
 import { ojModule } from "ojs/ojmodule-element";
 import { KeycloakJet } from "vz-console/auth/loader";
+import * as Messages from "vz-console/utils/Messages";
+import * as Config from "ojs/ojconfig"
 
 interface CoreRouterDetail {
   label: string;
@@ -25,6 +27,8 @@ interface CoreRouterDetail {
 class RootViewModel {
   manner: ko.Observable<string>;
   message: ko.Observable<string|undefined>;
+  signOut: ko.Observable<string|undefined>;
+  appNav: ko.Observable<string|undefined>;
   smScreen: ko.Observable<boolean>;
   mdScreen: ko.Observable<boolean>;
   router: CoreRouter<CoreRouterDetail>;
@@ -57,6 +61,8 @@ class RootViewModel {
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
     this.message = ko.observable();
+    this.signOut = ko.observable(Messages.Header.signOutLabel())
+    this.appNav = ko.observable(Messages.Header.appNavLabel())
 
     let globalBodyElement: HTMLElement = document.getElementById("globalBody") as HTMLElement;
     globalBodyElement.addEventListener("announce", this.announcementHandler, false);
@@ -74,10 +80,9 @@ class RootViewModel {
 
     const navData = [
       { path: "", redirect: "instance" },
-      { path: "model", detail: { label: "Application Model", iconClass: "" } },
-      { path: "binding", detail: { label: "Application Binding", iconClass: "" } },
-      { path: "instance", detail: { label: "Verrazzano", iconClass: "" } }
-//      { path: "about", detail: { label: "About", iconClass: "oj-ux-ico-information-s" } }
+      { path: "model", detail: { label: Messages.Nav.model(), iconClass: "" } },
+      { path: "binding", detail: { label: Messages.Nav.binding(), iconClass: "" } },
+      { path: "instance", detail: { label: Messages.Nav.instance(), iconClass: "" } }
     ];
     // router setup
     const router = new CoreRouter(navData, {
@@ -113,18 +118,15 @@ class RootViewModel {
       drawerToggleButtonElment.focus();
     });
 
-    // header
-
-    // application Name used in Branding Area
-    this.appName = ko.observable("App Name");
-
+    let locale = Config.getLocale().split("-")[1].toLowerCase();
     // footer
     this.footerLinks = [
-      {name: 'About Oracle', linkId: 'aboutOracle', linkTarget:'http://www.oracle.com/us/corporate/index.html#menu-about'},
-      { name: "Contact Us", id: "contactUs", linkTarget: "http://www.oracle.com/us/corporate/contact/index.html" },
-      { name: "Legal Notices", id: "legalNotices", linkTarget: "http://www.oracle.com/us/legal/index.html" },
-      { name: "Terms Of Use", id: "termsOfUse", linkTarget: "http://www.oracle.com/us/legal/terms/index.html" },
-      { name: "Your Privacy Rights", id: "yourPrivacyRights", linkTarget: "http://www.oracle.com/us/legal/privacy/index.html" },
+      {name: Messages.Footer.copyright(), linkId: 'copyRight', linkTarget:'https://www.oracle.com/' + (locale === 'us' ? "" : locale) + '/legal/copyright.html'},
+      {name: Messages.Footer.aboutOracle(), linkId: 'aboutOracle', linkTarget:'https://www.oracle.com/' + locale + '/corporate/index.html#menu-about'},
+      { name: Messages.Footer.contactUs(), id: "contactUs", linkTarget: "https://www.oracle.com/" + locale + "/corporate/contact/index.html" },
+      { name: Messages.Footer.legalNotices(), id: "legalNotices", linkTarget: "https://www.oracle.com/" + locale + "/legal/index.html" },
+      { name: Messages.Footer.termsOfUse(), id: "termsOfUse", linkTarget: "https://www.oracle.com/" + locale + "/legal/terms/index.html" },
+      { name: Messages.Footer.yourPrivacyRights(), id: "yourPrivacyRights", linkTarget: "https://www.oracle.com/" + locale + "/legal/privacy/index.html" },
     ];
   }
 

@@ -6,6 +6,7 @@ import { VerrazzanoApi, Model } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleModelResources } from "vz-console/model-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
+import * as Messages from "vz-console/utils/Messages"
 
 class Props {
   modelId?: string;
@@ -38,7 +39,7 @@ export class ConsoleModel extends VComponent<Props> {
 
   protected mounted() {
     if (!this.props.modelId) {
-      this.updateState({ error: "Invalid Model Id." });
+      this.updateState({ error: Messages.Error.errInvalidModelId() });
       return;
     }
 
@@ -66,7 +67,7 @@ export class ConsoleModel extends VComponent<Props> {
       return (
         <ConsoleError
           context={
-            "Error displaying verrazzano model " + this.props.modelId + "."
+            Messages.Error.errRenderModel(this.props.modelId)
           }
           error={this.state.error}
         />
@@ -74,7 +75,7 @@ export class ConsoleModel extends VComponent<Props> {
     }
 
     if (this.state.loading) {
-      return <p>Loading..</p>;
+      return <p>{Messages.Labels.loading()}</p>;
     }
 
     return (
@@ -88,16 +89,16 @@ export class ConsoleModel extends VComponent<Props> {
           <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">
-                  <h3>Application Model Details</h3>
+                  <h3>{Messages.Model.heading()}</h3>
               </div>
               <div class="oj-sm-12 oj-flex-item">
-                <h3>General Information</h3>
+                <h3>{Messages.Labels.generalInfo()}</h3>
                 <ConsoleMetadataItem
-                  label="Name"
+                  label={Messages.Labels.name()}
                   value={this.state.model.name}
                 />
                 <ConsoleMetadataItem
-                  label="Description"
+                  label={Messages.Labels.desc()}
                   value={this.state.model.description}
                 />
               </div>

@@ -11,6 +11,7 @@ import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
 import * as ko from "knockout";
 import { ConsoleError } from "vz-console/error/loader";
+import * as Messages from "vz-console/utils/Messages"
 
 class Props {
   modelId: string;
@@ -34,9 +35,9 @@ export class ConsoleIngressList extends VComponent<Props> {
   };
 
   columnArray = [
-    { headerText: "Name", sortable: "enabled", sortProperty: "name" },
-    { headerText: "Prefix", sortable: "enabled", sortProperty: "prefix" },
-    { headerText: "Port", sortable: "enabled", sortProperty: "port" },
+    { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: "name" },
+    { headerText: Messages.Labels.prefix(), sortable: "enabled", sortProperty: "prefix" },
+    { headerText: Messages.Labels.port(), sortable: "enabled", sortProperty: "port" },
   ];
 
   data: ko.Observable = ko.observable();
@@ -49,13 +50,13 @@ export class ConsoleIngressList extends VComponent<Props> {
   protected mounted() {
     if (this.props.bindingId) {
       this.columnArray.push({
-        headerText: "Dns Name",
+        headerText: Messages.Labels.dnsName(),
         sortable: "enabled",
         sortProperty: "dnsName",
       });
     } else {
       this.columnArray.push({
-        headerText: "Component",
+        headerText: Messages.Labels.comp(),
         sortable: "enabled",
         sortProperty: "component",
       });
@@ -91,7 +92,7 @@ export class ConsoleIngressList extends VComponent<Props> {
     if (this.state.error) {
       return (
         <ConsoleError
-          context={"Error displaying ingress list."}
+          context={Messages.Error.errRenderIngList()}
           error={this.state.error}
         />
       );
@@ -105,7 +106,7 @@ export class ConsoleIngressList extends VComponent<Props> {
     );
 
     if (this.state.loading) {
-      return <p>Loading..</p>;
+      return <p>{Messages.Labels.loading()}</p>;
     }
 
     return (

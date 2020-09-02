@@ -7,6 +7,7 @@ import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
 import * as ko from "knockout";
 import { ConsoleError } from "vz-console/error/loader"
+import * as Messages from "vz-console/utils/Messages"
 
 class Props {
   modelId?: string;
@@ -29,8 +30,8 @@ export class ConsoleModelList extends VComponent<Props> {
   };
 
   columnArray = [
-    { headerText: "Name", sortable: "enabled", sortProperty: 'name' },
-    { headerText: "Binding(s)", sortable: "disabled" }
+    { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: 'name' },
+    { headerText: Messages.Labels.bindings(), sortable: "disabled" }
   ];
 
   data: ko.Observable = ko.observable();
@@ -65,7 +66,7 @@ export class ConsoleModelList extends VComponent<Props> {
 
   protected render() {
     if (this.state.error) {
-      return <ConsoleError context={"Error displaying model list"} error={this.state.error}/>
+      return <ConsoleError context={Messages.Error.errRenderModelList()} error={this.state.error}/>
     }
     
     this.data(

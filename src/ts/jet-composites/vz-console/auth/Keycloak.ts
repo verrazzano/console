@@ -4,6 +4,7 @@
 import { AuthStorage } from "./AuthStorage";
 import {KeycloakUrls} from "./KeycloakUrls";
 import {KeycloakJwt} from "./KeycloakJwt";
+import * as Messages from "vz-console/utils/Messages"
 
 /**
  * The Keycloak class is responsible for calling the keycloak API to:
@@ -73,7 +74,7 @@ export class Keycloak {
 
         // Purposely do not resolve promise to give enough time for "window.location.replace" to do its job
       } catch (error) {
-        Keycloak.goToErrorPage("Error sending auth request " + error.toString());
+        Keycloak.goToErrorPage(Messages.Error.errSendAuthReq(error.toString()));
       }
     });
   }
@@ -110,7 +111,7 @@ export class Keycloak {
         });
 
         if (response.status >= 400) {
-          Keycloak.goToErrorPage("Error getting access token: " +  response.statusText);
+          Keycloak.goToErrorPage(Messages.Error.errAccessToken(response.statusText));
         }
         // Wait for body, then get access tokem, refresh token, id token
         const json = await response.json();
@@ -126,7 +127,7 @@ export class Keycloak {
         Keycloak.replaceWindowLocation(s);
 
       } catch (error) {
-        Keycloak.goToErrorPage("Error getting access token: " +  error.toString());
+        Keycloak.goToErrorPage(Messages.Error.errAccessToken(error));
       }
     });
   }
@@ -161,7 +162,7 @@ export class Keycloak {
         });
 
         if (response.status >= 400) {
-          Keycloak.goToErrorPage("Error refreshing token: " +  response.statusText);
+          Keycloak.goToErrorPage(Messages.Error.errRefreshToken(response.statusText));
         }
 
         // Wait for body, then get access tokem, refresh token, id token
@@ -178,7 +179,7 @@ export class Keycloak {
         }
         AuthStorage.storeIdAndTokens(json);
       } catch (error) {
-        Keycloak.goToErrorPage("Error refreshing token: " + error.toString());
+        Keycloak.goToErrorPage(Messages.Error.errRefreshToken(error));
       }
   }
 
@@ -212,13 +213,13 @@ export class Keycloak {
         });
 
         if (response.status >= 400) {
-          Keycloak.goToErrorPage("Error logging out: " +  response.statusText);
+          Keycloak.goToErrorPage(Messages.Error.errLoggingOut(response.statusText));
         }
 
         Keycloak.replaceWindowLocation(urls.getCallbackUrl());
 
       } catch (error) {
-        Keycloak.goToErrorPage("Error logging out: " + error.toString())
+        Keycloak.goToErrorPage(Messages.Error.errLoggingOut(error.toString()))
       }
     });
   }
@@ -334,7 +335,7 @@ export class Keycloak {
     AuthStorage.clearAuthStorage();
 
     const s = KeycloakUrls.getInstance().getHomePageUrl();
-    console.log("VZ - error calling keycloak " + errMsg);
+    console.log(Messages.Error.errLoggingOut(errMsg));
     Keycloak.replaceWindowLocation(s);
   }
 

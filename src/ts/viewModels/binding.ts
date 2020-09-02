@@ -3,6 +3,7 @@
 import "vz-console/binding/loader";
 import { getQueryParam } from "vz-console/utils/loader"
 import * as AccUtils from "../accUtils";
+import * as Messages from "vz-console/utils/Messages";
 class BindingViewModel {
   bindingId: string | null;
   constructor() {
@@ -18,7 +19,7 @@ class BindingViewModel {
    * after being disconnected.
    */
   connected(): void {
-    AccUtils.announce("Bindings page loaded.");
+    AccUtils.announce(Messages.Binding.bindingsPageLoaded());
     document.title = "Verrazzano Binding";
   }
 

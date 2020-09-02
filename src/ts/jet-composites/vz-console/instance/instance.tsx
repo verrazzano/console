@@ -7,6 +7,7 @@ import { Instance } from "vz-console/service/types";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader"
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader"
 import { ConsoleError } from "vz-console/error/loader"
+import * as Messages from "vz-console/utils/Messages"
 
 class Props {}
 
@@ -53,7 +54,7 @@ export class ConsoleInstance extends VComponent<Props> {
 
   protected render() {
     if (this.state.error) {
-      return <ConsoleError context={"Error displaying verrazzano instance"} error={this.state.error}/>
+      return <ConsoleError context={Messages.Error.errRenderInstance()} error={this.state.error}/>
     }
 
     if (this.state.loading) {
@@ -71,22 +72,22 @@ export class ConsoleInstance extends VComponent<Props> {
           <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">
-                <h4>Instance Details</h4>
+                <h4>{Messages.Instance.instanceDetails()}</h4>
               </div>
               <div class="oj-sm-6 oj-flex-item">
-                <h3>General Information</h3>
-                <ConsoleMetadataItem label="Status" value={this.state.instance.status}/>
-                <ConsoleMetadataItem label="Version" value={this.state.instance.version}/>
-                <ConsoleMetadataItem label="Management Cluster" value={this.state.instance.mgmtCluster}/>
-                <ConsoleMetadataItem label="Rancher" value={this.state.instance.rancherUrl} link={true}/>
-                <ConsoleMetadataItem label="Keycloak" value={this.state.instance.keyCloakUrl} link={true}/>
+                <h3>{Messages.Labels.generalInfo()}</h3>
+                <ConsoleMetadataItem label={Messages.Labels.status()} value={this.state.instance.status}/>
+                <ConsoleMetadataItem label={Messages.Labels.version()} value={this.state.instance.version}/>
+                <ConsoleMetadataItem label={Messages.Labels.mgmtCluster()} value={this.state.instance.mgmtCluster}/>
+                <ConsoleMetadataItem label={Messages.Labels.rancher()} value={this.state.instance.rancherUrl} link={true}/>
+                <ConsoleMetadataItem label={Messages.Labels.keycloak()} value={this.state.instance.keyCloakUrl} link={true}/>
               </div>
               <div class="oj-sm-6 oj-flex-item">
                 <h3>System Telemetry</h3>
-                <ConsoleMetadataItem label="Kibana" value={this.state.instance.kibanaUrl} link={true}/>
-                <ConsoleMetadataItem label="Grafana" value={this.state.instance.grafanaUrl} link={true}/>
-                <ConsoleMetadataItem label="Prometheus" value={this.state.instance.prometheusUrl} link={true}/>
-                <ConsoleMetadataItem label="Elasticsearch" value={this.state.instance.elasticUrl} link={true}/>
+                <ConsoleMetadataItem label={Messages.Labels.kibana()} value={this.state.instance.kibanaUrl} link={true}/>
+                <ConsoleMetadataItem label={Messages.Labels.grafana()} value={this.state.instance.grafanaUrl} link={true}/>
+                <ConsoleMetadataItem label={Messages.Labels.prom()} value={this.state.instance.prometheusUrl} link={true}/>
+                <ConsoleMetadataItem label={Messages.Labels.es()} value={this.state.instance.elasticUrl} link={true}/>
               </div>
             </div>
           </div>
