@@ -48,8 +48,7 @@ unit-test: setup-npm
 	ls -l web/js/libs/oj
 	echo $$PATH
 	sudo env "PATH=$$PATH" npm test
-	#echo 'kernel.unprivileged_userns_clone=1' > /etc/sysctl.d/00-local-userns.conf
-	#service procps restart
+
 .PHONY: ojet-build
 ojet-build: setup-npm
 	export NVM_DIR="$$HOME/.nvm" && \
