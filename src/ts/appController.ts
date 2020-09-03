@@ -63,10 +63,7 @@ class RootViewModel {
     this.message = ko.observable();
     this.signOut = ko.observable(Messages.Header.signOutLabel())
     this.appNav = ko.observable(Messages.Header.appNavLabel())
-
-    let globalBodyElement: HTMLElement = document.getElementById("globalBody") as HTMLElement;
-    globalBodyElement.addEventListener("announce", this.announcementHandler, false);
-
+    
     // media queries for repsonsive layouts
     let smQuery: string | null = ResponsiveUtils.getFrameworkQuery("sm-only");
     if (smQuery){
@@ -97,26 +94,6 @@ class RootViewModel {
     // Setup the navDataProvider with the routes, excluding the first redirected
     // route.
     this.navDataProvider = new ArrayDataProvider(navData.slice(1), {keyAttributes: "path"});
-
-    // drawer
-
-    this.drawerParams = {
-      displayMode: "push",
-      selector: "#navDrawer",
-      content: "#pageContent"
-    };
-
-    // close offcanvas on medium and larger screens
-    this.mdScreen.subscribe(() => {
-      OffcanvasUtils.close(this.drawerParams);
-    });
-
-    // add a close listener so we can move focus back to the toggle button when the drawer closes
-    let navDrawerElement: HTMLElement = document.querySelector("#navDrawer") as HTMLElement;
-    navDrawerElement.addEventListener("ojclose", () => {
-      let drawerToggleButtonElment: HTMLElement = document.querySelector("#drawerToggleButton") as HTMLElement;
-      drawerToggleButtonElment.focus();
-    });
 
     let locale = Config.getLocale().split("-")[1].toLowerCase();
     // footer

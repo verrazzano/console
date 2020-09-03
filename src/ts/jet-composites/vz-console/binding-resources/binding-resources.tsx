@@ -7,21 +7,21 @@ import { ConsoleIngressList } from "vz-console/ingress-list/loader";
 import { ConsoleSecretList } from "vz-console/secret-list/loader";
 import { ConsoleBindingComponents } from "vz-console/binding-components/loader";
 import * as Messages from "vz-console/utils/Messages";
+import { Binding } from "vz-console/service/types";
 
 class State {
   selectedItem: string;
 }
 
 class Props {
-  bindingId: string;
-  modelId: string;
+  binding: Binding
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-binding-resources")
-export class ConsoleBindingResources extends VComponent<Props> {
+export class ConsoleBindingResources extends VComponent<Props, State> {
   state: State = {
     selectedItem: "components",
   };
@@ -35,22 +35,22 @@ export class ConsoleBindingResources extends VComponent<Props> {
     let ResourceList: Element;
     switch (this.state.selectedItem) {
       case "components": {
-        ResourceList = <ConsoleBindingComponents bindingId={this.props.bindingId}/>;
+        ResourceList = <ConsoleBindingComponents components={this.props.binding.components}/>;
         break;
       }
 
       case "connections": {
-        ResourceList = <ConsoleConnectionList modelId={this.props.modelId} bindingId={this.props.bindingId}/>;
+        ResourceList = <ConsoleConnectionList connections={this.props.binding.connections}/>;
         break;
       }
 
       case "ingresses": {
-        ResourceList = <ConsoleIngressList modelId={this.props.modelId} bindingId={this.props.bindingId}/>;
+        ResourceList = <ConsoleIngressList ingresses={this.props.binding.ingresses} isBindingIngress={true}/>;
         break;
       }
 
       case "secrets": {
-        ResourceList = <ConsoleSecretList modelId={this.props.modelId} bindingId={this.props.bindingId}/>;
+        ResourceList = <ConsoleSecretList secrets={this.props.binding.secrets}/>;
         break;
       }
 

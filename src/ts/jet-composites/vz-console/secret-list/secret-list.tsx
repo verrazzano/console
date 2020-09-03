@@ -2,26 +2,13 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
-import {
-  VerrazzanoApi,
-  extractModelSecretsFromApplications,
-  ModelSecret,
-} from "vz-console/service/loader";
+import { ComponentSecret } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
-import * as ko from "knockout";
-import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages"
 
 class Props {
-  modelId: string;
-  bindingId?: string;
-}
-
-class State {
-  secrets?: [ModelSecret];
-  loading?: boolean;
-  error?: string;
+  secrets?: ComponentSecret[];
 }
 
 /**
@@ -29,10 +16,6 @@ class State {
  */
 @customElement("vz-console-secret-list")
 export class ConsoleSecretList extends VComponent<Props> {
-  verrazzanoApi: VerrazzanoApi;
-  state: State = {
-    loading: true,
-  };
 
   columnArray = [
     { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: "name" },
@@ -42,64 +25,14 @@ export class ConsoleSecretList extends VComponent<Props> {
     { headerText: Messages.Labels.usage(), sortable: "enabled", sortProperty: "usage" },
   ];
 
-  data: ko.Observable = ko.observable();
-
-  constructor() {
-    super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
-  }
-
-  protected mounted() {
-    this.getData();
-  }
-
-  async getData() {
-    this.updateState({ loading: true });
-    Promise.all([this.verrazzanoApi.listApplications(),this.verrazzanoApi.listSecrets()])
-    .then(([applications, rawSecrets]) =>
-        this.updateState({
-          loading: false,
-          secrets: extractModelSecretsFromApplications(
-            applications,
-            rawSecrets,
-            this.props.modelId,
-            this.props.bindingId
-          ),
-        })
-      )
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-      });
-  }
-
   protected render() {
-    if (this.state.error) {
-      return (
-        <ConsoleError
-          context={Messages.Error.errRenderSecretList()}
-          error={this.state.error}
-        />
-      );
-    }
-
-    this.data(
-      new ArrayDataProvider(this.state.secrets ? this.state.secrets : [], {
-        keyAttributes: "name",
-        implicitSort: [{ attribute: "name", direction: "ascending" }],
-      })
-    );
-
-    if (this.state.loading) {
-      return <p>Loading..</p>;
-    }
 
     return (
       <oj-table
-        data={this.data()}
+        data={new ArrayDataProvider(this.props.secrets, {
+          keyAttributes: "name",
+          implicitSort: [{ attribute: "name", direction: "ascending" }],
+        })}
         columns={this.columnArray}
         aria-labelledby="resources"
         class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"

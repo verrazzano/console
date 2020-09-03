@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { VerrazzanoApi, Model } from "vz-console/service/loader";
+import { VerrazzanoApi, Model, extractSecretsForModelComponents } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleModelResources } from "vz-console/model-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
@@ -22,7 +22,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-model")
-export class ConsoleModel extends VComponent<Props> {
+export class ConsoleModel extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
@@ -48,10 +48,13 @@ export class ConsoleModel extends VComponent<Props> {
 
   async getData() {
     this.updateState({ loading: true });
-    this.verrazzanoApi
-      .getModel(this.props.modelId)
-      .then((response) => {
-        this.updateState({ loading: false, model: response });
+    Promise.all([
+      this.verrazzanoApi.getModel(this.props.modelId),
+      this.verrazzanoApi.listSecrets(),
+    ])
+      .then(([model, secrets]) => {
+        model.secrets = extractSecretsForModelComponents(model, secrets);
+        this.updateState({ loading: false, model });
       })
       .catch((error) => {
         let errorMessage = error;
@@ -66,9 +69,7 @@ export class ConsoleModel extends VComponent<Props> {
     if (this.state.error) {
       return (
         <ConsoleError
-          context={
-            Messages.Error.errRenderModel(this.props.modelId)
-          }
+          context={Messages.Error.errRenderModel(this.props.modelId)}
           error={this.state.error}
         />
       );
@@ -86,10 +87,10 @@ export class ConsoleModel extends VComponent<Props> {
           </div>
         </div>
         <div class="oj-flex">
-          <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel">
+          <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel bg">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">
-                  <h3>{Messages.Model.heading()}</h3>
+                <h3>{Messages.Model.heading()}</h3>
               </div>
               <div class="oj-sm-12 oj-flex-item">
                 <h3>{Messages.Labels.generalInfo()}</h3>
@@ -105,7 +106,7 @@ export class ConsoleModel extends VComponent<Props> {
             </div>
           </div>
         </div>
-        <ConsoleModelResources modelId={this.props.modelId} />
+        <ConsoleModelResources model={this.state.model} />
       </div>
     );
   }

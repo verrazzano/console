@@ -32,7 +32,7 @@ export = {
     instance : {
         "details" : "Instance Details",
         "instancePageLoaded": "Instance page loaded.",
-        "instanceHeading": "Verrazzano Instance",
+        "instanceHeading": "Verrazzano",
         "appModels": "Application Models",
         "appBindings": "Application Bindings",
     },

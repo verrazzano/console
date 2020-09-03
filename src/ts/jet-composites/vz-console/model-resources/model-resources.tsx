@@ -8,6 +8,7 @@ import { ConsoleIngressList } from "vz-console/ingress-list/loader";
 import { ConsoleSecretList } from "vz-console/secret-list/loader";
 import { ConsoleModelComponents } from "vz-console/model-components/loader";
 import * as Messages from "vz-console/utils/Messages"
+import { Model } from "vz-console/service/types";
 
 
 class State {
@@ -15,20 +16,16 @@ class State {
 }
 
 class Props {
-  modelId: string;
+  model?: Model;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-model-resources")
-export class ConsoleModelResources extends VComponent<Props> {
+export class ConsoleModelResources extends VComponent<Props, State> {
   state: State = {
     selectedItem: "bindings",
-  };
-
-  props: Props = {
-    modelId: "",
   };
 
   @listener({ capture: true, passive: true })
@@ -40,27 +37,27 @@ export class ConsoleModelResources extends VComponent<Props> {
     let ResourceList;
     switch (this.state.selectedItem) {
       case "bindings": {
-        ResourceList = <ConsoleBindingList modelId={this.props.modelId} />;
+        ResourceList = <ConsoleBindingList bindings={this.props.model.bindings} />;
         break;
       }
 
       case "components": {
-        ResourceList = <ConsoleModelComponents modelId={this.props.modelId} />;
+        ResourceList = <ConsoleModelComponents components={this.props.model.modelComponents} />;
         break;
       }
 
       case "connections": {
-        ResourceList = <ConsoleConnectionList modelId={this.props.modelId}/>;
+        ResourceList = <ConsoleConnectionList connections={this.props.model.connections}/>;
         break;
       }
 
       case "ingresses": {
-        ResourceList = <ConsoleIngressList modelId={this.props.modelId}/>;
+        ResourceList = <ConsoleIngressList ingresses={this.props.model.ingresses}/>;
         break;
       }
 
       case "secrets": {
-        ResourceList = <ConsoleSecretList modelId={this.props.modelId}/>;
+        ResourceList = <ConsoleSecretList secrets={this.props.model.secrets}/>;
         break;
       }
 
@@ -98,6 +95,7 @@ export class ConsoleModelResources extends VComponent<Props> {
               </li>
             </ul>
           </oj-navigation-list>
+          <div id="filters"></div>
         </div>
         <div class="oj-sm-1 oj-flex-item"></div>
         <div class="oj-sm-9 oj-flex-item">{ResourceList}</div>

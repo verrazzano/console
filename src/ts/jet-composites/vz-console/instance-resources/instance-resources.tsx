@@ -5,6 +5,12 @@ import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import { ConsoleBindingList } from "vz-console/binding-list/loader";
 import { ConsoleModelList } from "vz-console/model-list/loader";
 import * as Messages from "vz-console/utils/Messages"
+import { Model, Binding } from "vz-console/service/types";
+
+class Props {
+  models?: [Model]
+  bindings?: [Binding]
+}
 
 class State {
   selectedItem: string;
@@ -14,7 +20,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-instance-resources")
-export class ConsoleInstanceResources extends VComponent {
+export class ConsoleInstanceResources extends VComponent<Props, State> {
   state: State = {
     selectedItem: "models",
   };
@@ -27,9 +33,9 @@ export class ConsoleInstanceResources extends VComponent {
   protected render() {
     let ResourceList =
       this.state.selectedItem == "models" ? (
-        <ConsoleModelList />
+        <ConsoleModelList models={this.props.models}/>
       ) : (
-        <ConsoleBindingList />
+        <ConsoleBindingList bindings={this.props.bindings}/>
       );
     return (
       <div class="oj-flex">

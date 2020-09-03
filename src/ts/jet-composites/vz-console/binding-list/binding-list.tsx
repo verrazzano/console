@@ -2,21 +2,13 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
-import { VerrazzanoApi, Binding,  extractBindingsFromApplications} from "vz-console/service/loader";
+import { Binding} from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
-import * as ko from "knockout";
-import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages"
 
 class Props {
-  modelId?: string;
-}
-
-class State {
   bindings?: [Binding];
-  loading?: boolean;
-  error?: string;
 }
 
 /**
@@ -24,10 +16,6 @@ class State {
  */
 @customElement("vz-console-binding-list")
 export class ConsoleBindingList extends VComponent<Props> {
-  verrazzanoApi: VerrazzanoApi;
-  state: State = {
-    loading: true,
-  };
 
   columnArray = [
     { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: 'name' },
@@ -35,55 +23,13 @@ export class ConsoleBindingList extends VComponent<Props> {
     { headerText: Messages.Labels.model(), sortable: "enabled", sortProperty: 'model.name' },
   ];
 
-  data: ko.Observable = ko.observable();
-
-  constructor() {
-    super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
-  }
-
-  protected mounted() {
-    this.getData();
-  }
-
-  async getData() {
-    this.updateState({ loading: true });
-    this.verrazzanoApi
-      .listApplications()
-      .then((response) =>
-        this.updateState({
-          loading: false,
-          bindings: extractBindingsFromApplications(response, "", this.props.modelId),
-        })
-      )
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-            errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-      });
-  }
-
   protected render() {
-    if (this.state.error) {
-      return <ConsoleError context={Messages.Error.errRenderBindingList()} error={this.state.error}/>
-    }
-
-    this.data(
-      new ArrayDataProvider(this.state.bindings ? this.state.bindings : [], {
-        keyAttributes: "name",
-        implicitSort: [{ attribute: "name", direction: "ascending" }],
-      })
-    );
-
-    if (this.state.loading) {
-      return <p>Loading..</p>;
-    }
-
     return (
       <oj-table
-        data={this.data()}
+        data={new ArrayDataProvider(this.props.bindings, {
+          keyAttributes: "name",
+          implicitSort: [{ attribute: "name", direction: "ascending" }],
+        })}
         columns={this.columnArray}
         aria-labelledby="resources"
         class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"

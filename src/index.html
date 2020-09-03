@@ -41,32 +41,8 @@
     <!-- This is where you would add any app specific styling -->
     <link rel="stylesheet" href="css/app.css" type="text/css"/>
   </head>
-  <body class="oj-web-applayout-body">
-    <!-- Template for rendering navigation items shared between nav bar and nav list -->
-    <script type="text/html" id="navTemplate">
-      <li><a href="#">
-        <span :class="[[$data.detail.iconClass]]"></span>
-        <oj-bind-text value="[[$data.detail.label]]"></oj-bind-text>
-      </a></li>
-    </script>
-
-    <div id="globalBody" class="oj-offcanvas-outer-wrapper oj-offcanvas-page">
-
-      <div id="announce" tabindex="-1" class="sendOffScreen" :aria-live="[[manner]]" aria-atomic="true">
-        <p id="ariaLiveMessage"><oj-bind-text value="[[message]]"></oj-bind-text></p>
-      </div>
-
-      <!--
-         ** Oracle JET V9.0.0 web application navigation drawer pattern.
-         ** Please see the demos under Cookbook/Patterns/App Shell: Web
-         ** and the CSS documentation under Support/API Docs/Non-Component Styling
-         ** on the JET website for more information on how to use this pattern.
-         ** The off-canvas section is used when the browser is resized to a smaller media
-         ** query size for a phone format and hidden until a user clicks on
-         ** the header hamburger icon.
-      -->
-      <div id="navDrawer" role="navigation" class="oj-contrast-marker oj-web-applayout-offcanvas oj-offcanvas-start">
-      </div>
+  <body class="oj-web-applayout-body bg">
+    <div id="globalBody">
       <div id="pageContent" class="oj-web-applayout-page">
         <!--
            ** Oracle JET V9.0.0 web application header pattern.
@@ -74,15 +50,8 @@
            ** and the CSS documentation under Support/API Docs/Non-Component Styling
            ** on the JET website for more information on how to use this pattern.
         -->
-        <header role="banner" class="oj-web-applayout-header">
+        <header role="banner" class="oj-web-applayout-header header-bar">
           <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
-            <!-- Offcanvas toggle button -->
-            <div class="oj-flex-bar-start oj-md-hide">
-              <oj-button id="drawerToggleButton" class="oj-button-lg" on-oj-action="[[toggleDrawer]]" chroming="borderless" display="icons">
-                <span slot="startIcon" class="oj-web-applayout-offcanvas-icon"></span>
-                <span><oj-bind-text value="[[appNav]]"></oj-bind-text></span>
-              </oj-button>
-            </div>
             <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
               <span role="img" class="oj-icon vz-icon" title="Verrazzano" alt="Verrazzano Logo" onclick="window.location='/'"></span>
             </div>
@@ -100,7 +69,7 @@
             </div>
           </div>
         </header>
-        <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content" config="[[moduleAdapter.koObservableConfig]]">
+        <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content bg" config="[[moduleAdapter.koObservableConfig]]">
         </oj-module>
         <footer class="oj-web-applayout-footer" role="contentinfo">
           <div class="oj-web-applayout-footer-item oj-web-applayout-max-width">

@@ -3,16 +3,19 @@
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
-import { Instance } from "vz-console/service/types";
+import { Instance, Model, Binding } from "vz-console/service/types";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader"
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader"
 import { ConsoleError } from "vz-console/error/loader"
 import * as Messages from "vz-console/utils/Messages"
+import { extractModelsFromApplications, extractBindingsFromApplications } from "vz-console/service/common";
 
 class Props {}
 
 class State {
   instance?: Instance;
+  models?: Model[]
+  bindings?: Binding[]
   loading?: boolean;
   error?: string;
 }
@@ -21,7 +24,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-instance")
-export class ConsoleInstance extends VComponent<Props> {
+export class ConsoleInstance extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
@@ -38,18 +41,21 @@ export class ConsoleInstance extends VComponent<Props> {
 
   async getData() {
     this.updateState({ loading: true });
-    this.verrazzanoApi
-      .getInstance("0")
-      .then((response) =>
-        this.updateState({ loading: false, instance: response })
-      )
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-            errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-      });
+    Promise.all([this.verrazzanoApi.getInstance("0"),this.verrazzanoApi.listApplications()])
+    .then(([instance, applications]) => {
+      this.updateState({ 
+        loading: false, 
+        instance: instance, 
+        models: extractModelsFromApplications(applications), 
+        bindings: extractBindingsFromApplications(applications) })
+    })
+    .catch((error) => {
+      let errorMessage = error;
+      if (error && error.message) {
+          errorMessage = error.message;
+      }
+      this.updateState({ error: errorMessage });
+    });
   }
 
   protected render() {
@@ -64,12 +70,7 @@ export class ConsoleInstance extends VComponent<Props> {
     return (
       <div>
         <div class="oj-flex">
-          <div class="oj-sm-12 oj-flex-item">
-            <h2>{this.state.instance.name}</h2>
-          </div>
-        </div>
-        <div class="oj-flex">
-          <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel">
+          <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel bg">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">
                 <h4>{Messages.Instance.instanceDetails()}</h4>
@@ -92,7 +93,7 @@ export class ConsoleInstance extends VComponent<Props> {
             </div>
           </div>
         </div>
-        <ConsoleInstanceResources/>
+        <ConsoleInstanceResources models={this.state.models} bindings={this.state.bindings}/>
       </div>
     );
   }

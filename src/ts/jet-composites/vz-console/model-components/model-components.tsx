@@ -4,7 +4,7 @@
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import {
   VerrazzanoApi,
-  ModelComponent,
+  Component,
   ComponentType,
 } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
@@ -23,25 +23,21 @@ import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages"
 
 class Props {
-  modelId: string;
+  components: [Component];
 }
 
 class State {
   originalComponents?: Model.Collection;
   components?: Model.Collection;
-  loading?: boolean;
-  error?: string;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-model-components")
-export class ConsoleModelComponents extends VComponent<Props> {
-  verrazzanoApi: VerrazzanoApi;
-  state: State = {
-    loading: true,
-  };
+export class ConsoleModelComponents extends VComponent<Props, State> {
+
+  state: State = {}
 
   options = [
     { value: "name", label: "Name" },
@@ -59,19 +55,10 @@ export class ConsoleModelComponents extends VComponent<Props> {
 
   currentTypeFilter = ko.observable([ComponentType.ANY]);
 
-  constructor() {
-    super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
-  }
-
-  protected mounted() {
-    this.getData();
-  }
-
   compare = (left: Model.Model, right: Model.Model): number => {
     let result = 0;
-    const leftComponent = left.attributes as ModelComponent;
-    const rightComponent = right.attributes as ModelComponent;
+    const leftComponent = left.attributes as Component;
+    const rightComponent = right.attributes as Component;
     switch (this.currentSort()) {
       case "default":
       case "name": {
@@ -104,7 +91,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
     if (components) {
       let models = components.models;
       models = models.filter((model) => {
-        let component = model.attributes as ModelComponent;
+        let component = model.attributes as Component;
         let typeFilter = this.currentTypeFilter();
         if (typeFilter.includes(ComponentType.ANY) || typeFilter.includes(component.type)) {
           return true;
@@ -118,40 +105,25 @@ export class ConsoleModelComponents extends VComponent<Props> {
     return components;
   };
 
-  async getData() {
-    this.updateState({ loading: true });
+  protected mounted() {
     let models: Model.Model[] = new Array();
-    this.verrazzanoApi
-      .getModel(this.props.modelId)
-      .then((model) => {
-        model.modelComponents
-          .filter((component) => {
-            return [
-              ComponentType.WLS,
-              ComponentType.COH,
-              ComponentType.MS,
-            ].includes(component.type);
-          })
-          .forEach((component) => {
-            models.push(new Model.Model(component));
-          });
-      })
-      .then(() => {
-        this.updateState({
-          loading: false,
-          components: new Model.Collection(models),
-          originalComponents: new Model.Collection(models),
-        });
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-        return;
-      });
+    this.props.components.filter((component) => {
+      return [
+        ComponentType.WLS,
+        ComponentType.COH,
+        ComponentType.MS,
+      ].includes(component.type);
+    })
+    .forEach((component) => {
+        models.push(new Model.Model(component));
+    });
+  
+    this.updateState({
+      components: new Model.Collection(models),
+      originalComponents: new Model.Collection(models),
+    });
   }
+
 
   @listener({ capture: true, passive: true })
   private handleTypeFilterChanged(event: CustomEvent) {
@@ -173,29 +145,28 @@ export class ConsoleModelComponents extends VComponent<Props> {
   }
 
   protected render() {
-    if (this.state.error) {
-      return (
-        <ConsoleError
-          context={Messages.Error.errRenderModelComponents()}
-          error={this.state.error}
-        />
-      );
-    }
-
-    if (this.state.loading) {
-      return <p>{Messages.Labels.loading()}</p>;
-    }
-
     this.dataProvider(
       new PagingDataProviderView(
         new CollectionDataProvider(
-          this.state.components
+          this.state && this.state.components
             ? this.state.components
             : new Model.Collection([])
         )
       )
     );
-
+    
+    
+    document.getElementById("filters").appendChild(
+      <ConsoleFilter
+                label={Messages.Labels.type()}
+                options={[
+                  { label: ComponentType.WLS, value: ComponentType.WLS },
+                  { label: ComponentType.COH, value: ComponentType.COH },
+                  { label: ComponentType.MS, value: ComponentType.MS },
+                ]}
+                onValueChanged={this.handleTypeFilterChanged}
+              />
+    )
     return (
       <div class="oj-flex">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">

@@ -1,8 +1,8 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { VerrazzanoApi, Binding } from "vz-console/service/loader";
+import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { VerrazzanoApi, Binding, Secret, extractSecretsForBindingComponents } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleBindingResources } from "vz-console/binding-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
@@ -15,6 +15,7 @@ class Props {
 
 class State {
   binding?: Binding;
+  secrets?: Secret[]
   loading?: boolean;
   error?: string;
 }
@@ -23,7 +24,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-binding")
-export class ConsoleBinding extends VComponent<Props> {
+export class ConsoleBinding extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
@@ -49,10 +50,13 @@ export class ConsoleBinding extends VComponent<Props> {
 
   async getData() {
     this.updateState({ loading: true });
-    this.verrazzanoApi
-      .getBinding(this.props.bindingId)
-      .then((response) => {
-        this.updateState({ loading: false, binding: response });
+    Promise.all([
+      this.verrazzanoApi.getBinding(this.props.bindingId),
+      this.verrazzanoApi.listSecrets(),
+    ])
+      .then(([binding, secrets]) => {
+        binding.secrets = extractSecretsForBindingComponents(binding, secrets);
+        this.updateState({ loading: false, binding });
       })
       .catch((error) => {
         let errorMessage = error;
@@ -67,9 +71,7 @@ export class ConsoleBinding extends VComponent<Props> {
     if (this.state.error) {
       return (
         <ConsoleError
-          context={
-            Messages.Error.errRenderBinding(this.props.bindingId)
-          }
+          context={Messages.Error.errRenderBinding(this.props.bindingId)}
           error={this.state.error}
         />
       );
@@ -87,10 +89,10 @@ export class ConsoleBinding extends VComponent<Props> {
           </div>
         </div>
         <div class="oj-flex">
-          <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel">
+          <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel bg">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">
-                  <h3>{Messages.Binding.heading()}</h3>
+                <h3>{Messages.Binding.heading()}</h3>
               </div>
               <div class="oj-sm-6 oj-flex-item">
                 <h3>{Messages.Labels.generalInfo()}</h3>
@@ -112,12 +114,12 @@ export class ConsoleBinding extends VComponent<Props> {
               </div>
               <div class="oj-sm-6 oj-flex-item">
                 <h3>{Messages.Binding.telemetry()}</h3>
-                <ConsoleBindingVmiLinks bindingId={this.props.bindingId}/>
+                <ConsoleBindingVmiLinks vmiInstances={this.state.binding.vmiInstances} />
               </div>
             </div>
           </div>
         </div>
-        <ConsoleBindingResources bindingId={this.state.binding.id} modelId={this.state.binding.model.id}/>
+        <ConsoleBindingResources binding={this.state.binding} />
       </div>
     );
   }

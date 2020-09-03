@@ -1,22 +1,14 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { VerrazzanoApi, Model, extractModelsFromApplications} from "vz-console/service/loader";
+import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { Model} from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
-import * as ko from "knockout";
-import { ConsoleError } from "vz-console/error/loader"
 import * as Messages from "vz-console/utils/Messages"
 
 class Props {
-  modelId?: string;
-}
-
-class State {
   models?: [Model];
-  loading?: boolean;
-  error?: string;
 }
 
 /**
@@ -24,65 +16,18 @@ class State {
  */
 @customElement("vz-console-model-list")
 export class ConsoleModelList extends VComponent<Props> {
-  verrazzanoApi: VerrazzanoApi;
-  state: State = {
-    loading: true,
-  };
-
   columnArray = [
     { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: 'name' },
     { headerText: Messages.Labels.bindings(), sortable: "disabled" }
   ];
 
-  data: ko.Observable = ko.observable();
-
-  constructor() {
-    super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
-  }
-
-  protected mounted() {
-    this.getData();
-  }
-
-  async getData() {
-    this.updateState({ loading: true });
-    this.verrazzanoApi
-      .listApplications()
-      .then((response) =>
-        this.updateState({
-          loading: false,
-          models: extractModelsFromApplications(response),
-        })
-      )
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-            errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-      });
-  }
-
   protected render() {
-    if (this.state.error) {
-      return <ConsoleError context={Messages.Error.errRenderModelList()} error={this.state.error}/>
-    }
-    
-    this.data(
-      new ArrayDataProvider(this.state.models ? this.state.models : [], {
-        keyAttributes: "name",
-        implicitSort: [{ attribute: "name", direction: "ascending" }],
-      })
-    );
-
-    if (this.state.loading) {
-      return <p>Loading..</p>;
-    } 
-
     return (
       <oj-table
-        data={this.data()}
+        data={new ArrayDataProvider(this.props.models, {
+          keyAttributes: "name",
+          implicitSort: [{ attribute: "name", direction: "ascending" }],
+        })}
         columns={this.columnArray}
         aria-labelledby="resources"
         class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"

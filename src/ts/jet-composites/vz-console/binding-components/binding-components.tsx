@@ -3,7 +3,6 @@
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import {
-  VerrazzanoApi,
   BindingComponent,
   ComponentType,
   Status,
@@ -18,31 +17,24 @@ import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
-import { ConsoleError } from "vz-console/error/loader";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages"
 
 class Props {
-  bindingId: string;
+  components: [BindingComponent];
 }
 
 class State {
   originalComponents?: Model.Collection;
   components?: Model.Collection;
-  loading?: boolean;
-  error?: string;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-binding-components")
-export class ConsoleBindingComponents extends VComponent<Props> {
-  verrazzanoApi: VerrazzanoApi;
-  state: State = {
-    loading: true,
-  };
-
+export class ConsoleBindingComponents extends VComponent<Props,State> {
+  state: State = {}
   options = [
     { value: "name", label: "Name" },
     { value: "namespace", label: "Namespace" },
@@ -63,15 +55,6 @@ export class ConsoleBindingComponents extends VComponent<Props> {
   currentTypeFilter = ko.observable([ComponentType.ANY]);
 
   currentStatusFilter = ko.observable([Status.Any]);
-
-  constructor() {
-    super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
-  }
-
-  protected mounted() {
-    this.getData();
-  }
 
   compare = (left: Model.Model, right: Model.Model): number => {
     let result = 0;
@@ -147,42 +130,23 @@ export class ConsoleBindingComponents extends VComponent<Props> {
     return components;
   };
 
-  async getData() {
-    this.updateState({ loading: true });
+  protected mounted() {
     let models: Model.Model[] = new Array();
-    this.verrazzanoApi
-      .getBinding(this.props.bindingId)
-      .then((binding) => {
-        binding.components
-          .filter((component) => {
-            return [
-              ComponentType.WLS,
-              ComponentType.COH,
-              ComponentType.MS,
-            ].includes(component.type);
-          })
-          .forEach((component) => {
-            this.verrazzanoApi.getComponentStatus(component).then((status) => {
-              component.status = status;
-              models.push(new Model.Model(component));
-            });
-          });
-      })
-      .then(() => {
-        this.updateState({
-          loading: false,
-          components: new Model.Collection(models),
-          originalComponents: new Model.Collection(models),
-        });
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-        return;
-      });
+    this.props.components.filter((component) => {
+      return [
+        ComponentType.WLS,
+        ComponentType.COH,
+        ComponentType.MS,
+      ].includes(component.type);
+    })
+    .forEach((component) => {
+        models.push(new Model.Model(component));
+    });
+  
+    this.updateState({
+      components: new Model.Collection(models),
+      originalComponents: new Model.Collection(models),
+    });
   }
 
   @listener({ capture: true, passive: true })
@@ -218,19 +182,6 @@ export class ConsoleBindingComponents extends VComponent<Props> {
   }
 
   protected render() {
-    if (this.state.error) {
-      return (
-        <ConsoleError
-          context={Messages.Error.errRenderBindingComponents()}
-          error={this.state.error}
-        />
-      );
-    }
-
-    if (this.state.loading) {
-      return <p>{Messages.Labels.loading()}</p>;
-    }
-
     this.dataProvider(
       new PagingDataProviderView(
         new CollectionDataProvider(
@@ -300,10 +251,7 @@ export class ConsoleBindingComponents extends VComponent<Props> {
                 <template slot="itemTemplate" data-oj-as="item">
                   <oj-list-item-layout>
                     <div class="oj-flex">
-                      <div
-                        class="oj-sm-1\
-                     oj-flex-item"
-                      >
+                      <div class="oj-sm-10 oj-flex-item">
                         <strong>
                           <span>{Messages.Labels.name()}:&nbsp;</span>
                         </strong>
@@ -312,33 +260,32 @@ export class ConsoleBindingComponents extends VComponent<Props> {
                         </span>
                       </div>
                       <div class="oj-sm-2 oj-flex-item">
-                        <strong>
-                          <span>{Messages.Labels.status()}:&nbsp;</span>
-                        </strong>
+                        <strong>{Messages.Labels.status()}:&nbsp;</strong>
                         <oj-bind-if test="[[item.data.status === 'Running']]">
-                          <span>
-                            <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                            &nbsp;
+                          <span
+                            id="status"
+                            class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green"
+                          >
+                            <span class="oj-icon-circle-inner status-icon"></span>
                           </span>
                         </oj-bind-if>
                         <oj-bind-if test="[[item.data.status === 'Terminated']]">
-                          <span>
-                            <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                            &nbsp;
+                          <span
+                            id="status"
+                            class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red"
+                          >
+                            <span class="oj-icon-circle-inner status-icon"></span>
                           </span>
                         </oj-bind-if>
                         <oj-bind-if test="[[item.data.status === 'Creating']]">
-                          <span>
-                            <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                            &nbsp;
+                          <span
+                            id="status"
+                            class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange"
+                          >
+                            <span class="oj-icon-circle-inner status-icon"></span>
                           </span>
                         </oj-bind-if>
+                        &nbsp;
                         <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
                       </div>
                     </div>

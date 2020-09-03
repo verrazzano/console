@@ -5,6 +5,7 @@ import { AuthStorage } from "./AuthStorage";
 import {KeycloakUrls} from "./KeycloakUrls";
 import {KeycloakJwt} from "./KeycloakJwt";
 import * as Messages from "vz-console/utils/Messages"
+import * as logger from "ojs/ojlogger"
 
 /**
  * The Keycloak class is responsible for calling the keycloak API to:
@@ -335,7 +336,7 @@ export class Keycloak {
     AuthStorage.clearAuthStorage();
 
     const s = KeycloakUrls.getInstance().getHomePageUrl();
-    console.log(Messages.Error.errLoggingOut(errMsg));
+    console.error(Messages.Error.errLoggingOut(errMsg));
     Keycloak.replaceWindowLocation(s);
   }
 
