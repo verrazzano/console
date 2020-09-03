@@ -11,6 +11,7 @@ import { Binding } from "vz-console/service/types";
 
 class State {
   selectedItem: string;
+  filter?: Element;
 }
 
 class Props {
@@ -31,11 +32,15 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
     this.updateState({ selectedItem: event.detail.value });
   }
 
+  filterCallback = (filter: Element): void => {
+    this.updateState({filter: filter})
+  };
+
   protected render() {
     let ResourceList: Element;
     switch (this.state.selectedItem) {
       case "components": {
-        ResourceList = <ConsoleBindingComponents components={this.props.binding.components}/>;
+        ResourceList = <ConsoleBindingComponents components={this.props.binding.components} filterCallback={this.filterCallback}/>;
         break;
       }
 
@@ -85,6 +90,7 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
               </li>
             </ul>
           </oj-navigation-list>
+          <div id="filters">{this.state.filter ? this.state.filter : ""}</div>
         </div>
         <div class="oj-sm-1 oj-flex-item"></div>
         <div class="oj-sm-9 oj-flex-item">{ResourceList}</div>

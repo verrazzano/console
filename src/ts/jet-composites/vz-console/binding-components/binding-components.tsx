@@ -22,6 +22,7 @@ import * as Messages from "vz-console/utils/Messages"
 
 class Props {
   components: [BindingComponent];
+  filterCallback: (filter: Element) => {}
 }
 
 class State {
@@ -192,32 +193,35 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
       )
     );
 
+    this.props.filterCallback(
+      <div>
+        <h4 class="res">{Messages.Labels.refineBy()}</h4>
+        <ConsoleFilter
+          label={Messages.Labels.state()}
+          options={[
+            { label: Status.Running, value: Status.Running },
+            { label: Status.Creating, value: Status.Creating },
+            { label: Status.Terminated, value: Status.Terminated },
+          ]}
+          onValueChanged={this.handleStatusFilterChanged}
+        />
+        <ConsoleFilter
+          label={Messages.Labels.type()}
+          options={[
+            { label: ComponentType.WLS, value: ComponentType.WLS },
+            { label: ComponentType.COH, value: ComponentType.COH },
+            { label: ComponentType.MS, value: ComponentType.MS },
+          ]}
+          onValueChanged={this.handleTypeFilterChanged}
+        />
+      </div>
+    );
+
     return (
       <div class="oj-flex">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
           <div class="oj-flex">
-            <div class="oj-sm-2 oj-sm-only-hide oj-flex-item">
-              <h4 class="res">{Messages.Labels.refineBy()}</h4>
-              <ConsoleFilter
-                label={Messages.Labels.state()}
-                options={[
-                  { label: Status.Running, value: Status.Running },
-                  { label: Status.Creating, value: Status.Creating },
-                  { label: Status.Terminated, value: Status.Terminated },
-                ]}
-                onValueChanged={this.handleStatusFilterChanged}
-              />
-              <ConsoleFilter
-                label={Messages.Labels.type()}
-                options={[
-                  { label: ComponentType.WLS, value: ComponentType.WLS },
-                  { label: ComponentType.COH, value: ComponentType.COH },
-                  { label: ComponentType.MS, value: ComponentType.MS },
-                ]}
-                onValueChanged={this.handleTypeFilterChanged}
-              />
-            </div>
-            <div class="oj-sm-10 oj-flex-item res">
+            <div class="oj-sm-12 oj-flex-item res">
               <div class="oj-flex components-align-right">
                 <div class="oj-sm-6 oj-flex-item">
                   <oj-label for="sortBy" class="oj-label-inline">

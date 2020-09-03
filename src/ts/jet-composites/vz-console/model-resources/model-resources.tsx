@@ -13,6 +13,7 @@ import { Model } from "vz-console/service/types";
 
 class State {
   selectedItem: string;
+  filter?: Element;
 }
 
 class Props {
@@ -33,16 +34,20 @@ export class ConsoleModelResources extends VComponent<Props, State> {
     this.updateState({ selectedItem: event.detail.value });
   }
 
+  filterCallback = (filter: Element): void => {
+    this.updateState({filter: filter})
+  };
+
   protected render() {
     let ResourceList;
     switch (this.state.selectedItem) {
       case "bindings": {
-        ResourceList = <ConsoleBindingList bindings={this.props.model.bindings} />;
+        ResourceList = <ConsoleBindingList bindings={this.props.model.bindings}/>;
         break;
       }
 
       case "components": {
-        ResourceList = <ConsoleModelComponents components={this.props.model.modelComponents} />;
+        ResourceList = <ConsoleModelComponents components={this.props.model.modelComponents} filterCallback={this.filterCallback}/>;
         break;
       }
 
@@ -95,7 +100,7 @@ export class ConsoleModelResources extends VComponent<Props, State> {
               </li>
             </ul>
           </oj-navigation-list>
-          <div id="filters"></div>
+          <div id="filters">{this.state.filter ? this.state.filter : ""}</div>
         </div>
         <div class="oj-sm-1 oj-flex-item"></div>
         <div class="oj-sm-9 oj-flex-item">{ResourceList}</div>
