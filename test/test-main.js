@@ -30,28 +30,12 @@ require.config({
   // Configure RequireJS path mappings
   // Note that every file listed here must also be listed in Karma's "files" array
   paths: {
-    "knockout":"libs/knockout/knockout-3.5.0.debug",
     "jquery":"libs/jquery/jquery-3.5.1",
-    "jqueryui-amd":"libs/jquery/jqueryui-amd-1.12.1",
-    "promise":"libs/es6-promise/es6-promise",
-    "hammerjs":"libs/hammer/hammer-2.0.8",
-    "ojdnd":"libs/dnd-polyfill/dnd-polyfill-1.0.1",
     "ojs":"libs/oj/current/debug" + (_ojNeedsES5 ? "_es5" : ""),
     "ojL10n":"libs/oj/current/ojL10n",
     "ojtranslations":"libs/oj/current/resources",
-    "persist":"libs/persist/debug",
-    "text":"libs/require/text",
-    "signals":"libs/js-signals/signals",
-    "touchr":"libs/touchr/touchr",
-    "regenerator-runtime":"libs/regenerator-runtime/runtime",
-    "corejs":"libs/corejs/shim",
-    "customElements":"libs/webcomponents/custom-elements.min",
-    "proj4":"libs/proj4js/dist/proj4-src",
-    "css":"libs/require-css/css",
-    "css-builder":"libs/require-css/css-builder",
-    "normalize":"libs/require-css/normalize",
     "sinon": "../../node_modules/sinon/pkg/sinon",
-    "vz-console": "jet-composites/vz-console/1.0.0",
+    "vz-console": "jet-composites/vz-console/1.0.0"
   },
 
   // dynamically load all test files
