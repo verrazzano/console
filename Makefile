@@ -5,7 +5,7 @@ NAME:=console
 DOCKER_IMAGE_NAME ?= ${NAME}-dev
 TAG=$(shell git rev-parse HEAD)
 DOCKER_IMAGE_TAG = ${TAG}
-
+GOOGLE_CHROME_VERSION=85.0.4183.83-1
 CREATE_LATEST_TAG=0
 
 ifeq ($(MAKECMDGOALS),$(filter $(MAKECMDGOALS),push))
@@ -36,7 +36,7 @@ setup-npm:
 
 .PHONY: unit-test
 unit-test: setup-npm
-	curl -o google-chrome.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+	curl -o google-chrome.rpm "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-${GOOGLE_CHROME_VERSION}.x86_64.rpm"
 	sudo yum install -y ./google-chrome.rpm
 	export NVM_DIR="$$HOME/.nvm" && \
 	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
