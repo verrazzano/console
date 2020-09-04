@@ -33,7 +33,8 @@ export class ConsoleFilter extends VComponent<Props> {
     return (
       <div class="oj-flex">
         <div class="oj-lg-12 oj-md-12 oj-sm-only-hide oj-flex-item">
-          <oj-label>{this.props.label}</oj-label>
+          <div class="oj-navigationlist-category-divider"></div>
+          <h4 class="res">{this.props.label}</h4>
           <oj-checkboxset
             labelledBy={this.props.label}
             class="oj-sm-padding-4x-bottom oj-complete"

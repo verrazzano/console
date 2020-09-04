@@ -34,6 +34,8 @@ export class ConsoleBindingList extends VComponent<Props> {
         aria-labelledby="resources"
         class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"
         style={{ width: "100%" }}
+        display='grid'
+        verticalGridVisible='disabled'
       >
         <template slot="rowTemplate" data-oj-as="row">
           <tr>

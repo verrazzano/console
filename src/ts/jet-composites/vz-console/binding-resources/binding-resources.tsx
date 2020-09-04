@@ -29,7 +29,7 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
 
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
-    this.updateState({ selectedItem: event.detail.value });
+    this.updateState({ selectedItem: event.detail.value, filter: null  });
   }
 
   filterCallback = (filter: Element): void => {
@@ -90,10 +90,16 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
               </li>
             </ul>
           </oj-navigation-list>
-          <div id="filters">{this.state.filter ? this.state.filter : ""}</div>
+          <div id="filters">{this.state.filter}</div>
         </div>
-        <div class="oj-sm-1 oj-flex-item"></div>
-        <div class="oj-sm-9 oj-flex-item">{ResourceList}</div>
+        <div class="oj-sm-10 oj-flex-item">
+          <div class="oj-sm-12 oj-flex">
+            <div class="oj-sm-1 oj-flex-item"></div>
+            <div class="oj-sm-11 oj-flex-item">
+              {ResourceList}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

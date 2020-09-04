@@ -50,42 +50,47 @@
            ** and the CSS documentation under Support/API Docs/Non-Component Styling
            ** on the JET website for more information on how to use this pattern.
         -->
-        <header role="banner" class="oj-web-applayout-header header-bar">
-          <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
-            <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
-              <span role="img" class="oj-icon vz-icon" title="Verrazzano" alt="Verrazzano Logo" onclick="window.location='/'"></span>
+        <div class="oj-applayout-fixed-top">
+          <header role="banner" class="oj-web-applayout-header header-bar grey">
+            <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
+              <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
+                <span role="img" class="oj-icon vz-icon" title="Verrazzano" alt="Verrazzano Logo" onclick="window.location='/'"></span>
+              </div>
+              <div class="oj-flex-bar-end">
+                <!-- Responsive Toolbar -->
+                <oj-toolbar>
+                  <oj-menu-button id="userMenu" display="[[smScreen() ? 'icons' : 'all']]" chroming="borderless">
+                    <span><oj-bind-text value="[[userEmail]]"></oj-bind-text></span>
+                    <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon demo-appheader-avatar': !smScreen()}]]"></span>
+                    <oj-menu id="menu1" slot="menu">
+                      <oj-option id="out" value="out" on-oj-action="[[logout]]"><oj-bind-text value="[[signOut]]"></oj-bind-text></oj-option>
+                    </oj-menu>
+                  </oj-menu-button>
+                </oj-toolbar>
+              </div>
             </div>
-            <div class="oj-flex-bar-end">
-              <!-- Responsive Toolbar -->
-              <oj-toolbar>
-                <oj-menu-button id="userMenu" display="[[smScreen() ? 'icons' : 'all']]" chroming="borderless">
-                  <span><oj-bind-text value="[[userEmail]]"></oj-bind-text></span>
-                  <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon demo-appheader-avatar': !smScreen()}]]"></span>
-                  <oj-menu id="menu1" slot="menu">
-                    <oj-option id="out" value="out" on-oj-action="[[logout]]"><oj-bind-text value="[[signOut]]"></oj-bind-text></oj-option>
-                  </oj-menu>
-                </oj-menu-button>
-              </oj-toolbar>
-            </div>
-          </div>
-        </header>
+          </header>
+        </div>
         <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content bg" config="[[moduleAdapter.koObservableConfig]]">
         </oj-module>
-        <footer class="oj-web-applayout-footer" role="contentinfo">
-          <div class="oj-web-applayout-footer-item oj-web-applayout-max-width">
-            <ul>
-              <oj-bind-for-each data="[[footerLinks]]">
-                <template>
-                  <li>
-                    <a :id="[[$current.data.linkId]]" :href="[[$current.data.linkTarget]]">
-                      <oj-bind-text value="[[$current.data.name]]"></oj-bind-text>
-                    </a>
-                  </li>
-                </template>
-              </oj-bind-for-each>
-            </ul>
-          </div>
-        </footer>
+        <div class="oj-applayout-fixed-bottom">
+          <footer class="oj-web-applayout-footer grey" role="contentinfo">
+            <div class="oj-web-applayout-footer-item oj-web-applayout-max-width">
+              <ul>
+                <oj-bind-for-each data="[[footerLinks]]">
+                  <template>
+                    <li>
+                      <a :id="[[$current.data.linkId]]" :href="[[$current.data.linkTarget]]">
+                        <oj-bind-text value="[[$current.data.name]]"></oj-bind-text>
+                      </a>
+                    </li>
+                  </template>
+                </oj-bind-for-each>
+              </ul>
+            </div>
+          </footer>
+        </div>
+      </div>
       </div>
     </div>
 

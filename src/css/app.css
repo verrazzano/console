@@ -111,3 +111,41 @@ html {
 .header-bar {
   margin-left: -10px !important;
 }
+
+.oj-navigationlist-vertical .oj-navigationlist-item.oj-selected {
+  background-color: transparent;
+  text-decoration-color: blue;
+}
+
+.oj-navigationlist-listview > ul > li > a:hover {
+  text-decoration: underline;
+}
+
+::-moz-selection {
+  background: #39f;
+  color: #fff;
+  text-shadow: none;
+}
+::selection {
+  background: #39f;
+  color: #fff;
+  text-shadow: none;
+}
+
+.oj-navigationlist-listview > ul > li:hover {
+  background: white !important;
+  border-left: 2px solid #3CB371 !important;
+}
+
+.oj-web-applayout-content {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.grey {
+  background: lightgray;
+}
+
+.oj-navigationlist-item {
+  padding-left: 0.9rem !important;
+}

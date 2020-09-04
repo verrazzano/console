@@ -84,11 +84,6 @@ export class ConsoleBinding extends VComponent<Props, State> {
     return (
       <div>
         <div class="oj-flex">
-          <div class="oj-sm-12 oj-flex-item">
-            <h2>{this.state.binding.name}</h2>
-          </div>
-        </div>
-        <div class="oj-flex">
           <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel bg">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item">

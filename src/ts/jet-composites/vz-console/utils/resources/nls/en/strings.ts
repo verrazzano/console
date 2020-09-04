@@ -80,7 +80,7 @@ export = {
         "desc": "Description",
         "model": "Model",
         "loading": "Loading...",
-        "refineBy": "Refine by",
+        "refineBy": "Filters",
         "state": "State",
         "type": "Type",
         "sortBy": "Sort by:",

@@ -45,7 +45,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
           <oj-navigation-list
             selection={this.state.selectedItem}
             onSelectionChanged={this.selectionChange}
-            aria-labelledby="resources"
+            aria-labelledby="resources"      
           >
             <ul>
               <li id="models">
@@ -57,8 +57,14 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
             </ul>
           </oj-navigation-list>
         </div>
-        <div class="oj-sm-1 oj-flex-item"></div>
-        <div class="oj-sm-9 oj-flex-item">{ResourceList}</div>
+        <div class="oj-sm-10 oj-flex-item">
+          <div class="oj-sm-12 oj-flex">
+            <div class="oj-sm-1 oj-flex-item"></div>
+            <div class="oj-sm-11 oj-flex-item">
+              {ResourceList}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

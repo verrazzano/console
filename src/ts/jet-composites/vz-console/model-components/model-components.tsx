@@ -158,7 +158,7 @@ export class ConsoleModelComponents extends VComponent<Props, State> {
 
     this.props.filterCallback(
       <div>
-        <h4 class="res">Refine by</h4>
+        <h4 class="res">{Messages.Labels.refineBy()}</h4>
         <ConsoleFilter
           label={Messages.Labels.type()}
           options={[
