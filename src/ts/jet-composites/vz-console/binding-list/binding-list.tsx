@@ -48,7 +48,7 @@ export class ConsoleBindingList extends VComponent<Props> {
                   data-bind={`attr: {href: '?ojr=binding&nav=${
                     this.props.nav
                   }&bindingId=' + row.data.id + '&navId='${
-                    this.props.nav === "model" ? "row.data.model.id" : ""
+                    this.props.nav === "model" ? "+ row.data.model.id" : ""
                   }}`}
                 >
                   <oj-bind-text value="[[row.data.name]]"></oj-bind-text>
