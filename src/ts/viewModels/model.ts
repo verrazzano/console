@@ -6,8 +6,10 @@ import * as AccUtils from "../accUtils";
 class ModelViewModel {
 
   modelId: string | null;
+  nav?: string | null;
   constructor() {
     this.modelId = getQueryParam('modelId');
+    this.nav = getQueryParam('nav');
   }
 
   /**

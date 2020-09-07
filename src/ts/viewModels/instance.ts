@@ -4,6 +4,7 @@ import "vz-console/instance/loader";
 import * as AccUtils from "../accUtils";
 import * as Messages from "vz-console/utils/Messages";
 import * as ko from "knockout";
+
 class InstanceViewModel {
   instanceHeading: ko.Observable<string|undefined>;
   constructor() {

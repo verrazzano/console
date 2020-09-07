@@ -64,6 +64,7 @@ h4 {
 
 .metatdata-panel {
   min-height: 220px;
+  border: 1px solid
 }
 
 .vz-icon {
@@ -149,3 +150,144 @@ html {
 .oj-navigationlist-item {
   padding-left: 0.9rem !important;
 }
+
+.status-badge-container svg.badge-square, 
+.status-badge-container svg.badge-circle, 
+.status-badge-container svg.badge-hexagon {
+  width: 18rem;
+  height: 18rem;
+}
+
+.status-badge-container svg {
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -ms-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  -webkit-transition-property: fill;
+  -moz-transition-property: fill;
+  -ms-transition-property: fill;
+  -o-transition-property: fill;
+  transition-property: fill;
+  -webkit-transition-duration: 0.35s;
+  -moz-transition-duration: 0.35s;
+  -ms-transition-duration: 0.35s;
+  -o-transition-duration: 0.35s;
+  transition-duration: 0.35s;
+  pointer-events: none;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+audio, canvas, iframe, img, svg, video {
+  vertical-align: middle;
+}
+
+.status-badge-status-good .status-badge-status-label {
+  color: #76b417;
+  visibility: visible;
+}
+
+.status-badge-status-label {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.status-badge-container {
+  width: 18rem;
+  max-width: 18rem;
+  margin-right: 2rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 18rem;
+}
+
+.status-badge-status-good {
+  fill: #76b417;
+  color: #76b417;
+}
+
+.status-badge-container svg .badge-label {
+  font-weight: 900;
+}
+
+.badge-hexagon .badge-label, .badge-stack .badge-label {
+  font-size: 2.5rem;
+}
+
+.badge-circle .badge-label, 
+.badge-hexagon .badge-label,
+.badge-stack .badge-label,
+.badge-square .badge-label {
+  text-anchor: middle;
+  pointer-events: none;
+  fill: #ffffff;
+  line-height: 3rem;
+  font-weight: 200;
+  text-transform: uppercase;
+}
+
+.breadcrumb > li > a {
+  text-decoration: none;
+}
+
+.breadcrumb > * > * {
+  display: inline-block;
+  font-size: 14px;
+  color: #0572ce;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+
+.margin-breadcrumb {
+  margin-bottom: 20px !important;
+  margin-top: -15px !important
+}
+
+.breadcrumb > :nth-child(n+2):not(.oui-first-column)::before {
+  display: inline;
+  color: #686868;
+  content: "\00a0»\00a0";
+  background-image: none;
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+  position: relative;
+  margin: 0;
+  top: 0;
+}
+
+.breadcrumb > :nth-child(n+2):not(.oui-first-column)::before {
+  display: inline-block;
+  margin: 0 5px;
+  color: #717171;
+  content: "";
+  background-image: url(data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20focusable%3D%22false%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolyline%20fill%3D%22none%22%20stroke%3D%22%23717171%22%20stroke-width%3D%221.03%22%20points%3D%227%204%2013%2010%207%2016%22%3E%3C%2Fpolyline%3E%0A%3C%2Fsvg%3E);
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+  height: 20px;
+  position: relative;
+  margin-top: -20px;
+  top: 6px;
+  width: 20px;
+}
+
+.oj-navigationlist-item-label {
+  color: #73a5e0; 
+}
+
+.badge-square .badge-label {
+  font-size: 40px !important;
+}
+

@@ -25,6 +25,9 @@ export const Nav = {
     model : () => Translations.getTranslatedString('nav.model'),
     binding : () => Translations.getTranslatedString('nav.binding'),
     instance : () => Translations.getTranslatedString('nav.instance'),
+    home : () => Translations.getTranslatedString('nav.home'),
+    modelDetails : () => Translations.getTranslatedString('nav.modelDetails'),
+    bindingDetails : () => Translations.getTranslatedString('nav.bindingDetails'),
 }
 
 

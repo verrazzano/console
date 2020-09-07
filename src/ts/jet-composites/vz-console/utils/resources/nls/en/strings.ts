@@ -19,6 +19,9 @@ export = {
         "model": "Application Model",
         "binding": "Application Binding",
         "instance": "Verrazzano",
+        "home": "Home",
+        "modelDetails": "Model Details",
+        "bindingDetails": "Binding Details" 
     },
     model : {
         "modelsPageLoaded": "Models page loaded.",

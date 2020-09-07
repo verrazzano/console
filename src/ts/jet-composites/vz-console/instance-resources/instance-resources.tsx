@@ -35,7 +35,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
       this.state.selectedItem == "models" ? (
         <ConsoleModelList models={this.props.models}/>
       ) : (
-        <ConsoleBindingList bindings={this.props.bindings}/>
+        <ConsoleBindingList bindings={this.props.bindings} nav={"home"}/>
       );
     return (
       <div class="oj-flex">

@@ -42,7 +42,7 @@ export class ConsoleModelResources extends VComponent<Props, State> {
     let ResourceList;
     switch (this.state.selectedItem) {
       case "bindings": {
-        ResourceList = <ConsoleBindingList bindings={this.props.model.bindings}/>;
+        ResourceList = <ConsoleBindingList bindings={this.props.model.bindings} nav={"model"}/>;
         break;
       }
 

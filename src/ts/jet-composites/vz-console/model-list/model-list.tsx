@@ -38,12 +38,12 @@ export class ConsoleModelList extends VComponent<Props> {
         <template slot="rowTemplate" data-oj-as="row">
           <tr>
             <td>
-              <p><a data-bind="attr: {href: '?ojr=model&modelId=' + row.data.id}"><oj-bind-text value="[[row.data.name]]"></oj-bind-text></a></p>
+              <p><a data-bind="attr: {href: '?ojr=model&nav=home&modelId=' + row.data.id}"><oj-bind-text value="[[row.data.name]]"></oj-bind-text></a></p>
             </td>
             <td>
             <oj-bind-for-each data='[[row.data.bindings || []]]'>
               <template>
-                <p><a data-bind="attr: {href: '?ojr=binding&bindingId=' + $current.data.id}"><oj-bind-text value='[[$current.data.name]]'></oj-bind-text></a></p>
+                <p><a data-bind="attr: {href: '?ojr=binding&nav=home&bindingId=' + $current.data.id}"><oj-bind-text value='[[$current.data.name]]'></oj-bind-text></a></p>
               </template>
             </oj-bind-for-each>
             </td>

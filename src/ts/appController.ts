@@ -98,12 +98,12 @@ class RootViewModel {
     let locale = Config.getLocale().split("-")[1].toLowerCase();
     // footer
     this.footerLinks = [
-      {name: Messages.Footer.copyright(), linkId: 'copyRight', linkTarget:'https://www.oracle.com/' + (locale === 'us' ? "" : locale) + '/legal/copyright.html'},
-      {name: Messages.Footer.aboutOracle(), linkId: 'aboutOracle', linkTarget:'https://www.oracle.com/' + locale + '/corporate/index.html#menu-about'},
-      { name: Messages.Footer.contactUs(), id: "contactUs", linkTarget: "https://www.oracle.com/" + locale + "/corporate/contact/index.html" },
-      { name: Messages.Footer.legalNotices(), id: "legalNotices", linkTarget: "https://www.oracle.com/" + locale + "/legal/index.html" },
-      { name: Messages.Footer.termsOfUse(), id: "termsOfUse", linkTarget: "https://www.oracle.com/" + locale + "/legal/terms/index.html" },
-      { name: Messages.Footer.yourPrivacyRights(), id: "yourPrivacyRights", linkTarget: "https://www.oracle.com/" + locale + "/legal/privacy/index.html" },
+      {name: Messages.Footer.copyright(), linkId: 'copyRight', linkTarget: `https://www.oracle.com/${(locale === 'us' ? "" : locale)}/legal/copyright.html` },
+      {name: Messages.Footer.aboutOracle(), linkId: 'aboutOracle', linkTarget:`https://www.oracle.com/${locale}/corporate/index.html#menu-about` },
+      { name: Messages.Footer.contactUs(), id: "contactUs", linkTarget: `https://www.oracle.com/${locale}/corporate/contact/index.html` },
+      { name: Messages.Footer.legalNotices(), id: "legalNotices", linkTarget: `https://www.oracle.com/${locale}/legal/index.html` },
+      { name: Messages.Footer.termsOfUse(), id: "termsOfUse", linkTarget: `https://www.oracle.com/${locale}/legal/terms/index.html` },
+      { name: Messages.Footer.yourPrivacyRights(), id: "yourPrivacyRights", linkTarget: `https://www.oracle.com/${locale}/legal/privacy/index.html` },
     ];
   }
 
