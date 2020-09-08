@@ -38,24 +38,29 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
 
   protected render() {
     let ResourceList: Element;
+    let Heading: Element;
     switch (this.state.selectedItem) {
       case "components": {
         ResourceList = <ConsoleBindingComponents components={this.props.binding.components} filterCallback={this.filterCallback}/>;
+        Heading = <h3>{Messages.Labels.components()}</h3>;
         break;
       }
 
       case "connections": {
         ResourceList = <ConsoleConnectionList connections={this.props.binding.connections}/>;
+        Heading = <h3>{Messages.Labels.connections()}</h3>;
         break;
       }
 
       case "ingresses": {
         ResourceList = <ConsoleIngressList ingresses={this.props.binding.ingresses} isBindingIngress={true}/>;
+        Heading = <h3>{Messages.Labels.ingresses()}</h3>;
         break;
       }
 
       case "secrets": {
         ResourceList = <ConsoleSecretList secrets={this.props.binding.secrets}/>;
+        Heading = <h3>{Messages.Labels.secrets()}</h3>;
         break;
       }
 
@@ -64,7 +69,7 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
       }
     }
     return (
-      <div class="oj-flex">
+      <div class="oj-flex resourcepadding">
         <div class="oj-sm-2 oj-flex-item">
           <h4 id="resources" class="res">
             {Messages.Labels.resources()}
@@ -96,6 +101,7 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
           <div class="oj-sm-12 oj-flex">
             <div class="oj-sm-1 oj-flex-item"></div>
             <div class="oj-sm-11 oj-flex-item">
+              {Heading}
               {ResourceList}
             </div>
           </div>

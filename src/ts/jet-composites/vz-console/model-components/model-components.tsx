@@ -18,7 +18,6 @@ import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
-import { ConsoleError } from "vz-console/error/loader";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages"
 
@@ -171,29 +170,45 @@ export class ConsoleModelComponents extends VComponent<Props, State> {
       </div>
     );
     return (
-      <div class="oj-flex">
+      <div id="components" class="oj-flex">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
+        <div class="oj-flex">
             <div class="oj-sm-12 oj-flex-item res">
-              <div class="oj-flex components-align-right">
-                <div class="oj-sm-6 oj-flex-item">
-                  <oj-label for="sortBy" class="oj-label-inline">
+              <div class="oj-flex card-border">
+                <div class="oj-sm-1 oj-flex-item">
+                  <oj-label for="sortBy" class="oj-label-inline sortby">
                     {Messages.Labels.sortBy()}
                   </oj-label>
+                </div>
+                <div class="oj-sm-2 oj-flex-item">
                   <oj-select-single
                     id="sortBy"
                     data={this.optionsDataProvider}
                     value={this.currentSort}
                     onValueChanged={this.handleSortCriteriaChanged}
-                    class="oj-complete"
+                    class="oj-complete sortselect"
                   ></oj-select-single>
-                </div>
-                <div class="oj-sm-6 oj-flex-item">
-                  <oj-paging-control
-                    id="paging"
-                    data={this.dataProvider()}
-                    pageSize={4}
-                    class="oj-complete"
-                  ></oj-paging-control>
+                  </div>
+                  <div class="oj-sm-4 oj-flex-item"></div>
+                <div class="oj-sm-5 oj-flex-item">
+                  <div class="oj-flex">
+                    <div class="oj-sm-1 oj-flex-item"></div>
+                    <div class="oj-sm-11 oj-flex-item">
+                      <oj-paging-control
+                        data={this.dataProvider()}
+                        pageSize={3}
+                        class="oj-complete pagination"
+                        pageOptions={{
+                          layout: ["nav", "pages", "rangeText"],
+                          type: "numbers",
+                        }}
+                        translations={{
+                          fullMsgItemRange: Messages.Pagination.msgItemRange(),
+                          fullMsgItem: Messages.Pagination.msgItem()
+                        }}
+                      ></oj-paging-control>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -244,8 +259,34 @@ export class ConsoleModelComponents extends VComponent<Props, State> {
                   </oj-list-item-layout>
                 </template>
               </oj-list-view>
+            
+              <div class="oj-flex card-border">
+                <div class="oj-sm-7 oj-flex-item"></div>
+                <div class="oj-sm-5 oj-flex-item">
+                  <div class="oj-flex">
+                    <div class="oj-sm-1 oj-flex-item"></div>
+                    <div class="oj-sm-11 oj-flex-item">
+                      <oj-paging-control
+                        data={this.dataProvider()}
+                        pageSize={3}
+                        class="oj-complete pagination"
+                        pageOptions={{
+                          layout: ["nav", "pages", "rangeText"],
+                          type: "numbers",
+                        }}
+                        translations={{
+                          fullMsgItemRange: Messages.Pagination.msgItemRange(),
+                          fullMsgItem: Messages.Pagination.msgItem()
+                        }}
+                      ></oj-paging-control>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
             </div>
           </div>
+        </div>
         </div>
     );
   }

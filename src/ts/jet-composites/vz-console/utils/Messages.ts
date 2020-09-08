@@ -135,3 +135,8 @@ export const Api = {
     msgFetchComponent: (...args) => Translations.getTranslatedString('api.msgFetchComponent', args),
     msgFetchVmi: (...args) => Translations.getTranslatedString('api.msgFetchVmi', args),
 }
+
+export const Pagination = {
+    msgItemRange: () => Translations.getTranslatedString('pagination.msgItemRange'),
+    msgItem: () => Translations.getTranslatedString('pagination.msgItem')
+}

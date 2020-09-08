@@ -121,6 +121,11 @@ export = {
         "msgFetchBinding": "Fetching binding details for binding {0}",
         "msgFetchComponent": "Fetching Component status for {0} {1}",
         "msgFetchVmi": "Fetching VMI details for binding {0}",
+    },
+
+    pagination : {
+        "msgItemRange": "Showing ${pageFrom$}-${pageTo$} of ${pageMax$} items",
+        "msgItem": "Showing ${pageTo$} of ${pageMax$} items"
     }
 
 };

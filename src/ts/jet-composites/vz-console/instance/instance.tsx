@@ -3,13 +3,14 @@
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
-import { Instance, Model, Binding } from "vz-console/service/types";
+import { Instance, Model, Binding , Status} from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader"
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader"
 import { ConsoleError } from "vz-console/error/loader"
 import * as Messages from "vz-console/utils/Messages"
 import { extractModelsFromApplications, extractBindingsFromApplications } from "vz-console/service/common";
 import { ConsoleBreadcrumb } from "vz-console/breadcrumb/loader"
+import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
 
 class Props {}
 
@@ -78,29 +79,14 @@ export class ConsoleInstance extends VComponent<Props, State> {
         />
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
-            <div class="status-badge-status-good status-badge-container">
-              <svg
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 100 100"
-                class="badge-hexagon"
-              >
-                <polygon points="100,50 75,93 25,93 0,50 25,7 75,7"></polygon>
-                <text x="50%" y="50%" dy="0.67ex" class="badge-label">
-                  V
-                </text>
-              </svg>
-              <p class="status-badge-status-label">{Messages.Nav.instance()}</p>
-            </div>
+            <ConsoleStatusBadge status={Status.Running} type={"hexagon"} text={"V"} label={Messages.Nav.instance()}/>
           </div>
           <div class="oj-sm-10 oj-flex-item">
             <div class="oj-sm-12 oj-flex">
               <div class="oj-sm-1 oj-flex-item"></div>
               <div class="oj-sm-11 oj-flex-item">
+                <h2>{Messages.Instance.instanceHeading()}</h2>
                 <div class="oj-panel oj-flex metatdata-panel bg">
-                  <div class="oj-sm-12 oj-flex-item">
-                    <h4>{Messages.Instance.instanceDetails()}</h4>
-                  </div>
                   <div class="oj-sm-6 oj-flex-item">
                     <h3>{Messages.Labels.generalInfo()}</h3>
                     <ConsoleMetadataItem

@@ -6,6 +6,9 @@ import { Binding} from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
 import * as Messages from "vz-console/utils/Messages"
+import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
+import * as ko from "knockout";
+import "ojs/ojpagingcontrol";
 
 class Props {
   bindings?: [Binding];
@@ -24,82 +27,109 @@ export class ConsoleBindingList extends VComponent<Props> {
     { headerText: Messages.Labels.model(), sortable: "enabled", sortProperty: 'model.name' },
   ];
 
+  dataProvider: ko.Observable = ko.observable();
+
   protected render() {
+    this.dataProvider(new PagingDataProviderView(
+      new ArrayDataProvider(this.props.bindings ? this.props.bindings : [], {
+        keyAttributes: "name",
+        implicitSort: [{ attribute: "name", direction: "ascending" }],
+      })
+    ))
     return (
-      <oj-table
-        data={
-          new ArrayDataProvider(this.props.bindings, {
-            keyAttributes: "name",
-            implicitSort: [{ attribute: "name", direction: "ascending" }],
-          })
-        }
-        columns={this.columnArray}
-        aria-labelledby="resources"
-        class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"
-        style={{ width: "100%" }}
-        display="grid"
-        verticalGridVisible="disabled"
-      >
-        <template slot="rowTemplate" data-oj-as="row">
-          <tr>
-            <td>
-              <p>
-                <a
-                  data-bind={`attr: {href: '?ojr=binding&nav=${
-                    this.props.nav
-                  }&bindingId=' + row.data.id + '&navId='${
-                    this.props.nav === "model" ? "+ row.data.model.id" : ""
-                  }}`}
-                >
-                  <oj-bind-text value="[[row.data.name]]"></oj-bind-text>
-                </a>
-              </p>
-            </td>
-            <td>
-              <p>
-                <oj-bind-if test="[[row.data.state === 'Running']]">
-                  <span>
-                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
-                      <span class="oj-icon-circle-inner status-icon"></span>
+      <div>
+        <oj-table
+          data={this.dataProvider()}
+          columns={this.columnArray}
+          aria-labelledby="resources"
+          class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"
+          style={{ width: "100%" }}
+          display="grid"
+          verticalGridVisible="disabled"
+        >
+          <template slot="rowTemplate" data-oj-as="row">
+            <tr>
+              <td>
+                <p>
+                  <a
+                    data-bind={`attr: {href: '?ojr=binding&nav=${
+                      this.props.nav
+                    }&bindingId=' + row.data.id + '&navId='${
+                      this.props.nav === "model" ? "+ row.data.model.id" : ""
+                    }}`}
+                  >
+                    <oj-bind-text value="[[row.data.name]]"></oj-bind-text>
+                  </a>
+                </p>
+              </td>
+              <td>
+                <p>
+                  <oj-bind-if test="[[row.data.state === 'Running']]">
+                    <span>
+                      <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
+                        <span class="oj-icon-circle-inner status-icon"></span>
+                      </span>
+                      &nbsp;
                     </span>
-                    &nbsp;
-                  </span>
-                </oj-bind-if>
-                <oj-bind-if test="[[row.data.state === 'Terminated']]">
-                  <span>
-                    <span
-                      id="status"
-                      class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red"
-                    >
-                      <span class="oj-icon-circle-inner status-icon"></span>
+                  </oj-bind-if>
+                  <oj-bind-if test="[[row.data.state === 'Terminated']]">
+                    <span>
+                      <span
+                        id="status"
+                        class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red"
+                      >
+                        <span class="oj-icon-circle-inner status-icon"></span>
+                      </span>
+                      &nbsp;
                     </span>
-                    &nbsp;
-                  </span>
-                </oj-bind-if>
-                <oj-bind-if test="[[row.data.state === 'Creating']]">
-                  <span>
-                    <span
-                      id="status"
-                      class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange"
-                    >
-                      <span class="oj-icon-circle-inner status-icon"></span>
+                  </oj-bind-if>
+                  <oj-bind-if test="[[row.data.state === 'Creating']]">
+                    <span>
+                      <span
+                        id="status"
+                        class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange"
+                      >
+                        <span class="oj-icon-circle-inner status-icon"></span>
+                      </span>
+                      &nbsp;
                     </span>
-                    &nbsp;
-                  </span>
-                </oj-bind-if>
-                <oj-bind-text value="[[row.data.state]]"></oj-bind-text>
-              </p>
-            </td>
-            <td>
-              <p>
-                <a data-bind="attr: {href: '?ojr=model&nav=home&modelId=' + row.data.model.id}">
-                  <oj-bind-text value="[[row.data.model.name]]"></oj-bind-text>
-                </a>
-              </p>
-            </td>
-          </tr>
-        </template>
-      </oj-table>
+                  </oj-bind-if>
+                  <oj-bind-text value="[[row.data.state]]"></oj-bind-text>
+                </p>
+              </td>
+              <td>
+                <p>
+                  <a data-bind="attr: {href: '?ojr=model&modelId=' + row.data.model.id}">
+                    <oj-bind-text value="[[row.data.model.name]]"></oj-bind-text>
+                  </a>
+                </p>
+              </td>
+            </tr>
+          </template>
+        </oj-table>
+        <div class="oj-flex pagination">
+          <div class="oj-sm-8 oj-flex-item"></div>
+          <div class="oj-sm-4 oj-flex-item">
+            <div class="oj-flex">
+              <div class="oj-sm-12 oj-flex-item">
+                <oj-paging-control
+                  data={this.dataProvider()}
+                  pageSize={4}
+                  class="oj-complete"
+                  pageOptions={{
+                    layout: ["nav", "pages", "rangeText"],
+                    type: "numbers",
+                  }}
+                  translations={{
+                    fullMsgItemRange: Messages.Pagination.msgItemRange(),
+                    fullMsgItem: Messages.Pagination.msgItem()
+                  }}
+                ></oj-paging-control>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
     
   }

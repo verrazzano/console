@@ -64,7 +64,7 @@ h4 {
 
 .metatdata-panel {
   min-height: 220px;
-  border: 1px solid
+  border: 1px solid #aeaeae;
 }
 
 .vz-icon {
@@ -256,7 +256,7 @@ audio, canvas, iframe, img, svg, video {
   margin-top: -15px !important
 }
 
-.breadcrumb > :nth-child(n+2):not(.oui-first-column)::before {
+.breadcrumb > :nth-child(n+2):not(.first-column)::before {
   display: inline;
   color: #686868;
   content: "\00a0»\00a0";
@@ -268,7 +268,7 @@ audio, canvas, iframe, img, svg, video {
   top: 0;
 }
 
-.breadcrumb > :nth-child(n+2):not(.oui-first-column)::before {
+.breadcrumb > :nth-child(n+2):not(.first-column)::before {
   display: inline-block;
   margin: 0 5px;
   color: #717171;
@@ -291,3 +291,77 @@ audio, canvas, iframe, img, svg, video {
   font-size: 40px !important;
 }
 
+html:not([dir="rtl"]) #components > * > .oj-pagingcontrol-nav-arrow-section {
+  border-left: none !important;
+}
+
+.rangetext {
+  padding-left: 3rem;
+  max-height: 4rem;
+  margin-top: -0.5rem;
+}
+
+.sortby {
+  padding-left: 1rem;
+  padding-top: 20%;
+}
+
+.pagination {
+  margin-top: -1rem;
+}
+
+.sortselect {
+  padding-top: 4%;
+}
+
+.card-border,
+#listview > * > .oj-listview-item-element {
+  border: 1px solid #b5bbc2;
+  border-radius: 3px;
+}
+
+.status-badge-status-error {
+  fill: #e4001e;
+  color: #e4001e;
+}
+
+.status-badge-status-error .status-badge-status-label {
+  color: #e4001e;
+  visibility: visible;
+}
+
+.status-badge-status-info {
+  fill: #0572ce;
+  color: #0572ce;
+}
+
+.status-badge-status-info .status-badge-status-info {
+  color: #0572ce;
+  visibility: visible;
+}
+
+@media (max-width: 850px) and (min-width: 600px) {
+  .status-badge-container {
+    margin-right: 1rem;
+    width: 12rem;
+    max-width: 12rem;
+  }
+  .status-badge-container svg.badge-square,
+  .status-badge-container svg.badge-circle,
+  .status-badge-container svg.badge-hexagon {
+    width: 12rem;
+    height: 12rem;
+  }
+  .status-badge-container svg.badge-stack {
+    width: 12rem;
+    height: 16rem;
+  }
+}
+
+.resourcepadding {
+  padding-top: 3rem;
+}
+
+.pagination-mid {
+  margin-top: -0.8rem;
+}

@@ -31,14 +31,28 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
   }
 
   protected render() {
-    let ResourceList =
-      this.state.selectedItem == "models" ? (
-        <ConsoleModelList models={this.props.models}/>
-      ) : (
-        <ConsoleBindingList bindings={this.props.bindings} nav={"home"}/>
-      );
+    let ResourceList: Element;
+    let Heading: Element;
+    switch (this.state.selectedItem) {
+      case "models": {
+        ResourceList = <ConsoleModelList models={this.props.models}/>;
+        Heading = <h3>{Messages.Instance.appModels()}</h3>;
+        break;
+      }
+
+      case "bindings": {
+        ResourceList = <ConsoleBindingList bindings={this.props.bindings} nav={"home"}/>;
+        Heading = <h3>{Messages.Instance.appBindings()}</h3>;
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+
     return (
-      <div class="oj-flex">
+      <div class="oj-flex resourcepadding">
         <div class="oj-sm-2 oj-flex-item">
           <h4 id="resources" class="res">{Messages.Labels.resources()}</h4>
           <div class="oj-navigationlist-category-divider"></div>
@@ -61,6 +75,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
           <div class="oj-sm-12 oj-flex">
             <div class="oj-sm-1 oj-flex-item"></div>
             <div class="oj-sm-11 oj-flex-item">
+              {Heading}
               {ResourceList}
             </div>
           </div>
