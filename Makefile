@@ -5,7 +5,7 @@ NAME:=console
 DOCKER_IMAGE_NAME ?= ${NAME}-dev
 TAG=$(shell git rev-parse HEAD)
 DOCKER_IMAGE_TAG = ${TAG}
-
+GOOGLE_CHROME_VERSION=85.0.4183.83-1
 CREATE_LATEST_TAG=0
 
 ifeq ($(MAKECMDGOALS),$(filter $(MAKECMDGOALS),push))
@@ -24,15 +24,35 @@ endif
 .PHONY: all
 all: build
 
-.PHONY: ojet-build
-ojet-build:
+.PHONY: setup-npm
+setup-npm:
 	sudo yum install -y bzip2
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 	export NVM_DIR="$$HOME/.nvm" && \
 	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
 	nvm install 14.7 && \
 	npm install && \
-	npm install @oracle/ojet-cli && \
+	npm install @oracle/ojet-cli
+
+.PHONY: unit-test
+unit-test: setup-npm
+	curl -o google-chrome.rpm "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-${GOOGLE_CHROME_VERSION}.x86_64.rpm"
+	sudo yum install -y ./google-chrome.rpm
+	export NVM_DIR="$$HOME/.nvm" && \
+	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
+	export PATH=./node_modules/.bin:${PATH} && \
+	nvm use 14.7 && \
+	ojet build && \
+	pwd && \
+	ls -l node_modules/\@oracle/oraclejet/dist/types/ojmodel && \
+	ls -l web/js/libs/oj
+	echo $$PATH
+	sudo env "PATH=$$PATH" npm test
+
+.PHONY: ojet-build
+ojet-build: setup-npm
+	export NVM_DIR="$$HOME/.nvm" && \
+	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
 	PATH=./node_modules/.bin:${PATH} && \
 	nvm use 14.7 && \
 	ojet build --release
