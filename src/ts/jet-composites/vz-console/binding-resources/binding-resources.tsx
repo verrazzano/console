@@ -42,25 +42,25 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
     switch (this.state.selectedItem) {
       case "components": {
         ResourceList = <ConsoleBindingComponents components={this.props.binding.components} filterCallback={this.filterCallback}/>;
-        Heading = <h3>{Messages.Labels.components()}</h3>;
+        Heading = <h1 class="resheader">{Messages.Labels.components()}</h1>;
         break;
       }
 
       case "connections": {
         ResourceList = <ConsoleConnectionList connections={this.props.binding.connections}/>;
-        Heading = <h3>{Messages.Labels.connections()}</h3>;
+        Heading = <h1 class="resheader">{Messages.Labels.connections()}</h1>;
         break;
       }
 
       case "ingresses": {
         ResourceList = <ConsoleIngressList ingresses={this.props.binding.ingresses} isBindingIngress={true}/>;
-        Heading = <h3>{Messages.Labels.ingresses()}</h3>;
+        Heading = <h1 class="resheader">{Messages.Labels.ingresses()}</h1>;
         break;
       }
 
       case "secrets": {
         ResourceList = <ConsoleSecretList secrets={this.props.binding.secrets}/>;
-        Heading = <h3>{Messages.Labels.secrets()}</h3>;
+        Heading = <h1 class="resheader">{Messages.Labels.secrets()}</h1>;
         break;
       }
 
@@ -71,7 +71,7 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
     return (
       <div class="oj-flex resourcepadding">
         <div class="oj-sm-2 oj-flex-item">
-          <h4 id="resources" class="res">
+          <h4 id="resources" class="reslabel">
             {Messages.Labels.resources()}
           </h4>
           <div class="oj-navigationlist-category-divider"></div>

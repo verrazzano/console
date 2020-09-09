@@ -21,6 +21,7 @@ import {
   Status, Component, ComponentSecret, PartialSecret, SecretUsage
 } from "../service/types";
 import { load } from "js-yaml";
+import * as DateTimeConverter from 'ojs/ojconverter-datetime';
 
 export const extractInstances = (instances: any[]): Instance[] => {
   const result: Instance[] = [];
@@ -258,7 +259,9 @@ export const processApplications = (
           description: model.spec.description,
           modelComponents: processModelComponents(model),
           connections: connectionArr,
-          ingresses: ingressArr
+          ingresses: ingressArr,
+          namespace: model.objectmeta.namespace,
+          createdOn: new DateTimeConverter.IntlDateTimeConverter({ pattern: "dd-MMM-yyyy HH:mm:ss.s" }).format(model.objectmeta.creationtimestamp)
         });
       }
 
@@ -271,7 +274,9 @@ export const processApplications = (
           description: binding.spec.description,
           state: "Running",
           components: processComponents(model, binding),
-          ingresses: processBindingIngresses(binding, resultModel.ingresses)
+          ingresses: processBindingIngresses(binding, resultModel.ingresses),
+          namespace: binding.objectmeta.namespace,
+          createdOn: new DateTimeConverter.IntlDateTimeConverter({ pattern: "dd-MMM-yyyy HH:mm:ss.s" }).format(binding.objectmeta.creationtimestamp)
         };
         resultBinding.connections = extractBindingConnections(resultModel.connections, resultBinding)
         if (!resultModel.bindings) {

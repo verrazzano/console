@@ -126,6 +126,7 @@ export const Labels = {
     modelBindings : () => Translations.getTranslatedString('labels.modelBindings'),
     compType : () => Translations.getTranslatedString('labels.compType'),
     usage : () => Translations.getTranslatedString('labels.usage'),
+    created : () => Translations.getTranslatedString('labels.created'),
 }
 
 export const Api = {

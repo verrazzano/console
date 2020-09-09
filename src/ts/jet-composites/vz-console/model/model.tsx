@@ -95,8 +95,8 @@ export class ConsoleModel extends VComponent<Props, State> {
           <div class="oj-sm-10 oj-flex-item">
             <div class="oj-sm-12 oj-flex">
               <div class="oj-sm-1 oj-flex-item"></div>
-              <div class="oj-sm-11 oj-flex-item">
-                <h2>{this.state.model.name}</h2>
+              <div class="oj-sm-11 oj-flex-item panel-margin">
+                <h1 class="title">{this.state.model.name}</h1>
                 <div class="oj-panel oj-flex metatdata-panel bg">
                   <div class="oj-sm-12 oj-flex-item">
                     <h3>{Messages.Labels.generalInfo()}</h3>
@@ -105,8 +105,16 @@ export class ConsoleModel extends VComponent<Props, State> {
                       value={this.state.model.name}
                     />
                     <ConsoleMetadataItem
+                      label={Messages.Labels.ns()}
+                      value={this.state.model.namespace}
+                    />
+                    <ConsoleMetadataItem
                       label={Messages.Labels.desc()}
                       value={this.state.model.description}
+                    />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.created()}
+                      value={this.state.model.createdOn}
                     />
                   </div>
                 </div>

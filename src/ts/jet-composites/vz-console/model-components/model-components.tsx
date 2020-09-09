@@ -157,7 +157,7 @@ export class ConsoleModelComponents extends VComponent<Props, State> {
 
     this.props.filterCallback(
       <div>
-        <h4 class="res">{Messages.Labels.refineBy()}</h4>
+        <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
         <ConsoleFilter
           label={Messages.Labels.type()}
           options={[
@@ -170,7 +170,7 @@ export class ConsoleModelComponents extends VComponent<Props, State> {
       </div>
     );
     return (
-      <div id="components" class="oj-flex">
+      <div id="components" class="oj-flex component-margin">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
         <div class="oj-flex">
             <div class="oj-sm-12 oj-flex-item res">

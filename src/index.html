@@ -27,7 +27,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
-    <link rel="icon" href="css/images/Verrazzano_logo_black.svg" type="image/x-icon" />
+    <link rel="icon" href="css/images/favico.svg" type="image/x-icon" />
 
     <!-- This is the main css file for the default theme -->
     <!-- injector:theme -->
@@ -51,7 +51,7 @@
            ** on the JET website for more information on how to use this pattern.
         -->
         <div class="oj-applayout-fixed-top">
-          <header role="banner" class="oj-web-applayout-header header-bar grey">
+          <header role="banner" class="oj-web-applayout-header header-bar header-color">
             <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
               <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
                 <span role="img" class="oj-icon vz-icon" title="Verrazzano" alt="Verrazzano Logo" onclick="window.location='/'"></span>
@@ -60,9 +60,9 @@
                 <!-- Responsive Toolbar -->
                 <oj-toolbar>
                   <oj-menu-button id="userMenu" display="[[smScreen() ? 'icons' : 'all']]" chroming="borderless">
-                    <span><oj-bind-text value="[[userEmail]]"></oj-bind-text></span>
                     <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon demo-appheader-avatar': !smScreen()}]]"></span>
                     <oj-menu id="menu1" slot="menu">
+                      <oj-option id="email" value="email"><oj-bind-text value="[[userEmail]]"></oj-bind-text></oj-option>
                       <oj-option id="out" value="out" on-oj-action="[[logout]]"><oj-bind-text value="[[signOut]]"></oj-bind-text></oj-option>
                     </oj-menu>
                   </oj-menu-button>
@@ -74,7 +74,7 @@
         <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content bg" config="[[moduleAdapter.koObservableConfig]]">
         </oj-module>
         <div class="oj-applayout-fixed-bottom">
-          <footer class="oj-web-applayout-footer grey" role="contentinfo">
+          <footer class="oj-web-applayout-footer footer-color" role="contentinfo">
             <div class="oj-web-applayout-footer-item oj-web-applayout-max-width">
               <ul>
                 <oj-bind-for-each data="[[footerLinks]]">

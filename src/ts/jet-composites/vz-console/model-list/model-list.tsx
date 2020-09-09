@@ -21,7 +21,7 @@ class Props {
 export class ConsoleModelList extends VComponent<Props> {
   columnArray = [
     { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: 'name' },
-    { headerText: Messages.Labels.bindings(), sortable: "disabled" }
+    { headerText: Messages.Labels.bindings(), sortable: 'disabled' }
   ];
 
   dataProvider: ko.Observable = ko.observable();

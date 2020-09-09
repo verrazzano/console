@@ -195,7 +195,7 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
 
     this.props.filterCallback(
       <div>
-        <h4 class="res">{Messages.Labels.refineBy()}</h4>
+        <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
         <ConsoleFilter
           label={Messages.Labels.state()}
           options={[
@@ -217,7 +217,7 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
       </div>
     );
     return (
-      <div id="components" class="oj-flex">
+      <div id="components" class="oj-flex component-margin">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
           <div class="oj-flex">
             <div class="oj-sm-12 oj-flex-item res">
@@ -278,8 +278,9 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
                           <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
                         </span>
                       </div>
-                      <div class="oj-sm-2 oj-flex-item">
+                      <div class="oj-sm-2 oj-flex-item compstatus">
                         <strong>{Messages.Labels.status()}:&nbsp;</strong>
+                        <span>
                         <oj-bind-if test="[[item.data.status === 'Running']]">
                           <span
                             id="status"
@@ -304,8 +305,8 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
                             <span class="oj-icon-circle-inner status-icon"></span>
                           </span>
                         </oj-bind-if>
-                        &nbsp;
-                        <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                        &nbsp;<oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                        </span>
                       </div>
                     </div>
                     <div class="oj-flex">

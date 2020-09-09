@@ -36,13 +36,13 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     switch (this.state.selectedItem) {
       case "models": {
         ResourceList = <ConsoleModelList models={this.props.models}/>;
-        Heading = <h3>{Messages.Instance.appModels()}</h3>;
+        Heading = <h1 class="resheader">{Messages.Instance.appModels()}</h1>;
         break;
       }
 
       case "bindings": {
         ResourceList = <ConsoleBindingList bindings={this.props.bindings} nav={"home"}/>;
-        Heading = <h3>{Messages.Instance.appBindings()}</h3>;
+        Heading = <h1 class="resheader">{Messages.Instance.appBindings()}</h1>;
         break;
       }
 
@@ -54,7 +54,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     return (
       <div class="oj-flex resourcepadding">
         <div class="oj-sm-2 oj-flex-item">
-          <h4 id="resources" class="res">{Messages.Labels.resources()}</h4>
+          <h4 id="resources" class="reslabel">{Messages.Labels.resources()}</h4>
           <div class="oj-navigationlist-category-divider"></div>
           <oj-navigation-list
             selection={this.state.selectedItem}

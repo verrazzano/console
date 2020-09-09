@@ -104,7 +104,7 @@ export class ConsoleBinding extends VComponent<Props, State> {
             <div class="oj-sm-12 oj-flex">
               <div class="oj-sm-1 oj-flex-item"></div>
               <div class="oj-sm-11 oj-flex-item">
-                <h2>{this.state.binding.name}</h2>
+                <h1 class="title">{this.state.binding.name}</h1>
                 <div class="oj-panel oj-flex metatdata-panel bg">
                   <div class="oj-sm-6 oj-flex-item">
                     <h3>{Messages.Labels.generalInfo()}</h3>
@@ -113,8 +113,16 @@ export class ConsoleBinding extends VComponent<Props, State> {
                       value={this.state.binding.name}
                     />
                     <ConsoleMetadataItem
+                      label={Messages.Labels.ns()}
+                      value={this.state.binding.namespace}
+                    />
+                    <ConsoleMetadataItem
                       label={Messages.Labels.desc()}
                       value={this.state.binding.description}
+                    />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.created()}
+                      value={this.state.binding.createdOn}
                     />
                     <ConsoleMetadataItem
                       label={Messages.Labels.model()}

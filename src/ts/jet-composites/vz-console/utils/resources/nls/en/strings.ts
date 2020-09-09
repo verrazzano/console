@@ -112,7 +112,8 @@ export = {
         "bindings": "Binding(s)",
         "modelBindings": "Bindings",
         "compType":"Component Type",
-        "usage":"Usage"
+        "usage":"Usage",
+        "created":"Created"
     },
 
     api : {

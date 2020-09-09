@@ -37,6 +37,8 @@ export interface Model {
   connections?: Connection[];
   ingresses?: Ingress[];
   secrets?: ComponentSecret[];
+  namespace?: string;
+  createdOn?: string;
 }
 
 export interface Binding {
@@ -50,6 +52,8 @@ export interface Binding {
   ingresses?: Ingress[];
   vmiInstances?: VMI[];
   secrets?: ComponentSecret[];
+  namespace?: string;
+  createdOn?: string;
 }
 
 export interface Application {

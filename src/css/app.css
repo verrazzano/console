@@ -63,7 +63,7 @@ h4 {
 }
 
 .metatdata-panel {
-  min-height: 220px;
+  min-height: 230px;
   border: 1px solid #aeaeae;
 }
 
@@ -74,7 +74,7 @@ h4 {
 }
 
 .vz-icon:before {
-  content: url("images/Verrazzano_logo_black.svg")
+  content: url("images/Verrazzano_logo_white.svg")
 }html:not([dir="rtl"]) 
 
 .vz-icon {
@@ -127,6 +127,7 @@ html {
   color: #fff;
   text-shadow: none;
 }
+
 ::selection {
   background: #39f;
   color: #fff;
@@ -135,7 +136,7 @@ html {
 
 .oj-navigationlist-listview > ul > li:hover {
   background: white !important;
-  border-left: 2px solid #3CB371 !important;
+  border-left: 2px solid #30638e !important;
 }
 
 .oj-web-applayout-content {
@@ -143,8 +144,17 @@ html {
   padding-bottom: 60px;
 }
 
-.grey {
-  background: lightgray;
+.header-color {
+  background: #30638e;
+}
+
+.footer-color {
+  background: #30638e;
+}
+
+footer > div > ul > li > a,
+footer > div > ul > li > a:visited {
+  color: #fff !important;
 }
 
 .oj-navigationlist-item {
@@ -186,7 +196,7 @@ audio, canvas, iframe, img, svg, video {
 }
 
 .status-badge-status-good .status-badge-status-label {
-  color: #76b417;
+  color: #30638e;
   visibility: visible;
 }
 
@@ -209,8 +219,8 @@ audio, canvas, iframe, img, svg, video {
 }
 
 .status-badge-status-good {
-  fill: #76b417;
-  color: #76b417;
+  fill: #30638e;
+  color: #30638e;
 }
 
 .status-badge-container svg .badge-label {
@@ -320,6 +330,10 @@ html:not([dir="rtl"]) #components > * > .oj-pagingcontrol-nav-arrow-section {
   border-radius: 3px;
 }
 
+#listview > * > .oj-listview-item-element > div{
+  margin-left: -1rem;
+}
+
 .status-badge-status-error {
   fill: #e4001e;
   color: #e4001e;
@@ -364,4 +378,89 @@ html:not([dir="rtl"]) #components > * > .oj-pagingcontrol-nav-arrow-section {
 
 .pagination-mid {
   margin-top: -0.8rem;
+}
+
+.resourcepaddingrev {
+  padding-top: -3rem;
+}
+
+.reslabel {
+  color: #222222;
+  font-weight: 250;
+  word-break: break-word;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+vz-console-filter > * > * > .oj-navigationlist-category-divider {
+  margin: 0px !important;
+}
+
+.resheader {
+  font-weight: 400 !important;
+  color: #222222;
+  word-break: break-word !important;
+  margin-bottom: 1.3rem !important;
+  margin-top: 0 !important;
+  font-size: 2em !important;
+  line-height: 40px !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  text-transform: none !important;
+}
+
+.title {
+  margin-bottom: 2rem;
+  margin-top: 0;
+  word-break: break-word;
+  font-size: 2em;
+  margin: 0.67em 0px;
+  line-height: 40px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  color: #222;
+  text-transform: none;
+}
+
+oj-table > table > thead > tr > th {
+  font-size: 14px !important;
+  font-weight: bold !important;
+  color: #222 !important;
+  border-right: 1px solid #b5bbc2;
+}
+
+oj-table > table > tbody > tr {
+  border-top: 1px solid #b5bbc2 !important;
+  border-bottom: 1px solid #b5bbc2 !important;
+}
+
+.oj-table.oj-table-grid-display {
+  border-top: 1px solid #b5bbc2 !important;
+  border-left: 1px solid #b5bbc2 !important;
+  border-right: 1px solid #b5bbc2 !important;
+}
+
+.component-margin {
+  margin-top: -1rem;
+}
+
+.panel-margin {
+  margin-top: -2rem;
+}
+
+#menu1 {
+  top: 47px !important;
+}
+
+.oj-navigationlist-item.oj-selected {
+  border-color: #30638e;
+}
+
+.compstatus {
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  display: inline !important;
+  line-height: 1em !important;
+  max-height: 2em !important;
+  white-space: nowrap;
 }
