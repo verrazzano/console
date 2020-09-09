@@ -25,6 +25,8 @@
     "vz-console-binding-vmi-links": "1.0.0",
     "vz-console-binding-components": "1.0.0",
     "vz-console-model-components": "1.0.0",
-    "vz-console-filter":"1.0.0"
+    "vz-console-filter": "1.0.0",
+    "vz-console-breadcrumb": "1.0.0",
+    "vz-console-status-badge": "1.0.0"
   }
 }

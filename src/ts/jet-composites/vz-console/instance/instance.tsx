@@ -3,16 +3,21 @@
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
-import { Instance } from "vz-console/service/types";
+import { Instance, Model, Binding , Status} from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader"
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader"
 import { ConsoleError } from "vz-console/error/loader"
 import * as Messages from "vz-console/utils/Messages"
+import { extractModelsFromApplications, extractBindingsFromApplications } from "vz-console/service/common";
+import { ConsoleBreadcrumb } from "vz-console/breadcrumb/loader"
+import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
 
 class Props {}
 
 class State {
   instance?: Instance;
+  models?: Model[]
+  bindings?: Binding[]
   loading?: boolean;
   error?: string;
 }
@@ -21,7 +26,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-instance")
-export class ConsoleInstance extends VComponent<Props> {
+export class ConsoleInstance extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
@@ -38,18 +43,21 @@ export class ConsoleInstance extends VComponent<Props> {
 
   async getData() {
     this.updateState({ loading: true });
-    this.verrazzanoApi
-      .getInstance("0")
-      .then((response) =>
-        this.updateState({ loading: false, instance: response })
-      )
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-            errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-      });
+    Promise.all([this.verrazzanoApi.getInstance("0"),this.verrazzanoApi.listApplications()])
+    .then(([instance, applications]) => {
+      this.updateState({ 
+        loading: false, 
+        instance: instance, 
+        models: extractModelsFromApplications(applications), 
+        bindings: extractBindingsFromApplications(applications) })
+    })
+    .catch((error) => {
+      let errorMessage = error;
+      if (error && error.message) {
+          errorMessage = error.message;
+      }
+      this.updateState({ error: errorMessage });
+    });
   }
 
   protected render() {
@@ -63,36 +71,79 @@ export class ConsoleInstance extends VComponent<Props> {
 
     return (
       <div>
+        <ConsoleBreadcrumb
+          items={[
+            { label: Messages.Nav.home(), href: "#" },
+            { label: Messages.Nav.instance() },
+          ]}
+        />
         <div class="oj-flex">
-          <div class="oj-sm-12 oj-flex-item">
-            <h2>{this.state.instance.name}</h2>
+          <div class="oj-sm-2 oj-flex-item">
+            <ConsoleStatusBadge status={Status.Running} type={"hexagon"} text={"V"} label={Messages.Nav.instance()}/>
           </div>
-        </div>
-        <div class="oj-flex">
-          <div class="oj-sm-12 oj-panel oj-flex-item metatdata-panel">
-            <div class="oj-flex">
-              <div class="oj-sm-12 oj-flex-item">
-                <h4>{Messages.Instance.instanceDetails()}</h4>
-              </div>
-              <div class="oj-sm-6 oj-flex-item">
-                <h3>{Messages.Labels.generalInfo()}</h3>
-                <ConsoleMetadataItem label={Messages.Labels.status()} value={this.state.instance.status}/>
-                <ConsoleMetadataItem label={Messages.Labels.version()} value={this.state.instance.version}/>
-                <ConsoleMetadataItem label={Messages.Labels.mgmtCluster()} value={this.state.instance.mgmtCluster}/>
-                <ConsoleMetadataItem label={Messages.Labels.rancher()} value={this.state.instance.rancherUrl} link={true}/>
-                <ConsoleMetadataItem label={Messages.Labels.keycloak()} value={this.state.instance.keyCloakUrl} link={true}/>
-              </div>
-              <div class="oj-sm-6 oj-flex-item">
-                <h3>System Telemetry</h3>
-                <ConsoleMetadataItem label={Messages.Labels.kibana()} value={this.state.instance.kibanaUrl} link={true}/>
-                <ConsoleMetadataItem label={Messages.Labels.grafana()} value={this.state.instance.grafanaUrl} link={true}/>
-                <ConsoleMetadataItem label={Messages.Labels.prom()} value={this.state.instance.prometheusUrl} link={true}/>
-                <ConsoleMetadataItem label={Messages.Labels.es()} value={this.state.instance.elasticUrl} link={true}/>
+          <div class="oj-sm-10 oj-flex-item">
+            <div class="oj-sm-12 oj-flex">
+              <div class="oj-sm-1 oj-flex-item"></div>
+              <div class="oj-sm-11 oj-flex-item panel-margin">
+                <h1 class="title">{Messages.Instance.instanceHeading()}</h1>
+                <div class="oj-panel oj-flex metatdata-panel bg">
+                  <div class="oj-sm-6 oj-flex-item">
+                    <h3>{Messages.Labels.generalInfo()}</h3>
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.status()}
+                      value={this.state.instance.status}
+                    />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.version()}
+                      value={this.state.instance.version}
+                    />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.mgmtCluster()}
+                      value={this.state.instance.mgmtCluster}
+                    />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.rancher()}
+                      value={this.state.instance.rancherUrl}
+                      link={true}
+                    />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.keycloak()}
+                      value={this.state.instance.keyCloakUrl}
+                      link={true}
+                    />
+                  </div>
+                  <div class="oj-sm-6 oj-flex-item">
+                    <h3>System Telemetry</h3>
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.kibana()}
+                      value={this.state.instance.kibanaUrl}
+                      link={true}
+                    />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.grafana()}
+                      value={this.state.instance.grafanaUrl}
+                      link={true}
+                    />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.prom()}
+                      value={this.state.instance.prometheusUrl}
+                      link={true}
+                    />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.es()}
+                      value={this.state.instance.elasticUrl}
+                      link={true}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <ConsoleInstanceResources/>
+        <ConsoleInstanceResources
+          models={this.state.models}
+          bindings={this.state.bindings}
+        />
       </div>
     );
   }

@@ -18,9 +18,10 @@ import {
   Secret,
   Connection,
   Ingress,
-  Status, ModelComponent, ModelSecret, ModelPartialSecret, SecretUsage
+  Status, Component, ComponentSecret, PartialSecret, SecretUsage
 } from "../service/types";
 import { load } from "js-yaml";
+import * as DateTimeConverter from 'ojs/ojconverter-datetime';
 
 export const extractInstances = (instances: any[]): Instance[] => {
   const result: Instance[] = [];
@@ -35,20 +36,6 @@ export const extractInstances = (instances: any[]): Instance[] => {
       keyCloakUrl: instance.keyCloakUrl,
       rancherUrl: instance.rancherUrl,
       vzApiUri: instance.vzApiUri,
-    });
-  });
-  return result;
-};
-
-export const extractSecrets = (secrets: any[]): Secret[] => {
-  const result: Secret[] = [];
-  secrets.forEach(secret => {
-    result.push({
-      id: secret.id,
-      name: secret.name,
-      type: secret.type,
-      status: secret.status,
-      namespace: secret.namespace
     });
   });
   return result;
@@ -84,78 +71,57 @@ export const extractModelsFromApplications = (
 export const extractModelComponentsFromApplications = (
     applications: Application[],
     modelId: string
-): ModelComponent[] => {
+): Component[] => {
   return processModelComponentFromApplications(applications, modelId);
 };
 
-// Extract the model secrets to a specific model or model/binding.
-export const extractModelSecretsFromApplications = (
-    applications: Application[],
-    secrets: Secret[],
-    modelId: string,
-    bindingId?: string
-): ModelSecret[] => {
-  // First convert secret array to set
-  const secretSet: Map<string,Secret> = new Map();
+// Extract the secrets used by components
+export const extractSecretsForComponents = (
+  components: Component[],
+  secrets: Secret[],
+): ComponentSecret[] => {
+  const secretSet: Map<string, Secret> = new Map();
   for (const secret of secrets) {
     secretSet.set(secret.name, secret);
   }
-  // Now get all the secret names in the model component and fill in the data for that secret
-  const modelSecrets: ModelSecret[] = [];
-  const models = extractModelsFromApplications(applications);
-  for (const model of models) {
-    if (modelId !== model.id) {
+  const componentSecrets: ComponentSecret[] = [];
+  for (const component of components) {
+    if (!component.secrets) {
       continue;
     }
-    for (const comp of model.modelComponents) {
-      if (bindingId) {
-        // Binding Id specified, skip if binding not using the component.
-        if (!isBindingUsingComponent(model.bindings, bindingId, comp.name)) {
-          continue;
-        }
-      }
-      for (const s of comp.secrets) {
-        if (secretSet.has(s.name)) {
-          const ms = <ModelSecret>{};
-          modelSecrets.push(ms);
-          const secret = secretSet.get(s.name);
-          ms.usage = s.usage;
-          ms.id = secret.id;
-          ms.name = secret.name;
-          ms.type = secret.type;
-          ms.componentName = comp.name;
-          ms.componentType = comp.type;
-        }
+    for (const componentSecret of component.secrets) {
+      if (secretSet.has(componentSecret.name)) {
+        const secret = secretSet.get(componentSecret.name);
+        componentSecrets.push({
+          id: secret.id,
+          name: secret.name,
+          type: secret.type,
+          usage: componentSecret.usage,
+          componentName: component.name,
+          componentType: component.type
+        });
       }
     }
-
-    if (bindingId && model.bindings) {
-      for (const binding of model.bindings) {
-        if (bindingId === binding.id && binding.components) {
-          for (const component of binding.components) {
-            if (component.secrets) {
-              for (const componentSecret of component.secrets) {
-                if (secretSet.has(componentSecret.name)) {
-                  const secret = secretSet.get(componentSecret.name);
-                  modelSecrets.push({
-                    id: secret.id,
-                    name: secret.name,
-                    type: secret.type,
-                    usage: componentSecret.usage,
-                    componentName: component.name,
-                    componentType: component.type
-                  });
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
   }
+  return componentSecrets;
+};
 
-  return modelSecrets;
+// Extract the model component secrets
+export const extractSecretsForModelComponents = (
+  model: Model,
+  secrets: Secret[],
+): ComponentSecret[] => {
+  return extractSecretsForComponents(model.modelComponents, secrets);
+};
+
+// Extract the binding component secrets
+export const extractSecretsForBindingComponents = (
+  binding: Binding,
+  secrets: Secret[],
+): ComponentSecret[] => {
+  return extractSecretsForComponents(binding.model.modelComponents.filter((component) => {
+    return isBindingUsingComponent(binding, component.name)
+  }), secrets).concat(extractSecretsForComponents(binding.components, secrets));
 };
 
 
@@ -185,48 +151,23 @@ export const extractBindingsFromApplications = (
   return bindings;
 };
 
-export const extractConnectionsFromApplications = (
-    applications: Application[],
-    modelId?: string,
-    bindingId?: string
+export const extractBindingConnections = (
+    modelConnections?: Connection[],
+    binding?: Binding
 ): Connection[] => {
-  const connections: Connection[] = [];
-  const modelMap = processApplications(applications);
-  for (const model of modelMap.values()) {
-    if (modelId && model.id !==  modelId) {
-      continue;
-    }
-    if (model.connections) {
-      model.connections.forEach(connection => {
-        if (bindingId) {
-          // Binding Id specified, add the connection if the binding is using
-          // connection component.
-          if (isBindingUsingComponent(model.bindings, bindingId, connection.component)) {
-            connections.push(connection);
-          }
-        } else {
-          // No binding Id specified, add the connection.
-          connections.push(connection);
-        }
-      });
-    }
-  }
-  return connections;
-};
+  return modelConnections.filter((connection) => {
+    return isBindingUsingComponent(binding, connection.component)
+  })
+}
 
 // Return true if the binding is using the specified component
 export const isBindingUsingComponent = (
-    bindings: Binding[],
-    bindingId?: string,
+    binding: Binding,
     componentName?: string
 ): boolean => {
-  for (const binding of bindings) {
-    if (bindingId === binding.id) {
-      for (const comp of binding.components) {
-        if (componentName === comp.name) {
-          return true;
-        }
-      }
+  for (const comp of binding.components) {
+    if (componentName === comp.name) {
+      return true;
     }
   }
   return false;
@@ -318,7 +259,9 @@ export const processApplications = (
           description: model.spec.description,
           modelComponents: processModelComponents(model),
           connections: connectionArr,
-          ingresses: ingressArr
+          ingresses: ingressArr,
+          namespace: model.objectmeta.namespace,
+          createdOn: new DateTimeConverter.IntlDateTimeConverter({ pattern: "dd-MMM-yyyy HH:mm:ss.s" }).format(model.objectmeta.creationtimestamp)
         });
       }
 
@@ -331,8 +274,11 @@ export const processApplications = (
           description: binding.spec.description,
           state: "Running",
           components: processComponents(model, binding),
-          ingresses: processBindingIngresses(binding, resultModel.ingresses)
+          ingresses: processBindingIngresses(binding, resultModel.ingresses),
+          namespace: binding.objectmeta.namespace,
+          createdOn: new DateTimeConverter.IntlDateTimeConverter({ pattern: "dd-MMM-yyyy HH:mm:ss.s" }).format(binding.objectmeta.creationtimestamp)
         };
+        resultBinding.connections = extractBindingConnections(resultModel.connections, resultBinding)
         if (!resultModel.bindings) {
           resultModel.bindings = [];
         }
@@ -544,8 +490,8 @@ export const processComponents = (
 export const processModelComponentFromApplications = (
     applications: Application[],
     modelId: string
-): ModelComponent[] => {
-  const components: ModelComponent[] = [];
+): Component[] => {
+  const components: Component[] = [];
   for (const app of applications) {
     const model = app.model && load(app.model);
     if (model && modelId === model.objectmeta.uid) {
@@ -558,13 +504,13 @@ export const processModelComponentFromApplications = (
 // Return the list of ModelComponents used for a specific model
 export const processModelComponents = (
     model: any
-): ModelComponent[] => {
-  const components: ModelComponent[] = [];
+): Component[] => {
+  const components: Component[] = [];
 
   if (model && model.spec) {
     if (model.spec.weblogicDomains) {
       model.spec.weblogicDomains.forEach((wlsDomain: any) => {
-        const c = <ModelComponent>{ id: generateWlsNodeId(model.objectmeta.id, wlsDomain.name) };
+        const c = <Component>{ id: generateWlsNodeId(model.objectmeta.id, wlsDomain.name) };
         components.push(c);
         c.secrets = [];
         c.type = ComponentType.WLS;
@@ -575,14 +521,14 @@ export const processModelComponents = (
           }
           if (wlsDomain.domainCRValues.imagepullsecrets) {
             for (const s of wlsDomain.domainCRValues.imagepullsecrets) {
-              const ps = <ModelPartialSecret>{ name: s.name, usage: SecretUsage.ImagePullSecret };
+              const ps = <PartialSecret>{ name: s.name, usage: SecretUsage.ImagePullSecret };
               c.secrets.push(ps);
             }
           }
           if (wlsDomain.domainCRValues.weblogiccredentialssecret
               && wlsDomain.domainCRValues.weblogiccredentialssecret.name) {
             const n = wlsDomain.domainCRValues.weblogiccredentialssecret.name;
-            const ps = <ModelPartialSecret>{ name: n, usage: SecretUsage.WebLogicCredentialsSecret };
+            const ps = <PartialSecret>{ name: n, usage: SecretUsage.WebLogicCredentialsSecret };
             c.secrets.push(ps);
           }
         }
@@ -591,7 +537,7 @@ export const processModelComponents = (
 
     if (model.spec.helidonApplications) {
       model.spec.helidonApplications.forEach((helidonApp: any) => {
-        const c = <ModelComponent>{ id: generateHelidonNodeId(model.objectmeta.id, helidonApp.name) };
+        const c = <Component>{ id: generateHelidonNodeId(model.objectmeta.id, helidonApp.name) };
         components.push(c);
         c.secrets = [];
         c.type = ComponentType.MS;
@@ -599,7 +545,7 @@ export const processModelComponents = (
         c.image = helidonApp.image;
         if (helidonApp.imagePullSecrets) {
           for (const s of helidonApp.imagePullSecrets) {
-            const ps = <ModelPartialSecret> { name: s.name, usage: SecretUsage.ImagePullSecret };
+            const ps = <PartialSecret> { name: s.name, usage: SecretUsage.ImagePullSecret };
             c.secrets.push(ps);
           }
         }
@@ -608,7 +554,7 @@ export const processModelComponents = (
 
     if (model.spec.coherenceClusters) {
       model.spec.coherenceClusters.forEach((coherenceCluster: any) => {
-        const c = <ModelComponent>{ id: generateCohNodeId(model.objectmeta.id, coherenceCluster.name) };
+        const c = <Component>{ id: generateCohNodeId(model.objectmeta.id, coherenceCluster.name) };
         components.push(c);
         c.secrets = [];
         c.type = ComponentType.COH;
@@ -616,7 +562,7 @@ export const processModelComponents = (
         c.image = coherenceCluster.image;
         if (coherenceCluster.imagePullSecrets) {
           for (const s of coherenceCluster.imagePullSecrets) {
-            const ps = <ModelPartialSecret> { name: s.name, usage: SecretUsage.ImagePullSecret };
+            const ps = <PartialSecret> { name: s.name, usage: SecretUsage.ImagePullSecret };
             c.secrets.push(ps);
           }
         }

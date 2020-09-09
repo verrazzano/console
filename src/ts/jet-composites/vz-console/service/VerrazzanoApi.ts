@@ -3,12 +3,9 @@
 
 import {
   Instance,
-  Cluster,
   Application,
   Model,
-  BindingComponent,
   Binding,
-  VMI,
   Secret,
   Status, FetchApiSignature
 } from "./types";
@@ -33,14 +30,6 @@ export class VerrazzanoApi {
     return this.fetchApi(this.url + "/instance")
       .then((response: Response) => response.json())
       .then((data: Instance) => {
-        return data;
-      });
-  }
-
-  public async listClusters(): Promise<Cluster[]> {
-    return this.fetchApi(this.url + "/clusters")
-      .then((response: Response) => response.json())
-      .then((data: Cluster[]) => {
         return data;
       });
   }
@@ -72,6 +61,10 @@ export class VerrazzanoApi {
     bindingId: string
   ): Promise<Binding> {
     console.log(Messages.Api.msgFetchBinding(bindingId));
+    const host = this.url.startsWith("/") ? location.host : new URL(this.url).host;
+    const hostSuffix = this.url.startsWith("/") ? host.substring(host.indexOf(".")) :
+         host.substring(host.indexOf("api.") + "api".length);
+
     return this.fetchApi(this.url + "/applications")
       .then((response: Response) => response.json())
       .then((data: Application[]) => {
@@ -79,35 +72,13 @@ export class VerrazzanoApi {
         const bindings = extractBindingsFromApplications(applications);
         for (const binding of bindings) {
           if (binding.id === bindingId) {
+            binding.vmiInstances = getVmiInstancesForBinding(binding.name, hostSuffix);
+            binding.components.forEach(component => {
+              component.status = Status.Running;
+            });
             return binding;
           }
         }
-      });
-  }
-
-  public async getComponentStatus(
-    component: BindingComponent
-  ): Promise<Status> {
-    let status = Status.Unknown;
-    if (component) {
-      console.log(
-        Messages.Api.msgFetchComponent(component.type,component.name)
-      );
-      status = Status.Running;
-    }
-    return status;
-  }
-
-  public async getVMInstances(
-    bindingId: string
-  ): Promise<VMI[]> {
-    console.log(Messages.Api.msgFetchVmi(bindingId));
-    return this.getBinding(bindingId)
-      .then((binding: Binding) => {
-        const host = this.url.startsWith("/") ? location.host : new URL(this.url).host;
-        const hostSuffix = this.url.startsWith("/") ? host.substring(host.indexOf(".")) :
-             host.substring(host.indexOf("api.") + "api".length);
-        return getVmiInstancesForBinding(binding.name, hostSuffix);
       });
   }
 
@@ -121,11 +92,10 @@ export class VerrazzanoApi {
 
   public constructor() {
     this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
-    this.listClusters = this.listClusters.bind(this);
     this.listApplications = this.listApplications.bind(this);
     this.getInstance = this.getInstance.bind(this);
     this.getModel = this.getModel.bind(this);
-    this.getComponentStatus = this.getComponentStatus.bind(this);
-    this.getVMInstances = this.getVMInstances.bind(this);
+    this.listSecrets = this.listSecrets.bind(this);
+    this.getBinding = this.getBinding.bind(this);
   }
 }

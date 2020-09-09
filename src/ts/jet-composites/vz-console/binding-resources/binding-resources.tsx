@@ -7,50 +7,60 @@ import { ConsoleIngressList } from "vz-console/ingress-list/loader";
 import { ConsoleSecretList } from "vz-console/secret-list/loader";
 import { ConsoleBindingComponents } from "vz-console/binding-components/loader";
 import * as Messages from "vz-console/utils/Messages";
+import { Binding } from "vz-console/service/types";
 
 class State {
   selectedItem: string;
+  filter?: Element;
 }
 
 class Props {
-  bindingId: string;
-  modelId: string;
+  binding: Binding
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-binding-resources")
-export class ConsoleBindingResources extends VComponent<Props> {
+export class ConsoleBindingResources extends VComponent<Props, State> {
   state: State = {
     selectedItem: "components",
   };
 
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
-    this.updateState({ selectedItem: event.detail.value });
+    this.updateState({ selectedItem: event.detail.value, filter: null  });
   }
+
+  filterCallback = (filter: Element): void => {
+    this.updateState({filter: filter})
+  };
 
   protected render() {
     let ResourceList: Element;
+    let Heading: Element;
     switch (this.state.selectedItem) {
       case "components": {
-        ResourceList = <ConsoleBindingComponents bindingId={this.props.bindingId}/>;
+        ResourceList = <ConsoleBindingComponents components={this.props.binding.components} filterCallback={this.filterCallback}/>;
+        Heading = <h1 class="resheader">{Messages.Labels.components()}</h1>;
         break;
       }
 
       case "connections": {
-        ResourceList = <ConsoleConnectionList modelId={this.props.modelId} bindingId={this.props.bindingId}/>;
+        ResourceList = <ConsoleConnectionList connections={this.props.binding.connections}/>;
+        Heading = <h1 class="resheader">{Messages.Labels.connections()}</h1>;
         break;
       }
 
       case "ingresses": {
-        ResourceList = <ConsoleIngressList modelId={this.props.modelId} bindingId={this.props.bindingId}/>;
+        ResourceList = <ConsoleIngressList ingresses={this.props.binding.ingresses} isBindingIngress={true}/>;
+        Heading = <h1 class="resheader">{Messages.Labels.ingresses()}</h1>;
         break;
       }
 
       case "secrets": {
-        ResourceList = <ConsoleSecretList modelId={this.props.modelId} bindingId={this.props.bindingId}/>;
+        ResourceList = <ConsoleSecretList secrets={this.props.binding.secrets}/>;
+        Heading = <h1 class="resheader">{Messages.Labels.secrets()}</h1>;
         break;
       }
 
@@ -59,9 +69,9 @@ export class ConsoleBindingResources extends VComponent<Props> {
       }
     }
     return (
-      <div class="oj-flex">
+      <div class="oj-flex resourcepadding">
         <div class="oj-sm-2 oj-flex-item">
-          <h4 id="resources" class="res">
+          <h4 id="resources" class="reslabel">
             {Messages.Labels.resources()}
           </h4>
           <div class="oj-navigationlist-category-divider"></div>
@@ -85,9 +95,17 @@ export class ConsoleBindingResources extends VComponent<Props> {
               </li>
             </ul>
           </oj-navigation-list>
+          <div id="filters">{this.state.filter}</div>
         </div>
-        <div class="oj-sm-1 oj-flex-item"></div>
-        <div class="oj-sm-9 oj-flex-item">{ResourceList}</div>
+        <div class="oj-sm-10 oj-flex-item">
+          <div class="oj-sm-12 oj-flex">
+            <div class="oj-sm-1 oj-flex-item"></div>
+            <div class="oj-sm-11 oj-flex-item">
+              {Heading}
+              {ResourceList}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

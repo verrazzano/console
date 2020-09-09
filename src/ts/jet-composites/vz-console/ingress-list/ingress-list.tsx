@@ -2,26 +2,17 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
-import {
-  VerrazzanoApi,
-  extractIngressesFromApplications,
-  Ingress,
-} from "vz-console/service/loader";
+import { Ingress } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
-import * as ko from "knockout";
-import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages"
+import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
+import * as ko from "knockout";
+import "ojs/ojpagingcontrol";
 
 class Props {
-  modelId: string;
-  bindingId?: string;
-}
-
-class State {
+  isBindingIngress: boolean;
   ingresses?: [Ingress];
-  loading?: boolean;
-  error?: string;
 }
 
 /**
@@ -29,10 +20,6 @@ class State {
  */
 @customElement("vz-console-ingress-list")
 export class ConsoleIngressList extends VComponent<Props> {
-  verrazzanoApi: VerrazzanoApi;
-  state: State = {
-    loading: true,
-  };
 
   columnArray = [
     { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: "name" },
@@ -40,15 +27,17 @@ export class ConsoleIngressList extends VComponent<Props> {
     { headerText: Messages.Labels.port(), sortable: "enabled", sortProperty: "port" },
   ];
 
-  data: ko.Observable = ko.observable();
+  dataProvider: ko.Observable = ko.observable();
 
-  constructor() {
-    super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
-  }
+  protected render() {
+    this.dataProvider(new PagingDataProviderView(
+      new ArrayDataProvider(this.props.ingresses, {
+        keyAttributes: "name",
+        implicitSort: [{ attribute: "name", direction: "ascending" }],
+      })
+    ))
 
-  protected mounted() {
-    if (this.props.bindingId) {
+    if (this.props.isBindingIngress) {
       this.columnArray.push({
         headerText: Messages.Labels.dnsName(),
         sortable: "enabled",
@@ -62,60 +51,16 @@ export class ConsoleIngressList extends VComponent<Props> {
       });
     }
 
-    this.getData();
-  }
-
-  async getData() {
-    this.updateState({ loading: true });
-    this.verrazzanoApi
-      .listApplications()
-      .then((response) =>
-        this.updateState({
-          loading: false,
-          ingresses: extractIngressesFromApplications(
-            response,
-            this.props.modelId,
-            this.props.bindingId
-          ),
-        })
-      )
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-      });
-  }
-
-  protected render() {
-    if (this.state.error) {
-      return (
-        <ConsoleError
-          context={Messages.Error.errRenderIngList()}
-          error={this.state.error}
-        />
-      );
-    }
-
-    this.data(
-      new ArrayDataProvider(this.state.ingresses ? this.state.ingresses : [], {
-        keyAttributes: "name",
-        implicitSort: [{ attribute: "name", direction: "ascending" }],
-      })
-    );
-
-    if (this.state.loading) {
-      return <p>{Messages.Labels.loading()}</p>;
-    }
-
     return (
+      <div>
       <oj-table
-        data={this.data()}
+        data={this.dataProvider()}
         columns={this.columnArray}
         aria-labelledby="resources"
         class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"
         style={{ width: "100%" }}
+        display='grid'
+        verticalGridVisible='disabled'
       >
         <template slot="rowTemplate" data-oj-as="row">
           <tr>
@@ -147,6 +92,30 @@ export class ConsoleIngressList extends VComponent<Props> {
           </tr>
         </template>
       </oj-table>
+      <div class="oj-flex pagination">
+          <div class="oj-sm-7 oj-flex-item"></div>
+          <div class="oj-sm-5 oj-flex-item">
+            <div class="oj-flex">
+              <div class="oj-sm-1 oj-flex-item"></div>
+              <div class="oj-sm-11 oj-flex-item">
+                <oj-paging-control
+                  data={this.dataProvider()}
+                  pageSize={4}
+                  class="oj-complete"
+                  pageOptions={{
+                    layout: ["nav", "pages", "rangeText"],
+                    type: "numbers",
+                  }}
+                  translations={{
+                    fullMsgItemRange: Messages.Pagination.msgItemRange(),
+                    fullMsgItem: Messages.Pagination.msgItem()
+                  }}
+                ></oj-paging-control>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }

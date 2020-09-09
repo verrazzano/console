@@ -19,6 +19,9 @@ export = {
         "model": "Application Model",
         "binding": "Application Binding",
         "instance": "Verrazzano",
+        "home": "Home",
+        "modelDetails": "Model Details",
+        "bindingDetails": "Binding Details" 
     },
     model : {
         "modelsPageLoaded": "Models page loaded.",
@@ -32,7 +35,7 @@ export = {
     instance : {
         "details" : "Instance Details",
         "instancePageLoaded": "Instance page loaded.",
-        "instanceHeading": "Verrazzano Instance",
+        "instanceHeading": "Verrazzano",
         "appModels": "Application Models",
         "appBindings": "Application Bindings",
     },
@@ -80,7 +83,7 @@ export = {
         "desc": "Description",
         "model": "Model",
         "loading": "Loading...",
-        "refineBy": "Refine by",
+        "refineBy": "Filters",
         "state": "State",
         "type": "Type",
         "sortBy": "Sort by:",
@@ -109,7 +112,8 @@ export = {
         "bindings": "Binding(s)",
         "modelBindings": "Bindings",
         "compType":"Component Type",
-        "usage":"Usage"
+        "usage":"Usage",
+        "created":"Created"
     },
 
     api : {
@@ -118,6 +122,11 @@ export = {
         "msgFetchBinding": "Fetching binding details for binding {0}",
         "msgFetchComponent": "Fetching Component status for {0} {1}",
         "msgFetchVmi": "Fetching VMI details for binding {0}",
+    },
+
+    pagination : {
+        "msgItemRange": "Showing ${pageFrom$}-${pageTo$} of ${pageMax$} items",
+        "msgItem": "Showing ${pageTo$} of ${pageMax$} items"
     }
 
 };

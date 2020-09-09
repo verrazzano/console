@@ -25,6 +25,9 @@ export const Nav = {
     model : () => Translations.getTranslatedString('nav.model'),
     binding : () => Translations.getTranslatedString('nav.binding'),
     instance : () => Translations.getTranslatedString('nav.instance'),
+    home : () => Translations.getTranslatedString('nav.home'),
+    modelDetails : () => Translations.getTranslatedString('nav.modelDetails'),
+    bindingDetails : () => Translations.getTranslatedString('nav.bindingDetails'),
 }
 
 
@@ -123,6 +126,7 @@ export const Labels = {
     modelBindings : () => Translations.getTranslatedString('labels.modelBindings'),
     compType : () => Translations.getTranslatedString('labels.compType'),
     usage : () => Translations.getTranslatedString('labels.usage'),
+    created : () => Translations.getTranslatedString('labels.created'),
 }
 
 export const Api = {
@@ -131,4 +135,9 @@ export const Api = {
     msgFetchInstance: (...args) => Translations.getTranslatedString('api.msgFetchInstance', args),
     msgFetchComponent: (...args) => Translations.getTranslatedString('api.msgFetchComponent', args),
     msgFetchVmi: (...args) => Translations.getTranslatedString('api.msgFetchVmi', args),
+}
+
+export const Pagination = {
+    msgItemRange: () => Translations.getTranslatedString('pagination.msgItemRange'),
+    msgItem: () => Translations.getTranslatedString('pagination.msgItem')
 }

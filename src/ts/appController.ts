@@ -63,10 +63,7 @@ class RootViewModel {
     this.message = ko.observable();
     this.signOut = ko.observable(Messages.Header.signOutLabel())
     this.appNav = ko.observable(Messages.Header.appNavLabel())
-
-    let globalBodyElement: HTMLElement = document.getElementById("globalBody") as HTMLElement;
-    globalBodyElement.addEventListener("announce", this.announcementHandler, false);
-
+    
     // media queries for repsonsive layouts
     let smQuery: string | null = ResponsiveUtils.getFrameworkQuery("sm-only");
     if (smQuery){
@@ -98,35 +95,15 @@ class RootViewModel {
     // route.
     this.navDataProvider = new ArrayDataProvider(navData.slice(1), {keyAttributes: "path"});
 
-    // drawer
-
-    this.drawerParams = {
-      displayMode: "push",
-      selector: "#navDrawer",
-      content: "#pageContent"
-    };
-
-    // close offcanvas on medium and larger screens
-    this.mdScreen.subscribe(() => {
-      OffcanvasUtils.close(this.drawerParams);
-    });
-
-    // add a close listener so we can move focus back to the toggle button when the drawer closes
-    let navDrawerElement: HTMLElement = document.querySelector("#navDrawer") as HTMLElement;
-    navDrawerElement.addEventListener("ojclose", () => {
-      let drawerToggleButtonElment: HTMLElement = document.querySelector("#drawerToggleButton") as HTMLElement;
-      drawerToggleButtonElment.focus();
-    });
-
     let locale = Config.getLocale().split("-")[1].toLowerCase();
     // footer
     this.footerLinks = [
-      {name: Messages.Footer.copyright(), linkId: 'copyRight', linkTarget:'https://www.oracle.com/' + (locale === 'us' ? "" : locale) + '/legal/copyright.html'},
-      {name: Messages.Footer.aboutOracle(), linkId: 'aboutOracle', linkTarget:'https://www.oracle.com/' + locale + '/corporate/index.html#menu-about'},
-      { name: Messages.Footer.contactUs(), id: "contactUs", linkTarget: "https://www.oracle.com/" + locale + "/corporate/contact/index.html" },
-      { name: Messages.Footer.legalNotices(), id: "legalNotices", linkTarget: "https://www.oracle.com/" + locale + "/legal/index.html" },
-      { name: Messages.Footer.termsOfUse(), id: "termsOfUse", linkTarget: "https://www.oracle.com/" + locale + "/legal/terms/index.html" },
-      { name: Messages.Footer.yourPrivacyRights(), id: "yourPrivacyRights", linkTarget: "https://www.oracle.com/" + locale + "/legal/privacy/index.html" },
+      {name: Messages.Footer.copyright(), linkId: 'copyRight', linkTarget: `https://www.oracle.com/${(locale === 'us' ? "" : locale)}/legal/copyright.html` },
+      {name: Messages.Footer.aboutOracle(), linkId: 'aboutOracle', linkTarget:`https://www.oracle.com/${locale}/corporate/index.html#menu-about` },
+      { name: Messages.Footer.contactUs(), id: "contactUs", linkTarget: `https://www.oracle.com/${locale}/corporate/contact/index.html` },
+      { name: Messages.Footer.legalNotices(), id: "legalNotices", linkTarget: `https://www.oracle.com/${locale}/legal/index.html` },
+      { name: Messages.Footer.termsOfUse(), id: "termsOfUse", linkTarget: `https://www.oracle.com/${locale}/legal/terms/index.html` },
+      { name: Messages.Footer.yourPrivacyRights(), id: "yourPrivacyRights", linkTarget: `https://www.oracle.com/${locale}/legal/privacy/index.html` },
     ];
   }
 

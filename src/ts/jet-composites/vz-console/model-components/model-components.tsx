@@ -4,7 +4,7 @@
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import {
   VerrazzanoApi,
-  ModelComponent,
+  Component,
   ComponentType,
 } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
@@ -18,30 +18,26 @@ import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
-import { ConsoleError } from "vz-console/error/loader";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages"
 
 class Props {
-  modelId: string;
+  components: [Component];
+  filterCallback: (filter: Element) => {}
 }
 
 class State {
   originalComponents?: Model.Collection;
   components?: Model.Collection;
-  loading?: boolean;
-  error?: string;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-model-components")
-export class ConsoleModelComponents extends VComponent<Props> {
-  verrazzanoApi: VerrazzanoApi;
-  state: State = {
-    loading: true,
-  };
+export class ConsoleModelComponents extends VComponent<Props, State> {
+
+  state: State = {}
 
   options = [
     { value: "name", label: "Name" },
@@ -59,19 +55,10 @@ export class ConsoleModelComponents extends VComponent<Props> {
 
   currentTypeFilter = ko.observable([ComponentType.ANY]);
 
-  constructor() {
-    super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
-  }
-
-  protected mounted() {
-    this.getData();
-  }
-
   compare = (left: Model.Model, right: Model.Model): number => {
     let result = 0;
-    const leftComponent = left.attributes as ModelComponent;
-    const rightComponent = right.attributes as ModelComponent;
+    const leftComponent = left.attributes as Component;
+    const rightComponent = right.attributes as Component;
     switch (this.currentSort()) {
       case "default":
       case "name": {
@@ -104,7 +91,7 @@ export class ConsoleModelComponents extends VComponent<Props> {
     if (components) {
       let models = components.models;
       models = models.filter((model) => {
-        let component = model.attributes as ModelComponent;
+        let component = model.attributes as Component;
         let typeFilter = this.currentTypeFilter();
         if (typeFilter.includes(ComponentType.ANY) || typeFilter.includes(component.type)) {
           return true;
@@ -118,40 +105,25 @@ export class ConsoleModelComponents extends VComponent<Props> {
     return components;
   };
 
-  async getData() {
-    this.updateState({ loading: true });
+  protected mounted() {
     let models: Model.Model[] = new Array();
-    this.verrazzanoApi
-      .getModel(this.props.modelId)
-      .then((model) => {
-        model.modelComponents
-          .filter((component) => {
-            return [
-              ComponentType.WLS,
-              ComponentType.COH,
-              ComponentType.MS,
-            ].includes(component.type);
-          })
-          .forEach((component) => {
-            models.push(new Model.Model(component));
-          });
-      })
-      .then(() => {
-        this.updateState({
-          loading: false,
-          components: new Model.Collection(models),
-          originalComponents: new Model.Collection(models),
-        });
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-        return;
-      });
+    this.props.components.filter((component) => {
+      return [
+        ComponentType.WLS,
+        ComponentType.COH,
+        ComponentType.MS,
+      ].includes(component.type);
+    })
+    .forEach((component) => {
+        models.push(new Model.Model(component));
+    });
+  
+    this.updateState({
+      components: new Model.Collection(models),
+      originalComponents: new Model.Collection(models),
+    });
   }
+
 
   @listener({ capture: true, passive: true })
   private handleTypeFilterChanged(event: CustomEvent) {
@@ -173,66 +145,70 @@ export class ConsoleModelComponents extends VComponent<Props> {
   }
 
   protected render() {
-    if (this.state.error) {
-      return (
-        <ConsoleError
-          context={Messages.Error.errRenderModelComponents()}
-          error={this.state.error}
-        />
-      );
-    }
-
-    if (this.state.loading) {
-      return <p>{Messages.Labels.loading()}</p>;
-    }
-
     this.dataProvider(
       new PagingDataProviderView(
         new CollectionDataProvider(
-          this.state.components
+          this.state && this.state.components
             ? this.state.components
             : new Model.Collection([])
         )
       )
     );
 
+    this.props.filterCallback(
+      <div>
+        <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
+        <ConsoleFilter
+          label={Messages.Labels.type()}
+          options={[
+            { label: ComponentType.WLS, value: ComponentType.WLS },
+            { label: ComponentType.COH, value: ComponentType.COH },
+            { label: ComponentType.MS, value: ComponentType.MS },
+          ]}
+          onValueChanged={this.handleTypeFilterChanged}
+        />
+      </div>
+    );
     return (
-      <div class="oj-flex">
+      <div id="components" class="oj-flex component-margin">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
-          <div class="oj-flex">
-            <div class="oj-sm-2 oj-sm-only-hide oj-flex-item">
-              <h4 class="res">Refine by</h4>
-              <ConsoleFilter
-                label={Messages.Labels.type()}
-                options={[
-                  { label: ComponentType.WLS, value: ComponentType.WLS },
-                  { label: ComponentType.COH, value: ComponentType.COH },
-                  { label: ComponentType.MS, value: ComponentType.MS },
-                ]}
-                onValueChanged={this.handleTypeFilterChanged}
-              />
-            </div>
-            <div class="oj-sm-10 oj-flex-item res">
-              <div class="oj-flex components-align-right">
-                <div class="oj-sm-6 oj-flex-item">
-                  <oj-label for="sortBy" class="oj-label-inline">
+        <div class="oj-flex">
+            <div class="oj-sm-12 oj-flex-item res">
+              <div class="oj-flex card-border">
+                <div class="oj-sm-1 oj-flex-item">
+                  <oj-label for="sortBy" class="oj-label-inline sortby">
                     {Messages.Labels.sortBy()}
                   </oj-label>
+                </div>
+                <div class="oj-sm-2 oj-flex-item">
                   <oj-select-single
                     id="sortBy"
                     data={this.optionsDataProvider}
                     value={this.currentSort}
                     onValueChanged={this.handleSortCriteriaChanged}
-                    class="oj-complete"
+                    class="oj-complete sortselect"
                   ></oj-select-single>
-                </div>
-                <div class="oj-sm-6 oj-flex-item">
-                  <oj-paging-control
-                    id="paging"
-                    data={this.dataProvider()}
-                    pageSize={4}
-                    class="oj-complete"
-                  ></oj-paging-control>
+                  </div>
+                  <div class="oj-sm-4 oj-flex-item"></div>
+                <div class="oj-sm-5 oj-flex-item">
+                  <div class="oj-flex">
+                    <div class="oj-sm-1 oj-flex-item"></div>
+                    <div class="oj-sm-11 oj-flex-item">
+                      <oj-paging-control
+                        data={this.dataProvider()}
+                        pageSize={3}
+                        class="oj-complete pagination"
+                        pageOptions={{
+                          layout: ["nav", "pages", "rangeText"],
+                          type: "numbers",
+                        }}
+                        translations={{
+                          fullMsgItemRange: Messages.Pagination.msgItemRange(),
+                          fullMsgItem: Messages.Pagination.msgItem()
+                        }}
+                      ></oj-paging-control>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -283,10 +259,35 @@ export class ConsoleModelComponents extends VComponent<Props> {
                   </oj-list-item-layout>
                 </template>
               </oj-list-view>
+            
+              <div class="oj-flex card-border">
+                <div class="oj-sm-7 oj-flex-item"></div>
+                <div class="oj-sm-5 oj-flex-item">
+                  <div class="oj-flex">
+                    <div class="oj-sm-1 oj-flex-item"></div>
+                    <div class="oj-sm-11 oj-flex-item">
+                      <oj-paging-control
+                        data={this.dataProvider()}
+                        pageSize={3}
+                        class="oj-complete pagination"
+                        pageOptions={{
+                          layout: ["nav", "pages", "rangeText"],
+                          type: "numbers",
+                        }}
+                        translations={{
+                          fullMsgItemRange: Messages.Pagination.msgItemRange(),
+                          fullMsgItem: Messages.Pagination.msgItem()
+                        }}
+                      ></oj-paging-control>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
             </div>
           </div>
         </div>
-      </div>
+        </div>
     );
   }
 }

@@ -33,9 +33,12 @@ export interface Model {
   name: string;
   description: string;
   bindings?: Binding[];
-  modelComponents?: ModelComponent[];
+  modelComponents?: Component[];
   connections?: Connection[];
   ingresses?: Ingress[];
+  secrets?: ComponentSecret[];
+  namespace?: string;
+  createdOn?: string;
 }
 
 export interface Binding {
@@ -47,6 +50,10 @@ export interface Binding {
   components?: BindingComponent[];
   connections?: Connection[];
   ingresses?: Ingress[];
+  vmiInstances?: VMI[];
+  secrets?: ComponentSecret[];
+  namespace?: string;
+  createdOn?: string;
 }
 
 export interface Application {
@@ -93,7 +100,7 @@ export interface Secret {
   type: string;
 }
 
-export interface ModelSecret {
+export interface ComponentSecret {
   id: string;
   name: string;
   type: string;
@@ -102,18 +109,11 @@ export interface ModelSecret {
   usage: string;
 }
 
-// This is the secret info we have returned in the model
-export interface ModelPartialSecret {
+// This is the secret info we have returned in the model/binding
+export interface PartialSecret {
   name: string;
   usage: string;
 }
-
-// This is the secret info we have returned in the binding
-export interface BindingPartialSecret {
-  name: string;
-  usage: string;
-}
-
 
 export interface Connection {
   id: string;
@@ -142,22 +142,17 @@ export interface Placement {
   componentType? : string;
 }
 
-export interface BindingComponent {
+export interface Component {
   id?: string;
   name?: string;
   type?: ComponentType;
-  placement?: Placement;
-  status?: Status;
   image?: string;
-  secrets?: BindingPartialSecret[];
+  secrets?: PartialSecret[];
 }
 
-export interface ModelComponent {
-  id?: string;
-  name?: string;
-  type?: ComponentType;
-  image?: string;
-  secrets: ModelPartialSecret[];
+export interface BindingComponent extends Component{
+  placement?: Placement;
+  status?: Status;
 }
 
 export enum ComponentType {

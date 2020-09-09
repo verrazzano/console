@@ -3,7 +3,6 @@
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import {
-  VerrazzanoApi,
   BindingComponent,
   ComponentType,
   Status,
@@ -18,31 +17,25 @@ import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
-import { ConsoleError } from "vz-console/error/loader";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages"
 
 class Props {
-  bindingId: string;
+  components: [BindingComponent];
+  filterCallback: (filter: Element) => {}
 }
 
 class State {
   originalComponents?: Model.Collection;
   components?: Model.Collection;
-  loading?: boolean;
-  error?: string;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-binding-components")
-export class ConsoleBindingComponents extends VComponent<Props> {
-  verrazzanoApi: VerrazzanoApi;
-  state: State = {
-    loading: true,
-  };
-
+export class ConsoleBindingComponents extends VComponent<Props,State> {
+  state: State = {}
   options = [
     { value: "name", label: "Name" },
     { value: "namespace", label: "Namespace" },
@@ -63,15 +56,6 @@ export class ConsoleBindingComponents extends VComponent<Props> {
   currentTypeFilter = ko.observable([ComponentType.ANY]);
 
   currentStatusFilter = ko.observable([Status.Any]);
-
-  constructor() {
-    super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
-  }
-
-  protected mounted() {
-    this.getData();
-  }
 
   compare = (left: Model.Model, right: Model.Model): number => {
     let result = 0;
@@ -147,42 +131,23 @@ export class ConsoleBindingComponents extends VComponent<Props> {
     return components;
   };
 
-  async getData() {
-    this.updateState({ loading: true });
+  protected mounted() {
     let models: Model.Model[] = new Array();
-    this.verrazzanoApi
-      .getBinding(this.props.bindingId)
-      .then((binding) => {
-        binding.components
-          .filter((component) => {
-            return [
-              ComponentType.WLS,
-              ComponentType.COH,
-              ComponentType.MS,
-            ].includes(component.type);
-          })
-          .forEach((component) => {
-            this.verrazzanoApi.getComponentStatus(component).then((status) => {
-              component.status = status;
-              models.push(new Model.Model(component));
-            });
-          });
-      })
-      .then(() => {
-        this.updateState({
-          loading: false,
-          components: new Model.Collection(models),
-          originalComponents: new Model.Collection(models),
-        });
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
-        return;
-      });
+    this.props.components.filter((component) => {
+      return [
+        ComponentType.WLS,
+        ComponentType.COH,
+        ComponentType.MS,
+      ].includes(component.type);
+    })
+    .forEach((component) => {
+        models.push(new Model.Model(component));
+    });
+  
+    this.updateState({
+      components: new Model.Collection(models),
+      originalComponents: new Model.Collection(models),
+    });
   }
 
   @listener({ capture: true, passive: true })
@@ -218,19 +183,6 @@ export class ConsoleBindingComponents extends VComponent<Props> {
   }
 
   protected render() {
-    if (this.state.error) {
-      return (
-        <ConsoleError
-          context={Messages.Error.errRenderBindingComponents()}
-          error={this.state.error}
-        />
-      );
-    }
-
-    if (this.state.loading) {
-      return <p>{Messages.Labels.loading()}</p>;
-    }
-
     this.dataProvider(
       new PagingDataProviderView(
         new CollectionDataProvider(
@@ -241,52 +193,70 @@ export class ConsoleBindingComponents extends VComponent<Props> {
       )
     );
 
+    this.props.filterCallback(
+      <div>
+        <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
+        <ConsoleFilter
+          label={Messages.Labels.state()}
+          options={[
+            { label: Status.Running, value: Status.Running },
+            { label: Status.Creating, value: Status.Creating },
+            { label: Status.Terminated, value: Status.Terminated },
+          ]}
+          onValueChanged={this.handleStatusFilterChanged}
+        />
+        <ConsoleFilter
+          label={Messages.Labels.type()}
+          options={[
+            { label: ComponentType.WLS, value: ComponentType.WLS },
+            { label: ComponentType.COH, value: ComponentType.COH },
+            { label: ComponentType.MS, value: ComponentType.MS },
+          ]}
+          onValueChanged={this.handleTypeFilterChanged}
+        />
+      </div>
+    );
     return (
-      <div class="oj-flex">
+      <div id="components" class="oj-flex component-margin">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
           <div class="oj-flex">
-            <div class="oj-sm-2 oj-sm-only-hide oj-flex-item">
-              <h4 class="res">{Messages.Labels.refineBy()}</h4>
-              <ConsoleFilter
-                label={Messages.Labels.state()}
-                options={[
-                  { label: Status.Running, value: Status.Running },
-                  { label: Status.Creating, value: Status.Creating },
-                  { label: Status.Terminated, value: Status.Terminated },
-                ]}
-                onValueChanged={this.handleStatusFilterChanged}
-              />
-              <ConsoleFilter
-                label={Messages.Labels.type()}
-                options={[
-                  { label: ComponentType.WLS, value: ComponentType.WLS },
-                  { label: ComponentType.COH, value: ComponentType.COH },
-                  { label: ComponentType.MS, value: ComponentType.MS },
-                ]}
-                onValueChanged={this.handleTypeFilterChanged}
-              />
-            </div>
-            <div class="oj-sm-10 oj-flex-item res">
-              <div class="oj-flex components-align-right">
-                <div class="oj-sm-6 oj-flex-item">
-                  <oj-label for="sortBy" class="oj-label-inline">
+            <div class="oj-sm-12 oj-flex-item res">
+              <div class="oj-flex card-border">
+                <div class="oj-sm-1 oj-flex-item">
+                  <oj-label for="sortBy" class="oj-label-inline sortby">
                     {Messages.Labels.sortBy()}
                   </oj-label>
+                </div>
+                <div class="oj-sm-2 oj-flex-item">
                   <oj-select-single
                     id="sortBy"
                     data={this.optionsDataProvider}
                     value={this.currentSort}
                     onValueChanged={this.handleSortCriteriaChanged}
-                    class="oj-complete"
+                    class="oj-complete sortselect"
                   ></oj-select-single>
                 </div>
-                <div class="oj-sm-6 oj-flex-item">
-                  <oj-paging-control
-                    id="paging"
-                    data={this.dataProvider()}
-                    pageSize={4}
-                    class="oj-complete"
-                  ></oj-paging-control>
+                <div class="oj-sm-4 oj-flex-item"></div>
+                <div class="oj-sm-5 oj-flex-item">
+                  <div class="oj-flex">
+                    <div class="oj-sm-1 oj-flex-item"></div>
+                    <div class="oj-sm-11 oj-flex-item">
+                      <oj-paging-control
+                        data={this.dataProvider()}
+                        pageSize={4}
+                        class="oj-complete pagination"
+                        pageOptions={{
+                          layout: ["nav", "pages", "rangeText"],
+                          type: "numbers",
+                        }}
+                        translations={{
+                          fullMsgItemRange:
+                            Messages.Pagination.msgItemRange(),
+                          fullMsgItem: Messages.Pagination.msgItem()
+                        }}
+                      ></oj-paging-control>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -300,10 +270,7 @@ export class ConsoleBindingComponents extends VComponent<Props> {
                 <template slot="itemTemplate" data-oj-as="item">
                   <oj-list-item-layout>
                     <div class="oj-flex">
-                      <div
-                        class="oj-sm-1\
-                     oj-flex-item"
-                      >
+                      <div class="oj-sm-10 oj-flex-item">
                         <strong>
                           <span>{Messages.Labels.name()}:&nbsp;</span>
                         </strong>
@@ -311,35 +278,35 @@ export class ConsoleBindingComponents extends VComponent<Props> {
                           <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
                         </span>
                       </div>
-                      <div class="oj-sm-2 oj-flex-item">
-                        <strong>
-                          <span>{Messages.Labels.status()}:&nbsp;</span>
-                        </strong>
+                      <div class="oj-sm-2 oj-flex-item compstatus">
+                        <strong>{Messages.Labels.status()}:&nbsp;</strong>
+                        <span>
                         <oj-bind-if test="[[item.data.status === 'Running']]">
-                          <span>
-                            <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                            &nbsp;
+                          <span
+                            id="status"
+                            class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green"
+                          >
+                            <span class="oj-icon-circle-inner status-icon"></span>
                           </span>
                         </oj-bind-if>
                         <oj-bind-if test="[[item.data.status === 'Terminated']]">
-                          <span>
-                            <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                            &nbsp;
+                          <span
+                            id="status"
+                            class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red"
+                          >
+                            <span class="oj-icon-circle-inner status-icon"></span>
                           </span>
                         </oj-bind-if>
                         <oj-bind-if test="[[item.data.status === 'Creating']]">
-                          <span>
-                            <span id="status" class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                            &nbsp;
+                          <span
+                            id="status"
+                            class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange"
+                          >
+                            <span class="oj-icon-circle-inner status-icon"></span>
                           </span>
                         </oj-bind-if>
-                        <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                        &nbsp;<oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                        </span>
                       </div>
                     </div>
                     <div class="oj-flex">
@@ -382,6 +349,32 @@ export class ConsoleBindingComponents extends VComponent<Props> {
                   </oj-list-item-layout>
                 </template>
               </oj-list-view>
+           
+              <div class="oj-flex card-border">
+                <div class="oj-sm-7 oj-flex-item"></div>
+                <div class="oj-sm-5 oj-flex-item">
+                  <div class="oj-flex">
+                    <div class="oj-sm-1 oj-flex-item"></div>
+                    <div class="oj-sm-11 oj-flex-item">
+                      <oj-paging-control
+                        data={this.dataProvider()}
+                        pageSize={4}
+                        class="oj-complete pagination"
+                        pageOptions={{
+                          layout: ["nav", "pages", "rangeText"],
+                          type: "numbers",
+                        }}
+                        translations={{
+                          fullMsgItemRange:
+                            Messages.Pagination.msgItemRange(),
+                          fullMsgItem: Messages.Pagination.msgItem()
+                        }}
+                      ></oj-paging-control>
+                    </div>
+                  </div>
+                </div>
+              </div>
+           
             </div>
           </div>
         </div>
