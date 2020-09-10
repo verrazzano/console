@@ -87,7 +87,7 @@ export class ConsoleSecretList extends VComponent<Props> {
               <div class="oj-sm-11 oj-flex-item">
                 <oj-paging-control
                   data={this.dataProvider()}
-                  pageSize={4}
+                  pageSize={10}
                   class="oj-complete"
                   pageOptions={{
                     layout: ["nav", "pages", "rangeText"],

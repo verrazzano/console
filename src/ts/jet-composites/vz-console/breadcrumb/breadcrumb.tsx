@@ -25,7 +25,7 @@ export class ConsoleBreadcrumb extends VComponent<Props> {
       if (href) {
         breadcrumbItems.push(<li><a class onClick={this.openLink} href={href}>{label}</a></li>)
       } else {
-        breadcrumbItems.push(<li>{label}</li>)
+        breadcrumbItems.push(<li class="breadcrumb-label">{label}</li>)
       }
     }); 
 

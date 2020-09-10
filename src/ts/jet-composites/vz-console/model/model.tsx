@@ -81,16 +81,23 @@ export class ConsoleModel extends VComponent<Props, State> {
       return <p>{Messages.Labels.loading()}</p>;
     }
 
-    const breadcrumbItems : {label: string, href?: string}[] = [{label: "Home", href: "?ojr=instance"}];
-    breadcrumbItems.push({label: Messages.Nav.modelDetails(), href: "#"});
-    breadcrumbItems.push({label: this.state.model.name});
-
     return (
       <div>
-        <ConsoleBreadcrumb items={breadcrumbItems} />
+        <ConsoleBreadcrumb
+          items={[
+            { label: Messages.Nav.home(), href: "?ojr=instance" },
+            { label: Messages.Nav.modelDetails() },
+            { label: this.state.model.name },
+          ]}
+        />
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
-            <ConsoleStatusBadge status={Status.Running} type={"square"} text={"M"} label={Messages.Nav.model()}/>
+            <ConsoleStatusBadge
+              status={Status.Running}
+              type={"square"}
+              text={"M"}
+              label={Messages.Nav.model()}
+            />
           </div>
           <div class="oj-sm-10 oj-flex-item">
             <div class="oj-sm-12 oj-flex">

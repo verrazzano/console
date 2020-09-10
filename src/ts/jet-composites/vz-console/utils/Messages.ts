@@ -127,6 +127,7 @@ export const Labels = {
     compType : () => Translations.getTranslatedString('labels.compType'),
     usage : () => Translations.getTranslatedString('labels.usage'),
     created : () => Translations.getTranslatedString('labels.created'),
+    selectOption : () => Translations.getTranslatedString('labels.selectOption'),
 }
 
 export const Api = {

@@ -57,7 +57,7 @@ export class ConsoleModelList extends VComponent<Props> {
                 <oj-bind-for-each data="[[row.data.bindings || []]]">
                   <template>
                     <p>
-                      <a data-bind="attr: {href: '?ojr=binding&nav=home&bindingId=' + $current.data.id}">
+                      <a data-bind="attr: {href: '?ojr=binding&bindingId=' + $current.data.id}">
                         <oj-bind-text value="[[$current.data.name]]"></oj-bind-text>
                       </a>
                     </p>
@@ -74,7 +74,7 @@ export class ConsoleModelList extends VComponent<Props> {
               <div class="oj-sm-12 oj-flex-item">
                 <oj-paging-control
                   data={this.dataProvider()}
-                  pageSize={4}
+                  pageSize={10}
                   class="oj-complete"
                   pageOptions={{
                     layout: ["nav", "pages", "rangeText"],

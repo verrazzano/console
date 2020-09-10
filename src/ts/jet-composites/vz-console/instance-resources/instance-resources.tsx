@@ -41,7 +41,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
       }
 
       case "bindings": {
-        ResourceList = <ConsoleBindingList bindings={this.props.bindings} nav={"home"}/>;
+        ResourceList = <ConsoleBindingList bindings={this.props.bindings}/>;
         Heading = <h1 class="resheader">{Messages.Instance.appBindings()}</h1>;
         break;
       }
