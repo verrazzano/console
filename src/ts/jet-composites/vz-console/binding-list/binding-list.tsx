@@ -12,7 +12,6 @@ import "ojs/ojpagingcontrol";
 
 class Props {
   bindings?: [Binding];
-  nav?: string;
 }
 
 /**
@@ -52,11 +51,7 @@ export class ConsoleBindingList extends VComponent<Props> {
               <td>
                 <p>
                   <a
-                    data-bind={`attr: {href: '?ojr=binding&nav=${
-                      this.props.nav
-                    }&bindingId=' + row.data.id + '&navId='${
-                      this.props.nav === "model" ? "+ row.data.model.id" : ""
-                    }}`}
+                    data-bind={`attr: {href: '?ojr=binding&bindingId=' + row.data.id}`}
                   >
                     <oj-bind-text value="[[row.data.name]]"></oj-bind-text>
                   </a>
@@ -114,7 +109,7 @@ export class ConsoleBindingList extends VComponent<Props> {
               <div class="oj-sm-12 oj-flex-item">
                 <oj-paging-control
                   data={this.dataProvider()}
-                  pageSize={4}
+                  pageSize={10}
                   class="oj-complete"
                   pageOptions={{
                     layout: ["nav", "pages", "rangeText"],

@@ -227,23 +227,24 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
                     {Messages.Labels.sortBy()}
                   </oj-label>
                 </div>
-                <div class="oj-sm-2 oj-flex-item">
+                <div class="oj-sm-3 oj-flex-item">
                   <oj-select-single
                     id="sortBy"
                     data={this.optionsDataProvider}
                     value={this.currentSort}
                     onValueChanged={this.handleSortCriteriaChanged}
                     class="oj-complete sortselect"
+                    placeholder={Messages.Labels.selectOption()}
                   ></oj-select-single>
-                </div>
-                <div class="oj-sm-4 oj-flex-item"></div>
+                  </div>
+                <div class="oj-sm-3 oj-flex-item"></div>
                 <div class="oj-sm-5 oj-flex-item">
                   <div class="oj-flex">
                     <div class="oj-sm-1 oj-flex-item"></div>
                     <div class="oj-sm-11 oj-flex-item">
                       <oj-paging-control
                         data={this.dataProvider()}
-                        pageSize={4}
+                        pageSize={10}
                         class="oj-complete pagination"
                         pageOptions={{
                           layout: ["nav", "pages", "rangeText"],
@@ -358,7 +359,7 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
                     <div class="oj-sm-11 oj-flex-item">
                       <oj-paging-control
                         data={this.dataProvider()}
-                        pageSize={4}
+                        pageSize={10}
                         class="oj-complete pagination"
                         pageOptions={{
                           layout: ["nav", "pages", "rangeText"],

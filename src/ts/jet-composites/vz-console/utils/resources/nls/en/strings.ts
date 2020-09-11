@@ -113,7 +113,8 @@ export = {
         "modelBindings": "Bindings",
         "compType":"Component Type",
         "usage":"Usage",
-        "created":"Created"
+        "created":"Created",
+        "selectOption": "Please select an option ..."
     },
 
     api : {
