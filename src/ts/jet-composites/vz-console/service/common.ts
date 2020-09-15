@@ -244,7 +244,7 @@ export const processApplications = (
   applications: Application[]
 ): Map<string, Model> => {
   const models = new Map<string, Model>();
-  applications.forEach(application => {
+  applications?.forEach(application => {
     const model = application.model && load(application.model);
     const binding = application.binding && load(application.binding);
     if (model) {

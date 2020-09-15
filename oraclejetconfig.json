@@ -6,7 +6,7 @@
       "hybrid": "src-hybrid",
       "javascript": "js",
       "typescript": "ts",
-      "styles": "css",
+      "styles": "/css",
       "themes": "themes"
     },
     "staging": { "web": "web", "hybrid": "hybrid", "themes": "staged-themes" },

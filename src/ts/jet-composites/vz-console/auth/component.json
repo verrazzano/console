@@ -1,5 +1,5 @@
 {
-  "name": "vz-console-auth",
+  "name": "auth",
   "version": "1.0.0",
   "jetVersion": "^9.0.0",
   "displayName": "Auth resource component.",

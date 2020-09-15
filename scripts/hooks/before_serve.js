@@ -36,10 +36,27 @@ function createEnvJs() {
   }
 }
 
+function rewriteUrls() {
+  const express = require('express');
+  const app = express();
+  app.get('/models', (req, res, next) => {
+    console.log('/models');
+    req.url = '/';
+    next()
+  });
+  app.get('/bindings', (req, res, next) => {
+    console.log('/bindings');
+    req.url = '/';
+    next()
+  });
+  return app;
+}
+
 module.exports = function (configObj) {
   return new Promise((resolve, reject) => {
     console.log("Running before_serve hook.");
     createEnvJs();
+    configObj.express = rewriteUrls();
     resolve(configObj);
   });
 };

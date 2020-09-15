@@ -6,10 +6,12 @@ import { ConsoleBindingList } from "vz-console/binding-list/loader";
 import { ConsoleModelList } from "vz-console/model-list/loader";
 import * as Messages from "vz-console/utils/Messages"
 import { Model, Binding } from "vz-console/service/types";
+import { BreadcrumbType } from "vz-console/breadcrumb/loader"
 
 class Props {
   models?: [Model]
   bindings?: [Binding]
+  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {}
 }
 
 class State {
@@ -21,13 +23,25 @@ class State {
  */
 @customElement("vz-console-instance-resources")
 export class ConsoleInstanceResources extends VComponent<Props, State> {
+  baseBreadcrumb: BreadcrumbType = { label: Messages.Nav.home(), href: "#", onclick: () => { this.updateState({selectedItem: "models"}) }}
   state: State = {
     selectedItem: "models",
   };
 
+  protected mounted(){
+    this.props.breadcrumbCallback([this.baseBreadcrumb]);
+  }
+
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
+    const target = `/${event.detail.value}`;
+    const label = event.detail.value === 'models' ? Messages.Instance.appModels() : Messages.Instance.appBindings();
+    if (typeof (history.pushState) != "undefined") {
+      const historyState = {page: "instance", nav: target};
+      history.pushState(historyState, historyState.page, historyState.nav);
+    }
     this.updateState({ selectedItem: event.detail.value });
+    this.props.breadcrumbCallback([this.baseBreadcrumb, {label}]);
   }
 
   protected render() {

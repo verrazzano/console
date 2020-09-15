@@ -9,7 +9,7 @@ import * as OffcanvasUtils from "ojs/ojoffcanvas";
 import CoreRouter = require ("ojs/ojcorerouter");
 import ModuleRouterAdapter = require("ojs/ojmodulerouter-adapter");
 import KnockoutRouterAdapter = require("ojs/ojknockoutrouteradapter");
-import UrlParamAdapter = require("ojs/ojurlparamadapter");
+import UrlPathAdapter = require("ojs/ojurlpathadapter");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
 import "ojs/ojknockout";
 import "ojs/ojmodule-element";
@@ -82,14 +82,14 @@ class RootViewModel {
       { path: "instance", detail: { label: Messages.Nav.instance(), iconClass: "" } }
     ];
     // router setup
-    const router = new CoreRouter(navData, {
-      urlAdapter: new UrlParamAdapter()
+    this.router = new CoreRouter(navData, {
+      urlAdapter: new UrlPathAdapter()
     });
-    router.sync();
+    this.router.sync();
 
-    this.moduleAdapter = new ModuleRouterAdapter(router);
+    this.moduleAdapter = new ModuleRouterAdapter(this.router);
 
-    this.selection = new KnockoutRouterAdapter(router);
+    this.selection = new KnockoutRouterAdapter(this.router);
 
     // Setup the navDataProvider with the routes, excluding the first redirected
     // route.

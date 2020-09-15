@@ -9,7 +9,7 @@ import { ConsoleInstanceResources } from "vz-console/instance-resources/loader"
 import { ConsoleError } from "vz-console/error/loader"
 import * as Messages from "vz-console/utils/Messages"
 import { extractModelsFromApplications, extractBindingsFromApplications } from "vz-console/service/common";
-import { ConsoleBreadcrumb } from "vz-console/breadcrumb/loader"
+import { ConsoleBreadcrumb, BreadcrumbType } from "vz-console/breadcrumb/loader"
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
 
 class Props {}
@@ -20,6 +20,7 @@ class State {
   bindings?: Binding[]
   loading?: boolean;
   error?: string;
+  breadcrumbs?: BreadcrumbType[]
 }
 
 /**
@@ -30,6 +31,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
+    breadcrumbs: []
   };
 
   constructor() {
@@ -60,6 +62,10 @@ export class ConsoleInstance extends VComponent<Props, State> {
     });
   }
 
+  breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
+    this.updateState({breadcrumbs});
+  };
+
   protected render() {
     if (this.state.error) {
       return <ConsoleError context={Messages.Error.errRenderInstance()} error={this.state.error}/>
@@ -72,10 +78,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
     return (
       <div>
         <ConsoleBreadcrumb
-          items={[
-            { label: Messages.Nav.home(), href: "#" },
-            { label: Messages.Nav.instance() },
-          ]}
+          items={this.state.breadcrumbs}
         />
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
@@ -143,6 +146,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
         <ConsoleInstanceResources
           models={this.state.models}
           bindings={this.state.bindings}
+          breadcrumbCallback={this.breadcrumbCallback}
         />
       </div>
     );
