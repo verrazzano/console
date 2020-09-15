@@ -197,3 +197,19 @@ Dependencies that satisfy all those constraints, can be added by:
 - [Oracle JET Cookbook](https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html)
 - [VComponent API Documentation](https://www.oracle.com/webfolder/technetwork/jet/jsdocs/VComponent.html)
 - [Overview of Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
+
+## Running UI tests
+
+### Unit tests
+TODO provide prerequisite information
+```
+npm test
+```
+
+### Integration tests
+
+These require the VZ_UI_URL to be set to a running instance of the Console UI
+
+```
+npm run integtest
+```
