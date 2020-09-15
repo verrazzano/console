@@ -96,11 +96,11 @@ export class ConsoleIngressList extends VComponent<Props> {
           <div class="oj-sm-7 oj-flex-item"></div>
           <div class="oj-sm-5 oj-flex-item">
             <div class="oj-flex">
-              <div class="oj-sm-1 oj-flex-item"></div>
-              <div class="oj-sm-11 oj-flex-item">
+              <div class="oj-sm-2 oj-flex-item"></div>
+              <div class="oj-sm-10 oj-flex-item">
                 <oj-paging-control
                   data={this.dataProvider()}
-                  pageSize={4}
+                  pageSize={10}
                   class="oj-complete"
                   pageOptions={{
                     layout: ["nav", "pages", "rangeText"],

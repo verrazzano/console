@@ -6,12 +6,9 @@ import * as AccUtils from "../accUtils";
 import * as Messages from "vz-console/utils/Messages";
 class BindingViewModel {
   bindingId: string | null;
-  nav?: string | null;
-  navId?: string | null;
+
   constructor() {
     this.bindingId = getQueryParam('bindingId');
-    this.nav = getQueryParam('nav');
-    this.navId = getQueryParam('navId');
   }
 
   /**

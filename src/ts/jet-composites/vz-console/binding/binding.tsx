@@ -13,8 +13,6 @@ import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
 
 class Props {
   bindingId?: string;
-  nav?: string;
-  navId?: string;
 }
 
 class State {
@@ -84,21 +82,24 @@ export class ConsoleBinding extends VComponent<Props, State> {
     if (this.state.loading) {
       return <p>{Messages.Labels.loading()}</p>;
     }
-    
-    const breadcrumbItems : {label: string, href?: string}[] = [{label: "Home", href: "?ojr=instance"}];
-    if (this.props.navId) {
-      breadcrumbItems.push({label: Messages.Nav.modelDetails(), href: `?ojr=model&modelId=${this.state.binding.model.id}`})
-    }
-
-    breadcrumbItems.push({label: Messages.Nav.bindingDetails(), href: "#"});
-    breadcrumbItems.push({label: this.state.binding.name});
 
     return (
       <div>
-        <ConsoleBreadcrumb items={breadcrumbItems} />
+        <ConsoleBreadcrumb
+          items={[
+            { label: Messages.Nav.home(), href: "?ojr=instance" },
+            { label: Messages.Nav.bindingDetails() },
+            { label: this.state.binding.name }
+          ]}
+        />
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
-            <ConsoleStatusBadge status={Status.Running} type={"stack"} text={"B"} label={Messages.Nav.binding()}/>
+            <ConsoleStatusBadge
+              status={Status.Running}
+              type={"stack"}
+              text={"B"}
+              label={Messages.Nav.binding()}
+            />
           </div>
           <div class="oj-sm-10 oj-flex-item">
             <div class="oj-sm-12 oj-flex">
@@ -128,8 +129,7 @@ export class ConsoleBinding extends VComponent<Props, State> {
                       label={Messages.Labels.model()}
                       value={this.state.binding.model.name}
                       target={
-                        "?ojr=model&modelId=" +
-                        this.state.binding.model.id
+                        "?ojr=model&modelId=" + this.state.binding.model.id
                       }
                       link={true}
                       replace={true}

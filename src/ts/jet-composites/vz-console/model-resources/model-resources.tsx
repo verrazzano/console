@@ -43,7 +43,7 @@ export class ConsoleModelResources extends VComponent<Props, State> {
     let Heading: Element;
     switch (this.state.selectedItem) {
       case "bindings": {
-        ResourceList = <ConsoleBindingList bindings={this.props.model.bindings} nav={"model"}/>;
+        ResourceList = <ConsoleBindingList bindings={this.props.model.bindings}/>;
         Heading = <h1 class="resheader">{Messages.Labels.modelBindings()}</h1>;
         break;
       }

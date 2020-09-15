@@ -293,6 +293,10 @@ audio, canvas, iframe, img, svg, video {
   width: 20px;
 }
 
+.breadcrumb-label {
+  color: #686868 !important;
+}
+
 .oj-navigationlist-item-label {
   color: #73a5e0; 
 }
@@ -314,6 +318,8 @@ html:not([dir="rtl"]) #components > * > .oj-pagingcontrol-nav-arrow-section {
 .sortby {
   padding-left: 1rem;
   padding-top: 20%;
+  font-size: 1rem !important;
+  font-weight: bold !important;
 }
 
 .pagination {
@@ -463,4 +469,8 @@ oj-table > table > tbody > tr {
   line-height: 1em !important;
   max-height: 2em !important;
   white-space: nowrap;
+}
+
+#listview > * > .oj-listview-item.oj-selected {
+  background-color: #ecf3f8 !important;
 }
