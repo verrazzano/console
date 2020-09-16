@@ -7,6 +7,7 @@ import { ConsoleModelList } from "vz-console/model-list/loader";
 import * as Messages from "vz-console/utils/Messages"
 import { Model, Binding } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader"
+import { getPathParamAt } from "vz-console/utils/utils";
 
 class Props {
   models?: [Model]
@@ -23,25 +24,38 @@ class State {
  */
 @customElement("vz-console-instance-resources")
 export class ConsoleInstanceResources extends VComponent<Props, State> {
-  baseBreadcrumb: BreadcrumbType = { label: Messages.Nav.home(), href: "#", onclick: () => { this.updateState({selectedItem: "models"}) }}
+  baseBreadcrumb: BreadcrumbType = { label: Messages.Nav.home(), href: "#", onclick: () => { this.updateState({selectedItem: "models"}); this.syncNavigation() }}
+  labels = {"models": Messages.Instance.appModels(), "bindings":  Messages.Instance.appBindings()};
   state: State = {
     selectedItem: "models",
   };
 
   protected mounted(){
-    this.props.breadcrumbCallback([this.baseBreadcrumb]);
+    this.syncNavigation(getPathParamAt(0));
   }
 
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
-    const target = `/${event.detail.value}`;
-    const label = event.detail.value === 'models' ? Messages.Instance.appModels() : Messages.Instance.appBindings();
-    if (typeof (history.pushState) != "undefined") {
-      const historyState = {page: "instance", nav: target};
-      history.pushState(historyState, historyState.page, historyState.nav);
+    if (event.detail.originalEvent) {
+      this.updateState({ selectedItem: event.detail.value });
+      this.syncNavigation(event.detail.value);
     }
-    this.updateState({ selectedItem: event.detail.value });
-    this.props.breadcrumbCallback([this.baseBreadcrumb, {label}]);
+  }
+
+  private syncNavigation(path?: string) {
+    let breadcrumbs = [this.baseBreadcrumb]
+    if (path) {
+      const label = this.labels[path];
+      if (label) {
+        const target = `/${path}`;
+        if (typeof (history.pushState) != "undefined") {
+          const historyState = {page: "instance", nav: target};
+          history.pushState(historyState, historyState.page, historyState.nav);
+        }
+        breadcrumbs.push({label});
+      }
+    }
+    this.props.breadcrumbCallback(breadcrumbs);
   }
 
   protected render() {
@@ -50,13 +64,13 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     switch (this.state.selectedItem) {
       case "models": {
         ResourceList = <ConsoleModelList models={this.props.models}/>;
-        Heading = <h1 class="resheader">{Messages.Instance.appModels()}</h1>;
+        Heading = <h1 class="resheader">{this.labels.models}</h1>;
         break;
       }
 
       case "bindings": {
         ResourceList = <ConsoleBindingList bindings={this.props.bindings}/>;
-        Heading = <h1 class="resheader">{Messages.Instance.appBindings()}</h1>;
+        Heading = <h1 class="resheader">{this.labels.bindings}</h1>;
         break;
       }
 
@@ -77,10 +91,10 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
           >
             <ul>
               <li id="models">
-                <a href="#">{Messages.Instance.appModels()}</a>
+                <a href="#">{this.labels.models}</a>
               </li>
               <li id="bindings">
-                <a href="#">{Messages.Instance.appBindings()}</a>
+                <a href="#">{this.labels.bindings}</a>
               </li>
             </ul>
           </oj-navigation-list>

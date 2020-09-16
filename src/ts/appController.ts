@@ -9,7 +9,7 @@ import * as OffcanvasUtils from "ojs/ojoffcanvas";
 import CoreRouter = require ("ojs/ojcorerouter");
 import ModuleRouterAdapter = require("ojs/ojmodulerouter-adapter");
 import KnockoutRouterAdapter = require("ojs/ojknockoutrouteradapter");
-import UrlPathAdapter = require("ojs/ojurlpathadapter");
+import UrlParamAdapter = require("ojs/ojurlparamadapter");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
 import "ojs/ojknockout";
 import "ojs/ojmodule-element";
@@ -83,7 +83,7 @@ class RootViewModel {
     ];
     // router setup
     this.router = new CoreRouter(navData, {
-      urlAdapter: new UrlPathAdapter()
+      urlAdapter: new UrlParamAdapter()
     });
     this.router.sync();
 

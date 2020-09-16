@@ -60,6 +60,27 @@ app.use('/api', proxy(apiUrl, {
   }
 }));
 
+app.get('/models', (req, res, next) => {
+  req.url = '/';
+  next()
+});
+app.get('/bindings', (req, res, next) => {
+  req.url = '/';
+  next()
+});
+app.get('/models/:id', (req, res, next) => {
+  res.redirect(`/?ojr=model&modelId=${req.params.id}`)
+});
+app.get('/bindings/:id', (req, res, next) => {
+  res.redirect(`/?ojr=binding&bindingId=${req.params.id}`)
+});
+app.get('/models/:id/:selectedItem', (req, res, next) => {
+  res.redirect(`/?ojr=model&modelId=${req.params.id}&selectedItem=${req.params.selectedItem}`)
+});
+app.get('/bindings/:id/:selectedItem', (req, res, next) => {
+  res.redirect(`/?ojr=binding&bindingId=${req.params.id}&selectedItem=${req.params.selectedItem}`)
+});
+
 app.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
     console.log(err);

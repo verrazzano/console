@@ -48,7 +48,7 @@ export class ConsoleModelList extends VComponent<Props> {
             <tr>
               <td>
                 <p>
-                  <a data-bind="attr: {href: '?ojr=model&modelId=' + row.data.id}">
+                  <a data-bind={`attr: {href: '/models/' + row.data.id}`}>
                     <oj-bind-text value="[[row.data.name]]"></oj-bind-text>
                   </a>
                 </p>
@@ -57,7 +57,7 @@ export class ConsoleModelList extends VComponent<Props> {
                 <oj-bind-for-each data="[[row.data.bindings || []]]">
                   <template>
                     <p>
-                      <a data-bind="attr: {href: '?ojr=binding&bindingId=' + $current.data.id}">
+                      <a data-bind="attr: {href: '/bindings/' + $current.data.id}">
                         <oj-bind-text value="[[$current.data.name]]"></oj-bind-text>
                       </a>
                     </p>

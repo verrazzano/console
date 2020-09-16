@@ -40,14 +40,24 @@ function rewriteUrls() {
   const express = require('express');
   const app = express();
   app.get('/models', (req, res, next) => {
-    console.log('/models');
     req.url = '/';
     next()
   });
   app.get('/bindings', (req, res, next) => {
-    console.log('/bindings');
     req.url = '/';
     next()
+  });
+  app.get('/models/:id', (req, res, next) => {
+    res.redirect(`/?ojr=model&modelId=${req.params.id}`)
+  });
+  app.get('/bindings/:id', (req, res, next) => {
+    res.redirect(`/?ojr=binding&bindingId=${req.params.id}`)
+  });
+  app.get('/models/:id/:selectedItem', (req, res, next) => {
+    res.redirect(`/?ojr=model&modelId=${req.params.id}&selectedItem=${req.params.selectedItem}`)
+  });
+  app.get('/bindings/:id/:selectedItem', (req, res, next) => {
+    res.redirect(`/?ojr=binding&bindingId=${req.params.id}&selectedItem=${req.params.selectedItem}`)
   });
   return app;
 }

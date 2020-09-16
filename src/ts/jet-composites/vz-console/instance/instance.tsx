@@ -50,8 +50,8 @@ export class ConsoleInstance extends VComponent<Props, State> {
       this.updateState({ 
         loading: false, 
         instance: instance, 
-        models: extractModelsFromApplications(applications), 
-        bindings: extractBindingsFromApplications(applications) })
+        models: extractModelsFromApplications(applications ? applications : []), 
+        bindings: extractBindingsFromApplications(applications ? applications : []) })
     })
     .catch((error) => {
       let errorMessage = error;
