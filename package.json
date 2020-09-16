@@ -60,7 +60,7 @@
     "prettier": "npx prettier --check --ignore-unknown **/*",
     "prettier-write": "npx prettier --write --ignore-unknown **/*"
     "integ-test": "npx mocha --require ts-node/register --timeout=0",
-    "integtest": "npx mocha --require ts-node/register --timeout=0 integtest/index.js"
+    "integtest": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' npx mocha --require ts-node/register --timeout=0 integtest/index.js"
   },
   "private": true
 }
