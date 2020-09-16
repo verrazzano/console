@@ -27,16 +27,21 @@ class Props {
  */
 @customElement("vz-console-binding-resources")
 export class ConsoleBindingResources extends VComponent<Props, State> {
-  baseBreadcrumbs: BreadcrumbType[] = [{ label: Messages.Nav.home(), href: "/"}, { label: Messages.Instance.appBindings(), href: "/bindings"}]
+  baseBreadcrumbs: BreadcrumbType[] = [
+    { label: Messages.Nav.home(), href: "/" },
+    { label: Messages.Instance.appBindings(), href: "/bindings" },
+  ];
   labels = {
-  "components":  Messages.Labels.components(),
-  "connections": Messages.Labels.connections(),
-  "ingresses": Messages.Labels.ingresses(),
-  "secrets": Messages.Labels.secrets()
-};
+    components: Messages.Labels.components(),
+    connections: Messages.Labels.connections(),
+    ingresses: Messages.Labels.ingresses(),
+    secrets: Messages.Labels.secrets(),
+  };
 
   state: State = {
-    selectedItem: this.props.selectedItem ? this.props.selectedItem : "components",
+    selectedItem: this.props.selectedItem
+      ? this.props.selectedItem
+      : "components",
   };
 
   @listener({ capture: true, passive: true })
@@ -48,39 +53,53 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
   }
 
   filterCallback = (filter: Element): void => {
-    this.updateState({filter: filter})
+    this.updateState({ filter: filter });
   };
 
-  protected mounted(){
-    if(this.props.selectedItem) {
-      this.updateState({selectedItem : this.props.selectedItem, filter: null})
+  protected mounted() {
+    if (this.props.selectedItem) {
+      this.updateState({ selectedItem: this.props.selectedItem, filter: null });
       this.syncNavigation(this.props.selectedItem);
     } else {
       this.syncNavigation(getPathParamAt(2));
-    }   
+    }
   }
 
   private syncNavigation(path?: string) {
-    let breadcrumbs = [...this.baseBreadcrumbs]
-    if (typeof (history.pushState) != "undefined") {
-      const bindingList = {page: "bindingList", nav: `/bindings}`};
-      const bindingDetails = {page: "bindingDetails", nav: `/bindings/${this.props.binding.id}`};
+    let breadcrumbs = [...this.baseBreadcrumbs];
+    if (typeof history.pushState != "undefined") {
+      const bindingList = { page: "bindingList", nav: `/bindings}` };
+      const bindingDetails = {
+        page: "bindingDetails",
+        nav: `/bindings/${this.props.binding.id}`,
+      };
       history.pushState(bindingList, bindingList.page, bindingList.nav);
-      history.pushState(bindingDetails, bindingDetails.page, bindingDetails.nav);
+      history.pushState(
+        bindingDetails,
+        bindingDetails.page,
+        bindingDetails.nav
+      );
     }
     if (path) {
       const label = this.labels[path];
       if (label) {
         const target = `/bindings/${this.props.binding.id}/${path}`;
-        if (typeof (history.pushState) != "undefined") {
-          const historyState = {page: "binding", nav: target};
+        if (typeof history.pushState != "undefined") {
+          const historyState = { page: "binding", nav: target };
           history.pushState(historyState, historyState.page, historyState.nav);
         }
-        breadcrumbs.push({ label: Messages.Nav.bindingDetails(), href: "#", onclick: () => { this.updateState({selectedItem: "components"}); this.syncNavigation() }})
-        breadcrumbs.push({label});
+        breadcrumbs.push({
+          label: Messages.Nav.bindingDetails(),
+          href: "#",
+          onclick: () => {
+            this.updateState({ selectedItem: "components" });
+            this.syncNavigation();
+          },
+        });
+        breadcrumbs.push({ label });
       }
     } else {
-      breadcrumbs.push({label: Messages.Nav.bindingDetails()})
+      breadcrumbs.push({ label: Messages.Nav.bindingDetails() });
     }
     this.props.breadcrumbCallback(breadcrumbs);
   }
@@ -90,25 +109,39 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
     let Heading: Element;
     switch (this.state.selectedItem) {
       case "components": {
-        ResourceList = <ConsoleBindingComponents components={this.props.binding.components} filterCallback={this.filterCallback}/>;
+        ResourceList = (
+          <ConsoleBindingComponents
+            components={this.props.binding.components}
+            filterCallback={this.filterCallback}
+          />
+        );
         Heading = <h1 class="resheader">{this.labels.components}</h1>;
         break;
       }
 
       case "connections": {
-        ResourceList = <ConsoleConnectionList connections={this.props.binding.connections}/>;
+        ResourceList = (
+          <ConsoleConnectionList connections={this.props.binding.connections} />
+        );
         Heading = <h1 class="resheader">{this.labels.connections}</h1>;
         break;
       }
 
       case "ingresses": {
-        ResourceList = <ConsoleIngressList ingresses={this.props.binding.ingresses} isBindingIngress={true}/>;
+        ResourceList = (
+          <ConsoleIngressList
+            ingresses={this.props.binding.ingresses}
+            isBindingIngress={true}
+          />
+        );
         Heading = <h1 class="resheader">{this.labels.ingresses}</h1>;
         break;
       }
 
       case "secrets": {
-        ResourceList = <ConsoleSecretList secrets={this.props.binding.secrets}/>;
+        ResourceList = (
+          <ConsoleSecretList secrets={this.props.binding.secrets} />
+        );
         Heading = <h1 class="resheader">{this.labels.secrets}</h1>;
         break;
       }

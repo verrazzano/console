@@ -29,15 +29,21 @@ class Props {
  */
 @customElement("vz-console-model-resources")
 export class ConsoleModelResources extends VComponent<Props, State> {
-  baseBreadcrumbs: BreadcrumbType[] = [{ label: Messages.Nav.home(), href: "/"}, { label: Messages.Instance.appModels(), href: "/models"}]
-  labels = {"bindings": Messages.Labels.modelBindings(), 
-  "components":  Messages.Labels.components(),
-  "connections": Messages.Labels.connections(),
-  "ingresses": Messages.Labels.ingresses(),
-  "secrets": Messages.Labels.secrets()
-};
+  baseBreadcrumbs: BreadcrumbType[] = [
+    { label: Messages.Nav.home(), href: "/" },
+    { label: Messages.Instance.appModels(), href: "/models" },
+  ];
+  labels = {
+    bindings: Messages.Labels.modelBindings(),
+    components: Messages.Labels.components(),
+    connections: Messages.Labels.connections(),
+    ingresses: Messages.Labels.ingresses(),
+    secrets: Messages.Labels.secrets(),
+  };
   state: State = {
-    selectedItem: this.props.selectedItem ? this.props.selectedItem : "bindings",
+    selectedItem: this.props.selectedItem
+      ? this.props.selectedItem
+      : "bindings",
   };
 
   @listener({ capture: true, passive: true })
@@ -49,23 +55,26 @@ export class ConsoleModelResources extends VComponent<Props, State> {
   }
 
   filterCallback = (filter: Element): void => {
-    this.updateState({filter: filter})
+    this.updateState({ filter: filter });
   };
 
-  protected mounted(){
-    if(this.props.selectedItem) {
-      this.updateState({selectedItem : this.props.selectedItem, filter: null})
+  protected mounted() {
+    if (this.props.selectedItem) {
+      this.updateState({ selectedItem: this.props.selectedItem, filter: null });
       this.syncNavigation(this.props.selectedItem);
     } else {
       this.syncNavigation(getPathParamAt(2));
-    }   
+    }
   }
 
   private syncNavigation(path?: string) {
-    let breadcrumbs = [...this.baseBreadcrumbs]
-    if (typeof (history.pushState) != "undefined") {
-      const modelList = {page: "modelList", nav: `/models}`};
-      const modelDetails = {page: "modelDetails", nav: `/models/${this.props.model.id}`};
+    let breadcrumbs = [...this.baseBreadcrumbs];
+    if (typeof history.pushState != "undefined") {
+      const modelList = { page: "modelList", nav: `/models}` };
+      const modelDetails = {
+        page: "modelDetails",
+        nav: `/models/${this.props.model.id}`,
+      };
       history.pushState(modelList, modelList.page, modelList.nav);
       history.pushState(modelDetails, modelDetails.page, modelDetails.nav);
     }
@@ -73,15 +82,22 @@ export class ConsoleModelResources extends VComponent<Props, State> {
       const label = this.labels[path];
       if (label) {
         const target = `/models/${this.props.model.id}/${path}`;
-        if (typeof (history.pushState) != "undefined") {
-          const historyState = {page: "model", nav: target};
+        if (typeof history.pushState != "undefined") {
+          const historyState = { page: "model", nav: target };
           history.pushState(historyState, historyState.page, historyState.nav);
         }
-        breadcrumbs.push({ label: Messages.Nav.modelDetails(), href: "#", onclick: () => { this.updateState({selectedItem: "bindings"}); this.syncNavigation() }})
-        breadcrumbs.push({label});
+        breadcrumbs.push({
+          label: Messages.Nav.modelDetails(),
+          href: "#",
+          onclick: () => {
+            this.updateState({ selectedItem: "bindings" });
+            this.syncNavigation();
+          },
+        });
+        breadcrumbs.push({ label });
       }
     } else {
-      breadcrumbs.push({label: Messages.Nav.modelDetails()})
+      breadcrumbs.push({ label: Messages.Nav.modelDetails() });
     }
     this.props.breadcrumbCallback(breadcrumbs);
   }
@@ -91,31 +107,42 @@ export class ConsoleModelResources extends VComponent<Props, State> {
     let Heading: Element;
     switch (this.state.selectedItem) {
       case "bindings": {
-        ResourceList = <ConsoleBindingList bindings={this.props.model.bindings}/>;
+        ResourceList = (
+          <ConsoleBindingList bindings={this.props.model.bindings} />
+        );
         Heading = <h1 class="resheader">{this.labels.bindings}</h1>;
         break;
       }
 
       case "components": {
-        ResourceList = <ConsoleModelComponents components={this.props.model.modelComponents} filterCallback={this.filterCallback}/>;
+        ResourceList = (
+          <ConsoleModelComponents
+            components={this.props.model.modelComponents}
+            filterCallback={this.filterCallback}
+          />
+        );
         Heading = <h1 class="resheader">{this.labels.components}</h1>;
         break;
       }
 
       case "connections": {
-        ResourceList = <ConsoleConnectionList connections={this.props.model.connections}/>;
+        ResourceList = (
+          <ConsoleConnectionList connections={this.props.model.connections} />
+        );
         Heading = <h1 class="resheader">{this.labels.connections}</h1>;
         break;
       }
 
       case "ingresses": {
-        ResourceList = <ConsoleIngressList ingresses={this.props.model.ingresses}/>;
+        ResourceList = (
+          <ConsoleIngressList ingresses={this.props.model.ingresses} />
+        );
         Heading = <h1 class="resheader">{this.labels.ingresses}</h1>;
         break;
       }
 
       case "secrets": {
-        ResourceList = <ConsoleSecretList secrets={this.props.model.secrets}/>;
+        ResourceList = <ConsoleSecretList secrets={this.props.model.secrets} />;
         Heading = <h1 class="resheader">{this.labels.secrets}</h1>;
         break;
       }

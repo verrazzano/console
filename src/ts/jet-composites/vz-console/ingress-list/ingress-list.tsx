@@ -24,7 +24,6 @@ export class ConsoleIngressList extends VComponent<Props> {
   dataProvider: ko.Observable = ko.observable();
 
   protected render() {
-    console.log("here")
     this.dataProvider(new PagingDataProviderView(
       new ArrayDataProvider(this.props.ingresses, {
         keyAttributes: "name",

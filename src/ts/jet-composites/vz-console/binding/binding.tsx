@@ -92,9 +92,7 @@ export class ConsoleBinding extends VComponent<Props, State> {
 
     return (
       <div>
-       <ConsoleBreadcrumb
-          items={this.state.breadcrumbs}
-        />
+        <ConsoleBreadcrumb items={this.state.breadcrumbs} />
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
             <ConsoleStatusBadge
@@ -149,7 +147,11 @@ export class ConsoleBinding extends VComponent<Props, State> {
             </div>
           </div>
         </div>
-        <ConsoleBindingResources binding={this.state.binding}  breadcrumbCallback={this.breadcrumbCallback} selectedItem={this.props.selectedItem}/>
+        <ConsoleBindingResources
+          binding={this.state.binding}
+          breadcrumbCallback={this.breadcrumbCallback}
+          selectedItem={this.props.selectedItem}
+        />
       </div>
     );
   }
