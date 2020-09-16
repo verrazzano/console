@@ -34,8 +34,9 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
   "ingresses": Messages.Labels.ingresses(),
   "secrets": Messages.Labels.secrets()
 };
+
   state: State = {
-    selectedItem: "components",
+    selectedItem: this.props.selectedItem ? this.props.selectedItem : "components",
   };
 
   @listener({ capture: true, passive: true })
@@ -52,7 +53,7 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
 
   protected mounted(){
     if(this.props.selectedItem) {
-      this.updateState({selectedItem : this.props.selectedItem})
+      this.updateState({selectedItem : this.props.selectedItem, filter: null})
       this.syncNavigation(this.props.selectedItem);
     } else {
       this.syncNavigation(getPathParamAt(2));

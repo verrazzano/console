@@ -37,7 +37,7 @@ export class ConsoleModelResources extends VComponent<Props, State> {
   "secrets": Messages.Labels.secrets()
 };
   state: State = {
-    selectedItem: "bindings",
+    selectedItem: this.props.selectedItem ? this.props.selectedItem : "bindings",
   };
 
   @listener({ capture: true, passive: true })
@@ -54,7 +54,7 @@ export class ConsoleModelResources extends VComponent<Props, State> {
 
   protected mounted(){
     if(this.props.selectedItem) {
-      this.updateState({selectedItem : this.props.selectedItem})
+      this.updateState({selectedItem : this.props.selectedItem, filter: null})
       this.syncNavigation(this.props.selectedItem);
     } else {
       this.syncNavigation(getPathParamAt(2));
