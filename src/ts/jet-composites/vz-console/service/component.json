@@ -2,6 +2,7 @@
   "name": "service",
   "version": "1.0.0",
   "jetVersion": "^9.0.0",
+  "pack": "vz-console",
   "displayName": "Service resource component.",
   "description": "Service resource component."
 }
