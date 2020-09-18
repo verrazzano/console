@@ -84,12 +84,12 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
               });
             }, });
             breadcrumbs.push({ label });
-            this.props.breadcrumbCallback(breadcrumbs);
-            this.updateState({ selectedItem: args.state.path });
+            this.updateState({ selectedItem: args.state.path, filter: null });
+            this.props.breadcrumbCallback(breadcrumbs); 
           } else {
             breadcrumbs.push({ label: Messages.Nav.bindingDetails() });
+            this.updateState({ selectedItem: "components", filter: null });
             this.props.breadcrumbCallback(breadcrumbs);
-            this.updateState({ selectedItem: "components" });
           }
         }
       });

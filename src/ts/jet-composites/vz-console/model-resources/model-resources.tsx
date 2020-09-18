@@ -87,12 +87,12 @@ export class ConsoleModelResources extends VComponent<Props, State> {
               });
             }, });
             breadcrumbs.push({ label });
+            this.updateState({ selectedItem: args.state.path, filter: null });
             this.props.breadcrumbCallback(breadcrumbs);
-            this.updateState({ selectedItem: args.state.path });
           } else {
             breadcrumbs.push({ label: Messages.Nav.modelDetails() });
+            this.updateState({ selectedItem: "bindings", filter: null });
             this.props.breadcrumbCallback(breadcrumbs);
-            this.updateState({ selectedItem: "bindings" });
           }
         }
       });

@@ -129,9 +129,7 @@ export class ConsoleBinding extends VComponent<Props, State> {
                     <ConsoleMetadataItem
                       label={Messages.Labels.model()}
                       value={this.state.binding.model.name}
-                      target={
-                        "?ojr=model&modelId=" + this.state.binding.model.id
-                      }
+                      target={`/models/${this.state.binding.model.id}`}
                       link={true}
                       replace={true}
                     />
