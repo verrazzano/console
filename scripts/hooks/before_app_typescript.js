@@ -4,9 +4,9 @@
 'use strict';
 
 module.exports = function (configObj) {
+  // Typescript configuration can be found in configObj.typescript
   return new Promise((resolve) => {
     console.log("Running before_app_typescript hook.");
-    //const { tsconfigJson } = configObj.typescript;
     resolve(configObj);
   });
 };

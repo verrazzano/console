@@ -6,7 +6,7 @@
 
 module.exports = function (configObj) {
   return new Promise((resolve, reject) => {
-  	console.log("Running after_serve hook.");
-  	resolve(configObj);
+    console.log("Running after_serve hook.");
+    resolve(configObj);
   });
 };
