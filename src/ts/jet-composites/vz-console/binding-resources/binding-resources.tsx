@@ -9,7 +9,9 @@ import { ConsoleBindingComponents } from "vz-console/binding-components/loader";
 import * as Messages from "vz-console/utils/Messages";
 import { Binding } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader"
-import { getPathParamAt } from "vz-console/utils/utils";
+import { getDefaultRouter } from "vz-console/utils/utils";
+import CoreRouter = require("ojs/ojcorerouter");
+import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
 class State {
   selectedItem: string;
@@ -27,6 +29,7 @@ class Props {
  */
 @customElement("vz-console-binding-resources")
 export class ConsoleBindingResources extends VComponent<Props, State> {
+  router: CoreRouter;
   baseBreadcrumbs: BreadcrumbType[] = [
     { label: Messages.Nav.home(), href: "/" },
     { label: Messages.Instance.appBindings(), href: "/bindings" },
@@ -44,65 +47,74 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
       : "components",
   };
 
+  protected mounted() {
+    getDefaultRouter().destroy();
+    history.replaceState(null, "path", `bindings/${this.props.binding.id}`);
+    let parentRouter = new CoreRouter(
+      [
+        { path: "", redirect: this.props.binding.id },
+        { path: this.props.binding.id}
+      ],
+      {
+        urlAdapter: new UrlPathAdapter("/bindings"),
+      }
+    );
+    parentRouter.go().then(() => {
+      this.router = new CoreRouter(
+        [
+          { path: "" },
+          { path: `components` },
+          { path: `connections` },
+          { path: `ingresses` },
+          { path: `secrets` },
+        ],
+        {
+          urlAdapter: new UrlPathAdapter(`/bindings/${this.props.binding.id}`),
+        },
+        parentRouter
+      );
+      this.router.currentState.subscribe((args) => {
+        if (args.state) {
+          const label = this.labels[args.state.path];
+          let breadcrumbs = [...this.baseBreadcrumbs];
+          if (label) {
+            breadcrumbs.push({ label: Messages.Nav.bindingDetails(), href: "#",  onclick: () => {
+              this.router.go({
+                path: "" 
+              });
+            }, });
+            breadcrumbs.push({ label });
+            this.props.breadcrumbCallback(breadcrumbs);
+            this.updateState({ selectedItem: args.state.path });
+          } else {
+            breadcrumbs.push({ label: Messages.Nav.bindingDetails() });
+            this.props.breadcrumbCallback(breadcrumbs);
+            this.updateState({ selectedItem: "components" });
+          }
+        }
+      });
+      parentRouter.beforeStateChange.subscribe((args) => {
+        this.router.go();
+        args.accept(Promise.resolve(''))
+      });
+    }).then(() => {
+      this.router.go(
+        {path: this.props.selectedItem}
+      );
+    });    
+  }
+
+
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
     if (event.detail.originalEvent) {
-      this.updateState({ selectedItem: event.detail.value, filter: null });
-      this.syncNavigation(event.detail.value);
+      this.router.go({path: event.detail.value});
     }
   }
 
   filterCallback = (filter: Element): void => {
     this.updateState({ filter: filter });
   };
-
-  protected mounted() {
-    if (this.props.selectedItem) {
-      this.updateState({ selectedItem: this.props.selectedItem, filter: null });
-      this.syncNavigation(this.props.selectedItem);
-    } else {
-      this.syncNavigation(getPathParamAt(2));
-    }
-  }
-
-  private syncNavigation(path?: string) {
-    let breadcrumbs = [...this.baseBreadcrumbs];
-    if (typeof history.pushState != "undefined") {
-      const bindingList = { page: "bindingList", nav: `/bindings}` };
-      const bindingDetails = {
-        page: "bindingDetails",
-        nav: `/bindings/${this.props.binding.id}`,
-      };
-      history.pushState(bindingList, bindingList.page, bindingList.nav);
-      history.pushState(
-        bindingDetails,
-        bindingDetails.page,
-        bindingDetails.nav
-      );
-    }
-    if (path) {
-      const label = this.labels[path];
-      if (label) {
-        const target = `/bindings/${this.props.binding.id}/${path}`;
-        if (typeof history.pushState != "undefined") {
-          const historyState = { page: "binding", nav: target };
-          history.pushState(historyState, historyState.page, historyState.nav);
-        }
-        breadcrumbs.push({
-          label: Messages.Nav.bindingDetails(),
-          href: "#",
-          onclick: () => {
-            this.updateState({ selectedItem: "components" });
-            this.syncNavigation();
-          },
-        });
-        breadcrumbs.push({ label });
-      }
-    } else {
-      breadcrumbs.push({ label: Messages.Nav.bindingDetails() });
-    }
-    this.props.breadcrumbCallback(breadcrumbs);
-  }
 
   protected render() {
     let ResourceList: Element;

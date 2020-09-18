@@ -12,7 +12,9 @@ import { extractModelsFromApplications, extractBindingsFromApplications } from "
 import { ConsoleBreadcrumb, BreadcrumbType } from "vz-console/breadcrumb/loader"
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
 
-class Props {}
+class Props {
+  selectedItem?: string;
+}
 
 class State {
   instance?: Instance;
@@ -146,6 +148,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
           models={this.state.models}
           bindings={this.state.bindings}
           breadcrumbCallback={this.breadcrumbCallback}
+          selectedItem={this.props.selectedItem}
         />
       </div>
     );

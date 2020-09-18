@@ -40,12 +40,10 @@ function rewriteUrls() {
   const express = require('express');
   const app = express();
   app.get('/models', (req, res, next) => {
-    req.url = '/';
-    next()
+    res.redirect(`/?ojr=instance&selectedItem=models`)
   });
   app.get('/bindings', (req, res, next) => {
-    req.url = '/';
-    next()
+    res.redirect(`/?ojr=instance&selectedItem=bindings`)
   });
   app.get('/models/:id', (req, res, next) => {
     res.redirect(`/?ojr=model&modelId=${req.params.id}`)

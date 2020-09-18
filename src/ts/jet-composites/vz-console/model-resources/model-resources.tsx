@@ -10,7 +10,9 @@ import { ConsoleModelComponents } from "vz-console/model-components/loader";
 import * as Messages from "vz-console/utils/Messages"
 import { Model } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader"
-import { getPathParamAt } from "vz-console/utils/utils";
+import { getDefaultRouter } from "vz-console/utils/utils";
+import CoreRouter = require("ojs/ojcorerouter");
+import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
 
 class State {
@@ -29,6 +31,7 @@ class Props {
  */
 @customElement("vz-console-model-resources")
 export class ConsoleModelResources extends VComponent<Props, State> {
+  router: CoreRouter;
   baseBreadcrumbs: BreadcrumbType[] = [
     { label: Messages.Nav.home(), href: "/" },
     { label: Messages.Instance.appModels(), href: "/models" },
@@ -43,64 +46,78 @@ export class ConsoleModelResources extends VComponent<Props, State> {
   state: State = {
     selectedItem: this.props.selectedItem
       ? this.props.selectedItem
-      : "bindings",
+      : `bindings`,
   };
+
+  protected mounted() {
+    getDefaultRouter().destroy();
+    history.replaceState(null, "path", `models/${this.props.model.id}`);
+    let parentRouter = new CoreRouter(
+      [
+        { path: "", redirect: this.props.model.id },
+        { path: this.props.model.id}
+      ],
+      {
+        urlAdapter: new UrlPathAdapter("/models"),
+      }
+    );
+    parentRouter.go().then(() => {
+      this.router = new CoreRouter(
+        [
+          { path: "" },
+          { path: `bindings` },
+          { path: `components` },
+          { path: `connections` },
+          { path: `ingresses` },
+          { path: `secrets` },
+        ],
+        {
+          urlAdapter: new UrlPathAdapter(`/models/${this.props.model.id}`),
+        },
+        parentRouter
+      );
+      this.router.currentState.subscribe((args) => {
+        if (args.state) {
+          const label = this.labels[args.state.path];
+          let breadcrumbs = [...this.baseBreadcrumbs];
+          if (label) {
+            breadcrumbs.push({ label: Messages.Nav.modelDetails(), href: "#",  onclick: () => {
+              this.router.go({
+                path: "" 
+              });
+            }, });
+            breadcrumbs.push({ label });
+            this.props.breadcrumbCallback(breadcrumbs);
+            this.updateState({ selectedItem: args.state.path });
+          } else {
+            breadcrumbs.push({ label: Messages.Nav.modelDetails() });
+            this.props.breadcrumbCallback(breadcrumbs);
+            this.updateState({ selectedItem: "bindings" });
+          }
+        }
+      });
+      parentRouter.beforeStateChange.subscribe((args) => {
+        this.router.go();
+        args.accept(Promise.resolve(''))
+      });
+    }).then(() => {
+      this.router.go(
+        {path: this.props.selectedItem}
+      );
+    });    
+  }
+
 
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
     if (event.detail.originalEvent) {
-      this.updateState({ selectedItem: event.detail.value, filter: null });
-      this.syncNavigation(event.detail.value);
+      this.router.go({path: event.detail.value});
     }
   }
 
   filterCallback = (filter: Element): void => {
     this.updateState({ filter: filter });
   };
-
-  protected mounted() {
-    if (this.props.selectedItem) {
-      this.updateState({ selectedItem: this.props.selectedItem, filter: null });
-      this.syncNavigation(this.props.selectedItem);
-    } else {
-      this.syncNavigation(getPathParamAt(2));
-    }
-  }
-
-  private syncNavigation(path?: string) {
-    let breadcrumbs = [...this.baseBreadcrumbs];
-    if (typeof history.pushState != "undefined") {
-      const modelList = { page: "modelList", nav: `/models}` };
-      const modelDetails = {
-        page: "modelDetails",
-        nav: `/models/${this.props.model.id}`,
-      };
-      history.pushState(modelList, modelList.page, modelList.nav);
-      history.pushState(modelDetails, modelDetails.page, modelDetails.nav);
-    }
-    if (path) {
-      const label = this.labels[path];
-      if (label) {
-        const target = `/models/${this.props.model.id}/${path}`;
-        if (typeof history.pushState != "undefined") {
-          const historyState = { page: "model", nav: target };
-          history.pushState(historyState, historyState.page, historyState.nav);
-        }
-        breadcrumbs.push({
-          label: Messages.Nav.modelDetails(),
-          href: "#",
-          onclick: () => {
-            this.updateState({ selectedItem: "bindings" });
-            this.syncNavigation();
-          },
-        });
-        breadcrumbs.push({ label });
-      }
-    } else {
-      breadcrumbs.push({ label: Messages.Nav.modelDetails() });
-    }
-    this.props.breadcrumbCallback(breadcrumbs);
-  }
 
   protected render() {
     let ResourceList: Element;
