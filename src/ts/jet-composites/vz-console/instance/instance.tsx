@@ -49,11 +49,13 @@ export class ConsoleInstance extends VComponent<Props, State> {
     this.updateState({ loading: true });
     Promise.all([this.verrazzanoApi.getInstance("0"),this.verrazzanoApi.listApplications()])
     .then(([instance, applications]) => {
-      this.updateState({ 
+      if (instance && applications) {
+        this.updateState({ 
         loading: false, 
         instance: instance, 
         models: extractModelsFromApplications(applications ? applications : []), 
         bindings: extractBindingsFromApplications(applications ? applications : []) })
+      }
     })
     .catch((error) => {
       let errorMessage = error;

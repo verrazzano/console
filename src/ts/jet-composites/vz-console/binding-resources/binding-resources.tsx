@@ -59,7 +59,7 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
         urlAdapter: new UrlPathAdapter("/bindings"),
       }
     );
-    parentRouter.go().then(() => {
+    parentRouter.sync().then(() => {
       this.router = new CoreRouter(
         [
           { path: "" },
@@ -98,9 +98,11 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
         args.accept(Promise.resolve(''))
       });
     }).then(() => {
-      this.router.go(
-        {path: this.props.selectedItem}
-      );
+      if (this.props.selectedItem) {
+        this.router.go(
+          {path: this.props.selectedItem}
+        );
+      }
     });    
   }
 
