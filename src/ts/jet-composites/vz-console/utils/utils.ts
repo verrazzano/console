@@ -16,8 +16,11 @@ export const getQueryParam = (paramName: string): string => {
         }
     });
     return paramValue;
-  };
+};
 
- export const getDefaultRouter = (): CoreRouter => {
+export const getDefaultRouter = (): CoreRouter => {
     return ko.dataFor(document.getElementById("globalBody")).router;
 };
+
+export const isIterable = object =>
+  object != null && typeof object[Symbol.iterator] === 'function'

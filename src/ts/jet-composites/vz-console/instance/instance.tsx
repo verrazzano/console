@@ -11,6 +11,7 @@ import * as Messages from "vz-console/utils/Messages"
 import { extractModelsFromApplications, extractBindingsFromApplications } from "vz-console/service/common";
 import { ConsoleBreadcrumb, BreadcrumbType } from "vz-console/breadcrumb/loader"
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
+import { isIterable } from "vz-console/utils/utils"
 
 class Props {
   selectedItem?: string;
@@ -49,11 +50,14 @@ export class ConsoleInstance extends VComponent<Props, State> {
     this.updateState({ loading: true });
     Promise.all([this.verrazzanoApi.getInstance("0"),this.verrazzanoApi.listApplications()])
     .then(([instance, applications]) => {
+      if (isIterable(applications)) {
         this.updateState({ 
-        loading: false, 
-        instance: instance, 
-        models: extractModelsFromApplications(applications ? applications : []), 
-        bindings: extractBindingsFromApplications(applications ? applications : []) })
+          loading: false, 
+          instance: instance, 
+          models: extractModelsFromApplications(applications), 
+          bindings: extractBindingsFromApplications(applications) 
+        })
+      }
     })
     .catch((error) => {
       let errorMessage = error;
