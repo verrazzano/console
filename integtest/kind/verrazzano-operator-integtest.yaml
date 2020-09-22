@@ -1,0 +1,328 @@
+# Copyright (c) 2020, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: verrazzano-operator
+  namespace: verrazzano-system
+  labels:
+    app: verrazzano-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: verrazzano-operator
+  template:
+    metadata:
+      labels:
+        app: verrazzano-operator
+    spec:
+      containers:
+        - name: verrazzano-operator
+          imagePullPolicy: Always
+          image: ghcr.io/verrazzano/verrazzano-operator-jenkins:e74e7a49e695b65588e0b93c61effda57e0bb26e
+#{{ .Values.verrazzanoOperator.imageName }}:{{ .Values.verrazzanoOperator.imageVersion }}
+          args:
+            - --v=4
+            - --verrazzanoUri=
+            - --enableMonitoringStorage=true
+            - --apiServerRealm=
+            - --startController=false
+          resources:
+            requests:
+              memory: 70Mi
+          env:
+            - name: COH_MICRO_IMAGE
+              value: none
+            - name: HELIDON_MICRO_IMAGE
+              value: none
+            - name: WLS_MICRO_IMAGE
+              value: none
+            - name: PROMETHEUS_PUSHER_IMAGE
+              value: none
+            - name: NODE_EXPORTER_IMAGE
+              value: none
+            - name: FILEBEAT_IMAGE
+              value: none
+            - name: JOURNALBEAT_IMAGE
+              value: none
+            - name: WEBLOGIC_OPERATOR_IMAGE
+              value: none
+            - name: COH_MICRO_REQUEST_MEMORY
+              value: 10Mi
+            - name: WLS_MICRO_REQUEST_MEMORY
+              value: 10Mi
+            - name: ES_INGEST_NODE_REQUEST_MEMORY
+              value: 10Mi
+            - name: GRAFANA_REQUEST_MEMORY
+              value: 10Mi 
+            - name: PROMETHEUS_REQUEST_MEMORY
+              value: 10Mi
+            - name: KIBANA_REQUEST_MEMORY
+              value: 10Mi
+            - name: ES_MASTER_NODE_REPLICAS
+              value: "1"
+      serviceAccount: verrazzano-operator
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: verrazzano-operator
+  namespace: verrazzano-system
+spec:
+  selector:
+    app: verrazzano-operator
+  ports:
+    - name: api
+      protocol: TCP
+      port: 3456
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/target: verrazzano-ingress.default.xxx
+#{{ .Values.config.envName }}.{{ .Values.config.dnsSuffix }}
+    kubernetes.io/tls-acme: "true"
+  name: verrazzano-operator-ingress
+  namespace: verrazzano-system
+spec:
+  rules:
+    - host: api.default.xxx
+#{{ .Values.config.envName }}.{{ .Values.config.dnsSuffix }}
+      http:
+        paths:
+          - backend:
+              serviceName: verrazzano-operator
+              servicePort: 3456
+            path: /
+  tls:
+    - hosts:
+        - api.default.xxx
+#{{ .Values.config.envName }}.{{ .Values.config.dnsSuffix }}
+      secretName: default-secret
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: verrazzano-operator
+  namespace: verrazzano-system
+#{{- if .Values.global.imagePullSecrets }}
+imagePullSecrets:
+  - name: ghcr
+#{{- range .Values.global.imagePullSecrets }}
+#  - name: {{ . }}
+#{{- end }}
+#{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: verrazzano-operator
+rules:
+  - apiGroups:
+      - verrazzano.io
+    resources:
+      - '*'
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - delete
+  - apiGroups:
+      - verrazzano.io
+    resources:
+      - verrazzanomonitoringinstances
+      - wlsoperators
+      - helidonapps
+      - cohclusters
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - create
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - pods/exec
+      - configmaps
+      - endpoints
+      - events
+      - namespaces
+      - persistentvolumeclaims
+      - secrets
+      - services
+    verbs:
+      - '*'
+  - apiGroups:
+      - ""
+    resources:
+      - daemonsets
+      - nodes
+      - serviceaccounts
+      - pods/log
+      - pods/portforward
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - delete
+      - patch
+      - deletecollection
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - daemonsets
+      - replicasets
+      - statefulsets
+    verbs:
+      - '*'
+  - apiGroups:
+      - apps
+    resources:
+      - deployments/finalizers
+    resourceNames:
+      - coherence-operator
+    verbs:
+      - update
+  - apiGroups:
+      - extensions
+    resources:
+      - podsecuritypolicies
+    resourceNames:
+      - system-node-exporter
+    verbs:
+      - use
+  - apiGroups:
+      - extensions
+    resources:
+      - daemonsets
+      - replicasets
+      - statefulsets
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - create
+      - delete
+  - apiGroups:
+      - authentication.k8s.io
+    resources:
+      - tokenreviews
+    verbs:
+      - create
+  - apiGroups:
+      - authorization.k8s.io
+    resources:
+      - subjectaccessreviews
+    verbs:
+      - create
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    resources:
+      - clusterroles
+      - clusterrolebindings
+      - roles
+      - rolebindings
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - create
+      - delete
+  - apiGroups:
+      - networking.istio.io
+    resources:
+      - gateways
+      - virtualservices
+      - serviceentries
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - create
+      - delete
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - '*'
+  - apiGroups:
+      - coherence.oracle.com
+    resources:
+      - '*'
+    verbs:
+      - '*'
+  - apiGroups:
+      - weblogic.oracle
+    resources:
+      - domains
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - create
+      - delete
+      - patch
+      - deletecollection
+  - apiGroups:
+      - weblogic.oracle
+    resources:
+      - domains/status
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - patch
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - delete
+      - patch
+      - deletecollection
+  - apiGroups:
+      - monitoring.coreos.com
+    resources:
+      - servicemonitors
+    verbs:
+      - get
+      - create
+  - nonResourceURLs:
+      - /version/*
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: verrazzano-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: verrazzano-operator
+subjects:
+  - kind: ServiceAccount
+    name: verrazzano-operator
+    namespace: verrazzano-system

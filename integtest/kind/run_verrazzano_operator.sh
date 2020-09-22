@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+COH_MICRO_IMAGE=none \
+HELIDON_MICRO_IMAGE=none \
+WLS_MICRO_IMAGE=none \
+PROMETHEUS_PUSHER_IMAGE=none \
+NODE_EXPORTER_IMAGE=none \
+FILEBEAT_IMAGE=none \
+JOURNALBEAT_IMAGE=none \
+WEBLOGIC_OPERATOR_IMAGE=none \
+FLUENTD_IMAGE=none \
+WLS_MICRO_REQUEST_MEMORY=10Mi \
+COH_MICRO_REQUEST_MEMORY=10Mi \
+HELIDON_MICRO_REQUEST_MEMORY=10Mi \
+ES_MASTER_NODE_REQUEST_MEMORY=10Mi \
+ES_INGEST_NODE_REQUEST_MEMORY=10Mi \
+ES_DATA_NODE_REQUEST_MEMORY=10Mi \
+GRAFANA_REQUEST_MEMORY=10Mi \
+PROMETHEUS_REQUEST_MEMORY=10Mi \
+KIBANA_REQUEST_MEMORY=10Mi \
+ES_MASTER_NODE_REPLICAS=1 \
+verrazzano-operator --v=4 --verrazzanoUri= --enableMonitoringStorage=true --apiServerRealm= --startController=false --kubeconfig=/Users/desagar/go/src/github.com/verrazzano/console/console-selenium-kubeconfig
