@@ -71,50 +71,22 @@ metadata:
   name: verrazzano-operator
   namespace: verrazzano-system
 spec:
+  type: NodePort
   selector:
     app: verrazzano-operator
   ports:
     - name: api
       protocol: TCP
-      port: 3456
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    external-dns.alpha.kubernetes.io/target: verrazzano-ingress.default.xxx
-#{{ .Values.config.envName }}.{{ .Values.config.dnsSuffix }}
-    kubernetes.io/tls-acme: "true"
-  name: verrazzano-operator-ingress
-  namespace: verrazzano-system
-spec:
-  rules:
-    - host: api.default.xxx
-#{{ .Values.config.envName }}.{{ .Values.config.dnsSuffix }}
-      http:
-        paths:
-          - backend:
-              serviceName: verrazzano-operator
-              servicePort: 3456
-            path: /
-  tls:
-    - hosts:
-        - api.default.xxx
-#{{ .Values.config.envName }}.{{ .Values.config.dnsSuffix }}
-      secretName: default-secret
+      port: 80
+      targetPort: 3456
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: verrazzano-operator
   namespace: verrazzano-system
-#{{- if .Values.global.imagePullSecrets }}
 imagePullSecrets:
   - name: ghcr
-#{{- range .Values.global.imagePullSecrets }}
-#  - name: {{ . }}
-#{{- end }}
-#{{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
