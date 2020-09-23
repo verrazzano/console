@@ -4,11 +4,14 @@ import "vz-console/instance/loader";
 import * as AccUtils from "../accUtils";
 import * as Messages from "vz-console/utils/Messages";
 import * as ko from "knockout";
+import { getQueryParam } from "vz-console/utils/loader"
 
 class InstanceViewModel {
   instanceHeading: ko.Observable<string|undefined>;
+  selectedItem: string | null;
   constructor() {
     this.instanceHeading = ko.observable(Messages.Instance.instanceHeading())
+    this.selectedItem = getQueryParam('selectedItem');
   }
 
   /**

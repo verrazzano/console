@@ -6,10 +6,16 @@ import { ConsoleBindingList } from "vz-console/binding-list/loader";
 import { ConsoleModelList } from "vz-console/model-list/loader";
 import * as Messages from "vz-console/utils/Messages"
 import { Model, Binding } from "vz-console/service/types";
+import { BreadcrumbType } from "vz-console/breadcrumb/loader"
+import { getDefaultRouter } from "vz-console/utils/utils";
+import CoreRouter = require("ojs/ojcorerouter");
+import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
 class Props {
   models?: [Model]
   bindings?: [Binding]
+  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {}
+  selectedItem?: string;
 }
 
 class State {
@@ -21,13 +27,66 @@ class State {
  */
 @customElement("vz-console-instance-resources")
 export class ConsoleInstanceResources extends VComponent<Props, State> {
-  state: State = {
-    selectedItem: "models",
+  router: CoreRouter;
+  baseBreadcrumb: BreadcrumbType = {
+    label: Messages.Nav.home(),
+    href: "#",
+    onclick: () => {
+      this.router.go({
+        path: "" 
+      });
+    },
   };
+  labels = {
+    models: Messages.Instance.appModels(),
+    bindings: Messages.Instance.appBindings(),
+  };
+
+  state: State = {
+    selectedItem: this.props.selectedItem
+      ? this.props.selectedItem
+      : "models",
+  };
+
+  protected mounted() {
+    getDefaultRouter().destroy();
+    history.replaceState(null, "path", `/${this.props.selectedItem}`);
+    this.router = new CoreRouter(
+      [
+        { path: "" },
+        { path: "models" },
+        { path: "bindings" },
+      ],
+      {
+        urlAdapter: new UrlPathAdapter("/"),
+      }
+    );
+    this.router.currentState.subscribe((args) => {
+      if (args.state) {
+        const label = this.labels[args.state.path];
+        if (label) {
+          let breadcrumbs = [this.baseBreadcrumb];
+          breadcrumbs.push({ label });
+          this.updateState({ selectedItem: args.state.path });
+          this.props.breadcrumbCallback(breadcrumbs);
+        } else {
+          this.updateState({ selectedItem: "models" });
+          this.props.breadcrumbCallback([this.baseBreadcrumb]);
+        }
+      } 
+    });
+    
+    this.router.go({
+      path: this.props.selectedItem 
+    });
+    
+  }
 
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
-    this.updateState({ selectedItem: event.detail.value });
+    if (event.detail.originalEvent) {
+      this.router.go({ path: event.detail.value });
+    }
   }
 
   protected render() {
@@ -36,13 +95,13 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     switch (this.state.selectedItem) {
       case "models": {
         ResourceList = <ConsoleModelList models={this.props.models}/>;
-        Heading = <h1 class="resheader">{Messages.Instance.appModels()}</h1>;
+        Heading = <h1 class="resheader">{this.labels.models}</h1>;
         break;
       }
 
       case "bindings": {
-        ResourceList = <ConsoleBindingList bindings={this.props.bindings}/>;
-        Heading = <h1 class="resheader">{Messages.Instance.appBindings()}</h1>;
+        ResourceList = <ConsoleBindingList bindings={this.props.bindings} />;
+        Heading = <h1 class="resheader">{this.labels.bindings}</h1>;
         break;
       }
 
@@ -54,19 +113,21 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     return (
       <div class="oj-flex resourcepadding">
         <div class="oj-sm-2 oj-flex-item">
-          <h4 id="resources" class="reslabel">{Messages.Labels.resources()}</h4>
+          <h4 id="resources" class="reslabel">
+            {Messages.Labels.resources()}
+          </h4>
           <div class="oj-navigationlist-category-divider"></div>
           <oj-navigation-list
             selection={this.state.selectedItem}
             onSelectionChanged={this.selectionChange}
-            aria-labelledby="resources"      
+            aria-labelledby="resources"
           >
             <ul>
               <li id="models">
-                <a href="#">{Messages.Instance.appModels()}</a>
+                <a href="#">{this.labels.models}</a>
               </li>
               <li id="bindings">
-                <a href="#">{Messages.Instance.appBindings()}</a>
+                <a href="#">{this.labels.bindings}</a>
               </li>
             </ul>
           </oj-navigation-list>

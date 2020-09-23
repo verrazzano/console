@@ -8,6 +8,10 @@ import { ConsoleSecretList } from "vz-console/secret-list/loader";
 import { ConsoleBindingComponents } from "vz-console/binding-components/loader";
 import * as Messages from "vz-console/utils/Messages";
 import { Binding } from "vz-console/service/types";
+import { BreadcrumbType } from "vz-console/breadcrumb/loader"
+import { getDefaultRouter } from "vz-console/utils/utils";
+import CoreRouter = require("ojs/ojcorerouter");
+import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
 class State {
   selectedItem: string;
@@ -16,6 +20,8 @@ class State {
 
 class Props {
   binding: Binding
+  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {}
+  selectedItem?: string;
 }
 
 /**
@@ -23,17 +29,93 @@ class Props {
  */
 @customElement("vz-console-binding-resources")
 export class ConsoleBindingResources extends VComponent<Props, State> {
-  state: State = {
-    selectedItem: "components",
+  router: CoreRouter;
+  baseBreadcrumbs: BreadcrumbType[] = [
+    { label: Messages.Nav.home(), href: "/" },
+    { label: Messages.Instance.appBindings(), href: "/bindings" },
+  ];
+  labels = {
+    components: Messages.Labels.components(),
+    connections: Messages.Labels.connections(),
+    ingresses: Messages.Labels.ingresses(),
+    secrets: Messages.Labels.secrets(),
   };
+
+  state: State = {
+    selectedItem: this.props.selectedItem
+      ? this.props.selectedItem
+      : "components",
+  };
+
+  protected mounted() {
+    getDefaultRouter().destroy();
+    history.replaceState(null, "path", `bindings/${this.props.binding.id}`);
+    let parentRouter = new CoreRouter(
+      [
+        { path: "", redirect: this.props.binding.id },
+        { path: this.props.binding.id}
+      ],
+      {
+        urlAdapter: new UrlPathAdapter("/bindings"),
+      }
+    );
+    parentRouter.sync().then(() => {
+      this.router = new CoreRouter(
+        [
+          { path: "" },
+          { path: `components` },
+          { path: `connections` },
+          { path: `ingresses` },
+          { path: `secrets` },
+        ],
+        {
+          urlAdapter: new UrlPathAdapter(`/bindings/${this.props.binding.id}`),
+        },
+        parentRouter
+      );
+      this.router.currentState.subscribe((args) => {
+        if (args.state) {
+          const label = this.labels[args.state.path];
+          let breadcrumbs = [...this.baseBreadcrumbs];
+          if (label) {
+            breadcrumbs.push({ label: Messages.Nav.bindingDetails(), href: "#",  onclick: () => {
+              this.router.go({
+                path: "" 
+              });
+            }, });
+            breadcrumbs.push({ label });
+            this.updateState({ selectedItem: args.state.path, filter: null });
+            this.props.breadcrumbCallback(breadcrumbs); 
+          } else {
+            breadcrumbs.push({ label: Messages.Nav.bindingDetails() });
+            this.updateState({ selectedItem: "components", filter: null });
+            this.props.breadcrumbCallback(breadcrumbs);
+          }
+        }
+      });
+      parentRouter.beforeStateChange.subscribe((args) => {
+        this.router.go();
+        args.accept(Promise.resolve(''))
+      });
+    }).then(() => {
+      if (this.props.selectedItem) {
+        this.router.go(
+          {path: this.props.selectedItem}
+        );
+      }
+    });    
+  }
+
 
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
-    this.updateState({ selectedItem: event.detail.value, filter: null  });
+    if (event.detail.originalEvent) {
+      this.router.go({path: event.detail.value});
+    }
   }
 
   filterCallback = (filter: Element): void => {
-    this.updateState({filter: filter})
+    this.updateState({ filter: filter });
   };
 
   protected render() {
@@ -41,26 +123,40 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
     let Heading: Element;
     switch (this.state.selectedItem) {
       case "components": {
-        ResourceList = <ConsoleBindingComponents components={this.props.binding.components} filterCallback={this.filterCallback}/>;
-        Heading = <h1 class="resheader">{Messages.Labels.components()}</h1>;
+        ResourceList = (
+          <ConsoleBindingComponents
+            components={this.props.binding.components}
+            filterCallback={this.filterCallback}
+          />
+        );
+        Heading = <h1 class="resheader">{this.labels.components}</h1>;
         break;
       }
 
       case "connections": {
-        ResourceList = <ConsoleConnectionList connections={this.props.binding.connections}/>;
-        Heading = <h1 class="resheader">{Messages.Labels.connections()}</h1>;
+        ResourceList = (
+          <ConsoleConnectionList connections={this.props.binding.connections} />
+        );
+        Heading = <h1 class="resheader">{this.labels.connections}</h1>;
         break;
       }
 
       case "ingresses": {
-        ResourceList = <ConsoleIngressList ingresses={this.props.binding.ingresses} isBindingIngress={true}/>;
-        Heading = <h1 class="resheader">{Messages.Labels.ingresses()}</h1>;
+        ResourceList = (
+          <ConsoleIngressList
+            ingresses={this.props.binding.ingresses}
+            isBindingIngress={true}
+          />
+        );
+        Heading = <h1 class="resheader">{this.labels.ingresses}</h1>;
         break;
       }
 
       case "secrets": {
-        ResourceList = <ConsoleSecretList secrets={this.props.binding.secrets}/>;
-        Heading = <h1 class="resheader">{Messages.Labels.secrets()}</h1>;
+        ResourceList = (
+          <ConsoleSecretList secrets={this.props.binding.secrets} />
+        );
+        Heading = <h1 class="resheader">{this.labels.secrets}</h1>;
         break;
       }
 
@@ -82,16 +178,16 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
           >
             <ul>
               <li id="components">
-                <a href="#">{Messages.Labels.components()}</a>
+                <a href="#">{this.labels.components}</a>
               </li>
               <li id="connections">
-                <a href="#">{Messages.Labels.connections()}</a>
+                <a href="#">{this.labels.connections}</a>
               </li>
               <li id="ingresses">
-                <a href="#">{Messages.Labels.ingresses()}</a>
+                <a href="#">{this.labels.ingresses}</a>
               </li>
               <li id="secrets">
-                <a href="#">{Messages.Labels.secrets()}</a>
+                <a href="#">{this.labels.secrets}</a>
               </li>
             </ul>
           </oj-navigation-list>

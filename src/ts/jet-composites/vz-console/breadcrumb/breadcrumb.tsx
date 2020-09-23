@@ -2,10 +2,16 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { stringToNodeArray } from "@oracle/oraclejet/dist/types/ojhtmlutils";
+
+export type BreadcrumbType = {
+  label: string, 
+  href?: string
+  onclick?: (event: CustomEvent) => void
+}
+
 
 class Props {
-  items: [{label: string, href?: string}];
+  items: BreadcrumbType[];
 }
 
 /**
@@ -21,11 +27,11 @@ export class ConsoleBreadcrumb extends VComponent<Props> {
 
   protected render() {
     const breadcrumbItems: Element[] = [];
-    this.props.items.forEach(({label, href}) => {
-      if (href) {
-        breadcrumbItems.push(<li><a class onClick={this.openLink} href={href}>{label}</a></li>)
+    this.props.items.forEach((breadcrumb: BreadcrumbType) => {
+      if (breadcrumb.href) {
+        breadcrumbItems.push(<li><a class onClick={breadcrumb.onclick ? breadcrumb.onclick : this.openLink} href={breadcrumb.href}>{breadcrumb.label}</a></li>)
       } else {
-        breadcrumbItems.push(<li class="breadcrumb-label">{label}</li>)
+        breadcrumbItems.push(<li class="breadcrumb-label">{breadcrumb.label}</li>)
       }
     }); 
 

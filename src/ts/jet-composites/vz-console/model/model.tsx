@@ -7,17 +7,19 @@ import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleModelResources } from "vz-console/model-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages";
-import { ConsoleBreadcrumb } from "vz-console/breadcrumb/loader";
+import { ConsoleBreadcrumb, BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
 
 class Props {
   modelId?: string;
+  selectedItem?: string;
 }
 
 class State {
   model?: Model;
   loading?: boolean;
   error?: string;
+  breadcrumbs?: BreadcrumbType[]
 }
 
 /**
@@ -28,6 +30,7 @@ export class ConsoleModel extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
+    breadcrumbs: []
   };
 
   props: Props = {
@@ -67,6 +70,10 @@ export class ConsoleModel extends VComponent<Props, State> {
       });
   }
 
+  breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
+    this.updateState({breadcrumbs});
+  };
+
   protected render() {
     if (this.state.error) {
       return (
@@ -83,13 +90,7 @@ export class ConsoleModel extends VComponent<Props, State> {
 
     return (
       <div>
-        <ConsoleBreadcrumb
-          items={[
-            { label: Messages.Nav.home(), href: "?ojr=instance" },
-            { label: Messages.Nav.modelDetails() },
-            { label: this.state.model.name },
-          ]}
-        />
+        <ConsoleBreadcrumb items={this.state.breadcrumbs} />
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
             <ConsoleStatusBadge
@@ -129,7 +130,11 @@ export class ConsoleModel extends VComponent<Props, State> {
             </div>
           </div>
         </div>
-        <ConsoleModelResources model={this.state.model} />
+        <ConsoleModelResources
+          model={this.state.model}
+          breadcrumbCallback={this.breadcrumbCallback}
+          selectedItem={this.props.selectedItem}
+        />
       </div>
     );
   }

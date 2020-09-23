@@ -8,11 +8,12 @@ import { ConsoleBindingResources } from "vz-console/binding-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import { ConsoleBindingVmiLinks } from "vz-console/binding-vmi-links/loader";
 import * as Messages from "vz-console/utils/Messages"
-import { ConsoleBreadcrumb } from "vz-console/breadcrumb/loader"
+import { ConsoleBreadcrumb, BreadcrumbType } from "vz-console/breadcrumb/loader"
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
 
 class Props {
   bindingId?: string;
+  selectedItem?: string;
 }
 
 class State {
@@ -20,6 +21,7 @@ class State {
   secrets?: Secret[]
   loading?: boolean;
   error?: string;
+  breadcrumbs?: BreadcrumbType[]
 }
 
 /**
@@ -30,6 +32,7 @@ export class ConsoleBinding extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
+    breadcrumbs: []
   };
 
   props: Props = {
@@ -69,6 +72,10 @@ export class ConsoleBinding extends VComponent<Props, State> {
       });
   }
 
+  breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
+    this.updateState({breadcrumbs});
+  };
+
   protected render() {
     if (this.state.error) {
       return (
@@ -85,13 +92,7 @@ export class ConsoleBinding extends VComponent<Props, State> {
 
     return (
       <div>
-        <ConsoleBreadcrumb
-          items={[
-            { label: Messages.Nav.home(), href: "?ojr=instance" },
-            { label: Messages.Nav.bindingDetails() },
-            { label: this.state.binding.name }
-          ]}
-        />
+        <ConsoleBreadcrumb items={this.state.breadcrumbs} />
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
             <ConsoleStatusBadge
@@ -128,9 +129,7 @@ export class ConsoleBinding extends VComponent<Props, State> {
                     <ConsoleMetadataItem
                       label={Messages.Labels.model()}
                       value={this.state.binding.model.name}
-                      target={
-                        "?ojr=model&modelId=" + this.state.binding.model.id
-                      }
+                      target={`/models/${this.state.binding.model.id}`}
                       link={true}
                       replace={true}
                     />
@@ -146,7 +145,11 @@ export class ConsoleBinding extends VComponent<Props, State> {
             </div>
           </div>
         </div>
-        <ConsoleBindingResources binding={this.state.binding} />
+        <ConsoleBindingResources
+          binding={this.state.binding}
+          breadcrumbCallback={this.breadcrumbCallback}
+          selectedItem={this.props.selectedItem}
+        />
       </div>
     );
   }

@@ -1,7 +1,8 @@
 {
-  "name": "vz-console-auth",
+  "name": "auth",
   "version": "1.0.0",
   "jetVersion": "^9.0.0",
+  "pack": "vz-console",
   "displayName": "Auth resource component.",
   "description": "Auth resource component."
 }

@@ -1,7 +1,7 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import { Binding} from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
@@ -51,7 +51,7 @@ export class ConsoleBindingList extends VComponent<Props> {
               <td>
                 <p>
                   <a
-                    data-bind={`attr: {href: '?ojr=binding&bindingId=' + row.data.id}`}
+                    data-bind={`attr: {href: '/bindings/' + row.data.id}`}
                   >
                     <oj-bind-text value="[[row.data.name]]"></oj-bind-text>
                   </a>
@@ -94,7 +94,7 @@ export class ConsoleBindingList extends VComponent<Props> {
               </td>
               <td>
                 <p>
-                  <a data-bind="attr: {href: '?ojr=model&modelId=' + row.data.model.id}">
+                  <a data-bind="attr: {href: '/models/' + row.data.model.id}">
                     <oj-bind-text value="[[row.data.model.name]]"></oj-bind-text>
                   </a>
                 </p>

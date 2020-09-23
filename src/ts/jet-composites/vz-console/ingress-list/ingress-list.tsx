@@ -21,12 +21,6 @@ class Props {
 @customElement("vz-console-ingress-list")
 export class ConsoleIngressList extends VComponent<Props> {
 
-  columnArray = [
-    { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: "name" },
-    { headerText: Messages.Labels.prefix(), sortable: "enabled", sortProperty: "prefix" },
-    { headerText: Messages.Labels.port(), sortable: "enabled", sortProperty: "port" },
-  ];
-
   dataProvider: ko.Observable = ko.observable();
 
   protected render() {
@@ -37,25 +31,24 @@ export class ConsoleIngressList extends VComponent<Props> {
       })
     ))
 
-    if (this.props.isBindingIngress) {
-      this.columnArray.push({
-        headerText: Messages.Labels.dnsName(),
-        sortable: "enabled",
-        sortProperty: "dnsName",
-      });
-    } else {
-      this.columnArray.push({
-        headerText: Messages.Labels.comp(),
-        sortable: "enabled",
-        sortProperty: "component",
-      });
-    }
-
     return (
       <div>
       <oj-table
         data={this.dataProvider()}
-        columns={this.columnArray}
+        columns={[
+          { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: "name" },
+          { headerText: Messages.Labels.prefix(), sortable: "enabled", sortProperty: "prefix" },
+          { headerText: Messages.Labels.port(), sortable: "enabled", sortProperty: "port" },
+          ...[this.props.isBindingIngress ? [{
+            headerText: Messages.Labels.dnsName(),
+            sortable: "enabled",
+            sortProperty: "dnsName",
+          }] : [{
+            headerText: Messages.Labels.comp(),
+            sortable: "enabled",
+            sortProperty: "component",
+          }]]
+        ]}
         aria-labelledby="resources"
         class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"
         style={{ width: "100%" }}

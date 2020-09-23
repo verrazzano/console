@@ -10,7 +10,7 @@
     "jwt-decode": "2.2.0"
   },
   "devDependencies": {
-    "@oracle/oraclejet-tooling": "~9.0.0",
+    "@oracle/oraclejet-tooling": "~9.1.0",
     "@types/chai": "^4.2.3",
     "@types/js-yaml": "^3.12.5",
     "@types/jwt-decode": "^2.2.0",

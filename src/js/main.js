@@ -18,7 +18,7 @@
 
   requirejs.config(
     {
-      baseUrl: 'js',
+      baseUrl: '/js',
 
       paths:
       /* DO NOT MODIFY 

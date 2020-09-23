@@ -9,10 +9,13 @@ import { ConsoleInstanceResources } from "vz-console/instance-resources/loader"
 import { ConsoleError } from "vz-console/error/loader"
 import * as Messages from "vz-console/utils/Messages"
 import { extractModelsFromApplications, extractBindingsFromApplications } from "vz-console/service/common";
-import { ConsoleBreadcrumb } from "vz-console/breadcrumb/loader"
+import { ConsoleBreadcrumb, BreadcrumbType } from "vz-console/breadcrumb/loader"
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
+import { isIterable } from "vz-console/utils/utils"
 
-class Props {}
+class Props {
+  selectedItem?: string;
+}
 
 class State {
   instance?: Instance;
@@ -20,6 +23,7 @@ class State {
   bindings?: Binding[]
   loading?: boolean;
   error?: string;
+  breadcrumbs?: BreadcrumbType[]
 }
 
 /**
@@ -30,6 +34,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
+    breadcrumbs: []
   };
 
   constructor() {
@@ -45,11 +50,14 @@ export class ConsoleInstance extends VComponent<Props, State> {
     this.updateState({ loading: true });
     Promise.all([this.verrazzanoApi.getInstance("0"),this.verrazzanoApi.listApplications()])
     .then(([instance, applications]) => {
-      this.updateState({ 
-        loading: false, 
-        instance: instance, 
-        models: extractModelsFromApplications(applications), 
-        bindings: extractBindingsFromApplications(applications) })
+      if (isIterable(applications)) {
+        this.updateState({ 
+          loading: false, 
+          instance: instance, 
+          models: extractModelsFromApplications(applications), 
+          bindings: extractBindingsFromApplications(applications) 
+        })
+      }
     })
     .catch((error) => {
       let errorMessage = error;
@@ -59,6 +67,10 @@ export class ConsoleInstance extends VComponent<Props, State> {
       this.updateState({ error: errorMessage });
     });
   }
+
+  breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
+    this.updateState({breadcrumbs});
+  };
 
   protected render() {
     if (this.state.error) {
@@ -72,10 +84,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
     return (
       <div>
         <ConsoleBreadcrumb
-          items={[
-            { label: Messages.Nav.home() },
-            { label: Messages.Nav.instance() },
-          ]}
+          items={this.state.breadcrumbs}
         />
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
@@ -142,6 +151,8 @@ export class ConsoleInstance extends VComponent<Props, State> {
         <ConsoleInstanceResources
           models={this.state.models}
           bindings={this.state.bindings}
+          breadcrumbCallback={this.breadcrumbCallback}
+          selectedItem={this.props.selectedItem}
         />
       </div>
     );

@@ -82,14 +82,14 @@ class RootViewModel {
       { path: "instance", detail: { label: Messages.Nav.instance(), iconClass: "" } }
     ];
     // router setup
-    const router = new CoreRouter(navData, {
+    this.router = new CoreRouter(navData, {
       urlAdapter: new UrlParamAdapter()
     });
-    router.sync();
+    this.router.sync();
 
-    this.moduleAdapter = new ModuleRouterAdapter(router);
+    this.moduleAdapter = new ModuleRouterAdapter(this.router);
 
-    this.selection = new KnockoutRouterAdapter(router);
+    this.selection = new KnockoutRouterAdapter(this.router);
 
     // Setup the navDataProvider with the routes, excluding the first redirected
     // route.

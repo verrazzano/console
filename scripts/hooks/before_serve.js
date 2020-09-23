@@ -36,10 +36,35 @@ function createEnvJs() {
   }
 }
 
+function rewriteUrls() {
+  const express = require('express');
+  const app = express();
+  app.get('/models', (req, res, next) => {
+    res.redirect(`/?ojr=instance&selectedItem=models`)
+  });
+  app.get('/bindings', (req, res, next) => {
+    res.redirect(`/?ojr=instance&selectedItem=bindings`)
+  });
+  app.get('/models/:id', (req, res, next) => {
+    res.redirect(`/?ojr=model&modelId=${req.params.id}`)
+  });
+  app.get('/bindings/:id', (req, res, next) => {
+    res.redirect(`/?ojr=binding&bindingId=${req.params.id}`)
+  });
+  app.get('/models/:id/:selectedItem', (req, res, next) => {
+    res.redirect(`/?ojr=model&modelId=${req.params.id}&selectedItem=${req.params.selectedItem}`)
+  });
+  app.get('/bindings/:id/:selectedItem', (req, res, next) => {
+    res.redirect(`/?ojr=binding&bindingId=${req.params.id}&selectedItem=${req.params.selectedItem}`)
+  });
+  return app;
+}
+
 module.exports = function (configObj) {
   return new Promise((resolve, reject) => {
     console.log("Running before_serve hook.");
     createEnvJs();
+    configObj.express = rewriteUrls();
     resolve(configObj);
   });
 };
