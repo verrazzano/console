@@ -25,21 +25,32 @@
   <head>
     <title>Verrazzano</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="viewport-fit=cover, width=device-width, initial-scale=1"
+    />
     <link rel="icon" href="/css/images/favico.svg" type="image/x-icon" />
 
     <!-- This is the main css file for the default theme -->
     <!-- injector:theme -->
-    <link rel="stylesheet" href="/css/libs/oj/v9.0.0/redwood/oj-redwood-min.css" type="text/css"/>
+    <link
+      rel="stylesheet"
+      href="/css/libs/oj/v9.0.0/redwood/oj-redwood-min.css"
+      type="text/css"
+    />
     <!-- endinjector -->
 
     <!-- This contains icon fonts used by the starter template -->
-    <link rel="stylesheet" href="/css/demo-alta-site-min.css" type="text/css"/>
-    <link rel="stylesheet" id="uxiconFont" href="https://static.oracle.com/cdn/fnd/gallery/2010.0.0/images/iconfont/ojuxIconFont.min.css">
+    <link rel="stylesheet" href="/css/demo-alta-site-min.css" type="text/css" />
+    <link
+      rel="stylesheet"
+      id="uxiconFont"
+      href="https://static.oracle.com/cdn/fnd/gallery/2010.0.0/images/iconfont/ojuxIconFont.min.css"
+    />
 
     <!-- This is where you would add any app specific styling -->
-    <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" />
   </head>
   <body class="oj-web-applayout-body bg">
     <div id="globalBody">
@@ -51,19 +62,41 @@
            ** on the JET website for more information on how to use this pattern.
         -->
         <div class="oj-applayout-fixed-top">
-          <header role="banner" class="oj-web-applayout-header header-bar header-color">
-            <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
+          <header
+            role="banner"
+            class="oj-web-applayout-header header-bar header-color"
+          >
+            <div
+              class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center"
+            >
               <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
-                <span role="img" class="oj-icon vz-icon" title="Verrazzano" alt="Verrazzano Logo" onclick="window.location='/'"></span>
+                <span
+                  role="img"
+                  class="oj-icon vz-icon"
+                  title="Verrazzano"
+                  alt="Verrazzano Logo"
+                  onclick="window.location='/'"
+                ></span>
               </div>
               <div class="oj-flex-bar-end">
                 <!-- Responsive Toolbar -->
                 <oj-toolbar>
-                  <oj-menu-button id="userMenu" display="[[smScreen() ? 'icons' : 'all']]" chroming="borderless">
-                    <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon demo-appheader-avatar': !smScreen()}]]"></span>
+                  <oj-menu-button
+                    id="userMenu"
+                    display="[[smScreen() ? 'icons' : 'all']]"
+                    chroming="borderless"
+                  >
+                    <span
+                      slot="endIcon"
+                      :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon demo-appheader-avatar': !smScreen()}]]"
+                    ></span>
                     <oj-menu id="menu1" slot="menu">
-                      <oj-option id="email" value="email"><oj-bind-text value="[[userEmail]]"></oj-bind-text></oj-option>
-                      <oj-option id="out" value="out" on-oj-action="[[logout]]"><oj-bind-text value="[[signOut]]"></oj-bind-text></oj-option>
+                      <oj-option id="email" value="email"
+                        ><oj-bind-text value="[[userEmail]]"></oj-bind-text
+                      ></oj-option>
+                      <oj-option id="out" value="out" on-oj-action="[[logout]]"
+                        ><oj-bind-text value="[[signOut]]"></oj-bind-text
+                      ></oj-option>
                     </oj-menu>
                   </oj-menu-button>
                 </oj-toolbar>
@@ -71,17 +104,31 @@
             </div>
           </header>
         </div>
-        <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content bg" config="[[moduleAdapter.koObservableConfig]]">
+        <oj-module
+          role="main"
+          class="oj-web-applayout-max-width oj-web-applayout-content bg"
+          config="[[moduleAdapter.koObservableConfig]]"
+        >
         </oj-module>
         <div class="oj-applayout-fixed-bottom">
-          <footer class="oj-web-applayout-footer footer-color" role="contentinfo">
-            <div class="oj-web-applayout-footer-item oj-web-applayout-max-width">
+          <footer
+            class="oj-web-applayout-footer footer-color"
+            role="contentinfo"
+          >
+            <div
+              class="oj-web-applayout-footer-item oj-web-applayout-max-width"
+            >
               <ul>
                 <oj-bind-for-each data="[[footerLinks]]">
                   <template>
                     <li>
-                      <a :id="[[$current.data.linkId]]" :href="[[$current.data.linkTarget]]">
-                        <oj-bind-text value="[[$current.data.name]]"></oj-bind-text>
+                      <a
+                        :id="[[$current.data.linkId]]"
+                        :href="[[$current.data.linkTarget]]"
+                      >
+                        <oj-bind-text
+                          value="[[$current.data.name]]"
+                        ></oj-bind-text>
                       </a>
                     </li>
                   </template>
@@ -91,12 +138,10 @@
           </footer>
         </div>
       </div>
-      </div>
     </div>
 
     <script type="text/javascript" src="/js/libs/require/require.js"></script>
     <script type="text/javascript" src="/js/main.js"></script>
     <script type="text/javascript" src="/js/env.js"></script>
   </body>
-
 </html>

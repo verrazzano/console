@@ -1,7 +1,7 @@
 // Copyright (C) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import * as Messages from "vz-console/utils/Messages"
+import * as Messages from "vz-console/utils/Messages";
 
 // This is the ENV runtime override, see server.js.
 const vzAuth = (window as any).vzAuth;
@@ -11,9 +11,6 @@ const vzClientId = (window as any).vzClientId;
 
 // These are Keycloak config values set at install time
 const REALM = "verrazzano-system";
-
-// The plugin callback page
-const CALLBACK = "verrazzano/authcallback";
 
 // Home URL
 const HOME_PAGE = "";
@@ -34,14 +31,14 @@ const ERROR_PAGE = "verrazzano/error";
 // You can disable OAUTH by defining VZ_AUTH=false, OAUTH2 is enabled by default.
 // If you do not disable OAUTH2 then you must provide the keycloak URL, there is no default.
 export class KeycloakUrls {
-
   private authEnabled: boolean = true;
 
   // URL of keycloak server used by the verrazzano instance
   private keycloakUrl: string;
 
   // URL home page
-  private uiUrl: string = window.location.protocol + '//' + window.location.host;
+  private uiUrl: string =
+    window.location.protocol + "//" + window.location.host;
 
   // Client ID. let env override for dev
   private clientId: string = "webui";
@@ -61,7 +58,7 @@ export class KeycloakUrls {
     if (vzUiUrl && vzUiUrl !== "") {
       this.uiUrl = vzUiUrl;
     }
-    
+
     if (vzAuth && vzAuth !== "") {
       this.authEnabled = vzAuth.toLowerCase() !== "false";
     }
@@ -72,7 +69,7 @@ export class KeycloakUrls {
         this.keycloakProxyUrl = this.keycloakUrl;
       }
       if (!this.keycloakProxyUrl) {
-        this.keycloakProxyUrl = "/keycloak"; 
+        this.keycloakProxyUrl = "/keycloak";
       }
     }
     console.log(Messages.Auth.msgAuthEnabled(this.authEnabled));
@@ -111,7 +108,7 @@ export class KeycloakUrls {
   // Build the UI callback URL.  This has to match the callback configured in the webui keycloak client.
   // "http://localhost:8183/verrazzano/authcallback"
   public getCallbackUrl(): string {
-    const url =  this.uiUrl + "/" ;//+ CALLBACK;
+    const url = this.uiUrl + "/";
     return url;
   }
 
@@ -136,13 +133,18 @@ export class KeycloakUrls {
 
   // Build the path section of the URL with a trailing slash
   private getUrlBase(): string {
-    return this.keycloakUrl + "/auth/realms/" +  REALM  + "/protocol/openid-connect/"
+    return (
+      this.keycloakUrl + "/auth/realms/" + REALM + "/protocol/openid-connect/"
+    );
   }
 
   // Build the proxy URL with a trailing slash
   private getProxyUrlBase(): string {
-    return this.keycloakProxyUrl + "/auth/realms/" +  REALM  + "/protocol/openid-connect/"
+    return (
+      this.keycloakProxyUrl +
+      "/auth/realms/" +
+      REALM +
+      "/protocol/openid-connect/"
+    );
   }
 }
-
-

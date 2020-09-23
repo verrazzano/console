@@ -1,6 +1,7 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
+// eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
 import {
   BindingComponent,
@@ -8,8 +9,6 @@ import {
   Status,
 } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
-import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
-import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
 import "ojs/ojlistview";
@@ -18,11 +17,13 @@ import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import { ConsoleFilter } from "vz-console/filter/loader";
-import * as Messages from "vz-console/utils/Messages"
+import * as Messages from "vz-console/utils/Messages";
+import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
+import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
   components: [BindingComponent];
-  filterCallback: (filter: Element) => {}
+  filterCallback: (filter: Element) => {};
 }
 
 class State {
@@ -34,8 +35,8 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-binding-components")
-export class ConsoleBindingComponents extends VComponent<Props,State> {
-  state: State = {}
+export class ConsoleBindingComponents extends VComponent<Props, State> {
+  state: State = {};
   options = [
     { value: "name", label: "Name" },
     { value: "namespace", label: "Namespace" },
@@ -43,6 +44,7 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
     { value: "type", label: "Type" },
     { value: "status", label: "Status" },
   ];
+
   optionsDataProvider = new ArrayDataProvider(this.options, {
     keyAttributes: "value",
   });
@@ -112,11 +114,12 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
     if (components) {
       let models = components.models;
       models = models.filter((model) => {
-        let component = model.attributes as BindingComponent;
-        let typeFilter = this.currentTypeFilter();
-        let statusFilter = this.currentStatusFilter();
+        const component = model.attributes as BindingComponent;
+        const typeFilter = this.currentTypeFilter();
+        const statusFilter = this.currentStatusFilter();
         if (
-          (typeFilter.includes(ComponentType.ANY) || typeFilter.includes(component.type)) &&
+          (typeFilter.includes(ComponentType.ANY) ||
+            typeFilter.includes(component.type)) &&
           (statusFilter.includes(Status.Any) ||
             statusFilter.includes(component.status))
         ) {
@@ -132,18 +135,19 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
   };
 
   protected mounted() {
-    let models: Model.Model[] = new Array();
-    this.props.components.filter((component) => {
-      return [
-        ComponentType.WLS,
-        ComponentType.COH,
-        ComponentType.MS,
-      ].includes(component.type);
-    })
-    .forEach((component) => {
+    const models: Model.Model[] = [];
+    this.props.components
+      .filter((component) => {
+        return [
+          ComponentType.WLS,
+          ComponentType.COH,
+          ComponentType.MS,
+        ].includes(component.type);
+      })
+      .forEach((component) => {
         models.push(new Model.Model(component));
-    });
-  
+      });
+
     this.updateState({
       components: new Model.Collection(models),
       originalComponents: new Model.Collection(models),
@@ -236,7 +240,7 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
                     class="oj-complete sortselect"
                     placeholder={Messages.Labels.selectOption()}
                   ></oj-select-single>
-                  </div>
+                </div>
                 <div class="oj-sm-3 oj-flex-item"></div>
                 <div class="oj-sm-5 oj-flex-item">
                   <div class="oj-flex">
@@ -251,9 +255,8 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
                           type: "numbers",
                         }}
                         translations={{
-                          fullMsgItemRange:
-                            Messages.Pagination.msgItemRange(),
-                          fullMsgItem: Messages.Pagination.msgItem()
+                          fullMsgItemRange: Messages.Pagination.msgItemRange(),
+                          fullMsgItem: Messages.Pagination.msgItem(),
                         }}
                       ></oj-paging-control>
                     </div>
@@ -282,31 +285,32 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
                       <div class="oj-sm-2 oj-flex-item compstatus">
                         <strong>{Messages.Labels.status()}:&nbsp;</strong>
                         <span>
-                        <oj-bind-if test="[[item.data.status === 'Running']]">
-                          <span
-                            id="status"
-                            class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green"
-                          >
-                            <span class="oj-icon-circle-inner status-icon"></span>
-                          </span>
-                        </oj-bind-if>
-                        <oj-bind-if test="[[item.data.status === 'Terminated']]">
-                          <span
-                            id="status"
-                            class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red"
-                          >
-                            <span class="oj-icon-circle-inner status-icon"></span>
-                          </span>
-                        </oj-bind-if>
-                        <oj-bind-if test="[[item.data.status === 'Creating']]">
-                          <span
-                            id="status"
-                            class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange"
-                          >
-                            <span class="oj-icon-circle-inner status-icon"></span>
-                          </span>
-                        </oj-bind-if>
-                        &nbsp;<oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                          <oj-bind-if test="[[item.data.status === 'Running']]">
+                            <span
+                              id="status"
+                              class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green"
+                            >
+                              <span class="oj-icon-circle-inner status-icon"></span>
+                            </span>
+                          </oj-bind-if>
+                          <oj-bind-if test="[[item.data.status === 'Terminated']]">
+                            <span
+                              id="status"
+                              class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red"
+                            >
+                              <span class="oj-icon-circle-inner status-icon"></span>
+                            </span>
+                          </oj-bind-if>
+                          <oj-bind-if test="[[item.data.status === 'Creating']]">
+                            <span
+                              id="status"
+                              class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange"
+                            >
+                              <span class="oj-icon-circle-inner status-icon"></span>
+                            </span>
+                          </oj-bind-if>
+                          &nbsp;
+                          <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
                         </span>
                       </div>
                     </div>
@@ -350,7 +354,7 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
                   </oj-list-item-layout>
                 </template>
               </oj-list-view>
-           
+
               <div class="oj-flex card-border">
                 <div class="oj-sm-7 oj-flex-item"></div>
                 <div class="oj-sm-5 oj-flex-item">
@@ -366,16 +370,14 @@ export class ConsoleBindingComponents extends VComponent<Props,State> {
                           type: "numbers",
                         }}
                         translations={{
-                          fullMsgItemRange:
-                            Messages.Pagination.msgItemRange(),
-                          fullMsgItem: Messages.Pagination.msgItem()
+                          fullMsgItemRange: Messages.Pagination.msgItemRange(),
+                          fullMsgItem: Messages.Pagination.msgItem(),
                         }}
                       ></oj-paging-control>
                     </div>
                   </div>
                 </div>
               </div>
-           
             </div>
           </div>
         </div>

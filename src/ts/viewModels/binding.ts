@@ -1,15 +1,15 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 import "vz-console/binding/loader";
-import { getQueryParam } from "vz-console/utils/loader"
+import { getQueryParam } from "vz-console/utils/loader";
 import * as AccUtils from "../accUtils";
 import * as Messages from "vz-console/utils/Messages";
 class BindingViewModel {
   bindingId: string | null;
   selectedItem: string | null;
   constructor() {
-    this.bindingId = getQueryParam('bindingId');
-    this.selectedItem = getQueryParam('selectedItem');
+    this.bindingId = getQueryParam("bindingId");
+    this.selectedItem = getQueryParam("selectedItem");
   }
 
   /**

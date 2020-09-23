@@ -1,7 +1,7 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-'use strict';
+"use strict";
 /**
  * # oraclejet-serve.js
  * This script allows users to configure and customize the serve tasks.
@@ -16,9 +16,9 @@ module.exports = function () {
     /**
      * # watch
      * This task watches a set of files and defines a series of customizable tasks if a change is detected.
-     * Within the watch task config, by default there are three targets, sourceFiles, sass, themes. 
+     * Within the watch task config, by default there are three targets, sourceFiles, sass, themes.
      * Users are encouraged to edit or add their own watch targets, be careful if rewrite the three default targets.
-     * Within each watch target, users can specify three properties. 
+     * Within each watch target, users can specify three properties.
      * 1. The files entry takes a list of glob patterns that identifies the set of files to watch
      * 2. The options.livereload specifies a boolean that indicates whether the browser should reload when files in this target are modified.
      * 3. The options.tasks property specifies custom commands to run. 'compileSass' and 'copyThemes' are reserved internal tasks.
@@ -27,14 +27,14 @@ module.exports = function () {
      */
 
     /**
-     * This is the web specific configuration. You can specify configurations targeted only for web apps. 
-     * The web specific configurations will override the general configuration. 
+     * This is the web specific configuration. You can specify configurations targeted only for web apps.
+     * The web specific configurations will override the general configuration.
      */
     web: {
       /**
        * # connect
        * This task launches a web server for web App, does not work for hybrid App.
-       * Support five connect options: 
+       * Support five connect options:
        *   port, port number, default 8000
        *   hostname, a string of the domain name, default localhost
        *   livereload, a boolean for livereload, default true in dev mode, false in release mode (overwritten when )
@@ -42,14 +42,12 @@ module.exports = function () {
        *   base, a string of the target directory to be served, default to the staging area
        * Example: connect: { options: {} }
        */
-
     },
 
     /**
-     * This is the hybrid specific configuration. You can specify configurations targeted only for hybrid apps. 
-     * The hybrid specific configurations will override the general configuration. 
+     * This is the hybrid specific configuration. You can specify configurations targeted only for hybrid apps.
+     * The hybrid specific configurations will override the general configuration.
      */
-    hybrid: {
-    }
+    hybrid: {},
   };
 };

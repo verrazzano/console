@@ -1,20 +1,21 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+// eslint-disable-next-line no-unused-vars
+import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
 import { ConsoleBindingList } from "vz-console/binding-list/loader";
 import { ConsoleModelList } from "vz-console/model-list/loader";
-import * as Messages from "vz-console/utils/Messages"
+import * as Messages from "vz-console/utils/Messages";
 import { Model, Binding } from "vz-console/service/types";
-import { BreadcrumbType } from "vz-console/breadcrumb/loader"
+import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
 class Props {
-  models?: [Model]
-  bindings?: [Binding]
-  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {}
+  models?: [Model];
+  bindings?: [Binding];
+  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
 }
 
@@ -33,30 +34,25 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     href: "#",
     onclick: () => {
       this.router.go({
-        path: "" 
+        path: "",
       });
     },
   };
+
   labels = {
     models: Messages.Instance.appModels(),
     bindings: Messages.Instance.appBindings(),
   };
 
   state: State = {
-    selectedItem: this.props.selectedItem
-      ? this.props.selectedItem
-      : "models",
+    selectedItem: this.props.selectedItem ? this.props.selectedItem : "models",
   };
 
   protected mounted() {
     getDefaultRouter().destroy();
     history.replaceState(null, "path", `/${this.props.selectedItem}`);
     this.router = new CoreRouter(
-      [
-        { path: "" },
-        { path: "models" },
-        { path: "bindings" },
-      ],
+      [{ path: "" }, { path: "models" }, { path: "bindings" }],
       {
         urlAdapter: new UrlPathAdapter("/"),
       }
@@ -65,7 +61,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
       if (args.state) {
         const label = this.labels[args.state.path];
         if (label) {
-          let breadcrumbs = [this.baseBreadcrumb];
+          const breadcrumbs = [this.baseBreadcrumb];
           breadcrumbs.push({ label });
           this.updateState({ selectedItem: args.state.path });
           this.props.breadcrumbCallback(breadcrumbs);
@@ -73,13 +69,12 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
           this.updateState({ selectedItem: "models" });
           this.props.breadcrumbCallback([this.baseBreadcrumb]);
         }
-      } 
+      }
     });
-    
+
     this.router.go({
-      path: this.props.selectedItem 
+      path: this.props.selectedItem,
     });
-    
   }
 
   @listener({ capture: true, passive: true })
@@ -94,7 +89,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     let Heading: Element;
     switch (this.state.selectedItem) {
       case "models": {
-        ResourceList = <ConsoleModelList models={this.props.models}/>;
+        ResourceList = <ConsoleModelList models={this.props.models} />;
         Heading = <h1 class="resheader">{this.labels.models}</h1>;
         break;
       }

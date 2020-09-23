@@ -1,15 +1,14 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 import "vz-console/model/loader";
-import { getQueryParam } from "vz-console/utils/loader"
+import { getQueryParam } from "vz-console/utils/loader";
 import * as AccUtils from "../accUtils";
 class ModelViewModel {
-
   modelId: string | null;
   selectedItem: string | null;
   constructor() {
-    this.modelId = getQueryParam('modelId');
-    this.selectedItem = getQueryParam('selectedItem');
+    this.modelId = getQueryParam("modelId");
+    this.selectedItem = getQueryParam("selectedItem");
   }
 
   /**

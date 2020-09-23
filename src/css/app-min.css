@@ -1,4 +1,11 @@
 /* Copyright (c) 2020, Oracle and/or its affiliates. */
 /* Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl. */
 
-.sendOffScreen{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+.sendOffScreen {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
