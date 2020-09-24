@@ -134,6 +134,8 @@ export class Keycloak {
 
           const s = urls.getCallbackUrl();
           Keycloak.replaceWindowLocation(s);
+        }).catch((error) => {
+          throw error;
         });
       } catch (error) {
         Keycloak.goToErrorPage(Messages.Error.errAccessToken(error));
@@ -233,6 +235,8 @@ export class Keycloak {
           }
 
           Keycloak.replaceWindowLocation(urls.getCallbackUrl());
+        }).catch((error) => {
+          throw error;
         });
       } catch (error) {
         Keycloak.goToErrorPage(Messages.Error.errLoggingOut(error.toString()));
