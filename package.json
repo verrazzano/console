@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@oracle/oraclejet-tooling": "~9.1.0",
+    "@kubernetes/client-node": "^0.12.2",
     "@oracle/oraclejet-webdriver": "^10.0.0-alpha.11",
     "@types/chai": "^4.2.3",
     "@types/js-yaml": "^3.12.5",
@@ -60,7 +61,8 @@
     "prettier": "npx prettier --check --ignore-unknown **/*",
     "prettier-write": "npx prettier --write --ignore-unknown **/*"
     "integ-test": "npx mocha --require ts-node/register --timeout=0",
-    "integtest": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' npx mocha --require ts-node/register --timeout=0 integtest/index.js"
+    "integtest": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' npx mocha --require ts-node/register --timeout=0 integtest/index.js",
+    "kube": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./integtest/kubeclient.ts"
   },
   "private": true
 }
