@@ -3,10 +3,6 @@
 
 "use strict";
 
-/**
- * Example of Require.js boostrap javascript
- */
-
 // The UserAgent is used to detect IE11. Only IE11 requires ES5.
 (function () {
   function _ojIsIE11() {
@@ -21,7 +17,7 @@
 
     paths:
       /* DO NOT MODIFY
-       ** All paths are dynamicaly generated from the path_mappings.json file.
+       ** All paths are dynamically generated from the path_mappings.json file.
        ** Add any new library dependencies in path_mappings json file
        */
       // injector:mainReleasePaths
