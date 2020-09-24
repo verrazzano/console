@@ -112,31 +112,33 @@ export class Keycloak {
             "Content-Type": "application/x-www-form-urlencoded",
           },
           body: formBody,
-        }).then(async (response) => {
-          if (response.status >= 400) {
-            Keycloak.goToErrorPage(
-              Messages.Error.errAccessToken(response.statusText)
+        })
+          .then(async (response) => {
+            if (response.status >= 400) {
+              Keycloak.goToErrorPage(
+                Messages.Error.errAccessToken(response.statusText)
+              );
+            }
+            // Wait for body, then get access tokem, refresh token, id token
+            const json = await response.json();
+
+            // Save the expire timestamps, accounting for the Keycloak server clock skew
+            AuthStorage.setAccessTokenExpiryTsMillis(
+              KeycloakJwt.calcExpiryTsMillis(json.access_token)
             );
-          }
-          // Wait for body, then get access tokem, refresh token, id token
-          const json = await response.json();
+            AuthStorage.setRefreshTokenExpiryTsMillis(
+              KeycloakJwt.calcExpiryTsMillis(json.refresh_token)
+            );
 
-          // Save the expire timestamps, accounting for the Keycloak server clock skew
-          AuthStorage.setAccessTokenExpiryTsMillis(
-            KeycloakJwt.calcExpiryTsMillis(json.access_token)
-          );
-          AuthStorage.setRefreshTokenExpiryTsMillis(
-            KeycloakJwt.calcExpiryTsMillis(json.refresh_token)
-          );
+            AuthStorage.storeIdAndTokens(json);
+            AuthStorage.removeVerifier();
 
-          AuthStorage.storeIdAndTokens(json);
-          AuthStorage.removeVerifier();
-
-          const s = urls.getCallbackUrl();
-          Keycloak.replaceWindowLocation(s);
-        }).catch((error) => {
-          throw error;
-        });
+            const s = urls.getCallbackUrl();
+            Keycloak.replaceWindowLocation(s);
+          })
+          .catch((error) => {
+            throw error;
+          });
       } catch (error) {
         Keycloak.goToErrorPage(Messages.Error.errAccessToken(error));
       }
@@ -227,17 +229,19 @@ export class Keycloak {
             Authorization: "Bearer : " + AuthStorage.getAccessToken(),
           },
           body: formBody,
-        }).then(async (response) => {
-          if (response.status >= 400) {
-            Keycloak.goToErrorPage(
-              Messages.Error.errLoggingOut(response.statusText)
-            );
-          }
+        })
+          .then(async (response) => {
+            if (response.status >= 400) {
+              Keycloak.goToErrorPage(
+                Messages.Error.errLoggingOut(response.statusText)
+              );
+            }
 
-          Keycloak.replaceWindowLocation(urls.getCallbackUrl());
-        }).catch((error) => {
-          throw error;
-        });
+            Keycloak.replaceWindowLocation(urls.getCallbackUrl());
+          })
+          .catch((error) => {
+            throw error;
+          });
       } catch (error) {
         Keycloak.goToErrorPage(Messages.Error.errLoggingOut(error.toString()));
       }
