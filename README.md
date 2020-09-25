@@ -73,7 +73,7 @@ The Verrazzano Console accesses the Verrazzano API using [JWT](https://en.wikipe
    kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode; echo
 ```
 
-#### Environment variables:
+#### Setup environment variables:
 
 Set the following environment variables:
 
@@ -117,29 +117,6 @@ To build the Console:
   make build
   ```
 
-## Linting
-
-[ESLint](https://eslint.org/) and [prettier](https://prettier.io/) are used to keep the code style consistent. Both are checked in the build and
-a build will fail if either one fails.
-
-Run linting locally:
-
-```
-npm run eslint
-```
-
-Check formatting of your code using prettier:
-
-```
-npm run prettier
-```
-
-Formatting your code using prettier:
-
-```
-npm run prettier-write
-```
-
 ## Contributing to Verrazzano
 
 Oracle welcomes contributions to this project from anyone. Contributions may be reporting an issue with the operator or submitting a pull request. Before embarking on significant development that may result in a large pull request, it is recommended that you create an issue and discuss the proposed changes with the existing developers first.
@@ -182,3 +159,10 @@ Dependencies that satisfy all those constraints, can be added by:
 
 - Installing the dependency using `npm i <dep@version> --save`
 - Editing the [src/js/path_mapping.json](src/js/path_mapping.json) file to tell JET to bundle the library with the application. Instructions for Oracle JET 9 are here: https://docs.oracle.com/en/middleware/developer-tools/jet/9/develop/add-third-party-tools-or-libraries-your-oracle-jet-application.html
+
+## Useful links
+
+- [Oracle JET Cookbooks](https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html)
+- [VComponent API Documentation](https://www.oracle.com/webfolder/technetwork/jet/jsdocs/VComponent.html)
+- [Typescript Tutorials](https://www.typescriptlang.org/docs)
+- [Overview of Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
