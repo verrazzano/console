@@ -90,7 +90,7 @@ Set the following environment variables:
   ojet serve
 ```
 
-This should start a browser at [http://localhost:8000](http://localhost:8000). On first access, and on expiry of the [refresh token](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/), you will be required to login to Keycloak with `verrazzano` user and password obtained in [Get Verrazzano user credentials](#get-verrazzano-user-credentials)
+This should start a browser at [http://localhost:8000](http://localhost:8000). On first access, and on expiry of the [refresh token](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/), you will be required to login to Keycloak with `verrazzano` user and password obtained in [Get Verrazzano user credentials](#get-verrazzano-user-credentials).
 
 ## Testing
 
@@ -158,11 +158,10 @@ Please be aware that pull requests that seek to introduce a new dependency will 
 Dependencies that satisfy all those constraints, can be added by:
 
 - Installing the dependency using `npm i <dep@version> --save`
-- Editing the [src/js/path_mapping.json](src/js/path_mapping.json) file to tell JET to bundle the library with the application. Instructions for Oracle JET 9 are here: https://docs.oracle.com/en/middleware/developer-tools/jet/9/develop/add-third-party-tools-or-libraries-your-oracle-jet-application.html
+- Editing the [src/js/path_mapping.json](src/js/path_mapping.json) file to tell JET to bundle the library with the application. Instructions for Oracle JET 9 are here: https://docs.oracle.com/en/middleware/developer-tools/jet/9/develop/add-third-party-tools-or-libraries-your-oracle-jet-application.html.
 
 ## Useful links
 
-- [Oracle JET Cookbooks](https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html)
+- [Oracle JET Cookbook](https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html)
 - [VComponent API Documentation](https://www.oracle.com/webfolder/technetwork/jet/jsdocs/VComponent.html)
-- [Typescript Tutorials](https://www.typescriptlang.org/docs)
 - [Overview of Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
