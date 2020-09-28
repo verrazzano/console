@@ -42,7 +42,7 @@ The Verrazzano Console repository includes the following components:
 
 ### Setup
 
-Setup the git repository and install node dependencies:
+Setup the git repository and install npm dependencies:
 
 ```bash
   git clone https://github.com/verrazzano/console.git
@@ -55,7 +55,7 @@ Setup the git repository and install node dependencies:
 
 #### Setup Keycloak client:
 
-To run the Verrazzano Console locally, we first need to setup the `webui` client in Keycloak to authenticate login and API requests from the `localhost`. This is the default client used by the Console that is deployed in Verrazzano environment and same client can be used for the development server running on localhost. You may also setup your own separate client for local access. Read more about Keycloak clients [here](https://www.Keycloak.org/docs/latest/server_admin/#oidc-clients).
+To run the Verrazzano Console locally, we first need to setup the `webui` client in Keycloak to authenticate login and API requests from the `localhost`. This is the default client used by the Console that is deployed in Verrazzano environment and same client can be used for the Console application running locally. You may also setup your own separate client for local access. Read more about Keycloak clients [here](https://www.Keycloak.org/docs/latest/server_admin/#oidc-clients).
 
 - Access the Keycloak Administration console for your Verrazzano environment: `https://keycloak.v8o-env.v8o-domain.com`
 - Login with Keycloak admin user and password. Generally the Keycloak admin user name is `keycloakadmin` and password can be obtained from your management cluster using
@@ -64,12 +64,12 @@ To run the Verrazzano Console locally, we first need to setup the `webui` client
   ```
   See [Get console credentials](https://github.com/verrazzano/verrazzano/blob/master/install/README.md#6-get-console-credentials) for more information on accessing Keycloak and other user interfaces in a Verrazzano environment.
 - Navigate to "Clients" and click the client named "webui". On the Settings screen, go to "Valid Redirect URIs" and click "+" button to add the redirect URL `http://localhost:8000/*`.
-- One the same page, go to "Web Origins" and click "+" button to add `http://localhost:8000`.
+- On the same page, go to "Web Origins" and click "+" button to add `http://localhost:8000`.
 - Click Save.
 
 #### Get Verrazzano user credentials:
 
-The Verrazzano Console accesses the Verrazzano API using [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token) based authentication provided by [Keycloak Authorization Services](https://www.keycloak.org/docs/4.8/authorization_services/). To access this token from Keycloak, the user accessing the Console must be logged into Verrazzano Keycloak. Verrazzano installations have a default user `verrazzano` configured in Verrazzano Keycloak which can be used to login. To access the password for `verrazzano` user from management cluster, execute
+The Verrazzano Console accesses the Verrazzano API using [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token) based authentication provided by [Keycloak Authorization Services](https://www.keycloak.org/docs/4.8/authorization_services/). To access this token from Keycloak, the user accessing the Console must be logged into Keycloak and have a valid session. Verrazzano installations have a default user `verrazzano` configured in Verrazzano Keycloak server which can be used to authenticate with the server. To access the password for `verrazzano` user from management cluster, execute
 
 ```bash
    kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode; echo
@@ -89,6 +89,8 @@ Set the following environment variables:
 
 ##### Start server:
 
+Use `ojet serve` to run your Console application in a local web server. When you make any changes to the Console code, the changes are reflected immediately in browser because the _livereload_ option is enabled by default. See [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9) for more details.
+
 ```bash
   ojet serve
 ```
@@ -99,7 +101,7 @@ This should start a browser at [http://localhost:8000](http://localhost:8000). O
 
 ### Unit tests
 
-Unit tests for Verrazzano Console are written using [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/) and require the [Chrome browser](https://www.google.com/chrome/) to be installed. To Run Tests for the Console, execute:
+Unit tests for Verrazzano Console are written using [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/). [Chrome browser](https://www.google.com/chrome/) is required to be installed for running the tests. To run tests for the Console, execute:
 
 ```bash
   make unit-test
@@ -122,9 +124,7 @@ To build the Console:
 
 ## Linting
 
-[ESLint](https://eslint.org/) and [prettier](https://prettier.io/) are used to keep the code style consistent. Both are checked in the build and
-a build will fail if either one fails.
-
+[ESLint](https://eslint.org/) and [prettier](https://prettier.io/) are used to keep the code style consistent.
 Run linting locally:
 
 ```
