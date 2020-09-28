@@ -1,12 +1,11 @@
 // Copyright (C) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import {AuthStorage} from "./AuthStorage";
+import { AuthStorage } from "./AuthStorage";
 
 // These are the JWT fields that we use for access and refresh token
 // to check if expired
 export interface CommonToken {
-
   /**
    * Expiration time stamp
    */
@@ -16,9 +15,7 @@ export interface CommonToken {
    * Issued at time stamp
    */
   iat: number;
-
 }
-
 
 // This is the OpenID Connect token with user identify info
 export interface IdentityToken {
@@ -70,6 +67,7 @@ export interface IdentityToken {
   /**
    * Security token hash
    */
+  // eslint-disable-next-line camelcase
   st_hash: string;
 
   /**
@@ -88,8 +86,8 @@ export interface IdentityToken {
  * and determining if tokens are expired.
  */
 export class KeycloakJwt {
-  public static decodeIdToken(token: string): IdentityToken{
-    const jwtDecode = require('jwt_decode');
+  public static decodeIdToken(token: string): IdentityToken {
+    const jwtDecode = require("jwt_decode");
     return jwtDecode(token) as IdentityToken;
   }
 
@@ -97,14 +95,14 @@ export class KeycloakJwt {
    * Check if the access is expired or about to expire
    */
   public static isAccessTokenExpired(): boolean {
-    return  Date.now() > AuthStorage.getAccessTokenExpiryTsMillis();
+    return Date.now() > AuthStorage.getAccessTokenExpiryTsMillis();
   }
 
   /**
    * Check if the refresh token is expired or about to expire
    */
   public static isRefreshTokenExpired(): boolean {
-    return  Date.now() > AuthStorage.getRefreshTokenExpiryTsMillis();
+    return Date.now() > AuthStorage.getRefreshTokenExpiryTsMillis();
   }
 
   /**
@@ -114,16 +112,16 @@ export class KeycloakJwt {
    * to the Verazzano API.
    */
   public static calcExpiryTsMillis(token: string): number {
-    const jwtDecode = require('jwt_decode');
+    const jwtDecode = require("jwt_decode");
     const decoded: CommonToken = jwtDecode(token) as CommonToken;
 
     // The JWT timestamps are in secs
     const createdTs: number = decoded.iat * 1000; // convert to mills
     const expireTs: number = decoded.exp * 1000; // convert to mills
-    const now =  Date.now();
+    const now = Date.now();
     const clockSkew: number = now - createdTs;
 
-    const expiryBufferMillis = 30 * 1000;  // Expire 30 secs before actual time
+    const expiryBufferMillis = 30 * 1000; // Expire 30 secs before actual time
     const newExpireTs = expireTs + clockSkew - expiryBufferMillis;
     return newExpireTs;
   }

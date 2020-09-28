@@ -18,14 +18,18 @@ import {
   Secret,
   Connection,
   Ingress,
-  Status, Component, ComponentSecret, PartialSecret, SecretUsage
+  Status,
+  Component,
+  ComponentSecret,
+  PartialSecret,
+  SecretUsage,
 } from "../service/types";
 import { load } from "js-yaml";
-import * as DateTimeConverter from 'ojs/ojconverter-datetime';
+import * as DateTimeConverter from "ojs/ojconverter-datetime";
 
 export const extractInstances = (instances: any[]): Instance[] => {
   const result: Instance[] = [];
-  instances.forEach(instance => {
+  instances.forEach((instance) => {
     result.push({
       id: instance.id,
       name: instance.name,
@@ -43,7 +47,7 @@ export const extractInstances = (instances: any[]): Instance[] => {
 
 export const extractClusters = (clusters: any[]): Cluster[] => {
   const result: Cluster[] = [];
-  clusters.forEach(cluster => {
+  clusters.forEach((cluster) => {
     result.push({
       id: cluster.id,
       name: cluster.name,
@@ -55,22 +59,24 @@ export const extractClusters = (clusters: any[]): Cluster[] => {
   return result;
 };
 
-
 export const extractModelsFromApplications = (
   applications: Application[]
 ): Model[] => {
   const models: Model[] = [];
   const modelMap = processApplications(applications);
   for (const model of modelMap.values()) {
-    model.modelComponents = extractModelComponentsFromApplications(applications, model.id);
+    model.modelComponents = extractModelComponentsFromApplications(
+      applications,
+      model.id
+    );
     models.push(model);
   }
   return models;
 };
 
 export const extractModelComponentsFromApplications = (
-    applications: Application[],
-    modelId: string
+  applications: Application[],
+  modelId: string
 ): Component[] => {
   return processModelComponentFromApplications(applications, modelId);
 };
@@ -78,7 +84,7 @@ export const extractModelComponentsFromApplications = (
 // Extract the secrets used by components
 export const extractSecretsForComponents = (
   components: Component[],
-  secrets: Secret[],
+  secrets: Secret[]
 ): ComponentSecret[] => {
   const secretSet: Map<string, Secret> = new Map();
   for (const secret of secrets) {
@@ -98,7 +104,7 @@ export const extractSecretsForComponents = (
           type: secret.type,
           usage: componentSecret.usage,
           componentName: component.name,
-          componentType: component.type
+          componentType: component.type,
         });
       }
     }
@@ -109,7 +115,7 @@ export const extractSecretsForComponents = (
 // Extract the model component secrets
 export const extractSecretsForModelComponents = (
   model: Model,
-  secrets: Secret[],
+  secrets: Secret[]
 ): ComponentSecret[] => {
   return extractSecretsForComponents(model.modelComponents, secrets);
 };
@@ -117,13 +123,15 @@ export const extractSecretsForModelComponents = (
 // Extract the binding component secrets
 export const extractSecretsForBindingComponents = (
   binding: Binding,
-  secrets: Secret[],
+  secrets: Secret[]
 ): ComponentSecret[] => {
-  return extractSecretsForComponents(binding.model.modelComponents.filter((component) => {
-    return isBindingUsingComponent(binding, component.name)
-  }), secrets).concat(extractSecretsForComponents(binding.components, secrets));
+  return extractSecretsForComponents(
+    binding.model.modelComponents.filter((component) => {
+      return isBindingUsingComponent(binding, component.name);
+    }),
+    secrets
+  ).concat(extractSecretsForComponents(binding.components, secrets));
 };
-
 
 export const extractBindingsFromApplications = (
   applications: Application[],
@@ -133,11 +141,11 @@ export const extractBindingsFromApplications = (
   const bindings: Binding[] = [];
   const modelMap = processApplications(applications);
   for (const model of modelMap.values()) {
-    if (modelId && model.id !==  modelId) {
+    if (modelId && model.id !== modelId) {
       continue;
     }
     if (model.bindings) {
-      model.bindings.forEach(binding => {
+      model.bindings.forEach((binding) => {
         if (lifecycleState) {
           if (binding.state === lifecycleState) {
             bindings.push(binding);
@@ -152,18 +160,18 @@ export const extractBindingsFromApplications = (
 };
 
 export const extractBindingConnections = (
-    modelConnections?: Connection[],
-    binding?: Binding
+  modelConnections?: Connection[],
+  binding?: Binding
 ): Connection[] => {
   return modelConnections.filter((connection) => {
-    return isBindingUsingComponent(binding, connection.component)
-  })
-}
+    return isBindingUsingComponent(binding, connection.component);
+  });
+};
 
 // Return true if the binding is using the specified component
 export const isBindingUsingComponent = (
-    binding: Binding,
-    componentName?: string
+  binding: Binding,
+  componentName?: string
 ): boolean => {
   for (const comp of binding.components) {
     if (componentName === comp.name) {
@@ -173,17 +181,16 @@ export const isBindingUsingComponent = (
   return false;
 };
 
-
 // Return the ingresses from either the model or binding.
 export const extractIngressesFromApplications = (
-    applications: Application[],
-    modelId?: string,
-    bindingId?: string
+  applications: Application[],
+  modelId?: string,
+  bindingId?: string
 ): Ingress[] => {
   const ingresses: Ingress[] = [];
   const modelMap = processApplications(applications);
   for (const model of modelMap.values()) {
-    if (modelId && model.id !==  modelId) {
+    if (modelId && model.id !== modelId) {
       continue;
     }
     const binding = getBindingFromModel(model, bindingId);
@@ -198,8 +205,8 @@ export const extractIngressesFromApplications = (
 
 // Return the binding for the given binding Id.
 export const getBindingFromModel = (
-    model: Model,
-    bindingId?: string
+  model: Model,
+  bindingId?: string
 ): Binding => {
   if (bindingId) {
     for (const binding of model.bindings) {
@@ -212,8 +219,8 @@ export const getBindingFromModel = (
 };
 
 export const extractPlacementsFromApplications = (
-    applications: Application[],
-    bindingId?: string
+  applications: Application[],
+  bindingId?: string
 ): Placement[] => {
   const placements: Placement[] = [];
   const modelMap = processApplications(applications);
@@ -244,7 +251,7 @@ export const processApplications = (
   applications: Application[]
 ): Map<string, Model> => {
   const models = new Map<string, Model>();
-  applications.forEach(application => {
+  applications.forEach((application) => {
     const model = application.model && load(application.model);
     const binding = application.binding && load(application.binding);
     if (model) {
@@ -261,7 +268,9 @@ export const processApplications = (
           connections: connectionArr,
           ingresses: ingressArr,
           namespace: model.objectmeta.namespace,
-          createdOn: new DateTimeConverter.IntlDateTimeConverter({ pattern: "dd-MMM-yyyy HH:mm:ss.s" }).format(model.objectmeta.creationtimestamp)
+          createdOn: new DateTimeConverter.IntlDateTimeConverter({
+            pattern: "dd-MMM-yyyy HH:mm:ss.s",
+          }).format(model.objectmeta.creationtimestamp),
         });
       }
 
@@ -276,9 +285,14 @@ export const processApplications = (
           components: processComponents(model, binding),
           ingresses: processBindingIngresses(binding, resultModel.ingresses),
           namespace: binding.objectmeta.namespace,
-          createdOn: new DateTimeConverter.IntlDateTimeConverter({ pattern: "dd-MMM-yyyy HH:mm:ss.s" }).format(binding.objectmeta.creationtimestamp)
+          createdOn: new DateTimeConverter.IntlDateTimeConverter({
+            pattern: "dd-MMM-yyyy HH:mm:ss.s",
+          }).format(binding.objectmeta.creationtimestamp),
         };
-        resultBinding.connections = extractBindingConnections(resultModel.connections, resultBinding)
+        resultBinding.connections = extractBindingConnections(
+          resultModel.connections,
+          resultBinding
+        );
         if (!resultModel.bindings) {
           resultModel.bindings = [];
         }
@@ -357,7 +371,6 @@ export const processComponents = (
           componentImages.set(coherenceCluster.name, coherenceCluster.image);
         }
 
-
         if (coherenceCluster.connections) {
           processConnections(
             componentPlacements,
@@ -376,7 +389,7 @@ export const processComponents = (
           name: weblogicBinding.name,
           type: ComponentType.WLS,
           placement: componentPlacements.get(weblogicBinding.name),
-          image: componentImages.get(weblogicBinding.name)
+          image: componentImages.get(weblogicBinding.name),
         };
         components.push(wlsDomainComponent);
       });
@@ -393,7 +406,7 @@ export const processComponents = (
           name: coherenceBinding.name,
           type: ComponentType.COH,
           placement: componentPlacements.get(coherenceBinding.name),
-          image: componentImages.get(coherenceBinding.name)
+          image: componentImages.get(coherenceBinding.name),
         };
         components.push(coherenceClusterComponent);
       });
@@ -410,7 +423,7 @@ export const processComponents = (
           name: helidonBinding.name,
           type: ComponentType.MS,
           placement: componentPlacements.get(helidonBinding.name),
-          image: componentImages.get(helidonBinding.name)
+          image: componentImages.get(helidonBinding.name),
         };
         components.push(helidonAppComponent);
       });
@@ -430,7 +443,7 @@ export const processComponents = (
           name: ingress.name,
           type: ComponentType.ING,
           placement: ingressPlacement,
-          status: ingressStatus
+          status: ingressStatus,
         };
         components.push(ingressComponent);
       });
@@ -450,7 +463,7 @@ export const processComponents = (
           name: atp.name,
           type: ComponentType.ATP,
           placement: atpPlacement,
-          status: atpStatus
+          status: atpStatus,
         };
         components.push(atpComponent);
       });
@@ -470,13 +483,13 @@ export const processComponents = (
           name: database.name,
           type: ComponentType.DB,
           placement: dbPlacement,
-          status: dbStatus
+          status: dbStatus,
         };
         if (database.credentials) {
           databaseComponent.secrets = [];
-          databaseComponent.secrets.push({ 
-            name: database.credentials, 
-            usage: SecretUsage.DatabaseSecret 
+          databaseComponent.secrets.push({
+            name: database.credentials,
+            usage: SecretUsage.DatabaseSecret,
           });
         }
         components.push(databaseComponent);
@@ -488,8 +501,8 @@ export const processComponents = (
 
 // Find the model in the applicaiton list then return list of ModelComponents used for that model
 export const processModelComponentFromApplications = (
-    applications: Application[],
-    modelId: string
+  applications: Application[],
+  modelId: string
 ): Component[] => {
   const components: Component[] = [];
   for (const app of applications) {
@@ -502,15 +515,15 @@ export const processModelComponentFromApplications = (
 };
 
 // Return the list of ModelComponents used for a specific model
-export const processModelComponents = (
-    model: any
-): Component[] => {
+export const processModelComponents = (model: any): Component[] => {
   const components: Component[] = [];
 
   if (model && model.spec) {
     if (model.spec.weblogicDomains) {
       model.spec.weblogicDomains.forEach((wlsDomain: any) => {
-        const c = <Component>{ id: generateWlsNodeId(model.objectmeta.id, wlsDomain.name) };
+        const c = <Component>{
+          id: generateWlsNodeId(model.objectmeta.id, wlsDomain.name),
+        };
         components.push(c);
         c.secrets = [];
         c.type = ComponentType.WLS;
@@ -521,14 +534,22 @@ export const processModelComponents = (
           }
           if (wlsDomain.domainCRValues.imagepullsecrets) {
             for (const s of wlsDomain.domainCRValues.imagepullsecrets) {
-              const ps = <PartialSecret>{ name: s.name, usage: SecretUsage.ImagePullSecret };
+              const ps = <PartialSecret>{
+                name: s.name,
+                usage: SecretUsage.ImagePullSecret,
+              };
               c.secrets.push(ps);
             }
           }
-          if (wlsDomain.domainCRValues.weblogiccredentialssecret
-              && wlsDomain.domainCRValues.weblogiccredentialssecret.name) {
+          if (
+            wlsDomain.domainCRValues.weblogiccredentialssecret &&
+            wlsDomain.domainCRValues.weblogiccredentialssecret.name
+          ) {
             const n = wlsDomain.domainCRValues.weblogiccredentialssecret.name;
-            const ps = <PartialSecret>{ name: n, usage: SecretUsage.WebLogicCredentialsSecret };
+            const ps = <PartialSecret>{
+              name: n,
+              usage: SecretUsage.WebLogicCredentialsSecret,
+            };
             c.secrets.push(ps);
           }
         }
@@ -537,7 +558,9 @@ export const processModelComponents = (
 
     if (model.spec.helidonApplications) {
       model.spec.helidonApplications.forEach((helidonApp: any) => {
-        const c = <Component>{ id: generateHelidonNodeId(model.objectmeta.id, helidonApp.name) };
+        const c = <Component>{
+          id: generateHelidonNodeId(model.objectmeta.id, helidonApp.name),
+        };
         components.push(c);
         c.secrets = [];
         c.type = ComponentType.MS;
@@ -545,7 +568,10 @@ export const processModelComponents = (
         c.image = helidonApp.image;
         if (helidonApp.imagePullSecrets) {
           for (const s of helidonApp.imagePullSecrets) {
-            const ps = <PartialSecret> { name: s.name, usage: SecretUsage.ImagePullSecret };
+            const ps = <PartialSecret>{
+              name: s.name,
+              usage: SecretUsage.ImagePullSecret,
+            };
             c.secrets.push(ps);
           }
         }
@@ -554,7 +580,9 @@ export const processModelComponents = (
 
     if (model.spec.coherenceClusters) {
       model.spec.coherenceClusters.forEach((coherenceCluster: any) => {
-        const c = <Component>{ id: generateCohNodeId(model.objectmeta.id, coherenceCluster.name) };
+        const c = <Component>{
+          id: generateCohNodeId(model.objectmeta.id, coherenceCluster.name),
+        };
         components.push(c);
         c.secrets = [];
         c.type = ComponentType.COH;
@@ -562,7 +590,10 @@ export const processModelComponents = (
         c.image = coherenceCluster.image;
         if (coherenceCluster.imagePullSecrets) {
           for (const s of coherenceCluster.imagePullSecrets) {
-            const ps = <PartialSecret> { name: s.name, usage: SecretUsage.ImagePullSecret };
+            const ps = <PartialSecret>{
+              name: s.name,
+              usage: SecretUsage.ImagePullSecret,
+            };
             c.secrets.push(ps);
           }
         }
@@ -574,8 +605,8 @@ export const processModelComponents = (
 
 // Return the list of ModelComponents used for a specific model
 export const processBindingIngresses = (
-    binding: any,
-    modelIngresses: Ingress[]
+  binding: any,
+  modelIngresses: Ingress[]
 ): Ingress[] => {
   const ingresses: Ingress[] = [];
 
@@ -602,9 +633,9 @@ export const processBindingIngresses = (
 };
 
 function processConnections(
-    componentPlacements: Map<string, Placement>,
-    connections: any,
-    componentName: string
+  componentPlacements: Map<string, Placement>,
+  connections: any,
+  componentName: string
 ): void {
   if (connections && componentPlacements) {
     connections.forEach((connection: any) => {
@@ -613,7 +644,7 @@ function processConnections(
           if (!componentPlacements.has(ingress.name)) {
             if (componentPlacements.has(componentName)) {
               componentPlacements.set(ingress.name, {
-                cluster: componentPlacements.get(componentName).cluster
+                cluster: componentPlacements.get(componentName).cluster,
               });
             }
           }
@@ -625,8 +656,8 @@ function processConnections(
           if (!componentPlacements.has(atp.name)) {
             if (componentPlacements.has(componentName)) {
               componentPlacements.set(
-                  atp.name,
-                  componentPlacements.get(componentName)
+                atp.name,
+                componentPlacements.get(componentName)
               );
             }
           }
@@ -638,8 +669,8 @@ function processConnections(
           if (!componentPlacements.has(db.name)) {
             if (componentPlacements.has(componentName)) {
               componentPlacements.set(
-                  db.name,
-                  componentPlacements.get(componentName)
+                db.name,
+                componentPlacements.get(componentName)
               );
             }
           }
@@ -651,8 +682,8 @@ function processConnections(
           if (!componentPlacements.has(coh.name)) {
             if (componentPlacements.has(componentName)) {
               componentPlacements.set(
-                  coh.name,
-                  componentPlacements.get(componentName)
+                coh.name,
+                componentPlacements.get(componentName)
               );
             }
           }
@@ -663,19 +694,19 @@ function processConnections(
 }
 
 function processModelConnections(
-    model: any,
-    connections: Connection[],
-    ingresses: Ingress[],
+  model: any,
+  connections: Connection[],
+  ingresses: Ingress[]
 ): void {
   if (model) {
     if (model.spec.weblogicDomains) {
       model.spec.weblogicDomains.forEach((wlsDomain: any) => {
         if (wlsDomain.connections) {
           appendModelConnections(
-              connections,
-              ingresses,
-              wlsDomain.connections,
-              wlsDomain.name
+            connections,
+            ingresses,
+            wlsDomain.connections,
+            wlsDomain.name
           );
         }
       });
@@ -685,10 +716,10 @@ function processModelConnections(
       model.spec.helidonApplications.forEach((helidonApp: any) => {
         if (helidonApp.connections) {
           appendModelConnections(
-              connections,
-              ingresses,
-              helidonApp.connections,
-              helidonApp.name
+            connections,
+            ingresses,
+            helidonApp.connections,
+            helidonApp.name
           );
         }
       });
@@ -698,27 +729,25 @@ function processModelConnections(
       model.spec.coherenceClusters.forEach((coherenceCluster: any) => {
         if (coherenceCluster.connections) {
           appendModelConnections(
-              connections,
-              ingresses,
-              coherenceCluster.connections,
-              coherenceCluster.name
+            connections,
+            ingresses,
+            coherenceCluster.connections,
+            coherenceCluster.name
           );
         }
       });
     }
-
   }
 }
 
 function appendModelConnections(
-    modelConnections: Connection[],
-    Ingress: Ingress[],
-    connections: any,
-    componentName: string
+  modelConnections: Connection[],
+  Ingress: Ingress[],
+  connections: any,
+  componentName: string
 ): void {
   if (connections) {
     connections.forEach((connection: any) => {
-
       if (connection.ingress) {
         connection.ingress.forEach((ingress: any) => {
           const c = <Ingress>{};
@@ -781,10 +810,9 @@ function appendModelConnections(
   }
 }
 
-
 export const extractDomains = (domains: any[]): Domain[] => {
   const result: Domain[] = [];
-  domains.forEach(domain => {
+  domains.forEach((domain) => {
     let t3Port = "";
     if (domain.t3Address) {
       const split = domain.t3Address.split(":", 3);
@@ -809,7 +837,7 @@ export const extractDomains = (domains: any[]): Domain[] => {
 
 export const extractCohClusters = (cohClusters: any[]): CohCluster[] => {
   const result: CohCluster[] = [];
-  cohClusters.forEach(cohCluster => {
+  cohClusters.forEach((cohCluster) => {
     result.push({
       id: cohCluster.id,
       name: cohCluster.name,
@@ -818,7 +846,7 @@ export const extractCohClusters = (cohClusters: any[]): CohCluster[] => {
       namespace: cohCluster.namespace,
       podName: cohCluster.podName,
       role: cohCluster.role,
-      status: cohCluster.status
+      status: cohCluster.status,
     });
   });
   return result;
@@ -826,14 +854,14 @@ export const extractCohClusters = (cohClusters: any[]): CohCluster[] => {
 
 export const extractHelidonApps = (helidonApps: any[]): HelidonApp[] => {
   const result: HelidonApp[] = [];
-  helidonApps.forEach(helidonApp => {
+  helidonApps.forEach((helidonApp) => {
     result.push({
       id: helidonApp.name,
       name: helidonApp.name,
       cluster: helidonApp.cluster,
       namespace: helidonApp.namespace,
       type: helidonApp.type,
-      status: helidonApp.status
+      status: helidonApp.status,
     });
   });
   return result;
@@ -864,54 +892,59 @@ function generateDbNodeId(parentId: string, dbName: string): string {
 }
 
 function generateId(...args: string[]): string {
-  return args
-    .join("-")
-    .replace(/\s+/g, "-")
-    .toLowerCase();
+  return args.join("-").replace(/\s+/g, "-").toLowerCase();
 }
 
-export const getVmiInstancesForBinding = (bindingName: string, hostSuffix: string): VMI[] => {
+export const getVmiInstancesForBinding = (
+  bindingName: string,
+  hostSuffix: string
+): VMI[] => {
   const vmis: VMI[] = [];
-  vmis.push({
-    id: bindingName+"-kibana",
-    type: VMIType.Kibana,
-    url:
-      "https://" +
-      VMIType.Kibana.charAt(0).toLowerCase() +
-      VMIType.Kibana.slice(1).toLowerCase() +
-      ".vmi." +
-      bindingName.toLowerCase().replace(" ","") +
-      hostSuffix
-  },{
-    id: bindingName+"-grafana",
-    type: VMIType.Grafana,
-    url:
-      "https://" +
-      VMIType.Grafana.charAt(0).toLowerCase() +
-      VMIType.Grafana.slice(1).toLowerCase() +
-      ".vmi." +
-      bindingName.toLowerCase().replace(" ","") +
-      hostSuffix
-  },{
-    id: bindingName+"-prom",
-    type: VMIType.Prometheus,
-    url:
-      "https://" +
-      VMIType.Prometheus.charAt(0).toLowerCase() +
-      VMIType.Prometheus.slice(1).toLowerCase() +
-      ".vmi." +
-      bindingName.toLowerCase().replace(" ","") +
-      hostSuffix
-  },{
-    id: bindingName+"-es",
-    type: VMIType.ElasticSearch,
-    url:
-      "https://" +
-      VMIType.ElasticSearch.charAt(0).toLowerCase() +
-      VMIType.ElasticSearch.slice(1).toLowerCase() +
-      ".vmi." +
-      bindingName.toLowerCase().replace(" ","") +
-      hostSuffix
-  });
+  vmis.push(
+    {
+      id: bindingName + "-kibana",
+      type: VMIType.Kibana,
+      url:
+        "https://" +
+        VMIType.Kibana.charAt(0).toLowerCase() +
+        VMIType.Kibana.slice(1).toLowerCase() +
+        ".vmi." +
+        bindingName.toLowerCase().replace(" ", "") +
+        hostSuffix,
+    },
+    {
+      id: bindingName + "-grafana",
+      type: VMIType.Grafana,
+      url:
+        "https://" +
+        VMIType.Grafana.charAt(0).toLowerCase() +
+        VMIType.Grafana.slice(1).toLowerCase() +
+        ".vmi." +
+        bindingName.toLowerCase().replace(" ", "") +
+        hostSuffix,
+    },
+    {
+      id: bindingName + "-prom",
+      type: VMIType.Prometheus,
+      url:
+        "https://" +
+        VMIType.Prometheus.charAt(0).toLowerCase() +
+        VMIType.Prometheus.slice(1).toLowerCase() +
+        ".vmi." +
+        bindingName.toLowerCase().replace(" ", "") +
+        hostSuffix,
+    },
+    {
+      id: bindingName + "-es",
+      type: VMIType.ElasticSearch,
+      url:
+        "https://" +
+        VMIType.ElasticSearch.charAt(0).toLowerCase() +
+        VMIType.ElasticSearch.slice(1).toLowerCase() +
+        ".vmi." +
+        bindingName.toLowerCase().replace(" ", "") +
+        hostSuffix,
+    }
+  );
   return vmis;
 };

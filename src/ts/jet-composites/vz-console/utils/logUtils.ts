@@ -6,11 +6,11 @@ export const logSuccess = (successMessage: string): void => {
 };
 
 export const logInfo = (info: string, data: any): void => {
-  const eventOptions =   {
+  const eventOptions = {
     notificationMessage: info,
     metadata: {
-      data
-    }
+      data,
+    },
   };
   console.info("Info: " + info, eventOptions);
 };
@@ -24,9 +24,12 @@ export const logGlobalJsError = (error: Error, info: any): void => {
     notificationMessage: error.message,
     metadata: {
       error,
-      stacktrace: info.componentStack
-    }
+      stacktrace: info.componentStack,
+    },
   };
 
-  console.error("JavaScript failure in component: " + error.message, eventOptions);
+  console.error(
+    "JavaScript failure in component: " + error.message,
+    eventOptions
+  );
 };

@@ -1,4 +1,14 @@
 # Copyright (c) 2020, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
-src/css/images/Verrazzano_logo_white.svg
-src/css/images/favico.svg
+web
+.vscode
+coverage
+node_modules
+staged-themes
+test
+thirdparty_licenses
+Dockerfile
+*.txt
+Jenkinsfile
+Makefile
+*.sh

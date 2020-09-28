@@ -1,14 +1,15 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+// eslint-disable-next-line no-unused-vars
+import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
 import { ConsoleConnectionList } from "vz-console/connection-list/loader";
 import { ConsoleIngressList } from "vz-console/ingress-list/loader";
 import { ConsoleSecretList } from "vz-console/secret-list/loader";
 import { ConsoleBindingComponents } from "vz-console/binding-components/loader";
 import * as Messages from "vz-console/utils/Messages";
 import { Binding } from "vz-console/service/types";
-import { BreadcrumbType } from "vz-console/breadcrumb/loader"
+import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
@@ -19,8 +20,8 @@ class State {
 }
 
 class Props {
-  binding: Binding
-  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {}
+  binding: Binding;
+  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
 }
 
@@ -34,6 +35,7 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
     { label: Messages.Nav.home(), href: "/" },
     { label: Messages.Instance.appBindings(), href: "/bindings" },
   ];
+
   labels = {
     components: Messages.Labels.components(),
     connections: Messages.Labels.connections(),
@@ -50,67 +52,73 @@ export class ConsoleBindingResources extends VComponent<Props, State> {
   protected mounted() {
     getDefaultRouter().destroy();
     history.replaceState(null, "path", `bindings/${this.props.binding.id}`);
-    let parentRouter = new CoreRouter(
+    const parentRouter = new CoreRouter(
       [
         { path: "", redirect: this.props.binding.id },
-        { path: this.props.binding.id}
+        { path: this.props.binding.id },
       ],
       {
         urlAdapter: new UrlPathAdapter("/bindings"),
       }
     );
-    parentRouter.sync().then(() => {
-      this.router = new CoreRouter(
-        [
-          { path: "" },
-          { path: `components` },
-          { path: `connections` },
-          { path: `ingresses` },
-          { path: `secrets` },
-        ],
-        {
-          urlAdapter: new UrlPathAdapter(`/bindings/${this.props.binding.id}`),
-        },
-        parentRouter
-      );
-      this.router.currentState.subscribe((args) => {
-        if (args.state) {
-          const label = this.labels[args.state.path];
-          let breadcrumbs = [...this.baseBreadcrumbs];
-          if (label) {
-            breadcrumbs.push({ label: Messages.Nav.bindingDetails(), href: "#",  onclick: () => {
-              this.router.go({
-                path: "" 
+    parentRouter
+      .sync()
+      .then(() => {
+        this.router = new CoreRouter(
+          [
+            { path: "" },
+            { path: `components` },
+            { path: `connections` },
+            { path: `ingresses` },
+            { path: `secrets` },
+          ],
+          {
+            urlAdapter: new UrlPathAdapter(
+              `/bindings/${this.props.binding.id}`
+            ),
+          },
+          parentRouter
+        );
+        this.router.currentState.subscribe((args) => {
+          if (args.state) {
+            const label = this.labels[args.state.path];
+            const breadcrumbs = [...this.baseBreadcrumbs];
+            if (label) {
+              breadcrumbs.push({
+                label: Messages.Nav.bindingDetails(),
+                href: "#",
+                onclick: () => {
+                  this.router.go({
+                    path: "",
+                  });
+                },
               });
-            }, });
-            breadcrumbs.push({ label });
-            this.updateState({ selectedItem: args.state.path, filter: null });
-            this.props.breadcrumbCallback(breadcrumbs); 
-          } else {
-            breadcrumbs.push({ label: Messages.Nav.bindingDetails() });
-            this.updateState({ selectedItem: "components", filter: null });
-            this.props.breadcrumbCallback(breadcrumbs);
+              breadcrumbs.push({ label });
+              this.updateState({ selectedItem: args.state.path, filter: null });
+              this.props.breadcrumbCallback(breadcrumbs);
+            } else {
+              breadcrumbs.push({ label: Messages.Nav.bindingDetails() });
+              this.updateState({ selectedItem: "components", filter: null });
+              this.props.breadcrumbCallback(breadcrumbs);
+            }
           }
+        });
+        parentRouter.beforeStateChange.subscribe((args) => {
+          this.router.go();
+          args.accept(Promise.resolve(""));
+        });
+      })
+      .then(() => {
+        if (this.props.selectedItem) {
+          this.router.go({ path: this.props.selectedItem });
         }
       });
-      parentRouter.beforeStateChange.subscribe((args) => {
-        this.router.go();
-        args.accept(Promise.resolve(''))
-      });
-    }).then(() => {
-      if (this.props.selectedItem) {
-        this.router.go(
-          {path: this.props.selectedItem}
-        );
-      }
-    });    
   }
-
 
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
     if (event.detail.originalEvent) {
-      this.router.go({path: event.detail.value});
+      this.router.go({ path: event.detail.value });
     }
   }
 

@@ -1,17 +1,24 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+// eslint-disable-next-line no-unused-vars
+import { VComponent, customElement, h } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
-import { Instance, Model, Binding , Status} from "vz-console/service/loader";
-import { ConsoleMetadataItem } from "vz-console/metadata-item/loader"
-import { ConsoleInstanceResources } from "vz-console/instance-resources/loader"
-import { ConsoleError } from "vz-console/error/loader"
-import * as Messages from "vz-console/utils/Messages"
-import { extractModelsFromApplications, extractBindingsFromApplications } from "vz-console/service/common";
-import { ConsoleBreadcrumb, BreadcrumbType } from "vz-console/breadcrumb/loader"
-import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
-import { isIterable } from "vz-console/utils/utils"
+import { Instance, Model, Binding, Status } from "vz-console/service/loader";
+import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
+import { ConsoleInstanceResources } from "vz-console/instance-resources/loader";
+import { ConsoleError } from "vz-console/error/loader";
+import * as Messages from "vz-console/utils/Messages";
+import {
+  extractModelsFromApplications,
+  extractBindingsFromApplications,
+} from "vz-console/service/common";
+import {
+  ConsoleBreadcrumb,
+  BreadcrumbType,
+} from "vz-console/breadcrumb/loader";
+import { ConsoleStatusBadge } from "vz-console/status-badge/loader";
+import { isIterable } from "vz-console/utils/utils";
 
 class Props {
   selectedItem?: string;
@@ -19,11 +26,11 @@ class Props {
 
 class State {
   instance?: Instance;
-  models?: Model[]
-  bindings?: Binding[]
+  models?: Model[];
+  bindings?: Binding[];
   loading?: boolean;
   error?: string;
-  breadcrumbs?: BreadcrumbType[]
+  breadcrumbs?: BreadcrumbType[];
 }
 
 /**
@@ -34,47 +41,55 @@ export class ConsoleInstance extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
-    breadcrumbs: []
+    breadcrumbs: [],
   };
 
   constructor() {
     super(new Props());
     this.verrazzanoApi = new VerrazzanoApi();
   }
-  
+
   protected mounted() {
     this.getData();
   }
 
   async getData() {
     this.updateState({ loading: true });
-    Promise.all([this.verrazzanoApi.getInstance("0"),this.verrazzanoApi.listApplications()])
-    .then(([instance, applications]) => {
-      if (isIterable(applications)) {
-        this.updateState({ 
-          loading: false, 
-          instance: instance, 
-          models: extractModelsFromApplications(applications), 
-          bindings: extractBindingsFromApplications(applications) 
-        })
-      }
-    })
-    .catch((error) => {
-      let errorMessage = error;
-      if (error && error.message) {
+    Promise.all([
+      this.verrazzanoApi.getInstance("0"),
+      this.verrazzanoApi.listApplications(),
+    ])
+      .then(([instance, applications]) => {
+        if (isIterable(applications)) {
+          this.updateState({
+            loading: false,
+            instance: instance,
+            models: extractModelsFromApplications(applications),
+            bindings: extractBindingsFromApplications(applications),
+          });
+        }
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
           errorMessage = error.message;
-      }
-      this.updateState({ error: errorMessage });
-    });
+        }
+        this.updateState({ error: errorMessage });
+      });
   }
 
   breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
-    this.updateState({breadcrumbs});
+    this.updateState({ breadcrumbs });
   };
 
   protected render() {
     if (this.state.error) {
-      return <ConsoleError context={Messages.Error.errRenderInstance()} error={this.state.error}/>
+      return (
+        <ConsoleError
+          context={Messages.Error.errRenderInstance()}
+          error={this.state.error}
+        />
+      );
     }
 
     if (this.state.loading) {
@@ -83,12 +98,15 @@ export class ConsoleInstance extends VComponent<Props, State> {
 
     return (
       <div>
-        <ConsoleBreadcrumb
-          items={this.state.breadcrumbs}
-        />
+        <ConsoleBreadcrumb items={this.state.breadcrumbs} />
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
-            <ConsoleStatusBadge status={Status.Running} type={"hexagon"} text={"V"} label={Messages.Nav.instance()}/>
+            <ConsoleStatusBadge
+              status={Status.Running}
+              type={"hexagon"}
+              text={"V"}
+              label={Messages.Nav.instance()}
+            />
           </div>
           <div class="oj-sm-10 oj-flex-item">
             <div class="oj-sm-12 oj-flex">
