@@ -37,8 +37,11 @@ The Verrazzano Console repository includes the following components:
 
 - Access to Verrazzano API and Keycloak server URL
 
-  The Verrazzano Console requires the URL of the Keycloak server (for authentication) and the Verrazzano API Server URL (for fetching environment and applications' data). The Verrazzano API Server URL generally will be `https://api.v8o-env.v8o-domain.com` and Keycloak server URL will be `https://keycloak.v8o-env.v8o-domain.com`. When OCI DNS is used as DNS provider, `v8o-env` will be the name of the Verrazzano environment and `v8o-domain.com` will be the domain. When `xip.io` is used as the DNS Service, `v8o-env` will be replaced by `default` and `v8o-domain.com` will be the IP Address of OCI Load Balancer.
-  For more details on installing and accessing Verrazzano, see the [installation instructions](https://github.com/verrazzano/verrazzano/blob/master/install/README.md).
+  The Verrazzano Console requires the URL of the Keycloak server (for authentication) and the Verrazzano API Server URL (for fetching environment and applications' data). The Verrazzano API Server URL generally will be `https://api.v8o-env.v8o-domain.com` and Keycloak server URL will be `https://keycloak.v8o-env.v8o-domain.com`.
+
+  - When OCI DNS is used as DNS provider, `v8o-env` will be the name of the Verrazzano environment and `v8o-domain.com` will be the domain.
+  - When `xip.io` is used as the DNS Service, `v8o-env` will be replaced by `default` and `v8o-domain.com` will be the IP Address of OCI Load Balancer.
+    For more details on installing and accessing Verrazzano, see the [installation instructions](https://github.com/verrazzano/verrazzano/blob/master/install/README.md).
 
 ### Setup
 
@@ -69,7 +72,7 @@ To run the Verrazzano Console locally, we first need to setup the `webui` client
 
 #### Get Verrazzano user credentials:
 
-The Verrazzano Console accesses the Verrazzano API using [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token) based authentication provided by [Keycloak Authorization Services](https://www.keycloak.org/docs/4.8/authorization_services/). To access this token from Keycloak, the user accessing the Console must be logged into Keycloak and have a valid session. Verrazzano installations have a default user `verrazzano` configured in Verrazzano Keycloak server which can be used to authenticate with the server. To access the password for `verrazzano` user from management cluster, execute
+The Verrazzano Console accesses the Verrazzano API using [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token) based authentication provided by [Keycloak Authorization Services](https://www.keycloak.org/docs/4.8/authorization_services/) provided by the Keycloak server installed in Verrazzano environment. To access this token from Keycloak, the user accessing the Console application must be logged into Keycloak and have a valid session. Verrazzano installations have a default user `verrazzano` configured in Verrazzano Keycloak server which can be used to authenticate with the server. To access the password for `verrazzano` user from management cluster, execute
 
 ```bash
    kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode; echo
@@ -89,13 +92,15 @@ Set the following environment variables:
 
 ##### Start server:
 
-Use `ojet serve` to run your Console application in a local web server. When you make any changes to the Console code, the changes are reflected immediately in browser because the _livereload_ option is enabled by default. See [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9) for more details.
+Execute following command to run your Console application in a local web server.
 
 ```bash
   ojet serve
 ```
 
 This should start a browser at [http://localhost:8000](http://localhost:8000). On first access, and on expiry of the [refresh token](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/), you will be required to login to Keycloak with `verrazzano` user and password obtained in [Get Verrazzano user credentials](#get-verrazzano-user-credentials).
+
+When you make any changes to the Console code, the changes are reflected immediately in browser because the _livereload_ option is enabled by default. See [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9) for other options supported by the `ojet serve` command.
 
 ## Testing
 
