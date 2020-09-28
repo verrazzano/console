@@ -6,8 +6,8 @@ The Verrazzano Console is the User Interface for accessing and managing Verrazza
 
 The Verrazzano Console repository includes the following components:
 
-- [Oracle JET hooks](scripts/hooks) contains [hooks](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/customize-web-application-tooling-workflow.html#GUID-D19EC0A2-DFEF-4928-943A-F8CC08961453) used for building and running Console application.
-- [Custom Components](src/ts/jet-composites) contains the [Oracle JET Custom Components](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/design-custom-web-components.html) which are basic building blocks for the Console.
+- [hooks](scripts/hooks) contains [Oracle JET hooks](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/customize-web-application-tooling-workflow.html#GUID-D19EC0A2-DFEF-4928-943A-F8CC08961453) used for building and running Console application.
+- [jet-composites](src/ts/jet-composites) contains the [Oracle JET Custom Components](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/design-custom-web-components.html) which are basic building blocks for the Console.
 - [views](src/ts/views) and [viewModels](src/ts/viewModels) contain the Oracle JET view and viewModels used in the Console. See [Oracle JET Architecture](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/oracle-jet-architecture.html#GUID-293CB342-196F-4FC3-AE69-D1226A025FBB) for more details.
 - [test](test) contains the tests and tests related configuration for Console.
 
