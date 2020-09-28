@@ -33,6 +33,15 @@ pipeline {
             }
         }
 
+        stage('Lint code') {
+            when { not { buildingTag() } }
+            steps {
+                sh """
+                    make lint-code
+                """
+            }
+        }
+
         stage('Unit Test') {
             when { not { buildingTag() } }
             steps {

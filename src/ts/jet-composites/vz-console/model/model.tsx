@@ -1,14 +1,23 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { VerrazzanoApi, Model, extractSecretsForModelComponents, Status } from "vz-console/service/loader";
+// eslint-disable-next-line no-unused-vars
+import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import {
+  VerrazzanoApi,
+  Model,
+  extractSecretsForModelComponents,
+  Status,
+} from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleModelResources } from "vz-console/model-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages";
-import { ConsoleBreadcrumb, BreadcrumbType } from "vz-console/breadcrumb/loader";
-import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
+import {
+  ConsoleBreadcrumb,
+  BreadcrumbType,
+} from "vz-console/breadcrumb/loader";
+import { ConsoleStatusBadge } from "vz-console/status-badge/loader";
 
 class Props {
   modelId?: string;
@@ -19,7 +28,7 @@ class State {
   model?: Model;
   loading?: boolean;
   error?: string;
-  breadcrumbs?: BreadcrumbType[]
+  breadcrumbs?: BreadcrumbType[];
 }
 
 /**
@@ -30,7 +39,7 @@ export class ConsoleModel extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
-    breadcrumbs: []
+    breadcrumbs: [],
   };
 
   props: Props = {
@@ -71,7 +80,7 @@ export class ConsoleModel extends VComponent<Props, State> {
   }
 
   breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
-    this.updateState({breadcrumbs});
+    this.updateState({ breadcrumbs });
   };
 
   protected render() {

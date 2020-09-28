@@ -1,19 +1,19 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+// eslint-disable-next-line no-unused-vars
+import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
 import { ConsoleBindingList } from "vz-console/binding-list/loader";
 import { ConsoleConnectionList } from "vz-console/connection-list/loader";
 import { ConsoleIngressList } from "vz-console/ingress-list/loader";
 import { ConsoleSecretList } from "vz-console/secret-list/loader";
 import { ConsoleModelComponents } from "vz-console/model-components/loader";
-import * as Messages from "vz-console/utils/Messages"
+import * as Messages from "vz-console/utils/Messages";
 import { Model } from "vz-console/service/types";
-import { BreadcrumbType } from "vz-console/breadcrumb/loader"
+import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
-
 
 class State {
   selectedItem: string;
@@ -22,7 +22,7 @@ class State {
 
 class Props {
   model?: Model;
-  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {}
+  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
 }
 
@@ -36,6 +36,7 @@ export class ConsoleModelResources extends VComponent<Props, State> {
     { label: Messages.Nav.home(), href: "/" },
     { label: Messages.Instance.appModels(), href: "/models" },
   ];
+
   labels = {
     bindings: Messages.Labels.modelBindings(),
     components: Messages.Labels.components(),
@@ -43,6 +44,7 @@ export class ConsoleModelResources extends VComponent<Props, State> {
     ingresses: Messages.Labels.ingresses(),
     secrets: Messages.Labels.secrets(),
   };
+
   state: State = {
     selectedItem: this.props.selectedItem
       ? this.props.selectedItem
@@ -52,68 +54,72 @@ export class ConsoleModelResources extends VComponent<Props, State> {
   protected mounted() {
     getDefaultRouter().destroy();
     history.replaceState(null, "path", `models/${this.props.model.id}`);
-    let parentRouter = new CoreRouter(
+    const parentRouter = new CoreRouter(
       [
         { path: "", redirect: this.props.model.id },
-        { path: this.props.model.id}
+        { path: this.props.model.id },
       ],
       {
         urlAdapter: new UrlPathAdapter("/models"),
       }
     );
-    parentRouter.sync().then(() => {
-      this.router = new CoreRouter(
-        [
-          { path: "" },
-          { path: `bindings` },
-          { path: `components` },
-          { path: `connections` },
-          { path: `ingresses` },
-          { path: `secrets` },
-        ],
-        {
-          urlAdapter: new UrlPathAdapter(`/models/${this.props.model.id}`),
-        },
-        parentRouter
-      );
-      this.router.currentState.subscribe((args) => {
-        if (args.state) {
-          const label = this.labels[args.state.path];
-          let breadcrumbs = [...this.baseBreadcrumbs];
-          if (label) {
-            breadcrumbs.push({ label: Messages.Nav.modelDetails(), href: "#",  onclick: () => {
-              this.router.go({
-                path: "" 
+    parentRouter
+      .sync()
+      .then(() => {
+        this.router = new CoreRouter(
+          [
+            { path: "" },
+            { path: `bindings` },
+            { path: `components` },
+            { path: `connections` },
+            { path: `ingresses` },
+            { path: `secrets` },
+          ],
+          {
+            urlAdapter: new UrlPathAdapter(`/models/${this.props.model.id}`),
+          },
+          parentRouter
+        );
+        this.router.currentState.subscribe((args) => {
+          if (args.state) {
+            const label = this.labels[args.state.path];
+            const breadcrumbs = [...this.baseBreadcrumbs];
+            if (label) {
+              breadcrumbs.push({
+                label: Messages.Nav.modelDetails(),
+                href: "#",
+                onclick: () => {
+                  this.router.go({
+                    path: "",
+                  });
+                },
               });
-            }, });
-            breadcrumbs.push({ label });
-            this.updateState({ selectedItem: args.state.path, filter: null });
-            this.props.breadcrumbCallback(breadcrumbs);
-          } else {
-            breadcrumbs.push({ label: Messages.Nav.modelDetails() });
-            this.updateState({ selectedItem: "bindings", filter: null });
-            this.props.breadcrumbCallback(breadcrumbs);
+              breadcrumbs.push({ label });
+              this.updateState({ selectedItem: args.state.path, filter: null });
+              this.props.breadcrumbCallback(breadcrumbs);
+            } else {
+              breadcrumbs.push({ label: Messages.Nav.modelDetails() });
+              this.updateState({ selectedItem: "bindings", filter: null });
+              this.props.breadcrumbCallback(breadcrumbs);
+            }
           }
+        });
+        parentRouter.beforeStateChange.subscribe((args) => {
+          this.router.go();
+          args.accept(Promise.resolve(""));
+        });
+      })
+      .then(() => {
+        if (this.props.selectedItem) {
+          this.router.go({ path: this.props.selectedItem });
         }
       });
-      parentRouter.beforeStateChange.subscribe((args) => {
-        this.router.go();
-        args.accept(Promise.resolve(''))
-      });
-    }).then(() => {
-      if (this.props.selectedItem) {
-        this.router.go(
-          {path: this.props.selectedItem}
-        );
-      }
-    });    
   }
-
 
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
     if (event.detail.originalEvent) {
-      this.router.go({path: event.detail.value});
+      this.router.go({ path: event.detail.value });
     }
   }
 

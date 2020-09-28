@@ -7,22 +7,25 @@ import {
   Model,
   Binding,
   Secret,
-  Status, FetchApiSignature
+  Status,
+  FetchApiSignature,
 } from "./types";
 import {
   extractModelsFromApplications,
   extractBindingsFromApplications,
-  getVmiInstancesForBinding
+  getVmiInstancesForBinding,
 } from "./common";
-import { KeycloakJet } from "vz-console/auth/KeycloakJet"
-import * as Messages from "vz-console/utils/Messages"
+import { KeycloakJet } from "vz-console/auth/KeycloakJet";
+import * as Messages from "vz-console/utils/Messages";
 
 export const ServicePrefix = "instances";
 
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
 
-  private url: string = (window as any).vzApiUrl ? (window as any).vzApiUrl : "/api";
+  private url: string = (window as any).vzApiUrl
+    ? (window as any).vzApiUrl
+    : "/api";
 
   public async getInstance(instanceId: string): Promise<Instance> {
     // Currently API only supports instance id O
@@ -57,13 +60,14 @@ export class VerrazzanoApi {
       });
   }
 
-  public async getBinding(
-    bindingId: string
-  ): Promise<Binding> {
+  public async getBinding(bindingId: string): Promise<Binding> {
     console.log(Messages.Api.msgFetchBinding(bindingId));
-    const host = this.url.startsWith("/") ? location.host : new URL(this.url).host;
-    const hostSuffix = this.url.startsWith("/") ? host.substring(host.indexOf(".")) :
-         host.substring(host.indexOf("api.") + "api".length);
+    const host = this.url.startsWith("/")
+      ? location.host
+      : new URL(this.url).host;
+    const hostSuffix = this.url.startsWith("/")
+      ? host.substring(host.indexOf("."))
+      : host.substring(host.indexOf("api.") + "api".length);
 
     return this.fetchApi(this.url + "/applications")
       .then((response: Response) => response.json())
@@ -72,8 +76,11 @@ export class VerrazzanoApi {
         const bindings = extractBindingsFromApplications(applications);
         for (const binding of bindings) {
           if (binding.id === bindingId) {
-            binding.vmiInstances = getVmiInstancesForBinding(binding.name, hostSuffix);
-            binding.components.forEach(component => {
+            binding.vmiInstances = getVmiInstancesForBinding(
+              binding.name,
+              hostSuffix
+            );
+            binding.components.forEach((component) => {
               component.status = Status.Running;
             });
             return binding;

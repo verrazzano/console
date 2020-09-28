@@ -1,7 +1,8 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+// eslint-disable-next-line no-unused-vars
+import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
 import "ojs/ojcheckboxset";
 import * as ko from "knockout";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";

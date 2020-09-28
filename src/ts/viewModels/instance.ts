@@ -4,14 +4,14 @@ import "vz-console/instance/loader";
 import * as AccUtils from "../accUtils";
 import * as Messages from "vz-console/utils/Messages";
 import * as ko from "knockout";
-import { getQueryParam } from "vz-console/utils/loader"
+import { getQueryParam } from "vz-console/utils/loader";
 
 class InstanceViewModel {
-  instanceHeading: ko.Observable<string|undefined>;
+  instanceHeading: ko.Observable<string | undefined>;
   selectedItem: string | null;
   constructor() {
-    this.instanceHeading = ko.observable(Messages.Instance.instanceHeading())
-    this.selectedItem = getQueryParam('selectedItem');
+    this.instanceHeading = ko.observable(Messages.Instance.instanceHeading());
+    this.selectedItem = getQueryParam("selectedItem");
   }
 
   /**
@@ -27,8 +27,6 @@ class InstanceViewModel {
     document.title = "Verrazzano";
     // implement further logic if needed
   }
-
-  
 
   /**
    * Optional ViewModel method invoked after the View is disconnected from the DOM.

@@ -1,9 +1,9 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-path = require('path');
-express = require('express');
-proxy = require('express-http-proxy');
+const path = require('path');
+const express = require('express');
+const proxy = require('express-http-proxy');
 
 const port = 8000;
 const app = express();
@@ -13,7 +13,7 @@ if (!apiUrl) {
   if (process.env.VERRAZZANO_OPERATOR_SERVICE_HOST && process.env.VERRAZZANO_OPERATOR_SERVICE_PORT_API) {
     apiUrl = "http://" + process.env.VERRAZZANO_OPERATOR_SERVICE_HOST + ":" + process.env.VERRAZZANO_OPERATOR_SERVICE_PORT_API;
   } else {
-    throw "VZ_API_URL not specified and in-pod environment variables VERRAZZANO_OPERATOR_SERVICE_HOST/VERRAZZANO_OPERATOR_SERVICE_PORT_API not available. Aborting..";
+    throw new Error("VZ_API_URL not specified and in-pod environment variables VERRAZZANO_OPERATOR_SERVICE_HOST/VERRAZZANO_OPERATOR_SERVICE_PORT_API not available. Aborting..");
   }
 }
 

@@ -1,9 +1,8 @@
-
 // Copyright (C) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // Keys used for local storage
-import {IdentityToken, KeycloakJwt} from "./KeycloakJwt";
+import { IdentityToken, KeycloakJwt } from "./KeycloakJwt";
 
 // The OAuth2 access token
 const KEY_ACCESS_TOKEN = "vz-accessToken";
@@ -39,7 +38,7 @@ const KEY_EMAIL = "vz-idEmail";
 export class AuthStorage {
   public static accessTokenExists(): boolean {
     const token = this.getAccessToken();
-    return (token !== null && token !== "");
+    return token !== null && token !== "";
   }
 
   /**
@@ -48,17 +47,24 @@ export class AuthStorage {
   public static getAccessToken(): string {
     return window.localStorage.getItem(KEY_ACCESS_TOKEN) as string;
   }
+
   public static setAccessToken(val: string): void {
-    return window.localStorage.setItem(KEY_ACCESS_TOKEN, val)
+    return window.localStorage.setItem(KEY_ACCESS_TOKEN, val);
   }
+
   public static removeAccessToken(): void {
     window.localStorage.removeItem(KEY_ACCESS_TOKEN);
   }
+
   public static getAccessTokenExpiryTsMillis(): number {
     return AuthStorage.getNumber(KEY_ACCESS_EXPIRY_TS_MILLIS);
   }
+
   public static setAccessTokenExpiryTsMillis(ts: number): void {
-    return window.localStorage.setItem(KEY_ACCESS_EXPIRY_TS_MILLIS, ts.toString())
+    return window.localStorage.setItem(
+      KEY_ACCESS_EXPIRY_TS_MILLIS,
+      ts.toString()
+    );
   }
 
   /**
@@ -67,21 +73,27 @@ export class AuthStorage {
   public static getRefreshToken(): string {
     return window.localStorage.getItem(KEY_REFRESH_TOKEN) as string;
   }
+
   public static getRefreshTokenExpiryTsMillis(): number {
     return AuthStorage.getNumber(KEY_REFRESH_EXPIRY_TS_MILLIS);
   }
+
   public static setRefreshTokenExpiryTsMillis(ts: number): void {
-    return window.localStorage.setItem(KEY_REFRESH_EXPIRY_TS_MILLIS, ts.toString())
+    return window.localStorage.setItem(
+      KEY_REFRESH_EXPIRY_TS_MILLIS,
+      ts.toString()
+    );
   }
 
   /**
    * User info
    */
   public static getUsername(): string {
-    return window.localStorage.getItem(KEY_USERNAME) || "" as string;
+    return window.localStorage.getItem(KEY_USERNAME) || ("" as string);
   }
+
   public static getEmail(): string {
-    return window.localStorage.getItem(KEY_EMAIL) || "" as string;
+    return window.localStorage.getItem(KEY_EMAIL) || ("" as string);
   }
 
   /**
@@ -90,6 +102,7 @@ export class AuthStorage {
   public static getState(): string {
     return window.localStorage.getItem(KEY_STATE) as string;
   }
+
   public static setState(val: string): void {
     return window.localStorage.setItem(KEY_STATE, val);
   }
@@ -97,9 +110,11 @@ export class AuthStorage {
   public static getVerifier(): string {
     return window.localStorage.getItem(KEY_VERIFIER) as string;
   }
+
   public static setVerifier(val: string): void {
     window.localStorage.setItem(KEY_VERIFIER, val);
   }
+
   public static removeVerifier(): void {
     window.localStorage.removeItem(KEY_VERIFIER);
   }
@@ -140,6 +155,6 @@ export class AuthStorage {
 
   private static getNumber(key: string): number {
     const val = window.localStorage.getItem(key);
-    return val ? parseInt(val,10) : Date.now();
+    return val ? parseInt(val, 10) : Date.now();
   }
 }

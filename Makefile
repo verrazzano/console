@@ -34,6 +34,14 @@ setup-npm:
 	npm install && \
 	npm install @oracle/ojet-cli
 
+.PHONY: check-formatting
+check-formatting: setup-npm
+	npm run prettier
+
+.PHONY: lint-code
+lint-code: check-formatting
+	npm run eslint
+
 .PHONY: unit-test
 unit-test: setup-npm
 	curl -o google-chrome.rpm "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-${GOOGLE_CHROME_VERSION}.x86_64.rpm"

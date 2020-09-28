@@ -1,15 +1,25 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
+// eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
-import { VerrazzanoApi, Binding, Secret, extractSecretsForBindingComponents, Status } from "vz-console/service/loader";
+import {
+  VerrazzanoApi,
+  Binding,
+  Secret,
+  extractSecretsForBindingComponents,
+  Status,
+} from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleBindingResources } from "vz-console/binding-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import { ConsoleBindingVmiLinks } from "vz-console/binding-vmi-links/loader";
-import * as Messages from "vz-console/utils/Messages"
-import { ConsoleBreadcrumb, BreadcrumbType } from "vz-console/breadcrumb/loader"
-import { ConsoleStatusBadge } from "vz-console/status-badge/loader"
+import * as Messages from "vz-console/utils/Messages";
+import {
+  ConsoleBreadcrumb,
+  BreadcrumbType,
+} from "vz-console/breadcrumb/loader";
+import { ConsoleStatusBadge } from "vz-console/status-badge/loader";
 
 class Props {
   bindingId?: string;
@@ -18,10 +28,10 @@ class Props {
 
 class State {
   binding?: Binding;
-  secrets?: Secret[]
+  secrets?: Secret[];
   loading?: boolean;
   error?: string;
-  breadcrumbs?: BreadcrumbType[]
+  breadcrumbs?: BreadcrumbType[];
 }
 
 /**
@@ -32,7 +42,7 @@ export class ConsoleBinding extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
-    breadcrumbs: []
+    breadcrumbs: [],
   };
 
   props: Props = {
@@ -73,7 +83,7 @@ export class ConsoleBinding extends VComponent<Props, State> {
   }
 
   breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
-    this.updateState({breadcrumbs});
+    this.updateState({ breadcrumbs });
   };
 
   protected render() {

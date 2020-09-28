@@ -1,14 +1,15 @@
 // Copyright (c) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
+// eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
-import { Model} from "vz-console/service/loader";
+import { Model } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
-import * as Messages from "vz-console/utils/Messages"
-import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
+import * as Messages from "vz-console/utils/Messages";
 import * as ko from "knockout";
 import "ojs/ojpagingcontrol";
+import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 
 class Props {
   models?: [Model];
@@ -20,19 +21,25 @@ class Props {
 @customElement("vz-console-model-list")
 export class ConsoleModelList extends VComponent<Props> {
   columnArray = [
-    { headerText: Messages.Labels.name(), sortable: "enabled", sortProperty: 'name' },
-    { headerText: Messages.Labels.bindings(), sortable: 'disabled' }
+    {
+      headerText: Messages.Labels.name(),
+      sortable: "enabled",
+      sortProperty: "name",
+    },
+    { headerText: Messages.Labels.bindings(), sortable: "disabled" },
   ];
 
   dataProvider: ko.Observable = ko.observable();
 
   protected render() {
-    this.dataProvider(new PagingDataProviderView(
-      new ArrayDataProvider(this.props.models, {
-        keyAttributes: "name",
-        implicitSort: [{ attribute: "name", direction: "ascending" }],
-      })
-    ))
+    this.dataProvider(
+      new PagingDataProviderView(
+        new ArrayDataProvider(this.props.models, {
+          keyAttributes: "name",
+          implicitSort: [{ attribute: "name", direction: "ascending" }],
+        })
+      )
+    );
     return (
       <div>
         <oj-table
@@ -82,7 +89,7 @@ export class ConsoleModelList extends VComponent<Props> {
                   }}
                   translations={{
                     fullMsgItemRange: Messages.Pagination.msgItemRange(),
-                    fullMsgItem: Messages.Pagination.msgItem()
+                    fullMsgItem: Messages.Pagination.msgItem(),
                   }}
                 ></oj-paging-control>
               </div>
