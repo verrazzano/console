@@ -13,7 +13,7 @@ The Verrazzano Console repository includes:
 
 - [Node.js](http://nodejs.org/) 14.x+ (with [npm](https://docs.npmjs.com/cli/npm) v6.14.x+)
 
-  To install Node.js, use [nvm](https://github.com/nvm-sh/nvm).
+  To install Node.js, use [nvm](https://github.com/nvm-sh/nvm):
 
   ```bash
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
@@ -30,7 +30,7 @@ The Verrazzano Console repository includes:
     npm install -g @oracle/ojet-cli
   ```
 
-  For more information, see [Getting Started with Oracle JavaScript Extension Toolkit (JET)](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/getting-started-oracle-javascript-extension-toolkit-jet.html)
+  For more information, see [Getting Started with Oracle JavaScript Extension Toolkit (JET)](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/getting-started-oracle-javascript-extension-toolkit-jet.html).
 
 - Access to the Verrazzano API and the Keycloak server URL.
 
@@ -52,9 +52,9 @@ Set up the git repository and install npm dependencies:
   npm install
 ```
 
-### Setup Keycloak client
+### Set up the Keycloak client
 
-[Keycloak](https://github.com/keycloak/keycloak) provides Identity and Access Management in Verrazzano for authentication to various dashboards and the Console application. To run the Verrazzano Console locally, first you need to configure the _webui_ [OpenID Connect client](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) to authenticate the login and API requests originating from the application deployed at `localhost`.
+[Keycloak](https://github.com/keycloak/keycloak) provides Identity and Access Management in Verrazzano for authentication to various dashboards and the Console application. To run the Verrazzano Console locally, first you need to configure the **webui** [OpenID Connect client](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) to authenticate the login and API requests originating from the application deployed at `localhost`.
 
 1. Access the Keycloak administration console for your Verrazzano environment: `https://keycloak.v8o-env.v8o-domain.com`
 2. Log in with the Keycloak admin user and password. Typically the Keycloak admin user name is `keycloakadmin` and the password can be obtained from your management cluster:
