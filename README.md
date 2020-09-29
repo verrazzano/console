@@ -1,12 +1,12 @@
 # Verrazzano Console
 
-You can use the Verrazzano Console to access and manage Verrazzano components and applications deployed to Verrazzano.
+You can use the Verrazzano Console to access and manage Verrazzano components and applications deployed to a Verrazzano environment.
 
 The Verrazzano Console repository includes:
 
-- [hooks](scripts/hooks): The [Oracle JET hooks](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/customize-web-application-tooling-workflow.html#GUID-D19EC0A2-DFEF-4928-943A-F8CC08961453) used for building and running Console application.
+- [hooks](scripts/hooks): The [Oracle JavaScript Extension Toolkit (JET) hooks](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/customize-web-application-tooling-workflow.html#GUID-D19EC0A2-DFEF-4928-943A-F8CC08961453) used for building and running the Console application.
 - [jet-composites](src/ts/jet-composites): The [Oracle JET Custom Components](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/design-custom-web-components.html) which are basic building blocks for the Console.
-- [views](src/ts/views) and [viewModels](src/ts/viewModels): The Oracle JET view and viewModels used in the Console. See [Oracle JET Architecture](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/oracle-jet-architecture.html#GUID-293CB342-196F-4FC3-AE69-D1226A025FBB) for more details.
+- [views](src/ts/views) and [viewModels](src/ts/viewModels): The Oracle JET Views and ViewModels used in the Console. See [Oracle JET Architecture](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/oracle-jet-architecture.html#GUID-293CB342-196F-4FC3-AE69-D1226A025FBB) for more details.
 - [test](test): The tests and test-related configuration for the Console.
 
 ## Prerequisites
@@ -24,7 +24,7 @@ The Verrazzano Console repository includes:
 
 - [Oracle JET CLI](https://github.com/oracle/ojet-cli) 9.1.x+
 
-  The Verrazzano Console uses the [Oracle JavaScript Extension Toolkit (JET)](https://www.oracle.com/webfolder/technetwork/jet/index.html) framework. The Oracle JET command-line interface (`ojet-cli`) is required to run Oracle JET Tooling commands, which you can install with `npm`.
+  The Verrazzano Console uses the [Oracle JET](https://www.oracle.com/webfolder/technetwork/jet/index.html) framework. The Oracle JET command-line interface (`ojet-cli`) is required to run Oracle JET Tooling commands, which you can install with `npm`.
 
   ```bash
     npm install -g @oracle/ojet-cli
@@ -32,18 +32,18 @@ The Verrazzano Console repository includes:
 
   For more information, see [Getting Started with Oracle JavaScript Extension Toolkit (JET)](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/getting-started-oracle-javascript-extension-toolkit-jet.html).
 
-- Access to the Verrazzano API and the Keycloak server URL.
+- An existing Verrazzano environment and access to the Verrazzano API and the Keycloak server URL.
 
   The Verrazzano Console requires the URL of the Keycloak server (for authentication) and the Verrazzano API Server URL (for fetching environment and application data). The format of the Verrazzano API Server URL typically is `https://api.v8o-env.v8o-domain.com` and the Keycloak server URL is `https://keycloak.v8o-env.v8o-domain.com` where:
 
-  - `v8o-env` is the name of the Verrazzano environment and `v8o-domain.com` is the domain, when OCI DNS is used as the DNS provider.
-  - `v8o-env` is replaced by `default` and `v8o-domain.com` is the IP address of load balancer for the Kubernetes cluster, when `xip.io` is used as the DNS Service.
+  - `v8o-env` is the name of the Verrazzano environment and `v8o-domain.com` is the domain, when a DNS provider is used.
+  - `v8o-env` is replaced by `default` and `v8o-domain.com` is the IP address of load balancer for the Kubernetes cluster, when a "magic" DNS provider like `xip.io` is used.
 
   For more details on installing and accessing Verrazzano, see the [installation instructions](https://github.com/verrazzano/verrazzano/blob/master/install/README.md).
 
 ## Setup
 
-Set up the git repository and install npm dependencies:
+Clone the `git` repository and install `npm` dependencies:
 
 ```bash
   git clone https://github.com/verrazzano/console.git
@@ -67,7 +67,7 @@ For more information on accessing Keycloak and other user interfaces in Verrazza
 
 3. Navigate to **Clients** and select the client, **webui**. On the **Settings** page, go to **Valid Redirect URIs** and select the plus (+) sign to add the redirect URL `http://localhost:8000/*`.
 4. On the same page, go to **Web Origins** and select the plus (+) sign to add `http://localhost:8000`.
-5. Click Save.
+5. Click **Save**.
 
 You can also set up a separate Keycloak client for local access using [these](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) instructions.
 
@@ -79,7 +79,7 @@ Verrazzano installations have a default user `verrazzano` configured in the Verr
    kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode; echo
 ```
 
-The Verrazzano Console accesses the Verrazzano API using [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token)-based authentication enabled by the [Keycloak Authorization Services](https://www.keycloak.org/docs/4.8/authorization_services/). The Console application requests this token from the Keycloak API Server. To access the Keycloak API, the user accessing the Console application must be logged in to Keycloak and have a valid session. When an existing Keycloak user session is expired or upon the expiration of the [refresh token](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/), the browser is redirected to the Keycloak login page, where you can authenticate again using the credentials for user `verrazzano`.
+The Verrazzano Console accesses the Verrazzano API using [JSON Web Token (JWT)](https://en.wikipedia.org/wiki/JSON_Web_Token)-based authentication enabled by the [Keycloak Authorization Services](https://www.keycloak.org/docs/4.8/authorization_services/). The Console application requests this token from the Keycloak API Server. To access the Keycloak API, the user accessing the Console application must be logged in to Keycloak and have a valid session. When an existing Keycloak user session is expired or upon the expiration of the [refresh token](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/), the browser is redirected to the Keycloak login page, where you can authenticate again using the credentials for user `verrazzano`.
 
 ### Set up environment variables
 
