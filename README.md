@@ -37,7 +37,7 @@ The Verrazzano Console repository includes:
   The Verrazzano Console requires the URL of the Keycloak server (for authentication) and the Verrazzano API Server URL (for fetching environment and application data). The format of the Verrazzano API Server URL typically is `https://api.v8o-env.v8o-domain.com` and the Keycloak server URL is `https://keycloak.v8o-env.v8o-domain.com` where:
 
   - `v8o-env` is the name of the Verrazzano environment and `v8o-domain.com` is the domain, when OCI DNS is used as the DNS provider.
-  - `v8o-env` is replaced by `default` and `v8o-domain.com` is the IP Address of load balancer for the Kubernetes cluster, when `xip.io` is used as the DNS Service.
+  - `v8o-env` is replaced by `default` and `v8o-domain.com` is the IP address of load balancer for the Kubernetes cluster, when `xip.io` is used as the DNS Service.
 
   For more details on installing and accessing Verrazzano, see the [installation instructions](https://github.com/verrazzano/verrazzano/blob/master/install/README.md).
 
