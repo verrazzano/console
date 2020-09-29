@@ -1,23 +1,19 @@
 # Verrazzano Console
 
-The Verrazzano Console is the User Interface for accessing and managing Verrazzano components and applications deployed in a Verrazzano environment.
+You can use the Verrazzano Console to access and manage Verrazzano components and applications deployed to Verrazzano.
 
-## Repository structure
+The Verrazzano Console repository includes:
 
-The Verrazzano Console repository includes the following components:
+- [hooks](scripts/hooks): The [Oracle JET hooks](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/customize-web-application-tooling-workflow.html#GUID-D19EC0A2-DFEF-4928-943A-F8CC08961453) used for building and running Console application.
+- [jet-composites](src/ts/jet-composites): The [Oracle JET Custom Components](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/design-custom-web-components.html) which are basic building blocks for the Console.
+- [views](src/ts/views) and [viewModels](src/ts/viewModels): The Oracle JET view and viewModels used in the Console. See [Oracle JET Architecture](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/oracle-jet-architecture.html#GUID-293CB342-196F-4FC3-AE69-D1226A025FBB) for more details.
+- [test](test): The tests and test-related configuration for Console.
 
-- [hooks](scripts/hooks) contains [Oracle JET hooks](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/customize-web-application-tooling-workflow.html#GUID-D19EC0A2-DFEF-4928-943A-F8CC08961453) used for building and running Console application.
-- [jet-composites](src/ts/jet-composites) contains the [Oracle JET Custom Components](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/design-custom-web-components.html) which are basic building blocks for the Console.
-- [views](src/ts/views) and [viewModels](src/ts/viewModels) contain the Oracle JET view and viewModels used in the Console. See [Oracle JET Architecture](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/oracle-jet-architecture.html#GUID-293CB342-196F-4FC3-AE69-D1226A025FBB) for more details.
-- [test](test) contains the tests and tests related configuration for Console.
+## Prerequisites
 
-## Getting Started
+- [Node.js](http://nodejs.org/) 14.x+ (with [npm](https://docs.npmjs.com/cli/npm) v6.14.x+)
 
-### Prerequisites
-
-- [Node.js®](http://nodejs.org/) 14.x+ (with npm v6.14.x+)
-
-  You can use [nvm](https://github.com/nvm-sh/nvm) to install NodeJS.
+  To install Node.js, use [nvm](https://github.com/nvm-sh/nvm).
 
   ```bash
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
@@ -28,25 +24,26 @@ The Verrazzano Console repository includes the following components:
 
 - [Oracle JET CLI](https://github.com/oracle/ojet-cli) 9.1.x+
 
-  The Verrazzano Console is developed using [Oracle JET](https://www.oracle.com/webfolder/technetwork/jet/index.html) framework. The Oracle JET command-line interface (`ojet-cli`) is required to execute Oracle JET Tooling commands.
-  Use `npm` to install the CLI. Read more about the Oracle JET Tooling [here](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/choose-development-environment-oracle-jet.html#GUID-6AEB5A00-22D8-4BC1-AAB3-4134F906C1C0).
+  The Verrazzano Console uses the [Oracle JavaScript Extension Toolkit (JET)](https://www.oracle.com/webfolder/technetwork/jet/index.html) framework. The Oracle JET command-line interface (`ojet-cli`) is required to execute Oracle JET Tooling commands, which you can install with `npm`.
 
   ```bash
     npm install -g @oracle/ojet-cli
   ```
 
-- Access to Verrazzano API and Keycloak server URL.
+  For more information, see [Getting Started with Oracle JavaScript Extension Toolkit (JET)](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/getting-started-oracle-javascript-extension-toolkit-jet.html)
 
-  The Verrazzano Console requires the URL of the Keycloak server (for authentication) and the Verrazzano API Server URL (for fetching environment and applications' data). The format of Verrazzano API Server URL generally will be `https://api.v8o-env.v8o-domain.com` and Keycloak server URL will be `https://keycloak.v8o-env.v8o-domain.com` where
+- Access to the Verrazzano API and the Keycloak server URL.
 
-  - `v8o-env` will be the name of the Verrazzano environment and `v8o-domain.com` will be the domain, when OCI DNS is used as DNS provider.
-  - `v8o-env` will be replaced by `default` and `v8o-domain.com` will be the IP Address of Load Balancer for the Kubernetes cluster, when `xip.io` is used as the DNS Service.
+  The Verrazzano Console requires the URL of the Keycloak server (for authentication) and the Verrazzano API Server URL (for fetching environment and application data). The format of the Verrazzano API Server URL typically is `https://api.v8o-env.v8o-domain.com` and the Keycloak server URL is `https://keycloak.v8o-env.v8o-domain.com` where:
+
+  - `v8o-env` is the name of the Verrazzano environment and `v8o-domain.com` is the domain, when OCI DNS is used as the DNS provider.
+  - `v8o-env` is replaced by `default` and `v8o-domain.com` is the IP Address of Load Balancer for the Kubernetes cluster, when `xip.io` is used as the DNS Service.
 
   For more details on installing and accessing Verrazzano, see the [installation instructions](https://github.com/verrazzano/verrazzano/blob/master/install/README.md).
 
-### Setup
+## Setup
 
-Setup the git repository and install npm dependencies:
+Set up the git repository and install npm dependencies:
 
 ```bash
   git clone https://github.com/verrazzano/console.git
@@ -55,38 +52,36 @@ Setup the git repository and install npm dependencies:
   npm install
 ```
 
-### Running Locally
+### Setup Keycloak client
 
-#### Setup Keycloak client:
+[Keycloak](https://github.com/keycloak/keycloak) provides Identity and Access Management in Verrazzano for authentication to various dashboards and the Console application. To run the Verrazzano Console locally, first you need to configure the _webui_ [OpenID Connect client](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) to authenticate the login and API requests originating from the application deployed at `localhost`.
 
-[Keycloak](https://github.com/keycloak/keycloak) is used as the Identity and Access Management component in Verrazzano for authentication to various dashboards and the Console application. To run the Verrazzano Console locally, we first need to configure the _webui_ [OpenID Connect client](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients), which is also the default client used by the Console application that is deployed in Verrazzano environment, to authenticate the login and API requests originating from the application deployed at `localhost`.
+1. Access the Keycloak administration console for your Verrazzano environment: `https://keycloak.v8o-env.v8o-domain.com`
+2. Log in with the Keycloak admin user and password. Typically the Keycloak admin user name is `keycloakadmin` and the password can be obtained from your management cluster:
 
-- Access the Keycloak Administration console for your Verrazzano environment: `https://keycloak.v8o-env.v8o-domain.com`
-- Login with Keycloak admin user and password. Generally the Keycloak admin user name is `keycloakadmin` and password can be obtained from your management cluster:
+```bash
+  kubectl get secret --namespace keycloak keycloak-http -o jsonpath={.data.password} | base64 --decode; echo
+```
 
-  ```bash
-    kubectl get secret --namespace keycloak keycloak-http -o jsonpath={.data.password} | base64 --decode; echo
-  ```
+For more information on accessing Keycloak and other user interfaces in Verrazzano, see [Get console credentials](https://github.com/verrazzano/verrazzano/blob/master/install/README.md#6-get-console-credentials).
 
-  (See [Get console credentials](https://github.com/verrazzano/verrazzano/blob/master/install/README.md#6-get-console-credentials) for more information on accessing Keycloak and other user interfaces in a Verrazzano environment.)
+3. Navigate to **Clients** and select the client, **webui**. On the **Settings** page, go to **Valid Redirect URIs** and select the plus (+) sign to add the redirect URL `http://localhost:8000/*`.
+4. On the same page, go to **Web Origins** and select the plus (+) sign to add `http://localhost:8000`.
+5. Click Save.
 
-- Navigate to "Clients" and click the client named "webui". On the Settings screen, go to "Valid Redirect URIs" and click "+" button to add the redirect URL `http://localhost:8000/*`.
-- On the same page, go to "Web Origins" and click "+" button to add `http://localhost:8000`.
-- Click Save.
+You can also set up a separate Keycloak client for local access using [these](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) instructions.
 
-You can also setup your own separate Keycloak client for local access using the instruction given [here](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients).
+### Get Verrazzano user credentials
 
-#### Get Verrazzano user credentials:
-
-Verrazzano installations have a default user `verrazzano` configured in Verrazzano Keycloak server which can be used for authentication for accessing the Console. To access the password for `verrazzano` user from management cluster, execute
+Verrazzano installations have a default user `verrazzano` configured in the Verrazzano Keycloak server which can be used for authentication for accessing the Console. To get the password for the `verrazzano` user from the management cluster, execute:
 
 ```bash
    kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode; echo
 ```
 
-The Verrazzano Console accesses the Verrazzano API using [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token) based authentication enabled by [Keycloak Authorization Services](https://www.keycloak.org/docs/4.8/authorization_services/) provided by the Keycloak server installed in Verrazzano environment. The Console application requests this token from Keycloak API Server and to access the Keycloak API, the user accessing the Console application must be logged into Keycloak and have a valid session. When an existing user session with Keycloak is expired or on the expiry of the [refresh JWT token](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/), the browser is redirected to the Keycloak login page where we can authenticate again using the credentials for user `verrazzano`.
+The Verrazzano Console accesses the Verrazzano API using [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token)-based authentication enabled by the [Keycloak Authorization Services](https://www.keycloak.org/docs/4.8/authorization_services/). The Console application requests this token from the Keycloak API Server. To access the Keycloak API, the user accessing the Console application must be logged in to Keycloak and have a valid session. When an existing Keycloak user session is expired or on the expiration of the [refresh token](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/), the browser is redirected to the Keycloak login page, where you can authenticate again using the credentials for user `verrazzano`.
 
-#### Setup environment variables:
+### Set up environment variables
 
 Set the following environment variables:
 
@@ -98,23 +93,21 @@ Set the following environment variables:
   export VZ_API_URL=<your Verrazzano API Server URL> e.g. https://api.default.11.22.33.44.xip.io
 ```
 
-##### Start server:
+### Start server
 
-Execute following command to run your Console application in a local web server.
+To run the Console application in a local web server, execute following command:
 
 ```bash
   ojet serve
 ```
 
-This should start a browser at [http://localhost:8000](http://localhost:8000). On first access, , you will be required to login to Keycloak with `verrazzano` user and password obtained in [Get Verrazzano user credentials](#get-verrazzano-user-credentials).
+This will open a browser at [http://localhost:8000](http://localhost:8000). On first access, you will be required to log in to Keycloak with the `verrazzano` user and password obtained in [Get Verrazzano user credentials](#get-verrazzano-user-credentials).
 
-When you make any changes to the Console code, the changes are reflected immediately in browser because the _livereload_ option is enabled by default for the `ojet serve` command. See [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9) for other options supported by the command.
+When you make changes to the Console code, the changes are reflected immediately in the browser because the `livereload` option is enabled by default for the `ojet serve` command. For other options supported by the command, see [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9).
 
 ## Testing
 
-### Unit tests
-
-Unit tests for Verrazzano Console are written using [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/). [Chrome browser](https://www.google.com/chrome/) is required to be installed for running the tests. To run tests for the Console, execute:
+Unit tests for the Verrazzano Console are written using [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/). For running the tests, you need the [Chrome](https://www.google.com/chrome/) browser. To run tests for the Console, execute:
 
 ```bash
   make unit-test
@@ -122,7 +115,7 @@ Unit tests for Verrazzano Console are written using [Karma](https://karma-runner
 
 ## Building
 
-To build the Console:
+To build the Console, run the following commands:
 
 - Oracle JET build:
 
@@ -138,19 +131,19 @@ To build the Console:
 ## Linting
 
 [ESLint](https://eslint.org/) and [prettier](https://prettier.io/) are used to keep the code style consistent.
-Run linting locally:
+To run linting locally:
 
 ```
 npm run eslint
 ```
 
-Check formatting of your code using prettier:
+Check the formatting of your code using prettier:
 
 ```
 npm run prettier
 ```
 
-Formatting your code using prettier:
+To format your code using prettier:
 
 ```
 npm run prettier-write
@@ -158,7 +151,7 @@ npm run prettier-write
 
 ## Contributing to Verrazzano
 
-Oracle welcomes contributions to this project from anyone. Contributions may be reporting an issue with the operator or submitting a pull request. Before embarking on significant development that may result in a large pull request, it is recommended that you create an issue and discuss the proposed changes with the existing developers first.
+Oracle welcomes contributions to this project from anyone. Contributions may be reporting an issue with Verrazzano or submitting a pull request. Before embarking on significant development that may result in a large pull request, it is recommended that you create an issue and discuss the proposed changes with the existing developers first.
 
 If you want to submit a pull request to fix a bug or enhance an existing feature, please first open an issue and link to that issue when you submit your pull request.
 
