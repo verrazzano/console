@@ -34,7 +34,7 @@ The Verrazzano Console repository includes:
 
 - An existing Verrazzano environment and access to the Verrazzano API and the Keycloak server URL.
 
-  The Verrazzano Console requires the URL of the Keycloak server (for authentication) and the Verrazzano API Server URL (for fetching environment and application data). The format of the Verrazzano API Server URL typically is `https://api.v8o-env.v8o-domain.com` and the Keycloak server URL is `https://keycloak.v8o-env.v8o-domain.com` where:
+  The Verrazzano Console requires the URL of the Keycloak server (for authentication) and the Verrazzano API Server URL (for fetching environment and application data). The format of the Verrazzano API Server URL typically is `https://verrazzano.v8o-env.v8o-domain.com` and the Keycloak server URL is `https://keycloak.v8o-env.v8o-domain.com` where:
 
   - `v8o-env` is the name of the Verrazzano environment and `v8o-domain.com` is the domain, when a DNS provider is used.
   - `v8o-env` is replaced by `default` and `v8o-domain.com` is the IP address of load balancer for the Kubernetes cluster, when a "magic" DNS provider like `xip.io` is used.
@@ -90,7 +90,7 @@ Set the following environment variables:
   export VZ_KEYCLOAK_URL=<your Keycloak URL> e.g. https://keycloak.default.11.22.33.44.xip.io
   export VZ_UI_URL=http://localhost:8000
   export VZ_CLIENT_ID=<your client id which allows redirect uri on localhost:8000 or webui if using default>
-  export VZ_API_URL=<your Verrazzano API Server URL> e.g. https://api.default.11.22.33.44.xip.io
+  export VZ_API_URL=<your Verrazzano API Server URL> e.g. https://verrazzano.default.11.22.33.44.xip.io
 ```
 
 ### Start server

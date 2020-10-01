@@ -23,9 +23,8 @@ export const ServicePrefix = "instances";
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
 
-  private url: string = (window as any).vzApiUrl
-    ? (window as any).vzApiUrl
-    : "/api";
+  private apiVersion: string = (window as any).vzApiVersion || "20210501";
+  private url: string = `${(window as any).vzApiUrl || ''}/${this.apiVersion}`;
 
   public async getInstance(instanceId: string): Promise<Instance> {
     // Currently API only supports instance id O

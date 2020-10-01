@@ -3,18 +3,13 @@
 
 const path = require('path');
 const express = require('express');
-const proxy = require('express-http-proxy');
 
 const port = 8000;
 const app = express();
 const staticPath = path.join(__dirname, 'web');
 let apiUrl = process.env.VZ_API_URL;
 if (!apiUrl) {
-  if (process.env.VERRAZZANO_OPERATOR_SERVICE_HOST && process.env.VERRAZZANO_OPERATOR_SERVICE_PORT_API) {
-    apiUrl = "http://" + process.env.VERRAZZANO_OPERATOR_SERVICE_HOST + ":" + process.env.VERRAZZANO_OPERATOR_SERVICE_PORT_API;
-  } else {
-    throw new Error("VZ_API_URL not specified and in-pod environment variables VERRAZZANO_OPERATOR_SERVICE_HOST/VERRAZZANO_OPERATOR_SERVICE_PORT_API not available. Aborting..");
-  }
+  throw new Error("VZ_API_URL not specified. Aborting..");
 }
 
 /**
@@ -40,7 +35,7 @@ function createEnvJs() {
     console.log("Creating env.js.");
     fs.writeFileSync(
       `${envJsFilePath}`,
-      `var vzUiUrl = "${process.env.VZ_UI_URL}"; var vzKeycloakUrl = "${process.env.VZ_KEYCLOAK_URL}"; var vzAuth = "${process.env.VZ_AUTH || true}"; var vzClientId = "${process.env.VZ_CLIENT_ID}"`,
+      `var vzUiUrl = "${process.env.VZ_UI_URL}"; var vzKeycloakUrl = "${process.env.VZ_KEYCLOAK_URL}"; var vzAuth = "${process.env.VZ_AUTH || true}"; var vzClientId = "${process.env.VZ_CLIENT_ID}"; var vzApiUrl = "${apiUrl}"; var vzApiVersion = "${process.env.VZ_API_VERSION || ''}"`,
       { flag: 'wx' }
     );
     console.log(`${envJsFilePath} created.`);
@@ -52,13 +47,6 @@ function createEnvJs() {
 
 createEnvJs();
 app.use(express.static(staticPath));
-
-app.use('/api', proxy(apiUrl, {
-  proxyReqOptDecorator: function(proxyReqOpts, _) {
-    proxyReqOpts.rejectUnauthorized = false // Don't do 2-way SSL verification
-    return proxyReqOpts;
-  }
-}));
 
 app.get('/models', (req, res, next) => {
   res.redirect(`/?ojr=instance&selectedItem=models`)
