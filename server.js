@@ -54,10 +54,13 @@ createEnvJs();
 app.use(express.static(staticPath));
 
 app.use('/api', proxy(apiUrl, {
-  proxyReqOptDecorator: function(proxyReqOpts, _) {
-    proxyReqOpts.rejectUnauthorized = false // Don't do 2-way SSL verification
-    return proxyReqOpts;
-  }
+  proxyErrorHandler: function (err, res, next) {
+    if (err) {
+      console.log(err)
+      return res.status(500).send(err)
+    }
+  },
+  timeout: 5000
 }));
 
 app.get('/models', (req, res, next) => {

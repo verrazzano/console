@@ -23,9 +23,7 @@ export const ServicePrefix = "instances";
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
 
-  private url: string = (window as any).vzApiUrl
-    ? (window as any).vzApiUrl
-    : "/api";
+  private url: string = "/api";
 
   public async getInstance(instanceId: string): Promise<Instance> {
     // Currently API only supports instance id O
@@ -62,30 +60,30 @@ export class VerrazzanoApi {
 
   public async getBinding(bindingId: string): Promise<Binding> {
     console.log(Messages.Api.msgFetchBinding(bindingId));
-    const host = this.url.startsWith("/")
-      ? location.host
-      : new URL(this.url).host;
-    const hostSuffix = this.url.startsWith("/")
-      ? host.substring(host.indexOf("."))
-      : host.substring(host.indexOf("api.") + "api".length);
-
+    let binding: Binding;
     return this.fetchApi(this.url + "/applications")
       .then((response: Response) => response.json())
       .then((data: Application[]) => {
         const applications: Application[] = data;
         const bindings = extractBindingsFromApplications(applications);
-        for (const binding of bindings) {
-          if (binding.id === bindingId) {
-            binding.vmiInstances = getVmiInstancesForBinding(
-              binding.name,
-              hostSuffix
-            );
-            binding.components.forEach((component) => {
-              component.status = Status.Running;
-            });
-            return binding;
-          }
-        }
+        binding = bindings.find((binding) => {
+          return binding.id === bindingId;
+        });
+        binding.components.forEach((component) => {
+          component.status = Status.Running;
+        });
+      })
+      .then(async () => {
+        return this.getInstance("0").then((instance) => {
+          return instance;
+        });
+      })
+      .then((instance) => {
+        binding.vmiInstances = getVmiInstancesForBinding(
+          binding.name,
+          instance
+        );
+        return binding;
       });
   }
 
@@ -94,6 +92,9 @@ export class VerrazzanoApi {
       .then((response: Response) => response.json())
       .then((data: Secret[]) => {
         return data;
+      })
+      .catch((error) => {
+        throw error;
       });
   }
 

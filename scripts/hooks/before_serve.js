@@ -30,7 +30,7 @@ function createEnvJs() {
         process.env.VZ_KEYCLOAK_URL
       }"; var vzAuth = "${process.env.VZ_AUTH || true}"; var vzClientId = "${
         process.env.VZ_CLIENT_ID
-      }"; var vzApiUrl = "${process.env.VZ_API_URL}"`,
+      }";`,
       { flag: "wx" }
     );
     console.log(`${envJsFilePath} created.`);
@@ -40,9 +40,10 @@ function createEnvJs() {
   }
 }
 
-function rewriteUrls() {
+function configureExpress() {
   const express = require("express");
   const app = express();
+  const proxy = require("express-http-proxy");
   app.get("/models", (req, res, next) => {
     res.redirect(`/?ojr=instance&selectedItem=models`);
   });
@@ -65,6 +66,24 @@ function rewriteUrls() {
       `/?ojr=binding&bindingId=${req.params.id}&selectedItem=${req.params.selectedItem}`
     );
   });
+  app.use(
+    "/api",
+    proxy(process.env.VZ_API_URL, {
+      proxyReqOptDecorator: function (proxyReqOpts, _) {
+        if (process.env.VZ_API_IGNORE_SSL_ERRORS === "true") {
+          proxyReqOpts.rejectUnauthorized = false; // Don't do 2-way SSL verification
+        }
+        return proxyReqOpts;
+      },
+      proxyErrorHandler: function (err, res, next) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send(err);
+        }
+      },
+      timeout: 5000,
+    })
+  );
   return app;
 }
 
@@ -72,7 +91,7 @@ module.exports = function (configObj) {
   return new Promise((resolve, reject) => {
     console.log("Running before_serve hook.");
     createEnvJs();
-    configObj.express = rewriteUrls();
+    configObj.express = configureExpress();
     resolve(configObj);
   });
 };

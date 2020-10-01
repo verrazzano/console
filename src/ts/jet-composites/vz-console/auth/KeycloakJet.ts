@@ -86,9 +86,16 @@ export class KeycloakJet {
         const authRequest = await this.keycloak.createAuthorizedRequest(
           request
         );
-        return window.fetch(authRequest);
+        return window.fetch(authRequest).then((response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            throw new Error(response.statusText);
+          }
+        });
       }
     } catch (error) {
+      console.log(error);
       let errorMessage = error;
       if (error && error.message) {
         errorMessage = error.message;

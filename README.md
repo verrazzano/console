@@ -93,6 +93,12 @@ Set the following environment variables:
   export VZ_API_URL=<your Verrazzano API Server URL> e.g. https://api.default.11.22.33.44.xip.io
 ```
 
+When a "magic" DNS provider like `xip.io` is used as DNS provider for Verrazzano, the API server uses self-signed certificate. Therefore it is required to ignore the SSL errors while running the Console application locally. To enable this - set the following environment variable:
+
+```bash
+  export VZ_API_IGNORE_SSL_ERRORS=true
+```
+
 ### Start server
 
 To run the Console application in a local web server, run following command:

@@ -897,53 +897,42 @@ function generateId(...args: string[]): string {
 
 export const getVmiInstancesForBinding = (
   bindingName: string,
-  hostSuffix: string
+  instance: Instance
 ): VMI[] => {
   const vmis: VMI[] = [];
+  const bindingNameSuffix = bindingName.toLowerCase().replace(" ", "");
   vmis.push(
     {
       id: bindingName + "-kibana",
       type: VMIType.Kibana,
-      url:
-        "https://" +
-        VMIType.Kibana.charAt(0).toLowerCase() +
-        VMIType.Kibana.slice(1).toLowerCase() +
-        ".vmi." +
-        bindingName.toLowerCase().replace(" ", "") +
-        hostSuffix,
+      url: instance.kibanaUrl.replace(
+        ".vmi.system.",
+        `.vmi.${bindingNameSuffix}.`
+      ),
     },
     {
       id: bindingName + "-grafana",
       type: VMIType.Grafana,
-      url:
-        "https://" +
-        VMIType.Grafana.charAt(0).toLowerCase() +
-        VMIType.Grafana.slice(1).toLowerCase() +
-        ".vmi." +
-        bindingName.toLowerCase().replace(" ", "") +
-        hostSuffix,
+      url: instance.grafanaUrl.replace(
+        ".vmi.system.",
+        `.vmi.${bindingNameSuffix}.`
+      ),
     },
     {
       id: bindingName + "-prom",
       type: VMIType.Prometheus,
-      url:
-        "https://" +
-        VMIType.Prometheus.charAt(0).toLowerCase() +
-        VMIType.Prometheus.slice(1).toLowerCase() +
-        ".vmi." +
-        bindingName.toLowerCase().replace(" ", "") +
-        hostSuffix,
+      url: instance.prometheusUrl.replace(
+        ".vmi.system.",
+        `.vmi.${bindingNameSuffix}.`
+      ),
     },
     {
       id: bindingName + "-es",
       type: VMIType.ElasticSearch,
-      url:
-        "https://" +
-        VMIType.ElasticSearch.charAt(0).toLowerCase() +
-        VMIType.ElasticSearch.slice(1).toLowerCase() +
-        ".vmi." +
-        bindingName.toLowerCase().replace(" ", "") +
-        hostSuffix,
+      url: instance.elasticUrl.replace(
+        ".vmi.system.",
+        `.vmi.${bindingNameSuffix}.`
+      ),
     }
   );
   return vmis;
