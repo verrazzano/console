@@ -73,7 +73,7 @@ export class Utils {
     }
 
     static readConfigFile(): void {
-        const configPath = process.env.UITEST_CONFIG || "config.uitest.json";
+        const configPath = process.env.VZ_UITEST_CONFIG || "config.uitest.json";
         console.log(`Reading UI test config file at ${configPath}`)
         if (fs.existsSync(configPath)) {
             if (configPath.endsWith(".json")) {

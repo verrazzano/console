@@ -208,7 +208,7 @@ npm test
 
 ### Integration tests
 
-These require the VZ_UI_URL to be set to a running instance of the Console UI
+These require the VZ_UI_URL to be set to a running instance of the Console UI, and VZ_UITEST_CONFIG to be set to a UI test configuration file
 
 ```
 npm run integtest
