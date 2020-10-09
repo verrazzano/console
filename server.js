@@ -7,7 +7,7 @@ const express = require('express');
 const port = 8000;
 const app = express();
 const staticPath = path.join(__dirname, 'web');
-let apiUrl = process.env.VZ_API_URL;
+const apiUrl = process.env.VZ_API_URL;
 if (!apiUrl) {
   throw new Error("VZ_API_URL not specified. Aborting..");
 }
