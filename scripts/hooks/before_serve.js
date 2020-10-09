@@ -30,7 +30,7 @@ function createEnvJs() {
         process.env.VZ_KEYCLOAK_URL
       }"; var vzAuth = "${process.env.VZ_AUTH || true}"; var vzClientId = "${
         process.env.VZ_CLIENT_ID
-      }"; var vzApiUrl = "${process.env.VZ_API_URL}"`,
+      }"; var vzApiUrl = "${process.env.VZ_API_URL || ""}"`,
       { flag: "wx" }
     );
     console.log(`${envJsFilePath} created.`);
