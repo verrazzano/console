@@ -61,7 +61,7 @@
     "prettier": "npx prettier --check --ignore-unknown **/*",
     "prettier-write": "npx prettier --write --ignore-unknown **/*",
     "integtest": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' npx mocha --require ts-node/register --timeout=0 integtest/index.js",
-    "kube": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./integtest/kubeclient.ts"
+    "setup-kind": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./integtest/kindSetup.ts"
   },
   "private": true
 }
