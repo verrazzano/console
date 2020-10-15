@@ -5,7 +5,9 @@ FROM container-registry.oracle.com/os/oraclelinux:7-slim@sha256:fcc6f54bb01fc833
 RUN yum install -y oracle-nodejs-release-el7 \
     && yum install -y nodejs \
     && mkdir /verrazzano \
-    && mkdir /license
+    && mkdir /license \
+    && yum clean all \
+    && rm -rf /var/cache/yum
 COPY LICENSE.txt /license/
 COPY THIRD_PARTY_LICENSES.txt /license/
 COPY web /verrazzano/web
