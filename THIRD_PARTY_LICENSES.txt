@@ -645,7 +645,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-=============== Oracle JET 9.0.4 Public Licenses & Copyright Notices from LT 62206 ==================
+=============== Oracle JET 9.0.4 Public Licenses & Copyright Notices ==================
 # Oracle JET 9.0.4
 
 You may not use the identified files except in compliance with the Universal Permissive License (UPL), Version 1.0 (the "License.")
