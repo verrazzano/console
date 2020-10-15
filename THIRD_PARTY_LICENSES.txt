@@ -46,6 +46,103 @@ Copyright (c) 2020 Oracle America, Inc. and its affiliates.
  * Copyright (c) 2014-2016 GitHub, Inc.
  * Copyright (c) 2014-present, Facebook, Inc.
  * Copyright (c) 2010 Seznam.cz, a.s.
+Copyright (c) 2007-2014, Alexandru Marasteanu <hello [at) alexei (dot] ro>
+Copyright (c) 2014 Nathan LaFreniere and other contributors.
+Copyright (c) 2015, Wes Todd
+Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2015 Douglas Christopher Wilson
+Copyright (C) 2012 by Vitaly Puzrin
+Copyright (c) 2012 [Vitaly Puzrin](https://github.com/puzrin).
+Copyright (c) 2014 Blake Embrey (hello@blakeembrey.com)
+Copyright (c) 2014-2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2014-2015 Douglas Christopher Wilson
+Copyright (c) 2012-2014 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2015 Jed Watson <jed.watson@me.com>
+ * Copyright(c) 2012-2014 TJ Holowaychuk
+ * Copyright(c) 2015 Jed Watson
+Copyright (c) 2014-2017 Douglas Christopher Wilson
+ * Copyright(c) 2014-2017 Douglas Christopher Wilson
+Copyright (c) 2015 Douglas Christopher Wilson
+Copyright (c) 2012-2014 Roman Shtylman <shtylman@gmail.com>
+ * Copyright(c) 2012-2014 Roman Shtylman
+Copyright (c) 2012 LearnBoost &lt;tj@learnboost.com&gt;
+Copyright (c) 2014 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2014-2017 TJ Holowaychuk &lt;tj@vision-media.ca&gt;
+ * Copyright(c) 2014 Douglas Christopher Wilson
+Copyright (c) 2014 Jonathan Ong me@jongleberry.com
+Copyright (c) 2016 Douglas Christopher Wilson
+ * Copyright(c) 2016 Douglas Christopher Wilson
+Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
+Copyright (c) 2012-2013 TJ Holowaychuk
+Copyright (c) 2015 Andreas Lubbe
+Copyright (c) 2015 Tiancheng "Timothy" Gu
+ * Copyright(c) 2012-2013 TJ Holowaychuk
+ * Copyright(c) 2015 Andreas Lubbe
+ * Copyright(c) 2015 Tiancheng "Timothy" Gu
+Copyright (c) 2014-2016 Douglas Christopher Wilson
+ * Copyright(c) 2014-2016 Douglas Christopher Wilson
+Copyright (c) 2009-2014 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2013-2014 Roman Shtylman <shtylman+expressjs@gmail.com>
+ * Copyright(c) 2009-2013 TJ Holowaychuk
+ * Copyright(c) 2013 Roman Shtylman
+Copyright (c) 2013 villadora <jky239@gmail.com>, contributors
+Copyright (c) 2014-2017 Douglas Christopher Wilson <doug@somethingdoug.com>
+Copyright (c) 2012 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2016-2017 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2012 TJ Holowaychuk
+ * Copyright(c) 2016-2017 Douglas Christopher Wilson
+Copyright (c) 2016 Douglas Christopher Wilson doug@somethingdoug.com
+Copyright (c) 2011 Alexander Shtuchkin
+Copyright (C) 2011-2017 whitequark <whitequark@whitequark.org>
+Copyright (C) 2011-2015 by Vitaly Puzrin
+Copyright (c) 2015 Auth0, Inc. <support@auth0.com> (http://auth0.com)
+Copyright (c) 2014 Douglas Christopher Wilson
+Copyright (c) 2013 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2013-2014 TJ Holowaychuk <tj@vision-media.ca>
+Copyright (c) 2015-2016 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2013-2014 TJ Holowaychuk
+ * Copyright(c) 2015-2016 Douglas Christopher Wilson
+Copyright (c) 2010 Benjamin Thomas, Robert Kieffer
+Copyright (c) 2016 Zeit, Inc.
+Copyright (c) 2012-2014 Federico Romero
+Copyright (c) 2012-2014 Isaac Z. Schlueter
+Copyright (c) 2014-2015 Douglas Christopher Wilson
+ * Copyright(c) 2012 Federico Romero
+ * Copyright(c) 2012-2014 Isaac Z. Schlueter
+ * Copyright(c) 2012 Isaac Z. Schlueter
+ * Copyright(c) 2014 Federico Romero
+Copyright (c) 2014 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * Copyright(c) 2013 Jonathan Ong
+Copyright (c) 2015-2016 Douglas Christopher Wilson <doug@somethingdoug.com
+Copyright (c) 2013-2014 Jonathan Ong <me@jongleberry.com>
+ * Copyright(c) 2013-2014 Jonathan Ong
+Copyright (c) 2018 Nikita Skovoroda <chalkerx@gmail.com>
+Copyright (c) 2012 TJ Holowaychuk
+Copyright (c) 2010 Sencha Inc.
+Copyright (c) 2011 LearnBoost
+Copyright (c) 2011 TJ Holowaychuk
+ * Copyright(c) 2010 Sencha Inc.
+ * Copyright(c) 2011 TJ Holowaychuk
+Copyright (c) 2016 Douglas Christopher Wilson <doug@somethingdoug.com>
+Copyright (c) 2013-2017 Jared Hanson
+Copyright (c) 2013-2017 Jared Hanson <[http://jaredhanson.net/](http://jaredhanson.net/)>
+Copyright (c) 2014, 2020 Oracle and/or its affiliates
+Copyright (c) 2017 Chai.js Assertion Library
+Copyright (c) 2017 Don McCurdy
+Copyright (c) 2013 Stephen Oney, https://ericsmekens.github.io/jsep/
+Copyright (c) 2017 Yassine Elouafi
+Copyright (c) 2015 The Polymer Authors. All rights reserved.
+Copyright (C) 2014 Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf;
+Copyright (C) 2013 Guy Bedford
+Copyright (C) 2011-2017 by Jorik Tangelder (Eight Media)
+Copyright 2014, ZURB
+Copyright (c) 2010-2011, The Dojo Foundation
+Copyright (c) 2012 Ivan Bozhanov (http://vakata.com)
+Copyright 2012 Igor Vaynberg
+Copyright (c) 2010 Steven Sanderson, the Knockout.js team, and other contributors
+Copyright (c) 2014, Mike Adair, Richard Greenwood, Didier Richard, Stephen Irons, Olivier Terral and Calvin Metcalf
 
 ======== License
 Copyright (c) 2020 Oracle America, Inc. and its affiliates. 
