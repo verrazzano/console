@@ -70,7 +70,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'verbose', 'coverage','mocha'],
+    reporters: ['coverage','mocha'],
 
     coverageReporter: {
       type : 'html',
@@ -81,7 +81,7 @@ module.exports = function(config) {
     client: {
       captureConsole: true,
       mocha: {
-        timeout: 60000,
+        timeout: 30000,
         bail: true
       }
     },
@@ -96,7 +96,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_INFO,
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -116,14 +116,10 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity,
-    captureTimeout: 210000,
-    browserDisconnectTolerance: 3, 
-    browserDisconnectTimeout : 210000,
-    browserNoActivityTimeout : 210000
+    concurrency: Infinity
   })
 }
