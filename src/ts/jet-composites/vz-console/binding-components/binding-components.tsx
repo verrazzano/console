@@ -23,7 +23,7 @@ import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
   components: [BindingComponent];
-  filterCallback: (filter: Element) => {};
+  filterCallback?: (filter: Element) => {};
 }
 
 class State {
@@ -142,6 +142,7 @@ export class ConsoleBindingComponents extends VComponent<Props, State> {
           ComponentType.WLS,
           ComponentType.COH,
           ComponentType.MS,
+          ComponentType.GEN,
         ].includes(component.type);
       })
       .forEach((component) => {
@@ -197,29 +198,32 @@ export class ConsoleBindingComponents extends VComponent<Props, State> {
       )
     );
 
-    this.props.filterCallback(
-      <div>
-        <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
-        <ConsoleFilter
-          label={Messages.Labels.state()}
-          options={[
-            { label: Status.Running, value: Status.Running },
-            { label: Status.Creating, value: Status.Creating },
-            { label: Status.Terminated, value: Status.Terminated },
-          ]}
-          onValueChanged={this.handleStatusFilterChanged}
-        />
-        <ConsoleFilter
-          label={Messages.Labels.type()}
-          options={[
-            { label: ComponentType.WLS, value: ComponentType.WLS },
-            { label: ComponentType.COH, value: ComponentType.COH },
-            { label: ComponentType.MS, value: ComponentType.MS },
-          ]}
-          onValueChanged={this.handleTypeFilterChanged}
-        />
-      </div>
-    );
+    if (this.props.filterCallback) {
+      this.props.filterCallback(
+        <div>
+          <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
+          <ConsoleFilter
+            label={Messages.Labels.state()}
+            options={[
+              { label: Status.Running, value: Status.Running },
+              { label: Status.Creating, value: Status.Creating },
+              { label: Status.Terminated, value: Status.Terminated },
+            ]}
+            onValueChanged={this.handleStatusFilterChanged}
+          />
+          <ConsoleFilter
+            label={Messages.Labels.type()}
+            options={[
+              { label: ComponentType.WLS, value: ComponentType.WLS },
+              { label: ComponentType.COH, value: ComponentType.COH },
+              { label: ComponentType.MS, value: ComponentType.MS },
+              { label: ComponentType.GEN, value: ComponentType.GEN },
+            ]}
+            onValueChanged={this.handleTypeFilterChanged}
+          />
+        </div>
+      );
+    }
     return (
       <div id="components" class="oj-flex component-margin">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
@@ -278,34 +282,25 @@ export class ConsoleBindingComponents extends VComponent<Props, State> {
                         <strong>
                           <span>{Messages.Labels.name()}:&nbsp;</span>
                         </strong>
-                        <span>
+                        <span data-bind="attr: { id: item.data.id+'_name' }">
                           <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
                         </span>
                       </div>
                       <div class="oj-sm-2 oj-flex-item compstatus">
                         <strong>{Messages.Labels.status()}:&nbsp;</strong>
-                        <span>
+                        <span data-bind="attr: { id: item.data.id+'_status' }">
                           <oj-bind-if test="[[item.data.status === 'Running']]">
-                            <span
-                              id="status"
-                              class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green"
-                            >
+                            <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
                               <span class="oj-icon-circle-inner status-icon"></span>
                             </span>
                           </oj-bind-if>
                           <oj-bind-if test="[[item.data.status === 'Terminated']]">
-                            <span
-                              id="status"
-                              class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red"
-                            >
+                            <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
                               <span class="oj-icon-circle-inner status-icon"></span>
                             </span>
                           </oj-bind-if>
                           <oj-bind-if test="[[item.data.status === 'Creating']]">
-                            <span
-                              id="status"
-                              class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange"
-                            >
+                            <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
                               <span class="oj-icon-circle-inner status-icon"></span>
                             </span>
                           </oj-bind-if>
@@ -319,7 +314,7 @@ export class ConsoleBindingComponents extends VComponent<Props, State> {
                         <strong>
                           <span>{Messages.Labels.type()}:&nbsp;</span>
                         </strong>
-                        <span>
+                        <span data-bind="attr: { id: item.data.id+'_type' }">
                           <oj-bind-text value="[[item.data.type]]"></oj-bind-text>
                         </span>
                       </div>
@@ -327,7 +322,7 @@ export class ConsoleBindingComponents extends VComponent<Props, State> {
                         <strong>
                           <span>{Messages.Labels.cluster()}:&nbsp;</span>
                         </strong>
-                        <span>
+                        <span data-bind="attr: { id: item.data.id+'_cluster' }">
                           <oj-bind-text value="[[item.data.placement.cluster]]"></oj-bind-text>
                         </span>
                       </div>
@@ -335,18 +330,36 @@ export class ConsoleBindingComponents extends VComponent<Props, State> {
 
                     <div class="oj-flex">
                       <div class="oj-sm-10 oj-flex-item">
-                        <strong>
-                          <span>{Messages.Labels.image()}:&nbsp;</span>
-                        </strong>
-                        <span>
-                          <oj-bind-text value="[[item.data.image]]"></oj-bind-text>
-                        </span>
+                        <oj-bind-if test="[[item.data.images &&  item.data.images.length === 1]]">
+                          <strong>
+                            <span>{Messages.Labels.image()}:&nbsp;</span>
+                          </strong>
+                          <span data-bind="attr: { id: item.data.id+'_images' }">
+                            <oj-bind-text value="[[item.data.images[0]]]"></oj-bind-text>
+                          </span>
+                        </oj-bind-if>
+                        <oj-bind-if test="[[item.data.images &&  item.data.images.length > 1]]">
+                          <strong>
+                            <span>{Messages.Labels.images()}:&nbsp;</span>
+                          </strong>
+                          <ul data-bind="attr: { id: item.data.id+'_images' }">
+                            <oj-bind-for-each data="[[item.data.images]]">
+                              <template>
+                                <li>
+                                  <span>
+                                    <oj-bind-text value="[[$current.data]]"></oj-bind-text>
+                                  </span>
+                                </li>
+                              </template>
+                            </oj-bind-for-each>
+                          </ul>
+                        </oj-bind-if>
                       </div>
                       <div class="oj-sm-2 oj-flex-item">
                         <strong>
                           <span>{Messages.Labels.ns()}:&nbsp;</span>
                         </strong>
-                        <span>
+                        <span data-bind="attr: { id: item.data.id+'_ns' }">
                           <oj-bind-text value="[[item.data.placement.namespace]]"></oj-bind-text>
                         </span>
                       </div>

@@ -158,6 +158,7 @@ export const Labels = {
   usage: () => Translations.getTranslatedString("labels.usage"),
   created: () => Translations.getTranslatedString("labels.created"),
   selectOption: () => Translations.getTranslatedString("labels.selectOption"),
+  images: () => Translations.getTranslatedString("labels.images"),
 };
 
 export const Api = {

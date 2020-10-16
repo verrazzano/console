@@ -18,7 +18,8 @@ module.exports = function(config) {
       'mocha',
       'chai',
       'sinon',
-      'karma-typescript'
+      'karma-typescript',
+      'fixture'
     ],
 
 
@@ -45,7 +46,9 @@ module.exports = function(config) {
         pattern: 'node_modules/sinon/**',
         included: false,
         watched: false
-      }
+      },
+
+      { pattern: 'web/css/redwood/9.0.4/web/redwood.css', included:true, watched: false }
     ],
 
 
@@ -67,7 +70,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['coverage','mocha'],
+    reporters: ['progress', 'verbose', 'coverage','mocha'],
 
     coverageReporter: {
       type : 'html',
@@ -76,8 +79,10 @@ module.exports = function(config) {
     },
 
     client: {
+      captureConsole: true,
       mocha: {
-        timeout: 30000
+        timeout: 60000,
+        bail: true
       }
     },
 
@@ -91,7 +96,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -111,10 +116,14 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true,
+    singleRun: false,
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
+    captureTimeout: 210000,
+    browserDisconnectTolerance: 3, 
+    browserDisconnectTimeout : 210000,
+    browserNoActivityTimeout : 210000
   })
 }

@@ -313,7 +313,7 @@ export const processComponents = (
   if (model && binding) {
     const bindingId = binding.objectmeta.uid;
     const componentPlacements: Map<string, Placement> = new Map();
-    const componentImages: Map<string, string> = new Map();
+    const componentImages: Map<string, string[]> = new Map();
     if (binding.spec.placement) {
       binding.spec.placement.forEach((placement: any) => {
         clusters.push(placement.name);
@@ -334,17 +334,27 @@ export const processComponents = (
 
     if (model.spec.weblogicDomains) {
       model.spec.weblogicDomains.forEach((wlsDomain: any) => {
-        if (wlsDomain.domainCRValues && wlsDomain.domainCRValues.image) {
-          componentImages.set(wlsDomain.name, wlsDomain.domainCRValues.image);
-        }
-
         if (wlsDomain.connections) {
           processConnections(
             componentPlacements,
-
             wlsDomain.connections,
             wlsDomain.name
           );
+        }
+
+        if (componentPlacements.has(wlsDomain.name)) {
+          const wlsDomainId = generateWlsNodeId(bindingId, wlsDomain.name);
+          const wlsDomainComponent: BindingComponent = {
+            id: wlsDomainId,
+            name: wlsDomain.name,
+            type: ComponentType.WLS,
+            placement: componentPlacements.get(wlsDomain.name),
+            images:
+              wlsDomain.domainCRValues && wlsDomain.domainCRValues.image
+                ? [wlsDomain.domainCRValues.image]
+                : null,
+          };
+          components.push(wlsDomainComponent);
         }
       });
     }
@@ -352,7 +362,7 @@ export const processComponents = (
     if (model.spec.helidonApplications) {
       model.spec.helidonApplications.forEach((helidonApp: any) => {
         if (helidonApp.image) {
-          componentImages.set(helidonApp.name, helidonApp.image);
+          componentImages.set(helidonApp.name, [helidonApp.image]);
         }
 
         if (helidonApp.connections) {
@@ -368,7 +378,7 @@ export const processComponents = (
     if (model.spec.coherenceClusters) {
       model.spec.coherenceClusters.forEach((coherenceCluster: any) => {
         if (coherenceCluster.image) {
-          componentImages.set(coherenceCluster.name, coherenceCluster.image);
+          componentImages.set(coherenceCluster.name, [coherenceCluster.image]);
         }
 
         if (coherenceCluster.connections) {
@@ -381,17 +391,42 @@ export const processComponents = (
       });
     }
 
-    if (binding.spec.weblogicBindings) {
-      binding.spec.weblogicBindings.forEach((weblogicBinding: any) => {
-        const wlsDomainId = generateWlsNodeId(bindingId, weblogicBinding.name);
-        const wlsDomainComponent: BindingComponent = {
-          id: wlsDomainId,
-          name: weblogicBinding.name,
-          type: ComponentType.WLS,
-          placement: componentPlacements.get(weblogicBinding.name),
-          image: componentImages.get(weblogicBinding.name),
-        };
-        components.push(wlsDomainComponent);
+    if (model.spec.genericComponents) {
+      model.spec.genericComponents.forEach((genericComponent: any) => {
+        const images = [];
+        if (
+          genericComponent.deployment &&
+          genericComponent.deployment.containers
+        ) {
+          genericComponent.deployment.containers.forEach((container) => {
+            if (container.image) {
+              images.push(container.image);
+            }
+          });
+        }
+
+        if (genericComponent.connections) {
+          processConnections(
+            componentPlacements,
+            genericComponent.connections,
+            genericComponent.name
+          );
+        }
+
+        if (componentPlacements.has(genericComponent.name)) {
+          const genericComponentId = generateGenericComponentNodeId(
+            bindingId,
+            genericComponent.name
+          );
+          const genericBindingComponent: BindingComponent = {
+            id: genericComponentId,
+            name: genericComponent.name,
+            type: ComponentType.GEN,
+            placement: componentPlacements.get(genericComponent.name),
+            images,
+          };
+          components.push(genericBindingComponent);
+        }
       });
     }
 
@@ -406,7 +441,9 @@ export const processComponents = (
           name: coherenceBinding.name,
           type: ComponentType.COH,
           placement: componentPlacements.get(coherenceBinding.name),
-          image: componentImages.get(coherenceBinding.name),
+          images: componentImages.has(coherenceBinding.name)
+            ? componentImages.get(coherenceBinding.name)
+            : null,
         };
         components.push(coherenceClusterComponent);
       });
@@ -423,7 +460,9 @@ export const processComponents = (
           name: helidonBinding.name,
           type: ComponentType.MS,
           placement: componentPlacements.get(helidonBinding.name),
-          image: componentImages.get(helidonBinding.name),
+          images: componentImages.has(helidonBinding.name)
+            ? componentImages.get(helidonBinding.name)
+            : null,
         };
         components.push(helidonAppComponent);
       });
@@ -522,7 +561,7 @@ export const processModelComponents = (model: any): Component[] => {
     if (model.spec.weblogicDomains) {
       model.spec.weblogicDomains.forEach((wlsDomain: any) => {
         const c = <Component>{
-          id: generateWlsNodeId(model.objectmeta.id, wlsDomain.name),
+          id: generateWlsNodeId(model.objectmeta.uid, wlsDomain.name),
         };
         components.push(c);
         c.secrets = [];
@@ -530,7 +569,7 @@ export const processModelComponents = (model: any): Component[] => {
         c.name = wlsDomain.name;
         if (wlsDomain.domainCRValues) {
           if (wlsDomain.domainCRValues.image) {
-            c.image = wlsDomain.domainCRValues.image;
+            c.images = [wlsDomain.domainCRValues.image];
           }
           if (wlsDomain.domainCRValues.imagepullsecrets) {
             for (const s of wlsDomain.domainCRValues.imagepullsecrets) {
@@ -559,13 +598,13 @@ export const processModelComponents = (model: any): Component[] => {
     if (model.spec.helidonApplications) {
       model.spec.helidonApplications.forEach((helidonApp: any) => {
         const c = <Component>{
-          id: generateHelidonNodeId(model.objectmeta.id, helidonApp.name),
+          id: generateHelidonNodeId(model.objectmeta.uid, helidonApp.name),
         };
         components.push(c);
         c.secrets = [];
         c.type = ComponentType.MS;
         c.name = helidonApp.name;
-        c.image = helidonApp.image;
+        c.images = [helidonApp.image];
         if (helidonApp.imagePullSecrets) {
           for (const s of helidonApp.imagePullSecrets) {
             const ps = <PartialSecret>{
@@ -581,13 +620,13 @@ export const processModelComponents = (model: any): Component[] => {
     if (model.spec.coherenceClusters) {
       model.spec.coherenceClusters.forEach((coherenceCluster: any) => {
         const c = <Component>{
-          id: generateCohNodeId(model.objectmeta.id, coherenceCluster.name),
+          id: generateCohNodeId(model.objectmeta.uid, coherenceCluster.name),
         };
         components.push(c);
         c.secrets = [];
         c.type = ComponentType.COH;
         c.name = coherenceCluster.name;
-        c.image = coherenceCluster.image;
+        c.images = [coherenceCluster.image];
         if (coherenceCluster.imagePullSecrets) {
           for (const s of coherenceCluster.imagePullSecrets) {
             const ps = <PartialSecret>{
@@ -595,6 +634,42 @@ export const processModelComponents = (model: any): Component[] => {
               usage: SecretUsage.ImagePullSecret,
             };
             c.secrets.push(ps);
+          }
+        }
+      });
+    }
+
+    if (model.spec.genericComponents) {
+      model.spec.genericComponents.forEach((genericComponent: any) => {
+        const c = <Component>{
+          id: generateGenericComponentNodeId(
+            model.objectmeta.uid,
+            genericComponent.name
+          ),
+        };
+        components.push(c);
+        c.secrets = [];
+        c.type = ComponentType.GEN;
+        c.name = genericComponent.name;
+        if (genericComponent.deployment) {
+          if (genericComponent.deployment.imagepullsecrets) {
+            for (const s of genericComponent.deployment.imagepullsecrets) {
+              const ps = <PartialSecret>{
+                name: s.name,
+                usage: SecretUsage.ImagePullSecret,
+              };
+              c.secrets.push(ps);
+            }
+          }
+          if (genericComponent.deployment.containers) {
+            genericComponent.deployment.containers.forEach((container) => {
+              if (container.image) {
+                if (!c.images) {
+                  c.images = [];
+                }
+                c.images.push(container.image);
+              }
+            });
           }
         }
       });
@@ -613,17 +688,18 @@ export const processBindingIngresses = (
   if (binding && binding.spec) {
     if (binding.spec.ingressBindings) {
       binding.spec.ingressBindings.forEach((ib: any) => {
-        const ing = <Ingress>{};
-        ingresses.push(ing);
-        ing.name = ib.name;
-        ing.dnsName = ib.dnsName;
+        const bindingIngress = <Ingress>{};
+        bindingIngress.name = ib.name;
+        bindingIngress.dnsName = ib.dnsName;
 
         // Add the port and prefix from the model ingress so
         // that they can be displayed in the binding ingress list UI.
-        for (const modelIng of modelIngresses) {
-          if (modelIng.name === ing.name) {
-            ing.port = modelIng.port;
-            ing.prefix = modelIng.prefix;
+        for (const modelIngress of modelIngresses) {
+          if (modelIngress.name === bindingIngress.name) {
+            const ingress = { ...bindingIngress };
+            ingress.port = modelIngress.port;
+            ingress.prefix = modelIngress.prefix;
+            ingresses.push(ingress);
           }
         }
       });
@@ -737,12 +813,25 @@ function processModelConnections(
         }
       });
     }
+
+    if (model.spec.genericComponents) {
+      model.spec.genericComponents.forEach((genericComponent: any) => {
+        if (genericComponent.connections) {
+          appendModelConnections(
+            connections,
+            ingresses,
+            genericComponent.connections,
+            genericComponent.name
+          );
+        }
+      });
+    }
   }
 }
 
 function appendModelConnections(
   modelConnections: Connection[],
-  Ingress: Ingress[],
+  ingresses: Ingress[],
   connections: any,
   componentName: string
 ): void {
@@ -753,13 +842,20 @@ function appendModelConnections(
           const c = <Ingress>{};
           c.name = ingress.name;
           c.port = "80";
-          if (ingress.match) {
-            c.prefix = ingress.match[0].uri.prefix;
-          } else {
-            c.prefix = "/";
-          }
           c.component = componentName;
-          Ingress.push(c);
+          if (ingress.match) {
+            ingress.match.forEach((matchItem) => {
+              if (matchItem.uri && matchItem.uri.prefix) {
+                const ingressItem = { ...c };
+                ingressItem.prefix = matchItem.uri.prefix;
+                ingresses.push(ingressItem);
+              }
+            });
+          } else {
+            const ingressItem = { ...c };
+            ingressItem.prefix = "/";
+            ingresses.push(ingressItem);
+          }
         });
       }
 
@@ -889,6 +985,13 @@ function generateAtpNodeId(parentId: string, atpName: string): string {
 
 function generateDbNodeId(parentId: string, dbName: string): string {
   return generateId(parentId, "db", dbName);
+}
+
+function generateGenericComponentNodeId(
+  parentId: string,
+  genName: string
+): string {
+  return generateId(parentId, "gen", genName);
 }
 
 function generateId(...args: string[]): string {

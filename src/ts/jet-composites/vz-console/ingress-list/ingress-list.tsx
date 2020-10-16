@@ -24,6 +24,37 @@ export class ConsoleIngressList extends VComponent<Props> {
   dataProvider: ko.Observable = ko.observable();
 
   protected render() {
+    const columns = [
+      {
+        headerText: Messages.Labels.name(),
+        sortable: "enabled",
+        sortProperty: "name",
+      },
+      {
+        headerText: Messages.Labels.prefix(),
+        sortable: "enabled",
+        sortProperty: "prefix",
+      },
+      {
+        headerText: Messages.Labels.port(),
+        sortable: "enabled",
+        sortProperty: "port",
+      },
+    ];
+
+    if (this.props.isBindingIngress) {
+      columns.push({
+        headerText: Messages.Labels.dnsName(),
+        sortable: "enabled",
+        sortProperty: "dnsName",
+      });
+    } else {
+      columns.push({
+        headerText: Messages.Labels.comp(),
+        sortable: "enabled",
+        sortProperty: "component",
+      });
+    }
     this.dataProvider(
       new PagingDataProviderView(
         new ArrayDataProvider(this.props.ingresses, {
@@ -37,40 +68,7 @@ export class ConsoleIngressList extends VComponent<Props> {
       <div>
         <oj-table
           data={this.dataProvider()}
-          columns={[
-            {
-              headerText: Messages.Labels.name(),
-              sortable: "enabled",
-              sortProperty: "name",
-            },
-            {
-              headerText: Messages.Labels.prefix(),
-              sortable: "enabled",
-              sortProperty: "prefix",
-            },
-            {
-              headerText: Messages.Labels.port(),
-              sortable: "enabled",
-              sortProperty: "port",
-            },
-            ...[
-              this.props.isBindingIngress
-                ? [
-                    {
-                      headerText: Messages.Labels.dnsName(),
-                      sortable: "enabled",
-                      sortProperty: "dnsName",
-                    },
-                  ]
-                : [
-                    {
-                      headerText: Messages.Labels.comp(),
-                      sortable: "enabled",
-                      sortProperty: "component",
-                    },
-                  ],
-            ],
-          ]}
+          columns={columns}
           aria-labelledby="resources"
           class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"
           style={{ width: "100%" }}

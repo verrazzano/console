@@ -16,6 +16,8 @@ export enum ComponentType {
   COH = "Coherence cluster",
   // eslint-disable-next-line no-unused-vars
   ANY = "Any",
+  // eslint-disable-next-line no-unused-vars
+  GEN = "Generic Component",
 }
 
 export enum VMIType {
@@ -69,7 +71,7 @@ export interface Component {
   id?: string;
   name?: string;
   type?: ComponentType;
-  image?: string;
+  images?: string[];
   secrets?: PartialSecret[];
 }
 
