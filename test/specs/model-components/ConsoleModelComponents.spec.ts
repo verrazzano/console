@@ -17,7 +17,7 @@ async function setup(components: Component[]) {
   ko.applyBindings({
     components
   }, componentsElement);
-  await Context.getContext(componentsElement).getBusyContext().whenReady(50000).catch((err) => { console.log(err) }).finally();
+  await Context.getContext(componentsElement).getBusyContext().whenReady(30000).catch((err) => { console.log(err) });
 }
 describe('generic model component tests', () => {
   const component = <Component>{
@@ -27,7 +27,7 @@ describe('generic model component tests', () => {
     type: ComponentType.GEN,
   }
   before(async () => await setup([component]));
-  it('renders the generic component correctly.', async () => {
+  it('renders the generic model component correctly.', async () => {
     expect(componentsElement.querySelector(`#${component.id}_name`).textContent).to.equal(component.name)
     expect(componentsElement.querySelector(`#${component.id}_type`).textContent).to.equal(component.type)
     expect(componentsElement.querySelector(`#${component.id}_images`).querySelectorAll("li").length).to.be.equal(component.images.length)
