@@ -15,25 +15,27 @@ export class MainPage {
     protected pageLoadedElement: By = MainPage.HEADER_CONTAINER;
 
     public async isPageLoaded(timeOut: number = PAGE_LOAD_TIMEOUT): Promise<boolean> {
+        return this.waitForHeader();
+    }
+
+    /* Wait for header */
+    public async waitForHeader(): Promise<boolean> {
         try {
-            // this.switchToDefaultContent();
-            await Wait.waitForPresent(this.pageLoadedElement, timeOut);
+            await Wait.waitForPresent(MainPage.HEADER_CONTAINER);
             return true;
-        } catch (error) {
+        } catch(error) {
             return false;
         }
     }
 
-    /* Wait for header */
-    public async waitForHeader(): Promise<void> {
-        // this.switchToDefaultContent();
-        await Wait.waitForPresent(MainPage.HEADER_CONTAINER);
-    }
-
     /* Wait for footer */
-    public async waitForFooter(): Promise<void> {
-        // this.switchToDefaultContent();
-        await Wait.waitForPresent(MainPage.FOOTER_CONTAINER);
+    public async waitForFooter(): Promise<boolean> {
+        try {
+            await Wait.waitForPresent(MainPage.FOOTER_CONTAINER);
+            return true;
+        } catch(error) {
+            return false;
+        }
     }
 
 }

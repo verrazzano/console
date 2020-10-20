@@ -18,25 +18,17 @@ describe("Instance Details Page", (): void => {
 
   describe(("Access Header and footer"), (): void => {
 
-    it("Access Base Page should load", async () => {
-      expect(await mainPage.isPageLoaded()).to.be.true;
+    it("Main Page should load and contain header", async () => {
+      expect(await mainPage.waitForHeader()).to.be.true;
     });
 
-    it("Wait for header should not fail", async () => {
-      await mainPage.waitForHeader();
-    });
-
-    it("Wait for footer should not fail", async () => {
-      await mainPage.waitForFooter();
+    it("Main Page should contain footer", async () => {
+      expect(await mainPage.waitForFooter()).to.be.true;
     });
 
   });
 
   describe(("Access Header logo"), (): void => {
-    it("Access Base Page", async () => {
-      expect(await mainPage.isPageLoaded()).to.be.true;
-    });
-
     it("Wait for header", async () => {
       await mainPage.waitForHeader();
     });

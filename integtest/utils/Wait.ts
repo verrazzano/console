@@ -62,17 +62,10 @@ export class Wait {
         }
     }
 
-    private static async waitForElement(by: By, timeOut: number = Wait.TIMEOUT): Promise<WebElement> {
-        console.log(`Waiting for the element to locate "${by}"`);
-        const driver = await Utils.getDriver();
-        const e = driver.wait(until.elementLocated(by), timeOut, `Unable to locate element: ${by}`);
-        return e;
-    }
-
     private static async waitIgnoreStaleElement(by: By, f: Function,
         timeOutMessage: string,
         timeOut: number = Wait.TIMEOUT): Promise<WebElement> {
-        let element = await Wait.waitForElement(by, timeOut);
+        let element = await Wait.waitForPresent(by, timeOut);
         console.log(`Entering WaitIgnoreStaleElement; Locator: "${by}" `);
         const driver = await Utils.getDriver();
         await driver.wait<boolean>(
@@ -82,7 +75,7 @@ export class Wait {
                 } catch (e) {
                     if (e.name === "StaleElementReferenceError") {
                         console.log("Element becomes stale. Re-locate the element.");
-                        element = await Wait.waitForElement(by, timeOut);
+                        element = await Wait.waitForPresent(by, timeOut);
                         return false;
                     } else {
                         throw e;
