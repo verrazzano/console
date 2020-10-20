@@ -18,7 +18,6 @@ export class Wait {
         } catch (error) {
             console.log(`Error waiting for element ${by} to be present!`);
             throw error;
-            // throw new ReThrownError(error, this.waitForElement, getLogger());
         }
     }
 
@@ -39,7 +38,6 @@ export class Wait {
         } catch (error) {
             console.log(`Error waiting for element ${by} to be visible!`);
             throw error;
-            // throw new ReThrownError(error, this.waitForVisible, getLogger());
         }
     }
 
@@ -61,7 +59,6 @@ export class Wait {
         } catch (error) {
             console.log(`Error waiting for element ${by} to be enabled!`);
             throw error;
-            // throw new ReThrownError(error, this.waitForEnable, getLogger());
         }
     }
 

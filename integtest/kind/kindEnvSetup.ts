@@ -16,7 +16,6 @@ const clusterName = 'console-selenium';
 const kindConfigFile = `${__dirname}/kind_config.yaml`;
 
 const helmTemplateReplace = async (chartPath: string, outputLocation: string): Promise<void> => {
-    //const imagePullSecretArg = `--set global.imagePullSecrets[0]=${imagePullSecretName}`;
     const imagePullPolicyArg = `--set image.pullPolicy=IfNotPresent`; // image is loaded into KinD cluster, don't pull it again
     const otherArgs = `--set config.envName=default --set config.dnsSuffix=dummy.verrazzano.io`
 

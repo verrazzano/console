@@ -22,15 +22,9 @@ export class Actions {
      * @param by web element locator {@see By}
      */
     public static async doClick(by: By): Promise<void> {
-        try {
-            const element = await Wait.waitForEnable(by);
-            console.log(`Clicking an element "${by}"`);
-            await element.click();
-        } catch (error) {
-            // TODO desagar add context info to this error or remove try block
-            throw error;
-            // throw new ReThrownError(error, this.doClick, getLogger());
-        }
+        const element = await Wait.waitForEnable(by);
+        console.log(`Clicking an element "${by}"`);
+        await element.click();
     }
 
     /**
