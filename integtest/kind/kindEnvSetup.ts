@@ -15,13 +15,6 @@ const verrazzanoOperatorHelmTemplate = `${verrazzanoHelmChartDir}/templates/01-v
 const clusterName = 'console-selenium';
 const kindConfigFile = `${__dirname}/kind_config.yaml`;
 
-/*
-const dockerRegUser = process.env.DOCKER_REGISTRY_USER;
-const dockerRegPwd = process.env.DOCKER_REGISTRY_PWD;
-const dockerRegUri = process.env.DOCKER_REGISTRY_URI;
-const imagePullSecretName = 'ghcr';
- */
-
 const helmTemplateReplace = async (chartPath: string, outputLocation: string): Promise<void> => {
     //const imagePullSecretArg = `--set global.imagePullSecrets[0]=${imagePullSecretName}`;
     const imagePullPolicyArg = `--set image.pullPolicy=IfNotPresent`; // image is loaded into KinD cluster, don't pull it again
@@ -30,20 +23,6 @@ const helmTemplateReplace = async (chartPath: string, outputLocation: string): P
     const cmd = `helm template verrazzano ${chartPath} --namespace ${vzNamespace} ${imagePullPolicyArg} ${otherArgs}`;
     const output = await KindUtil.runCommandLine(cmd, `failed to locally replace templates on helm chart at ${chartPath}`, false);
     fs.writeFileSync(outputLocation, output);
-
-    /*return new Promise((resolve, reject) => {
-        exec(cmd, (error, stdout, stderr) => {
-            if (stdout) {
-                fs.writeFileSync(outputLocation, stdout);
-            }
-            stderr && console.error(stderr);
-            if (error) {
-                reject(`failed to locally replace templates on helm chart at ${chartPath}`);
-            } else {
-                resolve();
-            }
-        });
-    });*/
 }
 
 const createNodePort = async (kubeClient: KubeClient): Promise<string> => {
@@ -104,10 +83,6 @@ const setupIntegTestEnv = async () => {
         if (!vzNamespace) {
             throw new Error("Verrazzano Namespace must be provided!");
         }
-
-        /*if (!dockerRegUri || !dockerRegUser || !dockerRegPwd) {
-            throw new Error("Environment variables DOCKER_REGISTRY_USER, DOCKER_REGISTRY_PWD and DOCKER_REGISTRY_URI must be set!");
-        }*/
 
         if (!verrazzanoRepoPath) {
             throw new Error("Environment variable VERRAZZANO_REPO_PATH must be set to the directory path of the cloned 'verrazzano' repository");

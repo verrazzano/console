@@ -34,35 +34,12 @@ export class KindUtil {
         const cmd = `docker pull ${dockerImage}`;
         console.log(`Pulling docker image locally: ${dockerImage}`);
         return KindUtil.runCommandLine(cmd, `pull docker image locally: ${dockerImage}`, false);
-        /*return new Promise((resolve, reject) => {
-            exec(cmd, (error, stdout, stderr) => {
-                stdout && console.log(stdout);
-                stderr && console.error(stderr);
-                if (error) {
-                    reject(`failed to pull docker image ${dockerImage}. ${error.message}`);
-                } else {
-                    resolve(stdout ? stdout : stderr);
-                }
-            });
-        });*/
     };
 
     static async kindLoadDockerImage (clusterName: string, dockerImage: string) {
         const cmd = `kind load docker-image --name ${clusterName} ${dockerImage}`;
         console.log(`Loading docker image ${dockerImage} into KinD cluster ${clusterName}`);
         return KindUtil.runCommandLine(cmd, `load docker image: ${dockerImage}`, false);
-        /*return new Promise((resolve, reject) => {
-            exec(loadCmd, (error, stdout, stderr) => {
-                stdout && console.log(stdout);
-                stderr && console.error(stderr);
-                if (error) {
-                    reject(`failed to load docker image ${dockerImage}. ${error.message}`);
-                } else {
-                    // No need to fail on error since cluster might not exist
-                    resolve(stdout ? stdout : stderr);
-                }
-            });
-        });*/
     }
 
     static async deleteExistingKindCluster(clusterName: string) {

@@ -89,17 +89,6 @@ export class KubeClient {
     async kubectlFromFile (file: string, kubeVerb: string = 'create'): Promise<string> {
         const cmd = `kubectl ${kubeVerb} --kubeconfig ${this.kubeConfigFile} -f ${file}`;
         return KindUtil.runCommandLine(cmd, `${kubeVerb} from file ${file}`, false);
-        /*    return new Promise((resolve, reject) => {
-                exec(cmd, (error, stdout, stderr) => {
-                    stdout && console.log(stdout);
-                    stderr && console.error(stderr);
-                    if (error) {
-                        reject(`failed to ${kubeVerb} from file ${file}. ${error.message}`);
-                    } else {
-                        resolve(stdout ? stdout : stderr);
-                    }
-                });
-            });*/
     };
 
     async createCrd(crdFile: string) {
