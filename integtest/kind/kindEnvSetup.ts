@@ -108,8 +108,6 @@ const setupIntegTestEnv = async () => {
         const kubeClient = new KubeClient(kubeConfigFile);
 
         await kubeClient.createNamespace(vzNamespace);
-        // console.log(`Creating Docker Registry secret for ${dockerRegUri}`);
-        //await createDockerRegistrySecret(imagePullSecretName, vzNamespace, dockerRegUri, dockerRegUser, dockerRegPwd);
         console.log(`Creating Verrazzano Model CRD from file ${modelCrdFile}`);
         await kubeClient.createCrd(modelCrdFile);
         console.log(`Creating Verrazzano Binding CRD from file ${bindingCrdFile}`);
