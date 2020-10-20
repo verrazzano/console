@@ -1,7 +1,7 @@
-import { By } from "selenium-webdriver";
 // Copyright (C) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
+import { By } from "selenium-webdriver";
 import { LoginInfo, Utils } from "../utils/Utils";
 import { Wait, PAGE_LOAD_TIMEOUT } from '../utils/Wait';
 import { Actions } from '../utils/Actions';
