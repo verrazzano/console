@@ -46,7 +46,7 @@ export class Actions {
   ): Promise<void> {
     try {
       const e = await Wait.waitForVisible(by);
-      console.log(`Entering text \"${secret ? "********" : text}\" in ${by}`);
+      console.log(`Entering text "${secret ? "********" : text}" in ${by}`);
       const driver = await Utils.getDriver();
       await driver.executeScript(
         `Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set.call(arguments[0], "${text}");` +

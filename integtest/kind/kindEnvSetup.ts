@@ -4,7 +4,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
-import { safeDump, safeLoadAll } from "js-yaml";
+import { safeLoadAll } from "js-yaml";
 import { KubeClient } from "./kubeclient";
 import { KindUtil } from "./kindUtil";
 
@@ -70,25 +70,23 @@ const deployVerrazzanoOperator = async (kubeClient: KubeClient) => {
     fs.readFileSync(actualOperatorManifest).toString("utf-8")
   );
 
-  const deployment = allYamls.find((yaml) => yaml["kind"] == "Deployment");
+  const deployment = allYamls.find((yaml) => yaml.kind === "Deployment");
   if (!deployment) {
     throw new Error(
       `No Deployment found in verrazzano-operator YAML at ${actualOperatorManifest}, which is based on template ${verrazzanoOperatorHelmTemplate}`
     );
   }
-  const containersYaml = deployment["spec"]["template"]["spec"][
-    "containers"
-  ] as any[];
-  if (!containersYaml || containersYaml.length != 1) {
+  const containersYaml = deployment.spec.template.spec.containers as any[];
+  if (!containersYaml || containersYaml.length !== 1) {
     throw new Error(
       `Expected exactly one container on the verrazzano-operator deployment ${actualOperatorManifest}!`
     );
   }
-  const verrazzanoOperatorImage = containersYaml[0]["image"];
+  const verrazzanoOperatorImage = containersYaml[0].image;
 
   // add startController=false argument to verrazzano operator startup
-  if (containersYaml[0]["args"]) {
-    containersYaml[0]["args"].push("--startController=false");
+  if (containersYaml[0].args) {
+    containersYaml[0].args.push("--startController=false");
   } else {
     throw new Error(
       `Did not find args section on the container in the verrazzano-operator deployment in ${actualOperatorManifest}`

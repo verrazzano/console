@@ -12,9 +12,11 @@ export class MainPage {
   private static readonly FOOTER_CONTAINER: By = By.className(
     "oj-web-applayout-footer-item"
   );
+
   private static readonly HEADER_CONTAINER: By = By.className(
     "oj-web-applayout-header"
   );
+
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = MainPage.HEADER_CONTAINER;
 

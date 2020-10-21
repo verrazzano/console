@@ -19,9 +19,9 @@ export class KindUtil {
       exec(cmd, (error, stdout, stderr) => {
         stderr && console.error(stderr);
         if (!error || ignoreErr) {
-          resolve(stdout ? stdout : stderr);
+          resolve(stdout || stderr);
         } else {
-          reject(`failed to ${actionDesc}. ${error.message}`);
+          reject(new Error(`failed to ${actionDesc}. ${error.message}`));
         }
       });
     });
@@ -66,8 +66,9 @@ export class KindUtil {
       exec(cmd, (error, stdout, stderr) => {
         stdout && console.log(stdout);
         stderr && console.error(stderr);
+        error && console.error(error);
         // No need to fail on error since cluster might not exist
-        resolve(stdout ? stdout : stderr);
+        resolve(stdout || stderr);
       });
     });
   }
@@ -85,7 +86,7 @@ export class KindUtil {
         stderr && console.error(stderr);
         if (error) {
           reject(
-            `failed to create KinD cluster using config ${kindConfigFile}. ${error.message}`
+            new Error(`failed to create KinD cluster using config ${kindConfigFile}. ${error.message}`)
           );
         } else {
           resolve(kubeConfigFile);

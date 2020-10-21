@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By } from "selenium-webdriver";
-import { LoginInfo, Utils } from "../utils/Utils";
+import { LoginInfo } from "../utils/Utils";
 import { Wait, PAGE_LOAD_TIMEOUT } from "../utils/Wait";
 import { Actions } from "../utils/Actions";
 
@@ -22,6 +22,7 @@ export class LoginPage {
     // const elem = await Utils.getDriver().findElement(LoginPage.LOGIN_FORM_BY);
     return !!elem;
   }
+
   public async isPageLoaded(
     timeOut: number = PAGE_LOAD_TIMEOUT
   ): Promise<boolean> {
@@ -33,6 +34,7 @@ export class LoginPage {
       return false;
     }
   }
+
   public async login(
     loginInfo: LoginInfo,
     acceptCookies?: boolean,
@@ -54,5 +56,3 @@ export class LoginPage {
     }
   }
 }
-
-//await getDriver().findElements(SELENIUM_LOGIN_LOCATORS.tenancyTextbox());

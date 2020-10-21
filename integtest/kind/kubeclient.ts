@@ -31,7 +31,7 @@ export class KubeClient {
 
     try {
       const readResponse = await this.k8sApi.readNamespace(ns);
-      console.log(`Namespace ${ns} already exists. Not creating.`);
+      console.log(`Namespace already exists: ${readResponse.body.metadata.name}. Not creating.`);
       return;
     } catch (error) {
       console.log(`Namespace ${ns} does not already exist`);
@@ -39,7 +39,7 @@ export class KubeClient {
     try {
       console.log(`Creating namespace ${ns}`);
       const response = await this.k8sApi.createNamespace(namespace);
-      console.log("Created namespace");
+      console.log(`Created namespace ${response.body.metadata.name}`);
     } catch (error) {
       console.log(`failed to create namespace ${ns}: ${error}`);
       throw error;

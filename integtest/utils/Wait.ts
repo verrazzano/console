@@ -14,7 +14,7 @@ export class Wait {
     timeOut: number = Wait.TIMEOUT
   ): Promise<WebElement> {
     try {
-      console.log(`Waiting for the element to locate "${by}"`); //getLogger().info
+      console.log(`Waiting for the element to locate "${by}"`);
       const driver = await Utils.getDriver();
       const e = driver.wait(
         until.elementLocated(by),
@@ -47,7 +47,7 @@ export class Wait {
         async (element: WebElement) => {
           return await element.isDisplayed();
         },
-        `Unable to wait for element \"${by}\" to become visible`,
+        `Unable to wait for element "${by}" to become visible`,
         timeOut
       );
     } catch (error) {
@@ -76,7 +76,7 @@ export class Wait {
         async (element: WebElement) => {
           return await element.isEnabled();
         },
-        `Unable to wait for element \"${by}\" to become Enable`,
+        `Unable to wait for element "${by}" to become Enable`,
         timeOut
       );
     } catch (error) {

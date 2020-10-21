@@ -15,8 +15,6 @@ export interface LoginInfo {
   password: string;
 }
 
-const BROWSER = "chrome"; //TODO desagar add to config?
-
 export class Utils {
   private static driver: WebDriver;
   private static uiUrl = process.env.VZ_UI_URL;
@@ -98,6 +96,7 @@ export class Utils {
       }
     });
   }
+
   static getConfig(key: string) {
     if (!Utils.config) {
       Utils.readConfigFile();
@@ -107,7 +106,6 @@ export class Utils {
 
   static async gotoMainPage(): Promise<MainPage> {
     const mainPage = new MainPage();
-    const driver = await Utils.getDriver();
     console.log(`Navigating to UI main page at ${this.uiUrl}`);
     await Utils.getJETPage(this.uiUrl);
 
@@ -160,19 +158,19 @@ export class Utils {
 
     Utils.validateConfigLoginInfo();
 
-    if (!Utils.config["driverInfo"]) {
-      Utils.config["driverInfo"] = { url: "http://localhost:8000" };
-    } else if (!Utils.config["driverInfo"].url) {
-      Utils.config["driverInfo"].url = "http://localhost:8000";
+    if (!Utils.config.driverInfo) {
+      Utils.config.driverInfo = { url: "http://localhost:8000" };
+    } else if (!Utils.config.driverInfo.url) {
+      Utils.config.driverInfo.url = "http://localhost:8000";
     }
   }
 
   private static validateConfigLoginInfo() {
     const errMsg = `The uitest config file must have a loginInfo section with username and password`;
-    if (!Utils.config["loginInfo"]) {
+    if (!Utils.config.loginInfo) {
       throw new Error(errMsg);
     }
-    const loginInfo = Utils.config["loginInfo"] as LoginInfo;
+    const loginInfo = Utils.config.loginInfo as LoginInfo;
     if (!loginInfo.username || !loginInfo.password) {
       throw new Error(errMsg);
     }

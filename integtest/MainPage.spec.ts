@@ -3,7 +3,7 @@
 
 import { MainPage } from "./pageObjects/MainPage.pom";
 import { HeaderBar } from "./pageObjects/HeaderBar.pom";
-import { expect, assert } from "chai";
+import { expect } from "chai";
 import { Utils } from "./utils/Utils";
 
 describe("Instance Details Page", (): void => {
