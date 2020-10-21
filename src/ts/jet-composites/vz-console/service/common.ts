@@ -604,6 +604,7 @@ export const processModelComponents = (model: any): Component[] => {
           }
         }
       });
+    }
 
       if (model.spec.helidonApplications) {
         model.spec.helidonApplications.forEach((helidonApp: any) => {
@@ -659,7 +660,6 @@ export const processModelComponents = (model: any): Component[] => {
         });
       }
     }
-  }
   return components;
 };
 
