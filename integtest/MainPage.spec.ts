@@ -1,10 +1,10 @@
 // Copyright (C) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { MainPage } from './pageObjects/MainPage.pom';
-import { HeaderBar } from './pageObjects/HeaderBar.pom';
-import {expect, assert} from 'chai';
-import { Utils } from './utils/Utils';
+import { MainPage } from "./pageObjects/MainPage.pom";
+import { HeaderBar } from "./pageObjects/HeaderBar.pom";
+import { expect, assert } from "chai";
+import { Utils } from "./utils/Utils";
 
 describe("Instance Details Page", (): void => {
   let mainPage: MainPage;
@@ -16,8 +16,7 @@ describe("Instance Details Page", (): void => {
     mainPage = await Utils.gotoMainPage();
   });
 
-  describe(("Access Header and footer"), (): void => {
-
+  describe("Access Header and footer", (): void => {
     it("Main Page should load and contain header", async () => {
       expect(await mainPage.waitForHeader()).to.be.true;
     });
@@ -25,10 +24,9 @@ describe("Instance Details Page", (): void => {
     it("Main Page should contain footer", async () => {
       expect(await mainPage.waitForFooter()).to.be.true;
     });
-
   });
 
-  describe(("Access Header logo"), (): void => {
+  describe("Access Header logo", (): void => {
     it("Wait for header", async () => {
       await mainPage.waitForHeader();
     });
@@ -36,7 +34,6 @@ describe("Instance Details Page", (): void => {
     it("Access header logo", async () => {
       expect(await headerBar.selectLogo()).to.be.true;
     });
-
   });
 
   after(() => {
