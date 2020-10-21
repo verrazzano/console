@@ -12,7 +12,6 @@
   "devDependencies": {
     "@oracle/oraclejet-tooling": "~9.1.0",
     "@kubernetes/client-node": "^0.12.2",
-    "@oracle/oraclejet-webdriver": "^10.0.0-alpha.11",
     "@types/chai": "^4.2.3",
     "@types/js-yaml": "^3.12.5",
     "@types/jwt-decode": "^2.2.0",

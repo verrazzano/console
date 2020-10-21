@@ -2,8 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as fs from 'fs';
-import ojwd, { DriverManager as dm } from '@oracle/oraclejet-webdriver';
-import {  WebDriver } from "selenium-webdriver";
+import {Builder, Capabilities, Condition, WebDriver} from "selenium-webdriver";
 import { MainPage } from "../pageObjects/MainPage.pom";
 import { LoginPage } from "../pageObjects/LoginPage.pom";
 export interface LoginInfo {
@@ -19,18 +18,21 @@ export class Utils {
     private static config: any
 
     static async navigateAndLogin(acceptCookies?: boolean, timeout?: number) {
-        const url = Utils.getConfig("driverInfo").url;
+        const url = Utils.getConfig("driverInfo").url as string;
         const loginInfo = Utils.getConfig("loginInfo");
         try {
             console.log(`Navigating to: ${url}`);
-            const driver = await Utils.getDriver();
-            await ojwd.get(driver, url);
+            await Utils.getJETPage(url, timeout);
+
+            // TODO Need to wait for busy context
+
             const loginPage = new LoginPage();
             if (loginPage.isPageLoaded()) {
                 console.log('Login page is current page');
                 console.log(`Performing an initial log in.`);
                 await loginPage.login(loginInfo, acceptCookies, timeout);    
             } else {
+                const driver = await Utils.getDriver();
                 console.log(`Login page is not current page. Current page url is ${driver.getCurrentUrl()}`);
             }
         } catch (error) {
@@ -39,6 +41,52 @@ export class Utils {
         }
     }
 
+    /**
+     * Oracle JET page ready check in Javascript
+     */
+    static pageReadyScript = `
+    const done = arguments[0];
+    const contextModule = 'ojs/ojcontext';
+    try {
+      require(
+        [contextModule],
+        function(Context) {
+          if (Context.getPageContext().getBusyContext().isReady()) {
+            done('');
+          } else {
+            done('not yet ready');
+          }
+        },
+        function (ex) {
+          require.undef(contextModule);
+          done(ex.message);
+        }
+      )
+    } catch (ex) {
+      if (ex.message === 'require is not defined') {
+         done(''); // Not a JET page
+      } else {
+         done(ex.message);
+      } 
+    }
+    `;
+
+    /**
+     * ojetPageReady() returns a Condition that executes the page ready Javascript check
+     * remotely on the browser
+     */
+    static ojetPageReady(): Condition<Promise<boolean>> {
+        return new Condition("Page Ready", async (driver: WebDriver) => {
+            try {
+                console.debug("Running page ready script:");
+                const scriptOutput = await driver.executeAsyncScript<string>(Utils.pageReadyScript);
+                console.debug(`Ran page ready script - return value: "${scriptOutput}"`);
+                return (scriptOutput === '');
+            } catch (err) {
+                return false;
+            }
+        });
+    }
     static getConfig(key: string) {
         if (!Utils.config) {
             Utils.readConfigFile();
@@ -50,7 +98,7 @@ export class Utils {
         const mainPage = new MainPage();
         const driver = await Utils.getDriver();
         console.log(`Navigating to UI main page at ${this.uiUrl}`)
-        await ojwd.get(driver, this.uiUrl);
+        await Utils.getJETPage(this.uiUrl);
 
         /* Verify MainPage is reachable and loaded */
         await mainPage.isPageLoaded();
@@ -59,8 +107,15 @@ export class Utils {
 
     public static releaseDriver() {
         if (Utils.driver) {
-            dm.releaseDriver(Utils.driver);
-            Utils.driver = null;
+            setTimeout(async () => {
+                try {
+                    await Utils.driver.quit();
+                } catch(err) {
+                    console.warn(`Failed when releasing driver session: ${err}`);
+                } finally {
+                    Utils.driver = null;
+                }
+            }, 500);
         }
     }
 
@@ -68,9 +123,9 @@ export class Utils {
         if (!Utils.driver) {
             const driverInfo = Utils.getConfig("driverInfo");
 
-            // Use JET DriverManager
-            dm.registerConfig({capabilities: driverInfo}, 'verrazzano');
-            Utils.driver = await dm.getDriver('verrazzano');
+            const caps = new Capabilities(driverInfo);
+            const driver: WebDriver = (new Builder()).withCapabilities(caps).build();
+            Utils.driver = driver;
         }
         return Utils.driver;
     }
@@ -108,4 +163,9 @@ export class Utils {
         }
     }
 
+    private static async getJETPage(url: string, timeout?: number) {
+        const driver = await Utils.getDriver();
+        await driver.get(url);
+        await driver.wait(Utils.ojetPageReady(), timeout);
+    }
 }

@@ -39,5 +39,7 @@ describe("Instance Details Page", (): void => {
 
   });
 
-  after(() => Utils.releaseDriver());
+  after(() => {
+    Utils.releaseDriver();
+  });
 });
