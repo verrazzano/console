@@ -28,6 +28,7 @@ export class ConsoleBindingVmiLinks extends VComponent<Props> {
             ).url
           }
           link={true}
+          id={"binding-vmi-link-" + VMIType.Kibana.toLocaleLowerCase()}
         />
         <ConsoleMetadataItem
           label={Messages.Labels.grafana()}
@@ -37,6 +38,7 @@ export class ConsoleBindingVmiLinks extends VComponent<Props> {
             ).url
           }
           link={true}
+          id={"binding-vmi-link-" + VMIType.Grafana.toLocaleLowerCase()}
         />
         <ConsoleMetadataItem
           label={Messages.Labels.prom()}
@@ -46,6 +48,7 @@ export class ConsoleBindingVmiLinks extends VComponent<Props> {
             ).url
           }
           link={true}
+          id={"binding-vmi-link-" + VMIType.Prometheus.toLocaleLowerCase()}
         />
         <ConsoleMetadataItem
           label={Messages.Labels.es()}
@@ -55,6 +58,7 @@ export class ConsoleBindingVmiLinks extends VComponent<Props> {
             ).url
           }
           link={true}
+          id={"binding-vmi-link-" + VMIType.ElasticSearch.toLocaleLowerCase()}
         />
       </div>
     );
