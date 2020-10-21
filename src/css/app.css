@@ -472,3 +472,10 @@ oj-table > table > tbody > tr {
 #listview > * > .oj-listview-item.oj-selected {
   background-color: #ecf3f8 !important;
 }
+
+#listview {
+  -webkit-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  user-select: auto !important;
+}

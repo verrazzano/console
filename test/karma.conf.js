@@ -18,7 +18,8 @@ module.exports = function(config) {
       'mocha',
       'chai',
       'sinon',
-      'karma-typescript'
+      'karma-typescript',
+      'fixture'
     ],
 
 
@@ -45,7 +46,9 @@ module.exports = function(config) {
         pattern: 'node_modules/sinon/**',
         included: false,
         watched: false
-      }
+      },
+
+      { pattern: 'web/css/redwood/9.0.4/web/redwood.css', included:true, watched: false }
     ],
 
 
@@ -76,8 +79,10 @@ module.exports = function(config) {
     },
 
     client: {
+      captureConsole: true,
       mocha: {
-        timeout: 30000
+        timeout: 30000,
+        bail: true
       }
     },
 

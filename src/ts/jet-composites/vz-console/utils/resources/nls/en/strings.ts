@@ -115,6 +115,7 @@ export = {
     usage: "Usage",
     created: "Created",
     selectOption: "Please select an option ...",
+    images: "Images",
   },
 
   api: {

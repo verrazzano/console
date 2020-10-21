@@ -35,7 +35,14 @@ require.config({
     "ojL10n":"libs/oj/current/ojL10n",
     "ojtranslations":"libs/oj/current/resources",
     "sinon": "../../node_modules/sinon/pkg/sinon",
-    "vz-console": "jet-composites/vz-console/1.0.0"
+    "vz-console": "jet-composites/vz-console/1.0.0",
+    "knockout":"libs/knockout/knockout-3.5.1.debug",
+    "jqueryui-amd":"libs/jquery/jqueryui-amd-1.12.1",
+    "js-yaml":"libs/js-yaml/js-yaml.min",
+    "hammerjs":"libs/hammer/hammer-2.0.8",
+    "touchr":"libs/touchr/touchr",
+    "customElements":"libs/webcomponents/custom-elements.min",
+    "ojdnd":"libs/dnd-polyfill/dnd-polyfill-1.0.2"
   },
 
   // dynamically load all test files
