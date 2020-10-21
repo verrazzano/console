@@ -1,7 +1,7 @@
 // Copyright (C) 2020, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { Binding, Instance, VerrazzanoApi, Secret, getVmiInstancesForBinding, VMIType } from 'vz-console/service/loader'
+import { Binding, Instance, VerrazzanoApi, Secret, getVmiInstancesForBinding, VMIType } from 'vz-console/service/loader';
 import 'vz-console/binding/loader';
 import * as Context from 'ojs/ojcontext';
 import * as ko from 'knockout';
