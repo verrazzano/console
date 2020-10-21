@@ -75,6 +75,7 @@ export class KubeClient {
             console.log(`Created secret ${secretName}, response status is ${result.response.statusCode}`);
         } catch (err) {
             console.log(`Failed to create Docker Registry secret ${secretName}: ${err}`);
+            throw err;
         }
     };
 
