@@ -86,7 +86,9 @@ export class KindUtil {
         stderr && console.error(stderr);
         if (error) {
           reject(
-            new Error(`failed to create KinD cluster using config ${kindConfigFile}. ${error.message}`)
+            new Error(
+              `failed to create KinD cluster using config ${kindConfigFile}. ${error.message}`
+            )
           );
         } else {
           resolve(kubeConfigFile);

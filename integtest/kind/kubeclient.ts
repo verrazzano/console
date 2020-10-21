@@ -31,7 +31,9 @@ export class KubeClient {
 
     try {
       const readResponse = await this.k8sApi.readNamespace(ns);
-      console.log(`Namespace already exists: ${readResponse.body.metadata.name}. Not creating.`);
+      console.log(
+        `Namespace already exists: ${readResponse.body.metadata.name}. Not creating.`
+      );
       return;
     } catch (error) {
       console.log(`Namespace ${ns} does not already exist`);
