@@ -606,60 +606,60 @@ export const processModelComponents = (model: any): Component[] => {
       });
     }
 
-      if (model.spec.helidonApplications) {
-        model.spec.helidonApplications.forEach((helidonApp: any) => {
-          const helidonAppComponent = processHelidonApplicationComponent(
-            helidonApp,
-            model.objectmeta.uid
+    if (model.spec.helidonApplications) {
+      model.spec.helidonApplications.forEach((helidonApp: any) => {
+        const helidonAppComponent = processHelidonApplicationComponent(
+          helidonApp,
+          model.objectmeta.uid
+        );
+        components.push(helidonAppComponent);
+        helidonAppComponent.secrets = [];
+        if (helidonApp.imagePullSecrets) {
+          processModelSecrets(
+            helidonApp.imagePullSecrets,
+            SecretUsage.ImagePullSecret,
+            helidonAppComponent.secrets
           );
-          components.push(helidonAppComponent);
-          helidonAppComponent.secrets = [];
-          if (helidonApp.imagePullSecrets) {
-            processModelSecrets(
-              helidonApp.imagePullSecrets,
-              SecretUsage.ImagePullSecret,
-              helidonAppComponent.secrets
-            );
-          }
-        });
-      }
-
-      if (model.spec.coherenceClusters) {
-        model.spec.coherenceClusters.forEach((coherenceCluster: any) => {
-          const cohClusterComponent = processCoherenceClusterComponent(
-            coherenceCluster,
-            model.objectmeta.uid
-          );
-          components.push(cohClusterComponent);
-          cohClusterComponent.secrets = [];
-          if (coherenceCluster.imagePullSecrets) {
-            processModelSecrets(
-              coherenceCluster.imagePullSecrets,
-              SecretUsage.ImagePullSecret,
-              cohClusterComponent.secrets
-            );
-          }
-        });
-      }
-
-      if (model.spec.genericComponents) {
-        model.spec.genericComponents.forEach((component: any) => {
-          const genericComponent = processGenericComponent(
-            component,
-            model.objectmeta.uid
-          );
-          components.push(genericComponent);
-          genericComponent.secrets = [];
-          if (component.deployment && component.deployment.imagepullsecrets) {
-            processModelSecrets(
-              component.deployment.imagepullsecrets,
-              SecretUsage.ImagePullSecret,
-              genericComponent.secrets
-            );
-          }
-        });
-      }
+        }
+      });
     }
+
+    if (model.spec.coherenceClusters) {
+      model.spec.coherenceClusters.forEach((coherenceCluster: any) => {
+        const cohClusterComponent = processCoherenceClusterComponent(
+          coherenceCluster,
+          model.objectmeta.uid
+        );
+        components.push(cohClusterComponent);
+        cohClusterComponent.secrets = [];
+        if (coherenceCluster.imagePullSecrets) {
+          processModelSecrets(
+            coherenceCluster.imagePullSecrets,
+            SecretUsage.ImagePullSecret,
+            cohClusterComponent.secrets
+          );
+        }
+      });
+    }
+
+    if (model.spec.genericComponents) {
+      model.spec.genericComponents.forEach((component: any) => {
+        const genericComponent = processGenericComponent(
+          component,
+          model.objectmeta.uid
+        );
+        components.push(genericComponent);
+        genericComponent.secrets = [];
+        if (component.deployment && component.deployment.imagepullsecrets) {
+          processModelSecrets(
+            component.deployment.imagepullsecrets,
+            SecretUsage.ImagePullSecret,
+            genericComponent.secrets
+          );
+        }
+      });
+    }
+  }
   return components;
 };
 
