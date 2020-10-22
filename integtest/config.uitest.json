@@ -10,7 +10,8 @@
         "acceptInsecureCerts=true",
         "acceptSslCerts=true",
         "trustAllCertificates",
-        "ignore-certificate-errors"
+        "ignore-certificate-errors",
+        "headless"
       ]
     }
   },
