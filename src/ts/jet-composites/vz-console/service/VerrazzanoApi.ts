@@ -64,28 +64,27 @@ export class VerrazzanoApi {
     let binding: Binding;
     return this.fetchApi(this.url + "/applications")
       .then((response: Response) => response.json())
-      .then(async (data: Application[]) => {
-        const applications: Application[] = data;
+      .then((applications: Application[]) => {
         const bindings = extractBindingsFromApplications(applications);
         binding = bindings.find((binding) => {
           return binding.id === bindingId;
         });
-        if (binding) {
-          let instance: Instance;
-          try {
-            instance = await this.getInstance("0");
-          } catch (err) {
-            return Promise.reject(err);
-          }
-          binding.vmiInstances = getVmiInstancesForBinding(
-            binding.name,
-            instance
-          );
-          binding.components.forEach((component) => {
-            component.status = Status.Running;
-          });
-          return binding;
+        if (!binding) {
+          throw Messages.Error.errBindingDoesNotExist(bindingId);
         }
+      })
+      .then(() => this.getInstance("0"))
+      .then((instance) => {
+        binding.vmiInstances = getVmiInstancesForBinding(
+          binding.name,
+          instance
+        );
+      })
+      .then(() => {
+        binding.components.forEach((component) => {
+          component.status = Status.Running;
+        });
+        return binding;
       });
   }
 

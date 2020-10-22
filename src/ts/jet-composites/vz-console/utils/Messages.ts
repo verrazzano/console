@@ -104,6 +104,9 @@ export const Error = {
 
   errRenderSecretList: (...args) =>
     Translations.getTranslatedString("error.errRenderSecretList", args),
+
+  errBindingDoesNotExist: (...args) =>
+    Translations.getTranslatedString("error.errBindingDoesNotExist", args),
 };
 
 export const Auth = {

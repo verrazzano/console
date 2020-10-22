@@ -5,10 +5,10 @@ web
 coverage
 node_modules
 staged-themes
-test
 thirdparty_licenses
 Dockerfile
 *.txt
 Jenkinsfile
 Makefile
 *.sh
+tsconfig.json
