@@ -113,6 +113,14 @@ Unit tests for the Verrazzano Console are written using [Karma](https://karma-ru
   make unit-test
 ```
 
+Integration tests for the Verrazzano Console are written using [Mocha](https://mochajs.org/) and [Selenium](https://www.selenium.dev/). For running the tests, you need the [Chrome](https://www.google.com/chrome/) browser and the [chromedriver](https://chromedriver.chromium.org/) version appropriate to the version of your Chrome browser. To run integration tests for the Console, run:
+
+```
+npm run integtest
+```
+
+Note that the environment variable `VZ_UI_URL` should be set to a running instance of the Console UI, and environment variable `VZ_UITEST_CONFIG` should be set to a UI test configuration file
+
 ## Building
 
 To build the Console, run the following commands:
@@ -198,18 +206,4 @@ Dependencies that satisfy all those constraints, can be added by:
 - [VComponent API Documentation](https://www.oracle.com/webfolder/technetwork/jet/jsdocs/VComponent.html)
 - [Overview of Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
 
-## Running UI tests
 
-### Unit tests
-TODO provide prerequisite information
-```
-npm test
-```
-
-### Integration tests
-
-These require the VZ_UI_URL to be set to a running instance of the Console UI, and VZ_UITEST_CONFIG to be set to a UI test configuration file
-
-```
-npm run integtest
-```
