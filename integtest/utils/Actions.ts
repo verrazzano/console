@@ -6,7 +6,6 @@ import { Utils } from "./Utils";
 import { Wait } from "./Wait";
 
 export class Actions {
-
   // Scrolls viewport until element is present in viewport
   public static async scrollIntoView(
     by: By,

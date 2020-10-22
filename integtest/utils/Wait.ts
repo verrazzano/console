@@ -27,7 +27,7 @@ export class Wait {
       throw error;
     }
   }
-  
+
   // Wait until the web element is present in the DOM and immediately visible in the UI.
   public static async waitForVisible(
     by: By,
