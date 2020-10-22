@@ -17,7 +17,9 @@ export class KindUtil {
   ): Promise<string> {
     return new Promise((resolve, reject) => {
       exec(cmd, (error, stdout, stderr) => {
-        stderr && console.error(stderr);
+        if (stderr) {
+          console.error(stderr);
+        }
         if (!error || ignoreErr) {
           resolve(stdout || stderr);
         } else {
@@ -64,9 +66,15 @@ export class KindUtil {
     const cmd = `kind delete cluster --name ${clusterName}`;
     return new Promise((resolve, reject) => {
       exec(cmd, (error, stdout, stderr) => {
-        stdout && console.log(stdout);
-        stderr && console.error(stderr);
-        error && console.error(error);
+        if (stdout) {
+          console.log(stdout);
+        }
+        if (stderr) {
+          console.error(stderr);
+        }
+        if (error) {
+          console.error(error);
+        }
         // No need to fail on error since cluster might not exist
         resolve(stdout || stderr);
       });
@@ -82,8 +90,12 @@ export class KindUtil {
     const cmd = `kind create cluster --wait 30s --image ${kindestNodeImage} --name ${clusterName} --config ${kindConfigFile} --kubeconfig ${kubeConfigFile}`;
     return new Promise((resolve, reject) => {
       exec(cmd, (error, stdout, stderr) => {
-        stdout && console.log(stdout);
-        stderr && console.error(stderr);
+        if (stdout) {
+          console.log(stdout);
+        }
+        if (stderr) {
+          console.error(stderr);
+        }
         if (error) {
           reject(
             new Error(
