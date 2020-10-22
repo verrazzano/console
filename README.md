@@ -113,7 +113,7 @@ Unit tests for the Verrazzano Console use [Karma](https://karma-runner.github.io
   make unit-test
 ```
 
-Integration tests for the Verrazzano Console use [Mocha](https://mochajs.org/) and [Selenium](https://www.selenium.dev/). For running the tests, you need the [Chrome](https://www.google.com/chrome/) browser and the [chromedriver](https://chromedriver.chromium.org/) version appropriate to the version of your Chrome browser.
+Integration tests for the Verrazzano Console use [Mocha](https://mochajs.org/) and [Selenium](https://www.selenium.dev/). For running the tests, you need the [Chrome](https://www.google.com/chrome/) browser and the [chromedriver](https://chromedriver.chromium.org/) version appropriate for the version of your Chrome browser.
 
 To run integration tests for the Console:
 * Set the environment variable `VZ_UI_URL` to the URL of a running instance of the Console UI e.g. `http://localhost:8000`.
