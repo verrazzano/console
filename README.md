@@ -107,17 +107,17 @@ When you make changes to the Console code, the changes are reflected immediately
 
 ## Testing
 
-Unit tests for the Verrazzano Console are written using [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/). For running the tests, you need the [Chrome](https://www.google.com/chrome/) browser. To run tests for the Console, run:
+Unit tests for the Verrazzano Console use [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/). For running the tests, you need the [Chrome](https://www.google.com/chrome/) browser. To run tests for the Console, run:
 
 ```bash
   make unit-test
 ```
 
-Integration tests for the Verrazzano Console are written using [Mocha](https://mochajs.org/) and [Selenium](https://www.selenium.dev/). For running the tests, you need the [Chrome](https://www.google.com/chrome/) browser and the [chromedriver](https://chromedriver.chromium.org/) version appropriate to the version of your Chrome browser.
+Integration tests for the Verrazzano Console use [Mocha](https://mochajs.org/) and [Selenium](https://www.selenium.dev/). For running the tests, you need the [Chrome](https://www.google.com/chrome/) browser and the [chromedriver](https://chromedriver.chromium.org/) version appropriate to the version of your Chrome browser.
 
 To run integration tests for the Console:
-* Set the environment variable `VZ_UI_URL` to the URL of a running instance of the Console UI e.g. http://localhost:8000
-* Set the environment variable `VZ_UITEST_CONFIG` to a UI test configuration file (a sample is provided in `integtest/config.uitest.json`, which you may edit to add login information)
+* Set the environment variable `VZ_UI_URL` to the URL of a running instance of the Console UI e.g. `http://localhost:8000`.
+* Set the environment variable `VZ_UITEST_CONFIG` to a UI test configuration file (a sample is provided in `integtest/config.uitest.json`, which you may edit to add login information).
 * Run the tests using the following command:
 ```
 npm run integtest
