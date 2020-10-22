@@ -79,8 +79,6 @@ export class VerrazzanoApi {
           binding.name,
           instance
         );
-      })
-      .then(() => {
         binding.components.forEach((component) => {
           component.status = Status.Running;
         });
