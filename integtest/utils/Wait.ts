@@ -27,12 +27,8 @@ export class Wait {
       throw error;
     }
   }
-
-  /**
-   * Wait until the web element is present in the DOM and immediately visible in the UI.
-   * @param by - locator {@see By}
-   * @param timeOut - timeout in miliseconds, default is @constant TIMEOUT
-   */
+  
+  // Wait until the web element is present in the DOM and immediately visible in the UI.
   public static async waitForVisible(
     by: By,
     timeOut: number = Wait.TIMEOUT
@@ -53,12 +49,7 @@ export class Wait {
     }
   }
 
-  /**
-   * Wait until the web element is enabled.
-   * It assumes the element will be found and disabled so it will wait, for the provided timeout, until it is enabled.
-   * @param by - locator {@see By}
-   * @param timeOut - timeout in miliseconds, default is @constant TIMEOUT
-   */
+  // Wait until the web element is enabled.
   public static async waitForEnable(
     by: By,
     timeOut: number = Wait.TIMEOUT

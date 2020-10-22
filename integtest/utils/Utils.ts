@@ -44,9 +44,7 @@ export class Utils {
     }
   }
 
-  /**
-   * Oracle JET page ready check in Javascript
-   */
+  // pageReadyScript is the Javascript code for Oracle JET page ready check
   static pageReadyScript = `
     const done = arguments[0];
     const contextModule = 'ojs/ojcontext';
@@ -74,10 +72,7 @@ export class Utils {
     }
     `;
 
-  /**
-   * ojetPageReady() returns a Condition that executes the page ready Javascript check
-   * remotely on the browser
-   */
+  // ojetPageReady() returns a Condition that executes the page ready Javascript check remotely on the browser
   static ojetPageReady(): Condition<Promise<boolean>> {
     return new Condition("Page Ready", async (driver: WebDriver) => {
       try {
@@ -107,7 +102,7 @@ export class Utils {
     console.log(`Navigating to UI main page at ${this.uiUrl}`);
     await Utils.getJETPage(this.uiUrl);
 
-    /* Verify MainPage is reachable and loaded */
+    // Verify MainPage is reachable and loaded
     await mainPage.isPageLoaded();
     return mainPage;
   }

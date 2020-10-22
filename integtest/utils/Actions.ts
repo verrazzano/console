@@ -6,11 +6,8 @@ import { Utils } from "./Utils";
 import { Wait } from "./Wait";
 
 export class Actions {
-  /**
-   * Scrolls viewport until element is present in viewport
-   * @param by web element locator {@see By}
-   * @param viewportTop whether to scroll element to top or bottom of viewport.
-   */
+
+  // Scrolls viewport until element is present in viewport
   public static async scrollIntoView(
     by: By,
     viewportTop: boolean = true
@@ -23,22 +20,14 @@ export class Actions {
     );
   }
 
-  /**
-   * Waits until the web element is visible and then clicks on it
-   * @param by web element locator {@see By}
-   */
+  // Waits until the web element is visible and then clicks on it
   public static async doClick(by: By): Promise<void> {
     const element = await Wait.waitForEnable(by);
     console.log(`Clicking an element "${by}"`);
     await element.click();
   }
 
-  /**
-   * Wait until the web element is visible then enter the given text in HTMLInputElement using javascript executor
-   * @param by - web element locator {@see By}
-   * @param text - text to set in the web element
-   * @param secret - optional - true if the text shouldn't be written in the log
-   */
+  // Wait until the web element is visible then enter the given text in HTMLInputElement using javascript executor
   public static async enterText(
     by: By,
     text: string,
