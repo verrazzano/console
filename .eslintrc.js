@@ -22,7 +22,8 @@ module.exports = {
   plugins: [
     '@typescript-eslint',
     'css-modules',
-    'html'
+    'html',
+    'chai-friendly'
   ],
   rules: {
   },

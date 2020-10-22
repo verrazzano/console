@@ -10,8 +10,8 @@
     "jwt-decode": "2.2.0"
   },
   "devDependencies": {
-    "@oracle/oraclejet-tooling": "~9.1.0",
     "@kubernetes/client-node": "^0.12.2",
+    "@oracle/oraclejet-tooling": "~9.1.0",
     "@types/chai": "^4.2.3",
     "@types/js-yaml": "^3.12.5",
     "@types/jwt-decode": "^2.2.0",
@@ -27,6 +27,7 @@
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-chai-friendly": "^0.6.0",
     "eslint-plugin-css-modules": "^2.11.0",
     "eslint-plugin-html": "^6.1.0",
     "eslint-plugin-import": "^2.22.0",
