@@ -6,6 +6,7 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
+    mocha: true,
     amd: true
   },
   extends: [
@@ -21,9 +22,12 @@ module.exports = {
   plugins: [
     '@typescript-eslint',
     'css-modules',
-    'html'
+    'html',
+    'chai-friendly'
   ],
   rules: {
+    'no-unused-expressions': 0,
+    'chai-friendly/no-unused-expressions': 2
   },
   settings: {
     'css-modules': {

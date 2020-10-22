@@ -10,6 +10,7 @@
     "jwt-decode": "2.2.0"
   },
   "devDependencies": {
+    "@kubernetes/client-node": "^0.12.2",
     "@oracle/oraclejet-tooling": "~9.1.0",
     "@types/chai": "^4.2.3",
     "@types/js-yaml": "^3.12.5",
@@ -17,19 +18,23 @@
     "@types/karma-fixture": "^0.2.5",
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.0.27",
+    "@types/selenium-webdriver": "^4.0.9",
     "@types/sinon": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",
+    "amd-loader": "0.0.8",
     "chai": "^4.2.0",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-chai-friendly": "^0.6.0",
     "eslint-plugin-css-modules": "^2.11.0",
     "eslint-plugin-html": "^6.1.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "glob": "^7.1.6",
     "karma": "^5.1.1",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
@@ -42,7 +47,9 @@
     "karma-typescript": "^5.1.0",
     "mocha": "^8.1.2",
     "prettier": "2.1.2",
+    "selenium-webdriver": "^3.6.0",
     "sinon": "^9.0.3",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.2"
   },
   "engines": {
@@ -52,7 +59,9 @@
     "test": "npx karma start test/karma.conf.js -logLevel DEBUG",
     "eslint": "npx eslint --ext .js --ext .jsx --ext .ts --ext .tsx --ext .html . src/*.html src/ts/* src/js/*.js scripts/*",
     "prettier": "npx prettier --check --ignore-unknown **/*",
-    "prettier-write": "npx prettier --write --ignore-unknown **/*"
+    "prettier-write": "npx prettier --write --ignore-unknown **/*",
+    "integtest": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' npx mocha --require ts-node/register --timeout=0 integtest/index.js",
+    "setup-kind": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node integtest/kind/kindEnvSetup.ts"
   },
   "private": true
 }
