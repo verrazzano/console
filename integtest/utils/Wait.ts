@@ -30,9 +30,6 @@ export class Wait {
 
   /**
    * Wait until the web element is present in the DOM and immediately visible in the UI.
-   * If your element is present in the DOM but hidden and you need to wait for it to be displayed,
-   * please see this documented workaround:
-   * http://surl.us.oracle.com/waitForElementToBeDisplayed_Workaround
    * @param by - locator {@see By}
    * @param timeOut - timeout in miliseconds, default is @constant TIMEOUT
    */
@@ -59,8 +56,6 @@ export class Wait {
   /**
    * Wait until the web element is enabled.
    * It assumes the element will be found and disabled so it will wait, for the provided timeout, until it is enabled.
-   * If you know your element will first appear and be enabled after X time, please check this documented workaround:
-   * http://surl.us.oracle.com/waitForPresentAndEnabled_Workaround
    * @param by - locator {@see By}
    * @param timeOut - timeout in miliseconds, default is @constant TIMEOUT
    */

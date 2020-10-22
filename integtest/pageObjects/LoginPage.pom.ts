@@ -19,7 +19,6 @@ export class LoginPage {
 
   public async isCurrentPage(): Promise<boolean> {
     const elem = await Wait.waitForPresent(LoginPage.LOGIN_FORM_BY);
-    // const elem = await Utils.getDriver().findElement(LoginPage.LOGIN_FORM_BY);
     return !!elem;
   }
 
@@ -27,7 +26,6 @@ export class LoginPage {
     timeOut: number = PAGE_LOAD_TIMEOUT
   ): Promise<boolean> {
     try {
-      // this.switchToDefaultContent();
       await Wait.waitForPresent(this.pageLoadedElement, timeOut);
       return true;
     } catch (error) {

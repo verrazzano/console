@@ -27,8 +27,6 @@ export class Utils {
       console.log(`Navigating to: ${url}`);
       await Utils.getJETPage(url, timeout);
 
-      // TODO Need to wait for busy context
-
       const loginPage = new LoginPage();
       if (loginPage.isPageLoaded()) {
         console.log("Login page is current page");
