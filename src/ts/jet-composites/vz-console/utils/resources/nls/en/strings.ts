@@ -67,6 +67,8 @@ export = {
     errRenderModelList: "Error displaying model list",
 
     errRenderSecretList: "Error displaying secret list.",
+
+    errBindingDoesNotExist: "No Binding with id {0}.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",

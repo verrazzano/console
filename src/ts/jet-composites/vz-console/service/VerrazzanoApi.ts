@@ -61,30 +61,28 @@ export class VerrazzanoApi {
 
   public async getBinding(bindingId: string): Promise<Binding> {
     console.log(Messages.Api.msgFetchBinding(bindingId));
-    const host = this.url.startsWith("/")
-      ? location.host
-      : new URL(this.url).host;
-    const hostSuffix = this.url.startsWith("/")
-      ? host.substring(host.indexOf("."))
-      : host.substring(host.indexOf("api.") + "api".length);
-
+    let binding: Binding;
     return this.fetchApi(this.url + "/applications")
       .then((response: Response) => response.json())
-      .then((data: Application[]) => {
-        const applications: Application[] = data;
+      .then((applications: Application[]) => {
         const bindings = extractBindingsFromApplications(applications);
-        for (const binding of bindings) {
-          if (binding.id === bindingId) {
-            binding.vmiInstances = getVmiInstancesForBinding(
-              binding.name,
-              hostSuffix
-            );
-            binding.components.forEach((component) => {
-              component.status = Status.Running;
-            });
-            return binding;
-          }
+        binding = bindings.find((binding) => {
+          return binding.id === bindingId;
+        });
+        if (!binding) {
+          throw Messages.Error.errBindingDoesNotExist(bindingId);
         }
+      })
+      .then(() => this.getInstance("0"))
+      .then((instance) => {
+        binding.vmiInstances = getVmiInstancesForBinding(
+          binding.name,
+          instance
+        );
+        binding.components.forEach((component) => {
+          component.status = Status.Running;
+        });
+        return binding;
       });
   }
 
