@@ -35,6 +35,14 @@ pipeline {
             }
         }
 
+        stage('Get npm') {
+            steps {
+                sh """
+                    sudo yum install -y bzip2
+                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+                """
+            }
+        }
         stage('Lint code') {
             when { not { buildingTag() } }
             steps {

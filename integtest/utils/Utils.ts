@@ -17,26 +17,42 @@ export interface LoginInfo {
 
 export class Utils {
   private static driver: WebDriver;
-  private static uiUrl = process.env.VZ_UI_URL;
   private static config: any;
 
+  static isLoginEnabled(): boolean {
+    const rawLoginEnabled = Utils.getConfig("loginEnabled");
+    // Anything other than the string or boolean false value is assumed to be a true
+    if (rawLoginEnabled !== "false" && rawLoginEnabled !== false) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static async navigateAndLogin(acceptCookies?: boolean, timeout?: number) {
+    const driverInfo = Utils.getConfig("driverInfo");
+    console.log("driver info is:");
+    console.log(JSON.stringify(driverInfo));
     const url = Utils.getConfig("driverInfo").url as string;
     const loginInfo = Utils.getConfig("loginInfo");
+    const loginEnabled = Utils.isLoginEnabled();
     try {
       console.log(`Navigating to: ${url}`);
       await Utils.getJETPage(url, timeout);
 
-      const loginPage = new LoginPage();
-      if (loginPage.isPageLoaded()) {
-        console.log("Login page is current page");
-        console.log(`Performing an initial log in.`);
-        await loginPage.login(loginInfo, acceptCookies, timeout);
-      } else {
-        const driver = await Utils.getDriver();
-        console.log(
-          `Login page is not current page. Current page url is ${driver.getCurrentUrl()}`
-        );
+      if (loginEnabled) {
+        Utils.validateConfigLoginInfo(); // need login info only if loginEnabled
+        const loginPage = new LoginPage();
+        if (await loginPage.isPageLoaded()) {
+          console.log("Login page is current page");
+          console.log(`Performing an initial log in.`);
+          await loginPage.login(loginInfo, acceptCookies, timeout);
+        } else {
+          const driver = await Utils.getDriver();
+          console.log(
+              `Login page is not current page. Current page url is ${await driver.getCurrentUrl()}`
+          );
+        }
       }
     } catch (error) {
       console.error(`Unable to navigate and log in to ${url}. ${error}`);
@@ -99,8 +115,9 @@ export class Utils {
 
   static async gotoMainPage(): Promise<MainPage> {
     const mainPage = new MainPage();
-    console.log(`Navigating to UI main page at ${this.uiUrl}`);
-    await Utils.getJETPage(this.uiUrl);
+    const uiUrl = Utils.getConfig("driverInfo").url;
+    console.log(`Navigating to UI main page at ${uiUrl}`);
+    await Utils.getJETPage(uiUrl);
 
     // Verify MainPage is reachable and loaded
     await mainPage.isPageLoaded();
@@ -148,8 +165,6 @@ export class Utils {
         `No uitest config file found for file name ${configPath}.`
       );
     }
-
-    Utils.validateConfigLoginInfo();
 
     if (!Utils.config.driverInfo) {
       Utils.config.driverInfo = { url: "http://localhost:8000" };

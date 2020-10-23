@@ -1,5 +1,6 @@
 {
   "driverInfo": {
+    "url": "http://localhost:8000",
     "browserName": "chrome",
     "goog:chromeOptions": {
       "args": [
@@ -15,6 +16,7 @@
       ]
     }
   },
+  "loginEnabled": true,
   "loginInfo": {
     "username": "",
     "password": ""
