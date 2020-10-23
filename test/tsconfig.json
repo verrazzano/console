@@ -15,6 +15,7 @@
   "include": [
     "./specs/**/*.ts",
     "../src/ts/jet-composites/**/*.ts",
-    "../node_modules/@oracle/oraclejet/dist/types/requirejs-plugins.d.ts"
+    "../node_modules/@oracle/oraclejet/dist/types/requirejs-plugins.d.ts",
+    "./testutils.ts"
   ]
 }
