@@ -30,7 +30,7 @@ npm-install:
 	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
 	nvm install 14.7 && \
 	npm install && \
-	npm install -g @oracle/ojet-cli@${JET_CLI_VERSION}
+	npm install @oracle/ojet-cli@${JET_CLI_VERSION}
 
 .PHONY: check-formatting
 check-formatting: npm-install
