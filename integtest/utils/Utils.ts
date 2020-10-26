@@ -30,9 +30,6 @@ export class Utils {
   }
 
   static async navigateAndLogin(acceptCookies?: boolean, timeout?: number) {
-    const driverInfo = Utils.getConfig("driverInfo");
-    console.log("driver info is:");
-    console.log(JSON.stringify(driverInfo));
     const url = Utils.getConfig("driverInfo").url as string;
     const loginInfo = Utils.getConfig("loginInfo");
     const loginEnabled = Utils.isLoginEnabled();
