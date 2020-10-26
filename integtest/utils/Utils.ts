@@ -47,7 +47,7 @@ export class Utils {
         } else {
           const driver = await Utils.getDriver();
           console.log(
-              `Login page is not current page. Current page url is ${await driver.getCurrentUrl()}`
+            `Login page is not current page. Current page url is ${await driver.getCurrentUrl()}`
           );
         }
       }
