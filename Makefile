@@ -6,6 +6,7 @@ DOCKER_IMAGE_NAME ?= ${NAME}-dev
 DOCKER_IMAGE_TAG ?= local-$(shell git rev-parse --short HEAD)
 GOOGLE_CHROME_VERSION=85.0.4183.83-1
 CREATE_LATEST_TAG=0
+JET_CLI_VERSION=9.1.0
 
 ifeq ($(MAKECMDGOALS),$(filter $(MAKECMDGOALS),push))
 	ifndef DOCKER_REPO
@@ -23,18 +24,16 @@ endif
 .PHONY: all
 all: build
 
-.PHONY: setup-npm
-setup-npm:
-	sudo yum install -y bzip2
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+.PHONY: npm-install
+npm-install:
 	export NVM_DIR="$$HOME/.nvm" && \
 	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
 	nvm install 14.7 && \
 	npm install && \
-	npm install @oracle/ojet-cli
+	npm install @oracle/ojet-cli@${JET_CLI_VERSION}
 
 .PHONY: check-formatting
-check-formatting: setup-npm
+check-formatting: npm-install
 	npm run prettier
 
 .PHONY: lint-code
@@ -42,7 +41,7 @@ lint-code: check-formatting
 	npm run eslint
 
 .PHONY: unit-test
-unit-test: setup-npm
+unit-test: npm-install
 	curl -o google-chrome.rpm "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-${GOOGLE_CHROME_VERSION}.x86_64.rpm"
 	sudo yum install -y ./google-chrome.rpm
 	export NVM_DIR="$$HOME/.nvm" && \
@@ -57,7 +56,7 @@ unit-test: setup-npm
 	sudo env "PATH=$$PATH" npm test
 
 .PHONY: ojet-build
-ojet-build: setup-npm
+ojet-build: npm-install
 	export NVM_DIR="$$HOME/.nvm" && \
 	[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && \
 	PATH=./node_modules/.bin:${PATH} && \
@@ -78,3 +77,4 @@ push: build
 		docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_FULLNAME}:latest; \
 		docker push ${DOCKER_IMAGE_FULLNAME}:latest; \
 	fi
+
