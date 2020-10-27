@@ -38,7 +38,7 @@ export class Utils {
       await Utils.getJETPage(url, timeout);
 
       if (loginEnabled) {
-        Utils.validateConfigLoginInfo(); // need login info only if loginEnabled
+        Utils.validateConfigLoginInfo();
         const loginPage = new LoginPage();
         if (await loginPage.isPageLoaded()) {
           console.log("Login page is current page");
