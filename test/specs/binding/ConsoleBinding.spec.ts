@@ -14,6 +14,8 @@ import * as Context from "ojs/ojcontext";
 import * as ko from "knockout";
 import "ojs/ojknockout";
 import * as sinon from "sinon";
+import { checkMetaItemLabelValue, fakeRouter } from "../../testutils";
+import * as Messages from "vz-console/utils/Messages";
 
 const expect = chai.expect;
 let bindingElement: HTMLElement;
@@ -45,61 +47,69 @@ const secrets: [Secret] = [
     type: "",
   },
 ];
+const sandbox = sinon.createSandbox();
 
 async function setup(bindingId: string) {
   fixture.set(
-    `<div id ="binding-holder"><vz-console-binding id="binding" binding-id="[[bindingId]]"/></div>`
+    `<div id ="globalBody"><vz-console-binding id="binding" binding-id="[[bindingId]]"/></div>`
   );
   bindingElement = document.querySelector("#binding") as HTMLElement;
   expect(bindingElement).not.to.be.null;
   ko.applyBindings(
     {
       bindingId,
+      router: fakeRouter(sandbox),
     },
-    bindingElement
+    bindingElement.parentElement
   );
   await Context.getContext(bindingElement)
     .getBusyContext()
     .whenReady(30000)
     .catch((err) => {
-      console.log(err);
+      chai.assert.fail(err);
     });
 }
 describe("binding vmi links test", () => {
-  const stubGetInstance = sinon.stub(
-    VerrazzanoApi.prototype,
-    <any>"getInstance"
-  );
-  const stubGetBinding = sinon.stub(VerrazzanoApi.prototype, <any>"getBinding");
-  const stubListSecrets = sinon.stub(
-    VerrazzanoApi.prototype,
-    <any>"listSecrets"
-  );
-  stubGetInstance.returns(Promise.resolve(instance));
-  stubGetBinding.returns(bindings.test);
-  stubListSecrets.returns(secrets);
-  before(async () => await setup("test"));
+  before(async () => {
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"getInstance")
+      .returns(Promise.resolve(instance));
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"getBinding")
+      .returns(bindings.test);
+    sandbox.stub(VerrazzanoApi.prototype, <any>"listSecrets").returns(secrets);
+    await setup("test")
+      .then(() => console.log("Binding view rendered"))
+      .catch((err) => {
+        chai.assert.fail(err);
+      });
+  });
+
+  after(() => {
+    fixture.cleanup();
+    sandbox.restore();
+  });
 
   it("renders the binding vmi links correctly.", async () => {
-    const elasticSearchLink = bindingElement.querySelector(
-      `#binding-vmi-link-${VMIType.ElasticSearch.toLocaleLowerCase()} > * > a`
+    const elasticSearchMetaItem = bindingElement.querySelector(
+      `#binding-vmi-link-${VMIType.ElasticSearch.toLocaleLowerCase()}`
     );
-    expect(elasticSearchLink).not.to.be.null;
+    expect(elasticSearchMetaItem).not.to.be.null;
 
-    const kibanaLink = bindingElement.querySelector(
-      `#binding-vmi-link-${VMIType.Kibana.toLocaleLowerCase()} > * > a`
+    const kibanaMetaItem = bindingElement.querySelector(
+      `#binding-vmi-link-${VMIType.Kibana.toLocaleLowerCase()}`
     );
-    expect(kibanaLink).not.to.be.null;
+    expect(kibanaMetaItem).not.to.be.null;
 
-    const grafanaLink = bindingElement.querySelector(
-      `#binding-vmi-link-${VMIType.Grafana.toLocaleLowerCase()} > * > a`
+    const grafanaMetaItem = bindingElement.querySelector(
+      `#binding-vmi-link-${VMIType.Grafana.toLocaleLowerCase()}`
     );
-    expect(grafanaLink).not.to.be.null;
+    expect(grafanaMetaItem).not.to.be.null;
 
-    const prometheusLink = bindingElement.querySelector(
-      `#binding-vmi-link-${VMIType.Prometheus.toLocaleLowerCase()} > * > a`
+    const prometheusMetaitem = bindingElement.querySelector(
+      `#binding-vmi-link-${VMIType.Prometheus.toLocaleLowerCase()}`
     );
-    expect(prometheusLink).not.to.be.null;
+    expect(prometheusMetaitem).not.to.be.null;
 
     const elasticSearchUrl = instance.elasticUrl.replace(
       ".vmi.system.",
@@ -118,14 +128,37 @@ describe("binding vmi links test", () => {
       `.vmi.${bindings.test.name.toLowerCase()}.`
     );
 
-    expect(elasticSearchLink.textContent).to.equal(elasticSearchUrl);
-    expect(elasticSearchLink.getAttribute("href")).to.equal(elasticSearchUrl);
-    expect(kibanaLink.textContent).to.equal(kibanaUrl);
-    expect(kibanaLink.getAttribute("href")).to.equal(kibanaUrl);
-    expect(grafanaLink.textContent).to.equal(grafanaUrl);
-    expect(grafanaLink.getAttribute("href")).to.equal(grafanaUrl);
-    expect(prometheusLink.textContent).to.equal(prometheusUrl);
-    expect(prometheusLink.getAttribute("href")).to.equal(prometheusUrl);
+    checkMetaItemLabelValue(
+      elasticSearchMetaItem.textContent,
+      Messages.Labels.es(),
+      elasticSearchUrl
+    );
+    expect(
+      elasticSearchMetaItem.querySelector("* > a").getAttribute("href")
+    ).to.equal(elasticSearchUrl);
+    checkMetaItemLabelValue(
+      kibanaMetaItem.textContent,
+      Messages.Labels.kibana(),
+      kibanaUrl
+    );
+    expect(kibanaMetaItem.querySelector("* > a").getAttribute("href")).to.equal(
+      kibanaUrl
+    );
+    checkMetaItemLabelValue(
+      grafanaMetaItem.textContent,
+      Messages.Labels.grafana(),
+      grafanaUrl
+    );
+    expect(
+      grafanaMetaItem.querySelector("* > a").getAttribute("href")
+    ).to.equal(grafanaUrl);
+    checkMetaItemLabelValue(
+      prometheusMetaitem.textContent,
+      Messages.Labels.prom(),
+      prometheusUrl
+    );
+    expect(
+      prometheusMetaitem.querySelector("* > a").getAttribute("href")
+    ).to.equal(prometheusUrl);
   });
-  afterEach(() => fixture.cleanup());
 });

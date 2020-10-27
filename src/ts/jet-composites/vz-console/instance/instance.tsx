@@ -4,7 +4,13 @@
 // eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
-import { Instance, Model, Binding, Status, VMIType } from "vz-console/service/loader";
+import {
+  Instance,
+  Model,
+  Binding,
+  Status,
+  VMIType,
+} from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
@@ -149,25 +155,37 @@ export class ConsoleInstance extends VComponent<Props, State> {
                       label={Messages.Labels.kibana()}
                       value={this.state.instance.kibanaUrl}
                       link={true}
-                      id={"instance-vmi-link-" + VMIType.Kibana.toLocaleLowerCase()}
+                      id={
+                        "instance-vmi-link-" +
+                        VMIType.Kibana.toLocaleLowerCase()
+                      }
                     />
                     <ConsoleMetadataItem
                       label={Messages.Labels.grafana()}
                       value={this.state.instance.grafanaUrl}
                       link={true}
-                      id={"instance-vmi-link-" + VMIType.Grafana.toLocaleLowerCase()}
+                      id={
+                        "instance-vmi-link-" +
+                        VMIType.Grafana.toLocaleLowerCase()
+                      }
                     />
                     <ConsoleMetadataItem
                       label={Messages.Labels.prom()}
                       value={this.state.instance.prometheusUrl}
                       link={true}
-                      id={"instance-vmi-link-" + VMIType.Prometheus.toLocaleLowerCase()}
+                      id={
+                        "instance-vmi-link-" +
+                        VMIType.Prometheus.toLocaleLowerCase()
+                      }
                     />
                     <ConsoleMetadataItem
                       label={Messages.Labels.es()}
                       value={this.state.instance.elasticUrl}
                       link={true}
-                      id={"instance-vmi-link-" + VMIType.ElasticSearch.toLocaleLowerCase()}
+                      id={
+                        "instance-vmi-link-" +
+                        VMIType.ElasticSearch.toLocaleLowerCase()
+                      }
                     />
                   </div>
                 </div>

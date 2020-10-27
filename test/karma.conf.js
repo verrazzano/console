@@ -27,6 +27,7 @@ module.exports = function (config) {
 
       // Test files
       { pattern: "test/specs/**/*.spec.ts", included: false },
+      { pattern: "test/testutils.ts", included: false },
 
       // Project files
       { pattern: "web/*/jet-composites/**/*", included: false },
@@ -111,7 +112,7 @@ module.exports = function (config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true,
+    singleRun: false,
 
     // Concurrency level
     // how many browser should be started simultaneous

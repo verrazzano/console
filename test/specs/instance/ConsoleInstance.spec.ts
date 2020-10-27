@@ -9,7 +9,7 @@ import {
   VMIType,
   Application,
   extractModelsFromApplications,
-  extractBindingsFromApplications
+  extractBindingsFromApplications,
 } from "vz-console/service/loader";
 import "vz-console/instance/loader";
 import * as Context from "ojs/ojcontext";
@@ -17,7 +17,7 @@ import * as ko from "knockout";
 import "ojs/ojknockout";
 import * as sinon from "sinon";
 import * as Messages from "vz-console/utils/Messages";
-import { checkMetaItemLabelValue } from "../../testutils"
+import { checkMetaItemLabelValue, fakeRouter } from "../../testutils";
 
 const expect = chai.expect;
 let instanceElement: HTMLElement;
@@ -33,70 +33,81 @@ const instance = <Instance>{
   rancherUrl: `https://rancher.${instanceUrlSuffix}`,
   mgmtCluster: "test",
   version: "1.0",
-  status: "OK"
+  status: "OK",
 };
 let model: Model;
-let binding : Binding;
+let binding: Binding;
 model = {
   id: "test-model",
   name: "test-model",
   description: "test model",
   modelComponents: [],
-  bindings: [binding]
-} 
+  bindings: [binding],
+};
 binding = <Binding>{
   id: "test-model",
   name: "test-binding",
   description: "test binding",
   components: [],
   model,
-}
-const applications: Application[] = [{
-  id: "test-application",
-  name: "test-application",
-  description: "test application",
-  status: "",
-  model: "",
-  binding: ""
-}];
+};
+const applications: Application[] = [
+  {
+    id: "test-application",
+    name: "test-application",
+    description: "test application",
+    status: "",
+    model: "",
+    binding: "",
+  },
+];
 const factory = {
   extractModelsFromApplications,
-  extractBindingsFromApplications
+  extractBindingsFromApplications,
 };
+const sandbox = sinon.createSandbox();
 
 async function setup(selectedItem?: string) {
   fixture.set(
-    `<div id ="instance-holder"><vz-console-instance id="instance" selected-item="[[selectedItem]]"/></div>`
+    `<div id ="globalBody"><vz-console-instance id="instance" selected-item="[[selectedItem]]"/></div>`
   );
   instanceElement = document.querySelector("#instance") as HTMLElement;
   expect(instanceElement).not.to.be.null;
   ko.applyBindings(
     {
       selectedItem,
+      router: fakeRouter(sandbox),
     },
-    instanceElement
+    instanceElement.parentElement
   );
   await Context.getContext(instanceElement)
     .getBusyContext()
     .whenReady(30000)
     .catch((err) => {
-      console.log(err);
+      chai.assert.fail(err);
     });
 }
 describe("instance panel screen tests", () => {
-  const stubGetInstance = sinon.stub(
-    VerrazzanoApi.prototype,
-    <any>"getInstance"
-  );
-  const stubListApplications = sinon.stub(VerrazzanoApi.prototype, <any>"listApplications");
-  const stubExtractModelsFromApplications = sinon.stub(factory,"extractModelsFromApplications");
-  const stubExtractBindingsFromApplications = sinon.stub(factory,"extractBindingsFromApplications");
-  stubGetInstance.returns(Promise.resolve(instance));
-  stubListApplications.returns(Promise.resolve(applications));
-  stubExtractModelsFromApplications.returns([model])
-  stubExtractBindingsFromApplications.returns([binding])
+  before(async () => {
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"getInstance")
+      .returns(Promise.resolve(instance));
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"listApplications")
+      .returns(Promise.resolve(applications));
+    sandbox.stub(factory, "extractModelsFromApplications").returns([model]);
+    sandbox.stub(factory, "extractBindingsFromApplications").returns([binding]);
+    await setup()
+      .then(() => console.log("Instance view rendered"))
+      .catch((err) => {
+        chai.assert.fail(err);
+      });
+  });
 
-  beforeEach(async () => await setup());
+  after(() => {
+    fixture.cleanup();
+    sandbox.restore();
+  });
 
   it("renders the vmi links correctly.", async () => {
     const elasticSearchLink = instanceElement.querySelector(
@@ -119,14 +130,38 @@ describe("instance panel screen tests", () => {
     );
     expect(prometheusLink).not.to.be.null;
 
-    checkMetaItemLabelValue(elasticSearchLink.textContent, Messages.Labels.es(), instance.elasticUrl);
-    expect(elasticSearchLink.querySelector("* > a").getAttribute("href")).to.equal(instance.elasticUrl);
-    checkMetaItemLabelValue(kibanaLink.textContent, Messages.Labels.kibana(), instance.kibanaUrl);
-    expect(kibanaLink.querySelector("* > a").getAttribute("href")).to.equal(instance.kibanaUrl);
-    checkMetaItemLabelValue(grafanaLink.textContent, Messages.Labels.grafana(), instance.grafanaUrl);
-    expect(grafanaLink.querySelector("* > a").getAttribute("href")).to.equal(instance.grafanaUrl);
-    checkMetaItemLabelValue(prometheusLink.textContent, Messages.Labels.prom(), instance.prometheusUrl);
-    expect(prometheusLink.querySelector("* > a").getAttribute("href")).to.equal(instance.prometheusUrl);
+    checkMetaItemLabelValue(
+      elasticSearchLink.textContent,
+      Messages.Labels.es(),
+      instance.elasticUrl
+    );
+    expect(
+      elasticSearchLink.querySelector("* > a").getAttribute("href")
+    ).to.equal(instance.elasticUrl);
+    checkMetaItemLabelValue(
+      kibanaLink.textContent,
+      Messages.Labels.kibana(),
+      instance.kibanaUrl
+    );
+    expect(kibanaLink.querySelector("* > a").getAttribute("href")).to.equal(
+      instance.kibanaUrl
+    );
+    checkMetaItemLabelValue(
+      grafanaLink.textContent,
+      Messages.Labels.grafana(),
+      instance.grafanaUrl
+    );
+    expect(grafanaLink.querySelector("* > a").getAttribute("href")).to.equal(
+      instance.grafanaUrl
+    );
+    checkMetaItemLabelValue(
+      prometheusLink.textContent,
+      Messages.Labels.prom(),
+      instance.prometheusUrl
+    );
+    expect(prometheusLink.querySelector("* > a").getAttribute("href")).to.equal(
+      instance.prometheusUrl
+    );
   });
 
   it("renders the general details and links correctly.", async () => {
@@ -155,13 +190,47 @@ describe("instance panel screen tests", () => {
     );
     expect(rancherMetaItem).not.to.be.null;
 
-    checkMetaItemLabelValue(statusMetaItem.textContent, Messages.Labels.status(), instance.status);
-    checkMetaItemLabelValue(versionMetaItem.textContent, Messages.Labels.version(), instance.version);
-    checkMetaItemLabelValue(mgmtClusterMetaItem.textContent, Messages.Labels.mgmtCluster(), instance.mgmtCluster);
-    checkMetaItemLabelValue(keycloakMetaItem.textContent, Messages.Labels.keycloak(), instance.keyCloakUrl);
-    checkMetaItemLabelValue(rancherMetaItem.textContent, Messages.Labels.rancher(), instance.rancherUrl);
-    expect(keycloakMetaItem.querySelector("* > a").getAttribute("href")).to.equal(instance.keyCloakUrl);
-    expect(rancherMetaItem.querySelector("* > a").getAttribute("href")).to.equal(instance.rancherUrl);
+    checkMetaItemLabelValue(
+      statusMetaItem.textContent,
+      Messages.Labels.status(),
+      instance.status
+    );
+    checkMetaItemLabelValue(
+      versionMetaItem.textContent,
+      Messages.Labels.version(),
+      instance.version
+    );
+    checkMetaItemLabelValue(
+      mgmtClusterMetaItem.textContent,
+      Messages.Labels.mgmtCluster(),
+      instance.mgmtCluster
+    );
+    checkMetaItemLabelValue(
+      keycloakMetaItem.textContent,
+      Messages.Labels.keycloak(),
+      instance.keyCloakUrl
+    );
+    checkMetaItemLabelValue(
+      rancherMetaItem.textContent,
+      Messages.Labels.rancher(),
+      instance.rancherUrl
+    );
+    expect(
+      keycloakMetaItem.querySelector("* > a").getAttribute("href")
+    ).to.equal(instance.keyCloakUrl);
+    expect(
+      rancherMetaItem.querySelector("* > a").getAttribute("href")
+    ).to.equal(instance.rancherUrl);
   });
-  afterEach(() => fixture.cleanup()); 
+
+  it("renders the status badge correctly.", async () => {
+    const badge = instanceElement.querySelector(`.badge-hexagon`);
+    expect(badge).not.to.be.null;
+
+    const badgeLabel = instanceElement.querySelector(
+      `.status-badge-status-label`
+    );
+    expect(badgeLabel).not.to.be.null;
+    expect(badgeLabel.textContent).to.equal(Messages.Nav.instance());
+  });
 });
