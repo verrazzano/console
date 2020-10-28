@@ -27,6 +27,7 @@ module.exports = function (config) {
 
       // Test files
       { pattern: "test/specs/**/*.spec.ts", included: false },
+      { pattern: "test/testutils.ts", included: false },
 
       // Project files
       { pattern: "web/*/jet-composites/**/*", included: false },
