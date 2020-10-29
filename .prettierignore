@@ -11,4 +11,5 @@ Dockerfile
 Jenkinsfile
 Makefile
 *.sh
+*.md
 tsconfig.json

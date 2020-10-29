@@ -111,6 +111,14 @@ export class KubeClient {
     return nodeAddr ? nodeAddr.address : null;
   }
 
+  async getServiceClusterURL(
+    svcName: string,
+    svcNamespace: string
+  ): Promise<string> {
+    const svc = await this.k8sApi.readNamespacedService(svcName, svcNamespace);
+    return `http://${svc.body.spec.clusterIP}:${svc.body.spec.ports[0].port}`;
+  }
+
   async kubectlFromFile(
     file: string,
     kubeVerb: string = "create"

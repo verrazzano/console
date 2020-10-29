@@ -58,7 +58,7 @@
   "scripts": {
     "test": "npx karma start test/karma.conf.js -logLevel DEBUG",
     "eslint": "npx eslint --ext .js --ext .jsx --ext .ts --ext .tsx --ext .html . src/*.html src/ts/* src/js/*.js scripts/*",
-    "prettier": "npx prettier --check --ignore-unknown **/*",
+    "prettier": "npx prettier --check --ignore-unknown *",
     "prettier-write": "npx prettier --write --ignore-unknown **/*",
     "integtest": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' npx mocha --require ts-node/register --timeout=0 integtest/index.js",
     "setup-kind": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node integtest/kind/kindEnvSetup.ts"

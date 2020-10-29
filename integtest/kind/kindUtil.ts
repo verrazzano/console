@@ -3,7 +3,7 @@
 
 import { exec } from "child_process";
 import * as fs from "fs";
-import { safeDump } from "js-yaml";
+import { safeDump, safeLoadAll } from "js-yaml";
 import * as os from "os";
 import * as path from "path";
 
@@ -38,6 +38,10 @@ export class KindUtil {
     yamls.forEach((yaml) => {
       fs.appendFileSync(filePath, `${safeDump(yaml, { indent: 2 })}---\n`);
     });
+  }
+
+  static readAllYamlsInFile(yamlFile: string): any[] {
+    return safeLoadAll(fs.readFileSync(yamlFile).toString("utf-8"));
   }
 
   static async pullDockerImage(dockerImage: string): Promise<string> {
@@ -107,5 +111,14 @@ export class KindUtil {
         }
       });
     });
+  }
+
+  static findNodePortInYaml(yamls: any[]) {
+    const services = yamls.filter((yaml) => yaml.kind === "Service");
+    const nodePortSvc = services.find((svc) => svc.spec.type === "NodePort");
+    if (!nodePortSvc) {
+      throw new Error("No NodePort service found in yaml");
+    }
+    return nodePortSvc.ports[0].nodePort;
   }
 }
