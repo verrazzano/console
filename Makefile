@@ -33,8 +33,8 @@ all: build
 .PHONY: npm-install
 npm-install:
 	echo NodeJS version is $(shell node --version)
-	time npm install && \
-	time npm install @oracle/ojet-cli@${JET_CLI_VERSION}
+	npm install && \
+	npm install @oracle/ojet-cli@${JET_CLI_VERSION}
 
 .PHONY: check-formatting
 check-formatting: npm-install
@@ -61,11 +61,11 @@ endif
 .PHONY: ojet-build
 ojet-build: npm-install
 	PATH=./node_modules/.bin:${PATH} && \
-	time ojet build --release
+	ojet build --release
 
 .PHONY: build
 build: ojet-build
-	time docker build --pull \
+	docker build --pull \
 		-t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
 
 .PHONY: push
@@ -113,7 +113,7 @@ create-cluster: delete-cluster
 	echo 'Create cluster...'
 	KIND_KUBECONFIG=${KIND_KUBECONFIG} \
 	HTTP_PROXY="" HTTPS_PROXY="" http_proxy="" https_proxy="" \
-	time ./integtest/scripts/create_cluster.sh ${CLUSTER_NAME}
+	./integtest/scripts/create_cluster.sh ${CLUSTER_NAME}
 	kubectl --kubeconfig ${KIND_KUBECONFIG} config set-context kind-${CLUSTER_NAME}
 ifdef JENKINS_URL
 	# Get the ip address of the container running the kube apiserver

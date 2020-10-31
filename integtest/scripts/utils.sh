@@ -4,25 +4,25 @@
 #
 
 function consoleerr() {
-  >&2 echo "$@"
+  >&2 echo "$(date -u '+%Y-%m-%d %H:%M%:%S %Z')" "$@"
 }
 
 function consoledebug() {
   if [ "$LOG_LEVEL" == "DEBUG" ]; then
-    >&2 echo "$@"
+    >&2 echo "$(date -u '+%Y-%m-%d %H:%M%:%S %Z')" "$@"
   fi
 }
 
 function find_index_of_item_in_array() {
   if [ $# -lt 2 ]; then
-    consoleerr "find_index_of_item_in_array requires at least 2 arguments <value to match> <array items...>, but got arguments $@"
+    consoleerr "find_index_of_item_in_array requires at least 2 arguments <value to match> <array items...>, but got arguments" "$@"
     return 1
   fi
 
   local valueToFind=$1
   shift
   local givenArray=($@)
-  consoledebug "looking for item $valueToFind in array ${givenArray[@]}"
+  consoledebug "looking for item $valueToFind in array " "${givenArray[@]}"
   for i in "${!givenArray[@]}" ; do
     consoledebug "array index $i with value ${givenArray[$i]}"
     if [ "${givenArray[$i]}" == "$valueToFind" ]; then
