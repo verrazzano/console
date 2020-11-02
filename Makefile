@@ -33,6 +33,9 @@ all: build
 .PHONY: npm-install
 npm-install:
 	echo NodeJS version is $(shell node --version)
+ifneq ($(NODEJS_VERSION), $(findstring $(NODEJS_VERSION), $(shell node --version)))
+	$(error NodeJS version must be $(NODEJS_VERSION))
+endif
 	npm install && \
 	npm install @oracle/ojet-cli@${JET_CLI_VERSION}
 
