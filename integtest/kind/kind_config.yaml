@@ -21,17 +21,4 @@ nodes:
         hostPort: 443
         listenAddress: "0.0.0.0"
         protocol: tcp
-    extraMounts:
-      - containerPath: /tmp/hostpath_pv
-        hostPath: /tmp/hostpath_pv
-        readOnly: False
   - role: worker
-    extraMounts:
-      - containerPath: /tmp/hostpath_pv
-        hostPath: /tmp/hostpath_pv
-        readOnly: False
-  - role: worker
-    extraMounts:
-      - containerPath: /tmp/hostpath_pv
-        hostPath: /tmp/hostpath_pv
-        readOnly: False
