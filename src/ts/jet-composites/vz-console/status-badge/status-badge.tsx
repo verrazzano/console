@@ -72,6 +72,23 @@ export class ConsoleStatusBadge extends VComponent<Props> {
         break;
       }
 
+      case "circle": {
+        statusElement = (
+          <svg
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 110"
+            class="badge-circle"
+          >
+            <circle cx="50" cy="60" r="50" />
+            <text x="50%" y="55%" dy="0.67ex" class="badge-label">
+              {this.props.text}
+            </text>
+          </svg>
+        );
+        break;
+      }
+
       default: {
         break;
       }

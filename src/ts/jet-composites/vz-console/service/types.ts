@@ -223,3 +223,53 @@ export interface Application {
   binding: string;
   status: string;
 }
+
+export interface OAMApplication {
+  name?: string;
+  namespace?: string;
+  data?: any;
+  status?: string;
+  // eslint-disable-next-line no-use-before-define
+  componentInstances?: OAMComponentInstance[];
+  createdOn?: string;
+}
+
+export interface OAMComponent {
+  name?: string;
+  namespace?: string;
+  workloadType?: string;
+  latestRevision?: string;
+  data?: any;
+  applications?: Map<String, OAMApplication>;
+  createdOn?: string;
+}
+
+export interface OAMComponentInstance {
+  name: string;
+  status: Status;
+  creationDate?: string;
+  oamComponent: OAMComponent;
+  id?: string;
+  eventHandler?: (selectedItem: string, selectedComponent: string) => void;
+  data?: any;
+}
+
+export interface OAMTrait {
+  name?: string;
+  kind?: string;
+  descriptor?: any;
+  id?: string;
+}
+
+export interface OAMScope {
+  name?: string;
+  kind?: string;
+  id?: string;
+  descriptor?: any;
+}
+
+export interface OAMParam {
+  name?: string;
+  value?: string;
+  id?: string;
+}

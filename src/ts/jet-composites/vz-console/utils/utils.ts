@@ -2,6 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as ko from "knockout";
+import { Status } from "vz-console/service/types";
 import CoreRouter = require("ojs/ojcorerouter");
 
 export const getQueryParam = (paramName: string): string => {
@@ -24,3 +25,12 @@ export const getDefaultRouter = (): CoreRouter => {
 
 export const isIterable = (object) =>
   object != null && typeof object[Symbol.iterator] === "function";
+
+export const getStatusForOAMResource = (resourceStatus: string): string => {
+  let status = Status.Unknown;
+  switch (resourceStatus) {
+    case "True":
+      status = Status.Running;
+  }
+  return status;
+};

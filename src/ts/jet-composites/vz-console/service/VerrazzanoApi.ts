@@ -9,14 +9,18 @@ import {
   Secret,
   Status,
   FetchApiSignature,
+  OAMApplication,
+  OAMComponent,
 } from "./types";
 import {
   extractModelsFromApplications,
   extractBindingsFromApplications,
   getVmiInstancesForBinding,
+  processOAMData,
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
+import * as fakeApi from "./fakeApi";
 
 export const ServicePrefix = "instances";
 
@@ -94,6 +98,128 @@ export class VerrazzanoApi {
       });
   }
 
+  public async listOAMAppsAndComponents(): Promise<{
+    oamApplications: OAMApplication[];
+    oamComponents: OAMComponent[];
+  }> {
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const applications: OAMApplication[] = [];
+        const components: OAMComponent[] = [];
+        const { oamApplications, oamComponents } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamApplications.forEach((element) => {
+          element.forEach((oamApplication) => {
+            applications.push(oamApplication);
+          });
+        });
+        oamComponents.forEach((element) => {
+          element.forEach((oamComponent) => {
+            components.push(oamComponent);
+          });
+        });
+        return { oamApplications: applications, oamComponents: components };
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async listOAMApplications(): Promise<OAMApplication[]> {
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const applications: OAMApplication[] = [];
+        const { oamApplications } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamApplications.forEach((element) => {
+          element.forEach((oamApplication) => {
+            applications.push(oamApplication);
+          });
+        });
+        return applications;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async listOAMComponents(): Promise<OAMComponent[]> {
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const components: OAMComponent[] = [];
+        const { oamComponents } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamComponents.forEach((element) => {
+          element.forEach((oamComponent) => {
+            components.push(oamComponent);
+          });
+        });
+        return components;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async getOAMApplication(oamAppId: string): Promise<OAMApplication> {
+    let oamApp: OAMApplication;
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const { oamApplications } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamApplications.forEach((element) => {
+          element.forEach((oamApplication) => {
+            if (oamApplication.data.metadata.uid === oamAppId) {
+              oamApp = oamApplication;
+            }
+          });
+        });
+        if (!oamApp) {
+          throw Messages.Error.errOAMApplicationDoesNotExist(oamAppId);
+        }
+        return oamApp;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
   public constructor() {
     this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
     this.listApplications = this.listApplications.bind(this);
@@ -101,5 +227,7 @@ export class VerrazzanoApi {
     this.getModel = this.getModel.bind(this);
     this.listSecrets = this.listSecrets.bind(this);
     this.getBinding = this.getBinding.bind(this);
+    this.listOAMApplications = this.listApplications.bind(this);
+    this.listOAMComponents = this.listOAMComponents.bind(this);
   }
 }

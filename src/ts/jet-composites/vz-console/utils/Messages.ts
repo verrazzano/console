@@ -31,6 +31,10 @@ export const Nav = {
   home: () => Translations.getTranslatedString("nav.home"),
   modelDetails: () => Translations.getTranslatedString("nav.modelDetails"),
   bindingDetails: () => Translations.getTranslatedString("nav.bindingDetails"),
+  oamApp: () => Translations.getTranslatedString("nav.oamApp"),
+  oamComp: () => Translations.getTranslatedString("nav.oamComp"),
+  oamAppDetails: () => Translations.getTranslatedString("nav.oamAppDetails"),
+  compInstances: () => Translations.getTranslatedString("nav.compInstances"),
 };
 
 export const Instance = {
@@ -41,6 +45,9 @@ export const Instance = {
     Translations.getTranslatedString("instance.instanceHeading"),
   appModels: () => Translations.getTranslatedString("instance.appModels"),
   appBindings: () => Translations.getTranslatedString("instance.appBindings"),
+  oamApps: () => Translations.getTranslatedString("instance.oamApps"),
+  oamCompoennts: () =>
+    Translations.getTranslatedString("instance.oamComponents"),
 };
 
 export const Binding = {
@@ -107,6 +114,18 @@ export const Error = {
 
   errBindingDoesNotExist: (...args) =>
     Translations.getTranslatedString("error.errBindingDoesNotExist", args),
+
+  errInvalidOamAppId: (...args) =>
+    Translations.getTranslatedString("error.errInvalidOamAppId", args),
+
+  errOAMApplicationDoesNotExist: (...args) =>
+    Translations.getTranslatedString(
+      "error.errOAMApplicationDoesNotExist",
+      args
+    ),
+
+  errRenderOAMApplication: (...args) =>
+    Translations.getTranslatedString("error.errRenderOAMApplication", args),
 };
 
 export const Auth = {
@@ -162,6 +181,17 @@ export const Labels = {
   created: () => Translations.getTranslatedString("labels.created"),
   selectOption: () => Translations.getTranslatedString("labels.selectOption"),
   images: () => Translations.getTranslatedString("labels.images"),
+  workloadType: () => Translations.getTranslatedString("labels.workloadType"),
+  latestRevision: () =>
+    Translations.getTranslatedString("labels.latestRevision"),
+  labels: () => Translations.getTranslatedString("labels.labels"),
+  annotations: () => Translations.getTranslatedString("labels.annotations"),
+  oamAppInfo: () => Translations.getTranslatedString("labels.oamAppInfo"),
+  traits: () => Translations.getTranslatedString("labels.traits"),
+  scopes: () => Translations.getTranslatedString("labels.scopes"),
+  params: () => Translations.getTranslatedString("labels.params"),
+  kind: () => Translations.getTranslatedString("labels.kind"),
+  value: () => Translations.getTranslatedString("labels.value"),
 };
 
 export const Api = {

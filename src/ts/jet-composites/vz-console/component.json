@@ -27,6 +27,14 @@
     "vz-console-model-components": "1.0.0",
     "vz-console-filter": "1.0.0",
     "vz-console-breadcrumb": "1.0.0",
-    "vz-console-status-badge": "1.0.0"
+    "vz-console-status-badge": "1.0.0",
+    "vz-console-oamapps-list": "1.0.0",
+    "vz-console-oamcomps-list": "1.0.0",
+    "vz-console-oamapp": "1.0.0",
+    "vz-console-oamapp-resources": "1.0.0",
+    "vz-console-oamapp-components": "1.0.0",
+    "vz-console-oamapp-component-traits": "1.0.0",
+    "vz-console-oamapp-component-scopes": "1.0.0",
+    "vz-console-oamapp-component-params": "1.0.0"
   }
 }

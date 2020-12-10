@@ -21,6 +21,10 @@ export = {
     home: "Home",
     modelDetails: "Model Details",
     bindingDetails: "Binding Details",
+    oamApp: "OAM Application",
+    oamComp: "OAM Component",
+    oamAppDetails: "OAM Application Details",
+    compInstances: "Component Instances",
   },
   model: {
     modelsPageLoaded: "Models page loaded.",
@@ -37,6 +41,8 @@ export = {
     instanceHeading: "Verrazzano",
     appModels: "Application Models",
     appBindings: "Application Bindings",
+    oamApps: "OAM Applications",
+    oamComponents: "OAM Components",
   },
   error: {
     errSendAuthReq: "Error sending auth request: {0}",
@@ -69,6 +75,12 @@ export = {
     errRenderSecretList: "Error displaying secret list.",
 
     errBindingDoesNotExist: "No Binding with id {0}.",
+
+    errInvalidOamAppId: "Invalid OAM Application Id.",
+
+    errOAMApplicationDoesNotExist: "No OAM Application with id {0}.",
+
+    errRenderOAMApplication: "Error displaying OAM Application {0}.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
@@ -118,6 +130,16 @@ export = {
     created: "Created",
     selectOption: "Please select an option ...",
     images: "Images",
+    workloadType: "Workload Type",
+    latestRevision: "Latest Revision",
+    labels: "Labels",
+    annotations: "Annotations",
+    oamAppInfo: "OAM Application Information",
+    scopes: "Scopes",
+    traits: "Traits",
+    params: "Parameters",
+    kind: "Kind",
+    value: "Value",
   },
 
   api: {

@@ -23,9 +23,13 @@ import {
   ComponentSecret,
   PartialSecret,
   SecretUsage,
+  OAMApplication,
+  OAMComponent,
+  OAMComponentInstance,
 } from "../service/types";
 import { load } from "js-yaml";
 import * as DateTimeConverter from "ojs/ojconverter-datetime";
+import { getStatusForOAMResource } from "vz-console/utils/utils";
 
 export const extractInstances = (instances: any[]): Instance[] => {
   const result: Instance[] = [];
@@ -1010,4 +1014,123 @@ export const getVmiInstancesForBinding = (
     }
   );
   return vmis;
+};
+
+export const processOAMData = (
+  applications: any[],
+  components: any[]
+): {
+  oamApplications: Map<string, Map<string, OAMApplication>>;
+  oamComponents: Map<string, Map<string, OAMComponent>>;
+} => {
+  const oamApplications = new Map<string, Map<string, OAMApplication>>();
+  const oamComponents = new Map<string, Map<string, OAMComponent>>();
+  components.forEach((component) => {
+    if (
+      component.metadata &&
+      component.metadata.namespace &&
+      component.metadata.name
+    ) {
+      const oamComponent = <OAMComponent>{
+        name: component.metadata.name,
+        namespace: component.metadata.namespace,
+        workloadType:
+          component.spec &&
+          component.spec.workload &&
+          component.spec.workload.kind
+            ? component.spec.workload.kind
+            : "",
+        latestRevision:
+          component.status &&
+          component.status.latestRevision &&
+          component.status.latestRevision.name,
+        data: component,
+        applications: new Map<String, OAMApplication>(),
+        createdOn: convertDate(component.metadata.creationTimestamp),
+      };
+      let oamComponentsForNS = oamComponents.get(component.metadata.namespace);
+      if (!oamComponentsForNS) {
+        oamComponentsForNS = new Map<string, OAMComponent>();
+        oamComponents.set(component.metadata.namespace, oamComponentsForNS);
+      }
+      oamComponentsForNS.set(component.metadata.name, oamComponent);
+    }
+  });
+  applications.forEach((application) => {
+    if (
+      application.metadata &&
+      application.metadata.namespace &&
+      application.metadata.name
+    ) {
+      const oamApplication = <OAMApplication>{
+        name: application.metadata.name,
+        namespace: application.metadata.namespace,
+        data: application,
+        status:
+          application.status &&
+          application.status.conditions &&
+          application.status.conditions.length > 0
+            ? getStatusForOAMResource(application.status.conditions[0].status)
+            : Status.Unknown,
+        createdOn: convertDate(application.metadata.creationTimestamp),
+      };
+
+      if (application.spec && application.spec.components) {
+        oamApplication.componentInstances = [];
+        let idx = 0;
+        application.spec.components.forEach((appComponent) => {
+          if (appComponent.componentName) {
+            const oamComponentsForApplicationNS = oamComponents.get(
+              application.metadata.namespace
+            );
+            if (oamComponentsForApplicationNS) {
+              const oamComponentForApplicationComponent = oamComponentsForApplicationNS.get(
+                appComponent.componentName
+              );
+              if (oamComponentForApplicationComponent) {
+                if (
+                  !oamComponentForApplicationComponent.applications.has(
+                    application.metadata.name
+                  )
+                ) {
+                  oamComponentForApplicationComponent.applications.set(
+                    application.metadata.name,
+                    oamApplication
+                  );
+                }
+                oamApplication.componentInstances.push(<OAMComponentInstance>{
+                  name: appComponent.componentName,
+                  oamComponent: oamComponentForApplicationComponent,
+                  status: oamApplication.status,
+                  id: `${application.metadata.uid}-${appComponent.componentName}-${idx}`,
+                  data: appComponent,
+                });
+                idx++;
+              }
+            }
+          }
+        });
+      }
+
+      let oamApplicationsForNS = oamApplications.get(
+        application.metadata.namespace
+      );
+      if (!oamApplicationsForNS) {
+        oamApplicationsForNS = new Map<string, OAMApplication>();
+        oamApplications.set(
+          application.metadata.namespace,
+          oamApplicationsForNS
+        );
+      }
+      oamApplicationsForNS.set(application.metadata, oamApplication);
+    }
+  });
+
+  return { oamApplications, oamComponents };
+};
+
+export const convertDate = (timestamps: string): string => {
+  return new DateTimeConverter.IntlDateTimeConverter({
+    pattern: "dd-MMM-yyyy HH:mm:ss.s",
+  }).format(timestamps);
 };

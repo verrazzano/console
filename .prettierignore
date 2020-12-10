@@ -13,3 +13,5 @@ Makefile
 *.sh
 *.md
 tsconfig.json
+.tmp
+integtest/scripts

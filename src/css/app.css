@@ -225,7 +225,8 @@ video {
 }
 
 .badge-hexagon .badge-label,
-.badge-stack .badge-label {
+.badge-stack .badge-label,
+.badge-circle .badge-label {
   font-size: 2.5rem;
 }
 
@@ -478,4 +479,87 @@ oj-table > table > tbody > tr {
   -moz-user-select: auto !important;
   -ms-user-select: auto !important;
   user-select: auto !important;
+}
+
+.activebtn {
+  background-color: #fcfcfc !important;
+  color: #222222;
+  font-weight: 500;
+  border: 1px transparent;
+  border-radius: 0;
+  appearance: button;
+  overflow: visible;
+  font: inherit;
+  text-transform: none;
+  display: inline-block;
+  box-sizing: border-box;
+  vertical-align: middle;
+  line-height: 28px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+}
+
+.tabbtn {
+  background-color: #fcfcfc !important;
+  color: #222222;
+  font-weight: 500;
+  border: 0px transparent;
+  border-radius: 0;
+  appearance: button;
+  overflow: visible;
+  font: inherit;
+  text-transform: none;
+  display: inline-block;
+  box-sizing: border-box;
+  vertical-align: middle;
+  line-height: 28px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+}
+
+.activebtn:hover,
+.tabbtn:hover {
+  font-weight: bolder;
+}
+
+.tablist {
+  border: 0;
+  flex-flow: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-bottom: -1px;
+  padding-top: 1px;
+  margin-left: 0;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+  display: flex;
+}
+
+.tablistitem {
+  bottom: -1px;
+  line-height: 30px;
+  border-left: 1px solid #aeaeae;
+  border-top: 1px solid #aeaeae;
+  border-right: 1px solid #aeaeae;
+}
+
+.paneltabbed {
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+  border-top: 0px;
+}
+
+.borderbottom {
+  border-bottom: 1px solid #aeaeae;
+}
+
+.hide {
+  display: none;
 }
