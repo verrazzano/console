@@ -14,4 +14,3 @@ Makefile
 *.md
 tsconfig.json
 .tmp
-integtest/scripts

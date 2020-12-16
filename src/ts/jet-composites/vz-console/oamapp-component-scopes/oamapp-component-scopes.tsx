@@ -27,7 +27,10 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamapp-component-scopes")
-export class ConsoleOamApplicationComponentScopes extends VComponent<Props, State> {
+export class ConsoleOamApplicationComponentScopes extends VComponent<
+  Props,
+  State
+> {
   state: State = {};
   dataProvider: ko.Observable = ko.observable();
 

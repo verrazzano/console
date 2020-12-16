@@ -7,31 +7,22 @@ module.exports = {
     es2021: true,
     node: true,
     mocha: true,
-    amd: true
+    amd: true,
   },
-  extends: [
-    'standard',
-    'prettier',
-    'plugin:css-modules/recommended'
-  ],
-  parser: '@typescript-eslint/parser',
+  extends: ["standard", "prettier", "plugin:css-modules/recommended"],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: 'module'
+    sourceType: "module",
   },
-  plugins: [
-    '@typescript-eslint',
-    'css-modules',
-    'html',
-    'chai-friendly'
-  ],
+  plugins: ["@typescript-eslint", "css-modules", "html", "chai-friendly"],
   rules: {
-    'no-unused-expressions': 0,
-    'chai-friendly/no-unused-expressions': 2
+    "no-unused-expressions": 0,
+    "chai-friendly/no-unused-expressions": 2,
   },
   settings: {
-    'css-modules': {
-      basePath: "src/css"
-    }
-  }
-}
+    "css-modules": {
+      basePath: "src/css",
+    },
+  },
+};

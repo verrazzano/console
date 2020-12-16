@@ -122,60 +122,68 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
           <ConsoleMetadataItem
             label={Messages.Labels.created()}
             value={this.state.oamApplication.createdOn}
-          />
+          />,
         ];
-        switch(this.state.oamApplication.status) {
+        switch (this.state.oamApplication.status) {
           case Status.Running:
-            tabContents.push(<div class="oj-flex">
-            <div class="oj-sm-12 oj-flex-item metadata-item">
-            <strong>{Messages.Labels.status()}:&nbsp;</strong>
-              <span id="appStatus">
-              <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                            {this.state.oamApplication.status}
-              </span>
-              </div>
-              </div>)
-              break;
-          case Status.Terminated:
-            tabContents.push(<div class="oj-flex">
-            <div class="oj-sm-12 oj-flex-item metadata-item">
-            <strong>{Messages.Labels.status()}:&nbsp;</strong>
-              <span id="appStatus">
-              <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                            {this.state.oamApplication.status}
-              </span>
-              </div>
-              </div>)
-              break;
-          case Status.Creating:
-                tabContents.push(<div class="oj-flex">
+            tabContents.push(
+              <div class="oj-flex">
                 <div class="oj-sm-12 oj-flex-item metadata-item">
-                <strong>{Messages.Labels.status()}:&nbsp;</strong>
+                  <strong>{Messages.Labels.status()}:&nbsp;</strong>
                   <span id="appStatus">
-                  <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
-                                  <span class="oj-icon-circle-inner status-icon"></span>
-                                </span>
-                                {this.state.oamApplication.status}
+                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
+                      <span class="oj-icon-circle-inner status-icon"></span>
+                    </span>
+                    {this.state.oamApplication.status}
                   </span>
-                  </div>
-                  </div>)
-                  break;
+                </div>
+              </div>
+            );
+            break;
+          case Status.Terminated:
+            tabContents.push(
+              <div class="oj-flex">
+                <div class="oj-sm-12 oj-flex-item metadata-item">
+                  <strong>{Messages.Labels.status()}:&nbsp;</strong>
+                  <span id="appStatus">
+                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
+                      <span class="oj-icon-circle-inner status-icon"></span>
+                    </span>
+                    {this.state.oamApplication.status}
+                  </span>
+                </div>
+              </div>
+            );
+            break;
+          case Status.Creating:
+            tabContents.push(
+              <div class="oj-flex">
+                <div class="oj-sm-12 oj-flex-item metadata-item">
+                  <strong>{Messages.Labels.status()}:&nbsp;</strong>
+                  <span id="appStatus">
+                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
+                      <span class="oj-icon-circle-inner status-icon"></span>
+                    </span>
+                    {this.state.oamApplication.status}
+                  </span>
+                </div>
+              </div>
+            );
+            break;
           default:
-                    tabContents.push(<div class="oj-flex">
-                    <div class="oj-sm-12 oj-flex-item compstatus">
-                      <span id="appStatus">
-                      <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-mauve">
-                                      <span class="oj-icon-circle-inner status-icon"></span>
-                                    </span>
-                                    {this.state.oamApplication.status}
-                      </span>
-                      </div>
-                      </div>)
-                      break;
+            tabContents.push(
+              <div class="oj-flex">
+                <div class="oj-sm-12 oj-flex-item compstatus">
+                  <span id="appStatus">
+                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-mauve">
+                      <span class="oj-icon-circle-inner status-icon"></span>
+                    </span>
+                    {this.state.oamApplication.status}
+                  </span>
+                </div>
+              </div>
+            );
+            break;
         }
         break;
       case "tabLbl":
