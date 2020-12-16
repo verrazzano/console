@@ -13,3 +13,4 @@ Makefile
 *.sh
 *.md
 tsconfig.json
+.tmp

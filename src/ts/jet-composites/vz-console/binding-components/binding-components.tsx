@@ -203,7 +203,7 @@ export class ConsoleBindingComponents extends VComponent<Props, State> {
         <div>
           <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
           <ConsoleFilter
-            label={Messages.Labels.state()}
+            label={Messages.Labels.byState()}
             options={[
               { label: Status.Running, value: Status.Running },
               { label: Status.Creating, value: Status.Creating },
@@ -212,7 +212,7 @@ export class ConsoleBindingComponents extends VComponent<Props, State> {
             onValueChanged={this.handleStatusFilterChanged}
           />
           <ConsoleFilter
-            label={Messages.Labels.type()}
+            label={Messages.Labels.byType()}
             options={[
               { label: ComponentType.WLS, value: ComponentType.WLS },
               { label: ComponentType.COH, value: ComponentType.COH },

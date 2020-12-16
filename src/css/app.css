@@ -150,7 +150,7 @@ footer > div > ul > li > a:visited {
 }
 
 .oj-navigationlist-item {
-  padding-left: 0.9rem !important;
+  padding-left: -1rem !important;
 }
 
 .status-badge-container svg.badge-square,

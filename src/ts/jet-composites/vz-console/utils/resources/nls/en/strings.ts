@@ -118,6 +118,8 @@ export = {
     created: "Created",
     selectOption: "Please select an option ...",
     images: "Images",
+    byType: "By Type",
+    byState: "By State",
   },
 
   api: {
