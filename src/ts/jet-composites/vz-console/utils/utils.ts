@@ -31,6 +31,10 @@ export const getStatusForOAMResource = (resourceStatus: string): string => {
   switch (resourceStatus) {
     case "True":
       status = Status.Running;
+      break;
+    case "False":
+      status = Status.Terminated;
+      break;
   }
   return status;
 };

@@ -260,7 +260,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
           selectedComponent.data.scopes.forEach((scope) => {
             const scopeData = scope.scopeRef ? scope.scopeRef : scope;
             scopes.push({
-              name: scopeData.metdata ? scopeData.metdata.name : "",
+              name: scopeData.name,
               kind: scopeData.kind,
               descriptor: scopeData,
             });

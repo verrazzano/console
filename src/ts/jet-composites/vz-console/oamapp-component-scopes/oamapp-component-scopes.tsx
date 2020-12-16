@@ -27,7 +27,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamapp-component-scopes")
-export class ConsoleOamApplicationComponentScopes extends VComponent<Props> {
+export class ConsoleOamApplicationComponentScopes extends VComponent<Props, State> {
   state: State = {};
   dataProvider: ko.Observable = ko.observable();
 
@@ -38,7 +38,7 @@ export class ConsoleOamApplicationComponentScopes extends VComponent<Props> {
     });
 
     this.updateState({
-      traits: new Model.Collection(models),
+      scopes: new Model.Collection(models),
     });
   }
 
