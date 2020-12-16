@@ -162,6 +162,8 @@ export const Labels = {
   created: () => Translations.getTranslatedString("labels.created"),
   selectOption: () => Translations.getTranslatedString("labels.selectOption"),
   images: () => Translations.getTranslatedString("labels.images"),
+  byType: () => Translations.getTranslatedString("labels.byType"),
+  byState: () => Translations.getTranslatedString("labels.byState"),
 };
 
 export const Api = {

@@ -13,6 +13,7 @@ import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 
 class Props {
   bindings?: [Binding];
+  isModelDetailsPage?: string;
 }
 
 /**
@@ -20,40 +21,57 @@ class Props {
  */
 @customElement("vz-console-binding-list")
 export class ConsoleBindingList extends VComponent<Props> {
-  columnArray = [
-    {
-      headerText: Messages.Labels.name(),
-      sortable: "enabled",
-      sortProperty: "name",
-    },
-    {
-      headerText: Messages.Labels.state(),
-      sortable: "enabled",
-      sortProperty: "state",
-    },
-    {
-      headerText: Messages.Labels.model(),
-      sortable: "enabled",
-      sortProperty: "model.name",
-    },
-  ];
-
   dataProvider: ko.Observable = ko.observable();
 
   protected render() {
+    const columnArray = [
+      {
+        headerText: Messages.Labels.name(),
+        sortable: "enabled",
+        sortProperty: "name",
+      },
+      {
+        headerText: Messages.Labels.state(),
+        sortable: "enabled",
+        sortProperty: "state",
+      },
+    ];
+    if (!this.props.isModelDetailsPage) {
+      columnArray.push({
+        headerText: Messages.Labels.model(),
+        sortable: "enabled",
+        sortProperty: "model.name",
+      });
+    }
     this.dataProvider(
       new PagingDataProviderView(
-        new ArrayDataProvider(this.props.bindings ? this.props.bindings : [], {
-          keyAttributes: "name",
-          implicitSort: [{ attribute: "name", direction: "ascending" }],
-        })
+        new ArrayDataProvider(
+          this.props.bindings
+            ? this.props.bindings.map((binding) => {
+                const bindingData = {
+                  id: binding.id,
+                  name: binding.name,
+                  state: binding.state,
+                  model: {},
+                };
+                if (!this.props.isModelDetailsPage) {
+                  bindingData.model = binding.model;
+                }
+                return bindingData;
+              })
+            : [],
+          {
+            keyAttributes: "name",
+            implicitSort: [{ attribute: "name", direction: "ascending" }],
+          }
+        )
       )
     );
     return (
       <div>
         <oj-table
           data={this.dataProvider()}
-          columns={this.columnArray}
+          columns={columnArray}
           aria-labelledby="resources"
           class="oj-table oj-table-container oj-component oj-table-horizontal-grid oj-complete"
           style={{ width: "100%" }}
@@ -104,13 +122,15 @@ export class ConsoleBindingList extends VComponent<Props> {
                   <oj-bind-text value="[[row.data.state]]"></oj-bind-text>
                 </p>
               </td>
-              <td>
-                <p>
-                  <a data-bind="attr: {href: '/models/' + row.data.model.id}">
-                    <oj-bind-text value="[[row.data.model.name]]"></oj-bind-text>
-                  </a>
-                </p>
-              </td>
+              <oj-bind-if test="[[row.data.model.id]]">
+                <td>
+                  <p>
+                    <a data-bind="attr: {href: '/models/' + row.data.model.id}">
+                      <oj-bind-text value="[[row.data.model.name]]"></oj-bind-text>
+                    </a>
+                  </p>
+                </td>
+              </oj-bind-if>
             </tr>
           </template>
         </oj-table>

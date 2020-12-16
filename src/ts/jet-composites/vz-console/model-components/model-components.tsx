@@ -161,7 +161,7 @@ export class ConsoleModelComponents extends VComponent<Props, State> {
         <div>
           <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
           <ConsoleFilter
-            label={Messages.Labels.type()}
+            label={Messages.Labels.byType()}
             options={[
               { label: ComponentType.WLS, value: ComponentType.WLS },
               { label: ComponentType.COH, value: ComponentType.COH },
