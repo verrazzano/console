@@ -3,11 +3,7 @@
 
 // eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import {
-  VerrazzanoApi,
-  Status,
-  OAMApplication,
-} from "vz-console/service/loader";
+import { VerrazzanoApi, Status, OAMComponent } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages";
@@ -16,16 +12,17 @@ import {
   BreadcrumbType,
 } from "vz-console/breadcrumb/loader";
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader";
-import { ConsoleOAMApplicationResources } from "vz-console/oamapp-resources/loader";
+import { ConsoleOAMComponentResources } from "vz-console/oamcomp-resources/loader";
+import "ojs/ojconveyorbelt";
+import * as yaml from "js-yaml";
 
 class Props {
-  oamAppId?: string;
+  oamCompId?: string;
   selectedItem?: string;
-  selectedComponent?: string;
 }
 
 class State {
-  oamApplication?: OAMApplication;
+  oamComponent?: OAMComponent;
   loading?: boolean;
   error?: string;
   breadcrumbs?: BreadcrumbType[];
@@ -35,8 +32,8 @@ class State {
 /**
  * @ojmetadata pack "vz-console"
  */
-@customElement("vz-console-oamapp")
-export class ConsoleOAMApplication extends VComponent<Props, State> {
+@customElement("vz-console-oamcomp")
+export class ConsoleOAMComponent extends VComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
@@ -45,7 +42,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
   };
 
   props: Props = {
-    oamAppId: "",
+    oamCompId: "",
   };
 
   constructor() {
@@ -54,8 +51,8 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
   }
 
   protected mounted() {
-    if (!this.props.oamAppId) {
-      this.updateState({ error: Messages.Error.errInvalidOamAppId() });
+    if (!this.props.oamCompId) {
+      this.updateState({ error: Messages.Error.errInvalidOamCompId() });
       return;
     }
 
@@ -65,9 +62,9 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
   async getData() {
     this.updateState({ loading: true });
     this.verrazzanoApi
-      .getOAMApplication(this.props.oamAppId)
-      .then((oamApplication) => {
-        this.updateState({ loading: false, oamApplication });
+      .getOAMComponent(this.props.oamCompId)
+      .then((oamComponent) => {
+        this.updateState({ loading: false, oamComponent });
       })
       .catch((error) => {
         let errorMessage = error;
@@ -108,36 +105,117 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
 
   getTabContents(): Element[] {
     let tabContents: Element[] = [];
+    const links: Element[] = [];
     switch (this.state.selectedTab) {
       case "tabInfo":
+        this.state.oamComponent.applications.forEach((application) => {
+          links.push(
+            <div class="oj-panel applistitem bg">
+              <a
+                onClick={() => {
+                  window.open(
+                    `/oamapps/${application.data.metadata.uid}`,
+                    "_blank"
+                  );
+                }}
+                href={`/oamapps/${application.data.metadata.uid}`}
+              >
+                {application.name}
+              </a>
+            </div>
+          );
+        });
         tabContents = [
-          <ConsoleMetadataItem
-            label={Messages.Labels.name()}
-            value={this.state.oamApplication.name}
-          />,
-          <ConsoleMetadataItem
-            label={Messages.Labels.ns()}
-            value={this.state.oamApplication.namespace}
-          />,
-          <ConsoleMetadataItem
-            label={Messages.Labels.created()}
-            value={this.state.oamApplication.createdOn}
-          />,
+          <div class="oj-flex">
+            <div class="oj-sm-8 oj-flex-item">
+              <h3>{Messages.Labels.generalInfo()}</h3>
+              <ConsoleMetadataItem
+                label={Messages.Labels.name()}
+                value={this.state.oamComponent.name}
+              />
+              <ConsoleMetadataItem
+                label={Messages.Labels.ns()}
+                value={this.state.oamComponent.namespace}
+              />
+              <ConsoleMetadataItem
+                label={Messages.Labels.latestRevision()}
+                value={this.state.oamComponent.latestRevision}
+              />
+              <ConsoleMetadataItem
+                label={Messages.Labels.created()}
+                value={this.state.oamComponent.createdOn}
+              />
+              <ConsoleMetadataItem
+                label={Messages.Labels.workloadType()}
+                value={this.state.oamComponent.workloadType}
+              />
+              <ConsoleMetadataItem
+                label={Messages.Labels.workloadSpec()}
+                value={this.state.oamComponent.name}
+                link={true}
+                onclick={() => {
+                  (document.getElementById("popup") as any).open(
+                    "#tabMetaInfo"
+                  );
+                }}
+                id="tabMetaInfo"
+              />
+            </div>
+            <oj-popup
+              id="popup"
+              tail="none"
+              modality="modal"
+              {...{ "position.my.horizontal": "center" }}
+              {...{ "position.my.vertical": "bottom" }}
+              {...{ "position.at.horizontal": "center" }}
+              {...{ "position.at.vertical": "bottom" }}
+              {...{ "position.offset.y": "-10px" }}
+            >
+              <div class="popupbody">
+                <div>
+                  <a
+                    onClick={() => {
+                      (document.getElementById("popup") as any).close();
+                    }}
+                    class="closelink"
+                  >
+                    Close
+                  </a>
+                </div>
+                <pre class="popupcontent">
+                  {yaml.dump(
+                    yaml.load(JSON.stringify(this.state.oamComponent.data))
+                  )}
+                </pre>
+              </div>
+            </oj-popup>
+            <div class="oj-sm-4 oj-flex-item">
+              <h3>{Messages.Labels.applications()}</h3>
+              <oj-conveyor-belt
+                orientation="vertical"
+                contentParent="#contentParentDiv"
+                class="applist"
+                arrowVisibility="visible"
+              >
+                <div id="contentParentDiv">{links}</div>
+              </oj-conveyor-belt>
+            </div>
+          </div>,
         ];
         break;
       case "tabLbl":
-        if (this.state.oamApplication.data.metadata.labels) {
+        if (this.state.oamComponent.data.metadata.labels) {
           for (const [key, value] of Object.entries(
-            this.state.oamApplication.data.metadata.labels
+            this.state.oamComponent.data.metadata.labels
           )) {
             tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
           }
         }
         break;
       case "tabAnnotation":
-        if (this.state.oamApplication.data.metadata.annotations) {
+        if (this.state.oamComponent.data.metadata.annotations) {
           for (const [key, value] of Object.entries(
-            this.state.oamApplication.data.metadata.annotations
+            this.state.oamComponent.data.metadata.annotations
           )) {
             tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
           }
@@ -156,7 +234,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     if (this.state.error) {
       return (
         <ConsoleError
-          context={Messages.Error.errRenderOAMApplication(this.props.oamAppId)}
+          context={Messages.Error.errRenderOAMApplication(this.props.oamCompId)}
           error={this.state.error}
         />
       );
@@ -174,15 +252,15 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
             <ConsoleStatusBadge
               status={Status.Running}
               type={"circle"}
-              text={"A"}
-              label={Messages.Nav.oamApp()}
+              text={"C"}
+              label={Messages.Nav.oamComp()}
             />
           </div>
           <div class="oj-sm-10 oj-flex-item">
             <div class="oj-sm-12 oj-flex">
               <div class="oj-sm-1 oj-flex-item"></div>
               <div class="oj-sm-11 oj-flex-item">
-                <h1 class="title">{this.state.oamApplication.name}</h1>
+                <h1 class="title">{this.state.oamComponent.name}</h1>
                 <div class="oj-flex tablist">
                   <div
                     class={`oj-sm-3 oj-flex-item ${this.getTabClass(
@@ -190,14 +268,14 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                     )}`}
                   >
                     <button
-                      aria-label={Messages.Labels.oamAppInfo()}
-                      title={Messages.Labels.oamAppInfo()}
+                      aria-label={Messages.Labels.oamCompInfo()}
+                      title={Messages.Labels.oamCompInfo()}
                       class={this.getBtnClass("tabInfo")}
                       id="tabInfo"
                       onClick={this.tabSwitch}
                       type="button"
                     >
-                      {Messages.Labels.oamAppInfo()}
+                      {Messages.Labels.oamCompInfo()}
                     </button>
                   </div>
                   <div
@@ -234,7 +312,6 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                 </div>
                 <div class="oj-panel oj-flex metatdata-panel bg paneltabbed">
                   <div class="oj-sm-12 oj-flex-item">
-                    <h3>{this.getTabTitle()}</h3>
                     {this.getTabContents()}
                   </div>
                 </div>
@@ -242,11 +319,10 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
             </div>
           </div>
         </div>
-        <ConsoleOAMApplicationResources
-          oamApplication={this.state.oamApplication}
+        <ConsoleOAMComponentResources
+          oamComponent={this.state.oamComponent}
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.props.selectedItem}
-          selectedComponent={this.props.selectedComponent}
         />
       </div>
     );

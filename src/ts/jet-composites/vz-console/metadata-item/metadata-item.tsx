@@ -10,6 +10,7 @@ class Props {
   link?: boolean;
   replace?: boolean;
   target?: string;
+  onclick?: () => {};
 }
 
 /**
@@ -35,7 +36,7 @@ export class ConsoleMetadataItem extends VComponent<Props> {
         <strong>{this.props.label}:&nbsp;</strong>
         {this.props.link ? (
           <a
-            onClick={this.openLink}
+            onClick={this.props.onclick ? this.props.onclick : this.openLink}
             href={this.props.target ? this.props.target : this.props.value}
           >
             {this.props.value}

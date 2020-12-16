@@ -38,7 +38,7 @@ class Props {
 @customElement("vz-console-oamapp-resources")
 export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
   router: CoreRouter;
-  componentRouters: Map<string, CoreRouter> = new Map();
+
   baseBreadcrumbs: BreadcrumbType[] = [
     { label: Messages.Nav.home(), href: "/" },
     { label: Messages.Instance.oamApps(), href: "/oamapps" },
@@ -68,6 +68,15 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
       "path",
       `oamapps/${this.props.oamApplication.data.metadata.uid}`
     );
+    window.addEventListener("popstate", (event) => {
+      const pathArray = document.location.pathname.split("/");
+      if (pathArray[pathArray.length - 1] in this.componentConfigLabels) {
+        this.updateState({
+          selectedItem: pathArray[pathArray.length - 1],
+          selectedComponent: pathArray[pathArray.length - 2],
+        });
+      }
+    });
     const parentRouter = new CoreRouter(
       [
         { path: "", redirect: this.props.oamApplication.data.metadata.uid },
@@ -81,7 +90,13 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
       .sync()
       .then(() => {
         this.router = new CoreRouter(
-          [{ path: "" }, { path: `components` }],
+          [
+            { path: "" },
+            { path: `components` },
+            { path: `traits` },
+            { path: `scopes` },
+            { path: `params` },
+          ],
           {
             urlAdapter: new UrlPathAdapter(
               `/oamapps/${this.props.oamApplication.data.metadata.uid}`
@@ -90,172 +105,85 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
           parentRouter
         );
         this.router.currentState.subscribe((args) => {
+          const breadcrumbs = [...this.baseBreadcrumbs];
           if (args.state) {
-            const label = this.labels[args.state.path];
-            const breadcrumbs = [...this.baseBreadcrumbs];
-            if (label) {
+            if (args.state.path) {
               breadcrumbs.push({
                 label: Messages.Nav.oamAppDetails(),
                 href: "#",
                 onclick: () => {
-                  this.router.go({
-                    path: "",
+                  parentRouter.go().then(() => {
+                    this.updateState({
+                      selectedItem: "components",
+                      selectedComponent: "",
+                      filter: null,
+                    });
+                    history.replaceState(
+                      null,
+                      "path",
+                      this.props.oamApplication.data.metadata.uid
+                    );
                   });
                 },
               });
-              breadcrumbs.push({ label });
+
+              if (args.state.path in this.labels) {
+                breadcrumbs.push({ label: this.labels[args.state.path] });
+              } else if (args.state.path in this.componentConfigLabels) {
+                breadcrumbs.push({
+                  label: Messages.Labels.components(),
+                  href: "#",
+                  onclick: () => {
+                    this.router.go({ path: "components" }).then(() => {
+                      this.updateState({ selectedComponent: "" });
+                    });
+                  },
+                });
+
+                if (this.state.selectedComponent) {
+                  const selectedComponentInstance = this.props.oamApplication.componentInstances.find(
+                    (component) => component.id === this.state.selectedComponent
+                  );
+                  if (selectedComponentInstance) {
+                    breadcrumbs.push({ label: selectedComponentInstance.name });
+                  }
+                  breadcrumbs.push({
+                    label: this.componentConfigLabels[args.state.path],
+                  });
+                  history.replaceState(
+                    null,
+                    "path",
+                    `components/${this.state.selectedComponent}/${args.state.path}`
+                  );
+                }
+              }
               this.updateState({ selectedItem: args.state.path, filter: null });
-              this.props.breadcrumbCallback(breadcrumbs);
             } else {
-              breadcrumbs.push({ label: Messages.Nav.oamAppDetails() });
-              this.updateState({ selectedItem: "components", filter: null });
-              this.props.breadcrumbCallback(breadcrumbs);
+              breadcrumbs.push({
+                label: Messages.Nav.oamAppDetails(),
+              });
             }
           }
+          this.props.breadcrumbCallback(breadcrumbs);
         });
+
         parentRouter.beforeStateChange.subscribe((args) => {
           this.router.go();
           args.accept(Promise.resolve(""));
         });
       })
       .then(() => {
-        if (this.props.selectedComponent) {
-          this.initializeComponentRouter();
-        }
-      })
-      .then(() => {
-        if (this.props.selectedComponent) {
-          const componentInstanceRouter = this.componentRouters.get(
-            this.props.selectedComponent
-          );
-          if (!componentInstanceRouter) {
-            throw new Error("invalid component id");
-          }
-          if (this.props.selectedItem) {
-            componentInstanceRouter.go({ path: this.props.selectedItem });
-          } else {
-            componentInstanceRouter.go({ path: "" });
-          }
-        } else if (this.props.selectedItem) {
+        if (this.props.selectedItem) {
           this.router.go({ path: this.props.selectedItem });
         }
       });
   }
 
-  private initializeComponentRouter() {
-    if (this.props.oamApplication.componentInstances) {
-      this.props.oamApplication.componentInstances.forEach(
-        (componentInstance) => {
-          const parentRouter = new CoreRouter(
-            [
-              { path: "", redirect: componentInstance.id },
-              { path: componentInstance.id },
-            ],
-            {
-              urlAdapter: new UrlPathAdapter(
-                `/oamapps/${this.props.oamApplication.data.metadata.uid}/components`
-              ),
-            },
-            this.router
-          );
-          parentRouter.sync().then(() => {
-            const componentInstanceRouter = new CoreRouter(
-              [
-                { path: "" },
-                { path: `traits` },
-                { path: `scopes` },
-                { path: `params` },
-              ],
-              {
-                urlAdapter: new UrlPathAdapter(
-                  `/oamapps/${this.props.oamApplication.data.metadata.uid}/components/${componentInstance.id}`
-                ),
-              },
-              parentRouter
-            );
-
-            componentInstanceRouter.currentState.subscribe((args) => {
-              if (args.state) {
-                const label = this.labels[args.state.path];
-                const breadcrumbs = [...this.baseBreadcrumbs];
-                breadcrumbs.push({
-                  label: Messages.Nav.oamAppDetails(),
-                  href: "#",
-                  onclick: () => {
-                    this.router.go({
-                      path: "",
-                    });
-                  },
-                });
-                breadcrumbs.push({
-                  label: Messages.Nav.compInstances(),
-                  href: "#",
-                  onclick: () => {
-                    this.router.go({
-                      path: "components",
-                    });
-                  },
-                });
-                if (label) {
-                  breadcrumbs.push({
-                    label: componentInstance.name,
-                    href: "#",
-                    onclick: () => {
-                      componentInstanceRouter.go({
-                        path: "",
-                      });
-                    },
-                  });
-                  breadcrumbs.push({ label });
-                  this.updateState({
-                    selectedComponent: componentInstance.id,
-                    selectedItem: args.state.path,
-                    filter: null,
-                  });
-                  this.props.breadcrumbCallback(breadcrumbs);
-                } else {
-                  breadcrumbs.push({ label: componentInstance.name });
-                  this.updateState({
-                    selectedItem: "components",
-                    selectedComponent: componentInstance.id,
-                    filter: null,
-                  });
-                  this.props.breadcrumbCallback(breadcrumbs);
-                }
-              }
-            });
-
-            parentRouter.beforeStateChange.subscribe((args) => {
-              componentInstanceRouter.sync();
-              args.accept(Promise.resolve(""));
-            });
-            this.componentRouters.set(
-              componentInstance.id,
-              componentInstanceRouter
-            );
-          });
-        }
-      );
-    }
-  }
-
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
-    if (this.state.selectedComponent) {
-      if (this.componentRouters.size === 0) {
-        this.initializeComponentRouter();
-      }
-    }
-    this.updateState({ selectedItem: event.detail.value });
     if (event.detail.originalEvent) {
       this.router.go({ path: event.detail.value });
     }
-
-    /* if(event.detail.value in this.componentConfigLabels) {
-        this.componentRouters.get(this.state.selectedComponent).go({ path: event.detail.value })
-      } else {
-        this.router.go({ path: event.detail.value });
-      } */
   }
 
   filterCallback = (filter: Element): void => {
@@ -266,8 +194,17 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
     selectedItem: string,
     selectedComponent: string
   ): void => {
-    this.updateState({ selectedItem, selectedComponent });
+    this.updateState({ selectedItem, selectedComponent, filter: null });
   };
+
+  protected updated(oldprops: Readonly<Props>, oldState: Readonly<State>) {
+    if (
+      this.state.selectedItem &&
+      this.state.selectedItem !== oldState.selectedItem
+    ) {
+      this.router.go({ path: this.state.selectedItem });
+    }
+  }
 
   protected render() {
     let ResourceList: Element;
@@ -279,6 +216,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
             components={this.props.oamApplication.componentInstances}
             filterCallback={this.filterCallback}
             linkSelectionCallback={this.linkSelectionCallback}
+            selectedComponent={this.state.selectedComponent}
           />
         );
         Heading = <h1 class="resheader">{this.labels.components}</h1>;

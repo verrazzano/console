@@ -240,7 +240,7 @@ export interface OAMComponent {
   workloadType?: string;
   latestRevision?: string;
   data?: any;
-  applications?: Map<String, OAMApplication>;
+  applications?: OAMApplication[];
   createdOn?: string;
 }
 
@@ -272,4 +272,11 @@ export interface OAMParam {
   name?: string;
   value?: string;
   id?: string;
+}
+
+export interface OAMComponentParam {
+  name?: string;
+  description?: string;
+  required?: boolean;
+  descriptor?: any;
 }

@@ -34,6 +34,7 @@ export const Nav = {
   oamApp: () => Translations.getTranslatedString("nav.oamApp"),
   oamComp: () => Translations.getTranslatedString("nav.oamComp"),
   oamAppDetails: () => Translations.getTranslatedString("nav.oamAppDetails"),
+  oamCompDetails: () => Translations.getTranslatedString("nav.oamCompDetails"),
   compInstances: () => Translations.getTranslatedString("nav.compInstances"),
 };
 
@@ -126,6 +127,15 @@ export const Error = {
 
   errRenderOAMApplication: (...args) =>
     Translations.getTranslatedString("error.errRenderOAMApplication", args),
+
+  errInvalidOamCompId: (...args) =>
+    Translations.getTranslatedString("error.errInvalidOamCompId", args),
+
+  errOAMComponentDoesNotExist: (...args) =>
+    Translations.getTranslatedString("error.errOAMComponentDoesNotExist", args),
+
+  errRenderOAMComponent: (...args) =>
+    Translations.getTranslatedString("error.errRenderOAMComponent", args),
 };
 
 export const Auth = {
@@ -182,6 +192,7 @@ export const Labels = {
   selectOption: () => Translations.getTranslatedString("labels.selectOption"),
   images: () => Translations.getTranslatedString("labels.images"),
   workloadType: () => Translations.getTranslatedString("labels.workloadType"),
+  workloadSpec: () => Translations.getTranslatedString("labels.workloadSpec"),
   latestRevision: () =>
     Translations.getTranslatedString("labels.latestRevision"),
   labels: () => Translations.getTranslatedString("labels.labels"),
@@ -192,6 +203,10 @@ export const Labels = {
   params: () => Translations.getTranslatedString("labels.params"),
   kind: () => Translations.getTranslatedString("labels.kind"),
   value: () => Translations.getTranslatedString("labels.value"),
+  required: () => Translations.getTranslatedString("labels.required"),
+  oamCompInfo: () => Translations.getTranslatedString("labels.oamCompInfo"),
+  applications: () => Translations.getTranslatedString("labels.applications"),
+  oamCompRef: () => Translations.getTranslatedString("labels.oamCompRef"),
 };
 
 export const Api = {

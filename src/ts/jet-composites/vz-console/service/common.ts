@@ -1045,7 +1045,7 @@ export const processOAMData = (
           component.status.latestRevision &&
           component.status.latestRevision.name,
         data: component,
-        applications: new Map<String, OAMApplication>(),
+        applications: [],
         createdOn: convertDate(component.metadata.creationTimestamp),
       };
       let oamComponentsForNS = oamComponents.get(component.metadata.namespace);
@@ -1089,12 +1089,18 @@ export const processOAMData = (
               );
               if (oamComponentForApplicationComponent) {
                 if (
-                  !oamComponentForApplicationComponent.applications.has(
-                    application.metadata.name
-                  )
+                  oamComponentForApplicationComponent.applications.findIndex(
+                    (oamApplicationForComponent) => {
+                      if (
+                        application.metadata.name ===
+                        oamApplicationForComponent.name
+                      ) {
+                        return oamApplicationForComponent;
+                      }
+                    }
+                  ) < 0
                 ) {
-                  oamComponentForApplicationComponent.applications.set(
-                    application.metadata.name,
+                  oamComponentForApplicationComponent.applications.push(
                     oamApplication
                   );
                 }
@@ -1104,6 +1110,7 @@ export const processOAMData = (
                   status: oamApplication.status,
                   id: `${application.metadata.uid}-${appComponent.componentName}-${idx}`,
                   data: appComponent,
+                  creationDate: oamApplication.createdOn,
                 });
                 idx++;
               }

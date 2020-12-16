@@ -24,6 +24,7 @@ export = {
     oamApp: "OAM Application",
     oamComp: "OAM Component",
     oamAppDetails: "OAM Application Details",
+    oamCompDetails: "OAM Component Details",
     compInstances: "Component Instances",
   },
   model: {
@@ -81,6 +82,12 @@ export = {
     errOAMApplicationDoesNotExist: "No OAM Application with id {0}.",
 
     errRenderOAMApplication: "Error displaying OAM Application {0}.",
+
+    errInvalidOamCompId: "Invalid OAM Component Id.",
+
+    errOAMComponentDoesNotExist: "No OAM Component with id {0}.",
+
+    errRenderOAMComponent: "Error displaying OAM Component {0}.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
@@ -131,6 +138,7 @@ export = {
     selectOption: "Please select an option ...",
     images: "Images",
     workloadType: "Workload Type",
+    workloadSpec: "Workload Spec",
     latestRevision: "Latest Revision",
     labels: "Labels",
     annotations: "Annotations",
@@ -140,6 +148,10 @@ export = {
     params: "Parameters",
     kind: "Kind",
     value: "Value",
+    required: "Required",
+    oamCompInfo: "OAM Component Information",
+    applications: "Applications",
+    oamCompRef: "OAM Component Ref",
   },
 
   api: {

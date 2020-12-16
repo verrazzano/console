@@ -220,6 +220,38 @@ export class VerrazzanoApi {
       });
   }
 
+  public async getOAMComponent(oamCompId: string): Promise<OAMApplication> {
+    let oamComp: OAMComponent;
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const { oamComponents } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamComponents.forEach((element) => {
+          element.forEach((oamComponent) => {
+            if (oamComponent.data.metadata.uid === oamCompId) {
+              oamComp = oamComponent;
+            }
+          });
+        });
+        if (!oamComp) {
+          throw Messages.Error.errOAMComponentDoesNotExist(oamCompId);
+        }
+        return oamComp;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
   public constructor() {
     this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
     this.listApplications = this.listApplications.bind(this);

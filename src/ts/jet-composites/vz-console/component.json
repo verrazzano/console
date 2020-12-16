@@ -35,6 +35,9 @@
     "vz-console-oamapp-components": "1.0.0",
     "vz-console-oamapp-component-traits": "1.0.0",
     "vz-console-oamapp-component-scopes": "1.0.0",
-    "vz-console-oamapp-component-params": "1.0.0"
+    "vz-console-oamapp-component-params": "1.0.0",
+    "vz-console-oamcomp": "1.0.0",
+    "vz-console-oamcomp-resources": "1.0.0",
+    "vz-console-oamcomp-params-list": "1.0.0"
   }
 }

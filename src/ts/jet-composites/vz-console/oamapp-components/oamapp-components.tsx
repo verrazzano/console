@@ -14,12 +14,14 @@ import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages";
+import { KeySetImpl } from "ojs/ojkeyset";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
   components: [OAMComponentInstance];
   filterCallback?: (filter: Element) => {};
+  selectedComponent?: string;
   linkSelectionCallback?: (
     selectedItem: string,
     selectedComponent: string
@@ -222,6 +224,11 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
                 data={this.dataProvider()}
                 selectionMode="single"
                 class="oj-complete"
+                selected={
+                  this.props.selectedComponent
+                    ? new KeySetImpl([this.props.selectedComponent])
+                    : new KeySetImpl()
+                }
               >
                 <template slot="itemTemplate" data-oj-as="item">
                   <oj-list-item-layout>
@@ -275,12 +282,24 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
                           <span>{Messages.Labels.created()}:&nbsp;</span>
                         </strong>
                         <span data-bind="attr: { id: item.data.id+'_created' }">
-                          <oj-bind-text value="[[item.data.createdOn]]"></oj-bind-text>
+                          <oj-bind-text value="[[item.data.creationDate]]"></oj-bind-text>
                         </span>
                       </div>
                       <div class="oj-sm-2 oj-flex-item">
                         <a data-bind="event: { click: () => {item.data.eventHandler('params', item.data.id)} }">
                           {this.links.params}
+                        </a>
+                      </div>
+                    </div>
+                    <div class="oj-flex">
+                      <div class="oj-sm-12 oj-flex-item">
+                        <strong>
+                          <span>{Messages.Labels.oamCompRef()}:&nbsp;</span>
+                        </strong>
+                        <a
+                          data-bind={`attr: {href: '/oamcomps/' + item.data.oamComponent.data.metadata.uid}`}
+                        >
+                          <oj-bind-text value="[[item.data.oamComponent.data.metadata.name]]"></oj-bind-text>
                         </a>
                       </div>
                     </div>

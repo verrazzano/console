@@ -36,7 +36,6 @@ export class ConsoleOamApplicationComponentTraits extends VComponent<Props> {
     this.props.traits.forEach((trait) => {
       models.push(new Model.Model(trait));
     });
-    console.log(models);
     this.updateState({
       traits: new Model.Collection(models),
     });

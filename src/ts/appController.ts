@@ -94,6 +94,10 @@ class RootViewModel {
         detail: { label: Messages.Nav.oamApp(), iconClass: "" },
       },
       {
+        path: "oamcomp",
+        detail: { label: Messages.Nav.oamComp(), iconClass: "" },
+      },
+      {
         path: "instance",
         detail: { label: Messages.Nav.instance(), iconClass: "" },
       },
