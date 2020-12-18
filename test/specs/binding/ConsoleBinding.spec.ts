@@ -28,14 +28,24 @@ const instance = <Instance>{
   grafanaUrl: `https://grafana.vmi.system.default.${instanceIp}.xip.io`,
   prometheusUrl: `https://prometheus.vmi.system.default.${instanceIp}.xip.io`,
 };
+const instanceUsingSharedVMI = <Instance>{
+  ...instance,
+  isUsingSharedVMI: true,
+};
 const bindings = {
-  test: <Binding>{
-    id: "test",
-    name: "test-binding",
-    description: "test",
-    model: { id: "test", modelComponents: [] },
-    components: [],
-    vmiInstances: getVmiInstancesForBinding("test-binding", instance),
+  test: (isUsingSharedVMI: boolean) => {
+    console.log(isUsingSharedVMI);
+    return <Binding>{
+      id: "test",
+      name: "test-binding",
+      description: "test",
+      model: { id: "test", modelComponents: [] },
+      components: [],
+      vmiInstances: getVmiInstancesForBinding(
+        "test-binding",
+        isUsingSharedVMI ? instanceUsingSharedVMI : instance
+      ),
+    };
   },
 };
 const secrets: [Secret] = [
@@ -76,7 +86,7 @@ describe("binding vmi links test", () => {
       .returns(Promise.resolve(instance));
     sandbox
       .stub(VerrazzanoApi.prototype, <any>"getBinding")
-      .returns(bindings.test);
+      .returns(bindings.test(false));
     sandbox.stub(VerrazzanoApi.prototype, <any>"listSecrets").returns(secrets);
     await setup("test")
       .then(() => console.log("Binding view rendered"))
@@ -111,21 +121,22 @@ describe("binding vmi links test", () => {
     );
     expect(prometheusMetaitem).not.to.be.null;
 
+    const bindingName = bindings.test(false).name;
     const elasticSearchUrl = instance.elasticUrl.replace(
       ".vmi.system.",
-      `.vmi.${bindings.test.name.toLowerCase()}.`
+      `.vmi.${bindingName.toLowerCase()}.`
     );
     const kibanaUrl = instance.kibanaUrl.replace(
       ".vmi.system.",
-      `.vmi.${bindings.test.name.toLowerCase()}.`
+      `.vmi.${bindingName.toLowerCase()}.`
     );
     const grafanaUrl = instance.grafanaUrl.replace(
       ".vmi.system.",
-      `.vmi.${bindings.test.name.toLowerCase()}.`
+      `.vmi.${bindingName.toLowerCase()}.`
     );
     const prometheusUrl = instance.prometheusUrl.replace(
       ".vmi.system.",
-      `.vmi.${bindings.test.name.toLowerCase()}.`
+      `.vmi.${bindingName.toLowerCase()}.`
     );
 
     checkMetaItemLabelValue(
@@ -160,5 +171,82 @@ describe("binding vmi links test", () => {
     expect(
       prometheusMetaitem.querySelector("* > a").getAttribute("href")
     ).to.equal(prometheusUrl);
+  });
+});
+
+describe("binding vmi links test for instance using shared vmi", () => {
+  before(async () => {
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"getInstance")
+      .returns(Promise.resolve(instanceUsingSharedVMI));
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"getBinding")
+      .returns(bindings.test(true));
+    sandbox.stub(VerrazzanoApi.prototype, <any>"listSecrets").returns(secrets);
+    await setup("test")
+      .then(() => console.log("Binding view rendered"))
+      .catch((err) => {
+        chai.assert.fail(err);
+      });
+  });
+
+  after(() => {
+    fixture.cleanup();
+    sandbox.restore();
+  });
+
+  it("renders the binding vmi links correctly for shared vmi correctly.", async () => {
+    const elasticSearchMetaItem = bindingElement.querySelector(
+      `#binding-vmi-link-${VMIType.ElasticSearch.toLocaleLowerCase()}`
+    );
+    expect(elasticSearchMetaItem).not.to.be.null;
+
+    const kibanaMetaItem = bindingElement.querySelector(
+      `#binding-vmi-link-${VMIType.Kibana.toLocaleLowerCase()}`
+    );
+    expect(kibanaMetaItem).not.to.be.null;
+
+    const grafanaMetaItem = bindingElement.querySelector(
+      `#binding-vmi-link-${VMIType.Grafana.toLocaleLowerCase()}`
+    );
+    expect(grafanaMetaItem).not.to.be.null;
+
+    const prometheusMetaitem = bindingElement.querySelector(
+      `#binding-vmi-link-${VMIType.Prometheus.toLocaleLowerCase()}`
+    );
+    expect(prometheusMetaitem).not.to.be.null;
+
+    checkMetaItemLabelValue(
+      elasticSearchMetaItem.textContent,
+      Messages.Labels.es(),
+      instanceUsingSharedVMI.elasticUrl
+    );
+    expect(
+      elasticSearchMetaItem.querySelector("* > a").getAttribute("href")
+    ).to.equal(instanceUsingSharedVMI.elasticUrl);
+    checkMetaItemLabelValue(
+      kibanaMetaItem.textContent,
+      Messages.Labels.kibana(),
+      instanceUsingSharedVMI.kibanaUrl
+    );
+    expect(kibanaMetaItem.querySelector("* > a").getAttribute("href")).to.equal(
+      instanceUsingSharedVMI.kibanaUrl
+    );
+    checkMetaItemLabelValue(
+      grafanaMetaItem.textContent,
+      Messages.Labels.grafana(),
+      instanceUsingSharedVMI.grafanaUrl
+    );
+    expect(
+      grafanaMetaItem.querySelector("* > a").getAttribute("href")
+    ).to.equal(instanceUsingSharedVMI.grafanaUrl);
+    checkMetaItemLabelValue(
+      prometheusMetaitem.textContent,
+      Messages.Labels.prom(),
+      instanceUsingSharedVMI.prometheusUrl
+    );
+    expect(
+      prometheusMetaitem.querySelector("* > a").getAttribute("href")
+    ).to.equal(instanceUsingSharedVMI.prometheusUrl);
   });
 });

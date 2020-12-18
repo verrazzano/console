@@ -13,7 +13,7 @@ import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 
 class Props {
   bindings?: [Binding];
-  isModelDetailsPage?: string;
+  isModelDetailsPage?: boolean;
 }
 
 /**
