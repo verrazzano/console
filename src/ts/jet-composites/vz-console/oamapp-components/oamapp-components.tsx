@@ -7,14 +7,12 @@ import { OAMComponentInstance, Status } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
-import "ojs/ojlistview";
 import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
-import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages";
-import { KeySetImpl } from "ojs/ojkeyset";
+import {ConsoleOAMAppComponentView} from "vz-console/oamapp-component-view/loader";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -55,12 +53,6 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
   currentSort = ko.observable(this.defaultSort);
 
   currentStatusFilter = ko.observable([Status.Any]);
-
-  links = {
-    traits: Messages.Labels.traits(),
-    scopes: Messages.Labels.scopes(),
-    params: Messages.Labels.params(),
-  };
 
   compare = (left: Model.Model, right: Model.Model): number => {
     let result = 0;
@@ -218,94 +210,10 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
                 </div>
               </div>
 
-              <oj-list-view
-                id="listview"
-                ariaLabel="oam application components"
-                data={this.dataProvider()}
-                selectionMode="single"
-                class="oj-complete"
-                selected={
-                  this.props.selectedComponent
-                    ? new KeySetImpl([this.props.selectedComponent])
-                    : new KeySetImpl()
-                }
-              >
-                <template slot="itemTemplate" data-oj-as="item">
-                  <oj-list-item-layout>
-                    <div class="oj-flex">
-                      <div class="oj-sm-10 oj-flex-item">
-                        <strong>
-                          <span>{Messages.Labels.name()}:&nbsp;</span>
-                        </strong>
-                        <span data-bind="attr: { id: item.data.id+'_name' }">
-                          <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                        </span>
-                      </div>
-                      <div class="oj-sm-2 oj-flex-item">
-                        <a data-bind="event: { click: () => {item.data.eventHandler('traits', item.data.id)} }">
-                          {this.links.traits}
-                        </a>
-                      </div>
-                    </div>
-                    <div class="oj-flex">
-                      <div class="oj-sm-10 oj-flex-item compstatus">
-                        <strong>{Messages.Labels.status()}:&nbsp;</strong>
-                        <span data-bind="attr: { id: item.data.id+'_status' }">
-                          <oj-bind-if test="[[item.data.status === 'Running']]">
-                            <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                          </oj-bind-if>
-                          <oj-bind-if test="[[item.data.status === 'Terminated']]">
-                            <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                          </oj-bind-if>
-                          <oj-bind-if test="[[item.data.status === 'Creating']]">
-                            <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
-                              <span class="oj-icon-circle-inner status-icon"></span>
-                            </span>
-                          </oj-bind-if>
-                          &nbsp;
-                          <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
-                        </span>
-                      </div>
-                      <div class="oj-sm-2 oj-flex-item">
-                        <a data-bind="event: { click: () => {item.data.eventHandler('scopes', item.data.id)} }">
-                          {this.links.scopes}
-                        </a>
-                      </div>
-                    </div>
-                    <div class="oj-flex">
-                      <div class="oj-sm-10 oj-flex-item">
-                        <strong>
-                          <span>{Messages.Labels.created()}:&nbsp;</span>
-                        </strong>
-                        <span data-bind="attr: { id: item.data.id+'_created' }">
-                          <oj-bind-text value="[[item.data.creationDate]]"></oj-bind-text>
-                        </span>
-                      </div>
-                      <div class="oj-sm-2 oj-flex-item">
-                        <a data-bind="event: { click: () => {item.data.eventHandler('params', item.data.id)} }">
-                          {this.links.params}
-                        </a>
-                      </div>
-                    </div>
-                    <div class="oj-flex">
-                      <div class="oj-sm-12 oj-flex-item">
-                        <strong>
-                          <span>{Messages.Labels.oamCompRef()}:&nbsp;</span>
-                        </strong>
-                        <a
-                          data-bind={`attr: {href: '/oamcomps/' + item.data.oamComponent.data.metadata.uid}`}
-                        >
-                          <oj-bind-text value="[[item.data.oamComponent.data.metadata.name]]"></oj-bind-text>
-                        </a>
-                      </div>
-                    </div>
-                  </oj-list-item-layout>
-                </template>
-              </oj-list-view>
+              <ConsoleOAMAppComponentView
+              dataProvider={this.dataProvider()}
+              selectedComponent={this.props.selectedComponent}
+              />
 
               <div class="oj-flex card-border">
                 <div class="oj-sm-7 oj-flex-item"></div>

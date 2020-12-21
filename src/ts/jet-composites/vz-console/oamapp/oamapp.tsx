@@ -7,6 +7,7 @@ import {
   VerrazzanoApi,
   Status,
   OAMApplication,
+  OAMComponentInstance,
 } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleError } from "vz-console/error/loader";
@@ -17,6 +18,10 @@ import {
 } from "vz-console/breadcrumb/loader";
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader";
 import { ConsoleOAMApplicationResources } from "vz-console/oamapp-resources/loader";
+import {ConsoleOAMAppComponentView} from "vz-console/oamapp-component-view/loader";
+import * as ko from "knockout";
+import * as Model from "ojs/ojmodel";
+import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
   oamAppId?: string;
@@ -30,6 +35,13 @@ class State {
   error?: string;
   breadcrumbs?: BreadcrumbType[];
   selectedTab?: string;
+  selectedView?: string;
+  selectedComponent?: string;
+  selectedItem?: string;
+  linkSelectionCallback?: (
+    selectedItem: string,
+    selectedComponent: string
+  ) => {};
 }
 
 /**
@@ -42,6 +54,9 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     loading: true,
     breadcrumbs: [],
     selectedTab: "tabInfo",
+    selectedView: this.props.selectedItem && this.props.selectedItem in Messages.ComponentConfigLabels ? "components" : "application",
+    selectedItem: this.props.selectedItem,
+    selectedComponent: this.props.selectedComponent
   };
 
   props: Props = {
@@ -82,6 +97,13 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     this.updateState({ breadcrumbs });
   };
 
+  selectedViewCallBack = (selectedItem: string, selectedView: string, selectedComponent: string, linkSelectionCallback :(
+    selectedItem: string,
+    selectedComponent: string
+  ) => {}) : void => {
+    this.updateState({ selectedItem, selectedView, selectedComponent, linkSelectionCallback })
+  }
+
   getTabClass(tabId: string): string {
     return this.state.selectedTab === tabId ? "tablistitem" : "borderbottom";
   }
@@ -104,6 +126,120 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
         break;
     }
     return tabTitle;
+  }
+
+  getPanelContents(): Element {
+    let oamComponent : OAMComponentInstance;
+    const dataProvider: ko.Observable = ko.observable(); 
+    switch(this.state.selectedView) {
+      case "application":
+        return (
+          <div class="oj-sm-12 oj-flex">
+          <div class="oj-sm-1 oj-flex-item"></div>
+          <div class="oj-sm-11 oj-flex-item">
+            <h1 class="title">{this.state.oamApplication.name}</h1>
+            <div class="oj-flex tablist">
+              <div
+                class={`oj-sm-3 oj-flex-item ${this.getTabClass(
+                  "tabInfo"
+                )}`}
+              >
+                <button
+                  aria-label={Messages.Labels.oamAppInfo()}
+                  title={Messages.Labels.oamAppInfo()}
+                  class={this.getBtnClass("tabInfo")}
+                  id="tabInfo"
+                  onClick={this.tabSwitch}
+                  type="button"
+                >
+                  {Messages.Labels.oamAppInfo()}
+                </button>
+              </div>
+              <div
+                class={`oj-sm-1 oj-flex-item ${this.getTabClass("tabLbl")}`}
+              >
+                <button
+                  aria-label={Messages.Labels.labels()}
+                  title={Messages.Labels.labels()}
+                  class={this.getBtnClass("tabLbl")}
+                  id="tabLbl"
+                  onClick={this.tabSwitch}
+                  type="button"
+                >
+                  {Messages.Labels.labels()}
+                </button>
+              </div>
+              <div
+                class={`oj-sm-2 oj-flex-item ${this.getTabClass(
+                  "tabAnnotation"
+                )}`}
+              >
+                <button
+                  aria-label={Messages.Labels.annotations()}
+                  title={Messages.Labels.annotations()}
+                  class={this.getBtnClass("tabAnnotation")}
+                  id="tabAnnotation"
+                  onClick={this.tabSwitch}
+                  type="button"
+                >
+                  {Messages.Labels.annotations()}
+                </button>
+              </div>
+              <div class="oj-sm-7 oj-flex-item borderbottom"></div>
+            </div>
+            <div class="oj-panel oj-flex metatdata-panel bg paneltabbed">
+              <div class="oj-sm-12 oj-flex-item">
+                <h3>{this.getTabTitle()}</h3>
+                {this.getTabContents()}
+              </div>
+            </div>
+          </div>
+        </div>
+        )
+    case "components" :
+      oamComponent = this.state.oamApplication.componentInstances.find( component => component.id === this.state.selectedComponent)
+      oamComponent.eventHandler = this.state.linkSelectionCallback;
+      dataProvider(
+          new CollectionDataProvider(
+            new Model.Collection([new Model.Model(oamComponent)])
+          )
+      );
+      return (
+        <div class="oj-sm-12 oj-flex">
+          <div class="oj-sm-1 oj-flex-item"></div>
+          <div class="oj-sm-11 oj-flex-item">
+            <h1 class="title">{oamComponent.name}</h1>
+            <div class="oj-flex tablist">
+              <div
+                class={`oj-sm-3 oj-flex-item tablistitem`}
+              >
+                <button
+                  aria-label={Messages.Labels.oamAppInfo()}
+                  title={Messages.Labels.oamCompInfo()}
+                  class={"activebtn"}
+                  id="tabComponents"
+                  type="button"
+                >
+                  {Messages.Labels.oamCompInfo()}
+                </button>
+              </div>
+              <div class="oj-sm-9 oj-flex-item borderbottom"></div>
+            </div>
+            <div class="oj-panel oj-flex metatdata-panel bg paneltabbed">
+              <div class="oj-sm-12 oj-flex-item">
+                <h3>{Messages.Labels.componentlInfo()}</h3>
+                <ConsoleOAMAppComponentView
+              dataProvider={dataProvider()}
+              />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      )
+
+
+    }
   }
 
   getTabContents(): Element[] {
@@ -233,81 +369,22 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
             <ConsoleStatusBadge
-              status={Status.Running}
+              status={this.state.oamApplication.status}
               type={"circle"}
-              text={"A"}
-              label={Messages.Nav.oamApp()}
+              text={this.state.selectedView === "application" ? "A": "CI"}
+              label={this.state.selectedView === "application" ? Messages.Nav.oamApp() : Messages.Nav.oamCompInstance()}
             />
           </div>
           <div class="oj-sm-10 oj-flex-item">
-            <div class="oj-sm-12 oj-flex">
-              <div class="oj-sm-1 oj-flex-item"></div>
-              <div class="oj-sm-11 oj-flex-item">
-                <h1 class="title">{this.state.oamApplication.name}</h1>
-                <div class="oj-flex tablist">
-                  <div
-                    class={`oj-sm-3 oj-flex-item ${this.getTabClass(
-                      "tabInfo"
-                    )}`}
-                  >
-                    <button
-                      aria-label={Messages.Labels.oamAppInfo()}
-                      title={Messages.Labels.oamAppInfo()}
-                      class={this.getBtnClass("tabInfo")}
-                      id="tabInfo"
-                      onClick={this.tabSwitch}
-                      type="button"
-                    >
-                      {Messages.Labels.oamAppInfo()}
-                    </button>
-                  </div>
-                  <div
-                    class={`oj-sm-1 oj-flex-item ${this.getTabClass("tabLbl")}`}
-                  >
-                    <button
-                      aria-label={Messages.Labels.labels()}
-                      title={Messages.Labels.labels()}
-                      class={this.getBtnClass("tabLbl")}
-                      id="tabLbl"
-                      onClick={this.tabSwitch}
-                      type="button"
-                    >
-                      {Messages.Labels.labels()}
-                    </button>
-                  </div>
-                  <div
-                    class={`oj-sm-2 oj-flex-item ${this.getTabClass(
-                      "tabAnnotation"
-                    )}`}
-                  >
-                    <button
-                      aria-label={Messages.Labels.annotations()}
-                      title={Messages.Labels.annotations()}
-                      class={this.getBtnClass("tabAnnotation")}
-                      id="tabAnnotation"
-                      onClick={this.tabSwitch}
-                      type="button"
-                    >
-                      {Messages.Labels.annotations()}
-                    </button>
-                  </div>
-                  <div class="oj-sm-7 oj-flex-item borderbottom"></div>
-                </div>
-                <div class="oj-panel oj-flex metatdata-panel bg paneltabbed">
-                  <div class="oj-sm-12 oj-flex-item">
-                    <h3>{this.getTabTitle()}</h3>
-                    {this.getTabContents()}
-                  </div>
-                </div>
-              </div>
-            </div>
+           {this.getPanelContents()}
           </div>
         </div>
         <ConsoleOAMApplicationResources
           oamApplication={this.state.oamApplication}
           breadcrumbCallback={this.breadcrumbCallback}
-          selectedItem={this.props.selectedItem}
-          selectedComponent={this.props.selectedComponent}
+          selectedItem={this.state.selectedItem}
+          selectedComponent={this.state.selectedComponent}
+          selectedViewCallBack={this.selectedViewCallBack}
         />
       </div>
     );

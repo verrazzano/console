@@ -30,6 +30,10 @@ class Props {
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
   selectedComponent?: string;
+  selectedViewCallBack? :(selectedItem: string, selectedView: string, selectedComponent: string, linkSelectionCallback :(
+    selectedItem: string,
+    selectedComponent: string
+  ) => void) => {}
 }
 
 /**
@@ -48,12 +52,6 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
     components: Messages.Labels.components(),
   };
 
-  componentConfigLabels = {
-    traits: Messages.Labels.traits(),
-    scopes: Messages.Labels.scopes(),
-    params: Messages.Labels.params(),
-  };
-
   state: State = {
     selectedItem: this.props.selectedItem
       ? this.props.selectedItem
@@ -70,7 +68,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
     );
     window.addEventListener("popstate", (event) => {
       const pathArray = document.location.pathname.split("/");
-      if (pathArray[pathArray.length - 1] in this.componentConfigLabels) {
+      if (pathArray[pathArray.length - 1] in Messages.ComponentConfigLabels) {
         this.updateState({
           selectedItem: pathArray[pathArray.length - 1],
           selectedComponent: pathArray[pathArray.length - 2],
@@ -129,7 +127,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
 
               if (args.state.path in this.labels) {
                 breadcrumbs.push({ label: this.labels[args.state.path] });
-              } else if (args.state.path in this.componentConfigLabels) {
+              } else if (args.state.path in Messages.ComponentConfigLabels) {
                 breadcrumbs.push({
                   label: Messages.Labels.components(),
                   href: "#",
@@ -148,7 +146,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
                     breadcrumbs.push({ label: selectedComponentInstance.name });
                   }
                   breadcrumbs.push({
-                    label: this.componentConfigLabels[args.state.path],
+                    label: Messages.ComponentConfigLabels[args.state.path],
                   });
                   history.replaceState(
                     null,
@@ -195,6 +193,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
     selectedComponent: string
   ): void => {
     this.updateState({ selectedItem, selectedComponent, filter: null });
+    this.props.selectedViewCallBack(selectedItem,"components", selectedComponent, this.linkSelectionCallback)
   };
 
   protected updated(oldprops: Readonly<Props>, oldState: Readonly<State>) {
@@ -220,7 +219,6 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
           />
         );
         Heading = <h1 class="resheader">{this.labels.components}</h1>;
-
         break;
       }
 
@@ -243,7 +241,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
         }
         ResourceList = <ConsoleOamApplicationComponentTraits traits={traits} />;
         Heading = (
-          <h1 class="resheader">{this.componentConfigLabels.traits}</h1>
+          <h1 class="resheader">{Messages.ComponentConfigLabels.traits}</h1>
         );
 
         break;
@@ -268,7 +266,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
         }
         ResourceList = <ConsoleOamApplicationComponentScopes scopes={scopes} />;
         Heading = (
-          <h1 class="resheader">{this.componentConfigLabels.scopes}</h1>
+          <h1 class="resheader">{Messages.ComponentConfigLabels.scopes}</h1>
         );
 
         break;
@@ -291,7 +289,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
         }
         ResourceList = <ConsoleOamApplicationComponentParams params={params} />;
         Heading = (
-          <h1 class="resheader">{this.componentConfigLabels.params}</h1>
+          <h1 class="resheader">{Messages.ComponentConfigLabels.params}</h1>
         );
 
         break;
@@ -320,34 +318,34 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
               <li
                 id="traits"
                 class={
-                  this.state.selectedItem !== "traits"
+                  !(this.state.selectedItem in Messages.ComponentConfigLabels)
                     ? "hide"
-                    : "oj-navigationlist-item-element oj-navigationlist-item oj-selected"
+                    : `oj-navigationlist-item-element oj-navigationlist-item ${this.state.selectedItem === "traits" ? "oj-selected" : ""}`
                 }
               >
-                <a href="#">{this.componentConfigLabels.traits}</a>
+                <a href="#">{Messages.ComponentConfigLabels.traits}</a>
               </li>
 
               <li
                 id="scopes"
                 class={
-                  this.state.selectedItem !== "scopes"
+                  !(this.state.selectedItem in Messages.ComponentConfigLabels)
                     ? "hide"
-                    : "oj-navigationlist-item-element oj-navigationlist-item oj-selected oj-selected"
+                    : `oj-navigationlist-item-element oj-navigationlist-item ${this.state.selectedItem === "scopes" ? "oj-selected" : ""}`
                 }
               >
-                <a href="#">{this.componentConfigLabels.scopes}</a>
+                <a href="#">{Messages.ComponentConfigLabels.scopes}</a>
               </li>
 
               <li
                 id="params"
                 class={
-                  this.state.selectedItem !== "params"
+                  !(this.state.selectedItem in Messages.ComponentConfigLabels)
                     ? "hide"
-                    : "oj-navigationlist-item-element oj-navigationlist-item oj-selected oj-selected"
+                    : `oj-navigationlist-item-element oj-navigationlist-item ${this.state.selectedItem === "params" ? "oj-selected" : ""}`
                 }
               >
-                <a href="#">{this.componentConfigLabels.params}</a>
+                <a href="#">{Messages.ComponentConfigLabels.params}</a>
               </li>
             </ul>
           </oj-navigation-list>

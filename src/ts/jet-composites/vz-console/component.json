@@ -38,6 +38,7 @@
     "vz-console-oamapp-component-params": "1.0.0",
     "vz-console-oamcomp": "1.0.0",
     "vz-console-oamcomp-resources": "1.0.0",
-    "vz-console-oamcomp-params-list": "1.0.0"
+    "vz-console-oamcomp-params-list": "1.0.0",
+    "vz-console-oamapp-component-view": "1.0.0"
   }
 }

@@ -26,6 +26,7 @@ export = {
     oamAppDetails: "OAM Application Details",
     oamCompDetails: "OAM Component Details",
     compInstances: "Component Instances",
+    oamCompInstance: "OAM Component Instance"
   },
   model: {
     modelsPageLoaded: "Models page loaded.",
@@ -154,6 +155,7 @@ export = {
     oamCompRef: "OAM Component Ref",
     byType: "By Type",
     byState: "By State",
+    componentInfo: "Component Information"
   },
 
   api: {
