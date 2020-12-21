@@ -25,14 +25,14 @@ SCRIPT_DIR=$(dirname $0)
 VZ_NAMESPACE=verrazzano-system
 CONSOLE_MANIFEST="${SCRIPT_DIR}/../kind/console_manifest.yaml"
 VZ_OPERATOR_NODEPORT_YAML="${SCRIPT_DIR}/../kind/verrazzano-operator-nodeport.yaml"
-VZ_HELM_CHART_DIR="${VERRAZZANO_REPO_PATH}/install/chart";
+VZ_HELM_CHART_DIR="${VERRAZZANO_REPO_PATH}/operator/scripts/install/chart";
 VZ_OPERATOR_HELM_TEMPLATE="${VZ_HELM_CHART_DIR}/templates/01-verrazzano-operator.yaml";
 TMP_INTEG_DIR=$(mktemp -d) || exit 1
 
 . $SCRIPT_DIR/utils.sh
 
 function deploy_crds() {
-  local verrazzanoHelmChartDir="${VERRAZZANO_REPO_PATH}/install/chart"
+  local verrazzanoHelmChartDir="${VERRAZZANO_REPO_PATH}/operator/scripts/install/chart"
   local modelCrdFile="${verrazzanoHelmChartDir}/crds/verrazzano.io_verrazzanomodels_crd.yaml";
   local bindingCrdFile="${verrazzanoHelmChartDir}/crds/verrazzano.io_verrazzanobindings_crd.yaml";
   local monitoringInstCrdFile="${verrazzanoHelmChartDir}/crds/verrazzano.io_verrazzanomonitoringinstances_crd.yaml";

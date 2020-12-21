@@ -207,6 +207,8 @@ export const Labels = {
   oamCompInfo: () => Translations.getTranslatedString("labels.oamCompInfo"),
   applications: () => Translations.getTranslatedString("labels.applications"),
   oamCompRef: () => Translations.getTranslatedString("labels.oamCompRef"),
+  byType: () => Translations.getTranslatedString("labels.byType"),
+  byState: () => Translations.getTranslatedString("labels.byState"),
 };
 
 export const Api = {
