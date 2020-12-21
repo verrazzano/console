@@ -34,7 +34,6 @@ const instanceUsingSharedVMI = <Instance>{
 };
 const bindings = {
   test: (isUsingSharedVMI: boolean) => {
-    console.log(isUsingSharedVMI);
     return <Binding>{
       id: "test",
       name: "test-binding",
