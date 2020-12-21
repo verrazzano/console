@@ -43,7 +43,7 @@ require.config({
     touchr: "libs/touchr/touchr",
     customElements: "libs/webcomponents/custom-elements.min",
     ojdnd: "libs/dnd-polyfill/dnd-polyfill-1.0.2",
-    text: "libs/require/text"
+    text: "libs/require/text",
   },
 
   // dynamically load all test files
