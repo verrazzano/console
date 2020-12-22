@@ -135,7 +135,7 @@ export class ConsoleModelResources extends VComponent<Props, State> {
         ResourceList = (
           <ConsoleBindingList
             bindings={this.props.model.bindings}
-            isModelDetailsPage={"true"}
+            isModelDetailsPage
           />
         );
         Heading = <h1 class="resheader">{this.labels.bindings}</h1>;

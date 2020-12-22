@@ -975,38 +975,50 @@ export const getVmiInstancesForBinding = (
 ): VMI[] => {
   const vmis: VMI[] = [];
   const bindingNameSuffix = bindingName.toLowerCase().replace(" ", "");
+  const useSystemVMI = !(
+    typeof instance.isUsingSharedVMI === "undefined" ||
+    !instance.isUsingSharedVMI
+  );
   vmis.push(
     {
       id: bindingName + "-kibana",
       type: VMIType.Kibana,
-      url: instance.kibanaUrl.replace(
-        ".vmi.system.",
-        `.vmi.${bindingNameSuffix}.`
-      ),
+      url: useSystemVMI
+        ? instance.kibanaUrl
+        : instance.kibanaUrl.replace(
+            ".vmi.system.",
+            `.vmi.${bindingNameSuffix}.`
+          ),
     },
     {
       id: bindingName + "-grafana",
       type: VMIType.Grafana,
-      url: instance.grafanaUrl.replace(
-        ".vmi.system.",
-        `.vmi.${bindingNameSuffix}.`
-      ),
+      url: useSystemVMI
+        ? instance.grafanaUrl
+        : instance.grafanaUrl.replace(
+            ".vmi.system.",
+            `.vmi.${bindingNameSuffix}.`
+          ),
     },
     {
       id: bindingName + "-prom",
       type: VMIType.Prometheus,
-      url: instance.prometheusUrl.replace(
-        ".vmi.system.",
-        `.vmi.${bindingNameSuffix}.`
-      ),
+      url: useSystemVMI
+        ? instance.prometheusUrl
+        : instance.prometheusUrl.replace(
+            ".vmi.system.",
+            `.vmi.${bindingNameSuffix}.`
+          ),
     },
     {
       id: bindingName + "-es",
       type: VMIType.ElasticSearch,
-      url: instance.elasticUrl.replace(
-        ".vmi.system.",
-        `.vmi.${bindingNameSuffix}.`
-      ),
+      url: useSystemVMI
+        ? instance.elasticUrl
+        : instance.elasticUrl.replace(
+            ".vmi.system.",
+            `.vmi.${bindingNameSuffix}.`
+          ),
     }
   );
   return vmis;
