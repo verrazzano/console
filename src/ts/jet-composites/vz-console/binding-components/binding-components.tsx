@@ -290,17 +290,17 @@ export class ConsoleBindingComponents extends VComponent<Props, State> {
                         <strong>{Messages.Labels.status()}:&nbsp;</strong>
                         <span data-bind="attr: { id: item.data.id+'_status' }">
                           <oj-bind-if test="[[item.data.status === 'Running']]">
-                            <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
+                            <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-green">
                               <span class="oj-icon-circle-inner status-icon"></span>
                             </span>
                           </oj-bind-if>
                           <oj-bind-if test="[[item.data.status === 'Terminated']]">
-                            <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
+                            <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-red">
                               <span class="oj-icon-circle-inner status-icon"></span>
                             </span>
                           </oj-bind-if>
                           <oj-bind-if test="[[item.data.status === 'Creating']]">
-                            <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
+                            <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-orange">
                               <span class="oj-icon-circle-inner status-icon"></span>
                             </span>
                           </oj-bind-if>

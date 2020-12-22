@@ -7,7 +7,6 @@ import {
   VerrazzanoApi,
   Status,
   OAMApplication,
-  OAMComponentInstance,
 } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleError } from "vz-console/error/loader";
@@ -18,7 +17,7 @@ import {
 } from "vz-console/breadcrumb/loader";
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader";
 import { ConsoleOAMApplicationResources } from "vz-console/oamapp-resources/loader";
-import {ConsoleOAMAppComponentView} from "vz-console/oamapp-component-view/loader";
+import { ConsoleOAMAppComponentView } from "vz-console/oamapp-component-view/loader";
 import * as ko from "knockout";
 import * as Model from "ojs/ojmodel";
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
@@ -35,7 +34,6 @@ class State {
   error?: string;
   breadcrumbs?: BreadcrumbType[];
   selectedTab?: string;
-  selectedView?: string;
   selectedComponent?: string;
   selectedItem?: string;
   linkSelectionCallback?: (
@@ -54,9 +52,6 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     loading: true,
     breadcrumbs: [],
     selectedTab: "tabInfo",
-    selectedView: this.props.selectedItem && this.props.selectedItem in Messages.ComponentConfigLabels ? "components" : "application",
-    selectedItem: this.props.selectedItem,
-    selectedComponent: this.props.selectedComponent
   };
 
   props: Props = {
@@ -82,7 +77,12 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     this.verrazzanoApi
       .getOAMApplication(this.props.oamAppId)
       .then((oamApplication) => {
-        this.updateState({ loading: false, oamApplication });
+        this.updateState({
+          loading: false,
+          oamApplication,
+          selectedItem: this.props.selectedItem,
+          selectedComponent: this.props.selectedComponent,
+        });
       })
       .catch((error) => {
         let errorMessage = error;
@@ -97,12 +97,20 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     this.updateState({ breadcrumbs });
   };
 
-  selectedViewCallBack = (selectedItem: string, selectedView: string, selectedComponent: string, linkSelectionCallback :(
+  toggleComponentViewCallBack = (
     selectedItem: string,
-    selectedComponent: string
-  ) => {}) : void => {
-    this.updateState({ selectedItem, selectedView, selectedComponent, linkSelectionCallback })
-  }
+    selectedComponent: string,
+    linkSelectionCallback: (
+      selectedItem: string,
+      selectedComponent: string
+    ) => {}
+  ): void => {
+    this.updateState({
+      selectedItem,
+      selectedComponent,
+      linkSelectionCallback,
+    });
+  };
 
   getTabClass(tabId: string): string {
     return this.state.selectedTab === tabId ? "tablistitem" : "borderbottom";
@@ -129,20 +137,56 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
   }
 
   getPanelContents(): Element {
-    let oamComponent : OAMComponentInstance;
-    const dataProvider: ko.Observable = ko.observable(); 
-    switch(this.state.selectedView) {
-      case "application":
-        return (
-          <div class="oj-sm-12 oj-flex">
+    if (this.state.selectedItem in Messages.ComponentConfigLabels) {
+      const dataProvider: ko.Observable = ko.observable();
+      const oamComponent = this.state.oamApplication.componentInstances.find(
+        (component) => component.id === this.state.selectedComponent
+      );
+      oamComponent.eventHandler = this.state.linkSelectionCallback;
+      dataProvider(
+        new CollectionDataProvider(
+          new Model.Collection([new Model.Model(oamComponent)])
+        )
+      );
+      return (
+        <div class="oj-sm-12 oj-flex">
+          <div class="oj-sm-1 oj-flex-item"></div>
+          <div class="oj-sm-11 oj-flex-item">
+            <h1 class="title">{oamComponent.name}</h1>
+            <div class="oj-flex tablist">
+              <div class={`oj-sm-3 oj-flex-item tablistitem`}>
+                <button
+                  aria-label={Messages.Labels.oamAppInfo()}
+                  title={Messages.Labels.oamCompInfo()}
+                  class={"activebtn"}
+                  id="tabComponents"
+                  type="button"
+                >
+                  {Messages.Labels.oamCompInfo()}
+                </button>
+              </div>
+              <div class="oj-sm-9 oj-flex-item borderbottom"></div>
+            </div>
+            <div class="oj-panel oj-flex metatdata-panel bg paneltabbed">
+              <div class="oj-sm-12 oj-flex-item">
+                <ConsoleOAMAppComponentView
+                  dataProvider={dataProvider()}
+                  isRenderedOnPanel={true}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div class="oj-sm-12 oj-flex">
           <div class="oj-sm-1 oj-flex-item"></div>
           <div class="oj-sm-11 oj-flex-item">
             <h1 class="title">{this.state.oamApplication.name}</h1>
             <div class="oj-flex tablist">
               <div
-                class={`oj-sm-3 oj-flex-item ${this.getTabClass(
-                  "tabInfo"
-                )}`}
+                class={`oj-sm-3 oj-flex-item ${this.getTabClass("tabInfo")}`}
               >
                 <button
                   aria-label={Messages.Labels.oamAppInfo()}
@@ -155,9 +199,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                   {Messages.Labels.oamAppInfo()}
                 </button>
               </div>
-              <div
-                class={`oj-sm-1 oj-flex-item ${this.getTabClass("tabLbl")}`}
-              >
+              <div class={`oj-sm-1 oj-flex-item ${this.getTabClass("tabLbl")}`}>
                 <button
                   aria-label={Messages.Labels.labels()}
                   title={Messages.Labels.labels()}
@@ -195,50 +237,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
             </div>
           </div>
         </div>
-        )
-    case "components" :
-      oamComponent = this.state.oamApplication.componentInstances.find( component => component.id === this.state.selectedComponent)
-      oamComponent.eventHandler = this.state.linkSelectionCallback;
-      dataProvider(
-          new CollectionDataProvider(
-            new Model.Collection([new Model.Model(oamComponent)])
-          )
       );
-      return (
-        <div class="oj-sm-12 oj-flex">
-          <div class="oj-sm-1 oj-flex-item"></div>
-          <div class="oj-sm-11 oj-flex-item">
-            <h1 class="title">{oamComponent.name}</h1>
-            <div class="oj-flex tablist">
-              <div
-                class={`oj-sm-3 oj-flex-item tablistitem`}
-              >
-                <button
-                  aria-label={Messages.Labels.oamAppInfo()}
-                  title={Messages.Labels.oamCompInfo()}
-                  class={"activebtn"}
-                  id="tabComponents"
-                  type="button"
-                >
-                  {Messages.Labels.oamCompInfo()}
-                </button>
-              </div>
-              <div class="oj-sm-9 oj-flex-item borderbottom"></div>
-            </div>
-            <div class="oj-panel oj-flex metatdata-panel bg paneltabbed">
-              <div class="oj-sm-12 oj-flex-item">
-                <h3>{Messages.Labels.componentlInfo()}</h3>
-                <ConsoleOAMAppComponentView
-              dataProvider={dataProvider()}
-              />
-              </div>
-            </div>
-          </div>
-        </div>
-        
-      )
-
-
     }
   }
 
@@ -267,10 +266,10 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                 <div class="oj-sm-12 oj-flex-item metadata-item">
                   <strong>{Messages.Labels.status()}:&nbsp;</strong>
                   <span id="appStatus">
-                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
+                    <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-green">
                       <span class="oj-icon-circle-inner status-icon"></span>
                     </span>
-                    {this.state.oamApplication.status}
+                    &nbsp;{this.state.oamApplication.status}
                   </span>
                 </div>
               </div>
@@ -282,10 +281,10 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                 <div class="oj-sm-12 oj-flex-item metadata-item">
                   <strong>{Messages.Labels.status()}:&nbsp;</strong>
                   <span id="appStatus">
-                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red">
+                    <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-red">
                       <span class="oj-icon-circle-inner status-icon"></span>
                     </span>
-                    {this.state.oamApplication.status}
+                    &nbsp;{this.state.oamApplication.status}
                   </span>
                 </div>
               </div>
@@ -297,10 +296,10 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                 <div class="oj-sm-12 oj-flex-item metadata-item">
                   <strong>{Messages.Labels.status()}:&nbsp;</strong>
                   <span id="appStatus">
-                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange">
+                    <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-orange">
                       <span class="oj-icon-circle-inner status-icon"></span>
                     </span>
-                    {this.state.oamApplication.status}
+                    &nbsp;{this.state.oamApplication.status}
                   </span>
                 </div>
               </div>
@@ -311,7 +310,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
               <div class="oj-flex">
                 <div class="oj-sm-12 oj-flex-item compstatus">
                   <span id="appStatus">
-                    <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-mauve">
+                    <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-mauve">
                       <span class="oj-icon-circle-inner status-icon"></span>
                     </span>
                     {this.state.oamApplication.status}
@@ -369,22 +368,28 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
         <div class="oj-flex">
           <div class="oj-sm-2 oj-flex-item">
             <ConsoleStatusBadge
-              status={this.state.oamApplication.status}
+              status={Status.Running}
               type={"circle"}
-              text={this.state.selectedView === "application" ? "A": "CI"}
-              label={this.state.selectedView === "application" ? Messages.Nav.oamApp() : Messages.Nav.oamCompInstance()}
+              text={
+                this.state.selectedItem in Messages.ComponentConfigLabels
+                  ? "CI"
+                  : "A"
+              }
+              label={
+                this.state.selectedItem in Messages.ComponentConfigLabels
+                  ? Messages.Nav.oamCompInstance()
+                  : Messages.Nav.oamApp()
+              }
             />
           </div>
-          <div class="oj-sm-10 oj-flex-item">
-           {this.getPanelContents()}
-          </div>
+          <div class="oj-sm-10 oj-flex-item">{this.getPanelContents()}</div>
         </div>
         <ConsoleOAMApplicationResources
           oamApplication={this.state.oamApplication}
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.state.selectedItem}
           selectedComponent={this.state.selectedComponent}
-          selectedViewCallBack={this.selectedViewCallBack}
+          toggleComponentViewCallBack={this.toggleComponentViewCallBack}
         />
       </div>
     );

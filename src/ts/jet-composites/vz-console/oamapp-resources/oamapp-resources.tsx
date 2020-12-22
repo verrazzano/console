@@ -30,10 +30,14 @@ class Props {
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
   selectedComponent?: string;
-  selectedViewCallBack? :(selectedItem: string, selectedView: string, selectedComponent: string, linkSelectionCallback :(
+  toggleComponentViewCallBack?: (
     selectedItem: string,
-    selectedComponent: string
-  ) => void) => {}
+    selectedComponent: string,
+    linkSelectionCallback: (
+      selectedItem: string,
+      selectedComponent: string
+    ) => void
+  ) => {};
 }
 
 /**
@@ -180,7 +184,14 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
   @listener({ capture: true, passive: true })
   private selectionChange(event: CustomEvent) {
     if (event.detail.originalEvent) {
-      this.router.go({ path: event.detail.value });
+      this.updateState({
+        selectedItem: event.detail.value,
+        selectedComponent: this.state.selectedComponent,
+        filter:
+          event.detail.value in Messages.ComponentConfigLabels
+            ? null
+            : this.state.filter,
+      });
     }
   }
 
@@ -193,7 +204,11 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
     selectedComponent: string
   ): void => {
     this.updateState({ selectedItem, selectedComponent, filter: null });
-    this.props.selectedViewCallBack(selectedItem,"components", selectedComponent, this.linkSelectionCallback)
+    this.props.toggleComponentViewCallBack(
+      selectedItem,
+      selectedComponent,
+      this.linkSelectionCallback
+    );
   };
 
   protected updated(oldprops: Readonly<Props>, oldState: Readonly<State>) {
@@ -202,6 +217,11 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
       this.state.selectedItem !== oldState.selectedItem
     ) {
       this.router.go({ path: this.state.selectedItem });
+      this.props.toggleComponentViewCallBack(
+        this.state.selectedItem,
+        this.state.selectedComponent,
+        this.linkSelectionCallback
+      );
     }
   }
 
@@ -320,7 +340,11 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
                 class={
                   !(this.state.selectedItem in Messages.ComponentConfigLabels)
                     ? "hide"
-                    : `oj-navigationlist-item-element oj-navigationlist-item ${this.state.selectedItem === "traits" ? "oj-selected" : ""}`
+                    : `oj-navigationlist-item-element oj-navigationlist-item ${
+                        this.state.selectedItem === "traits"
+                          ? "oj-selected"
+                          : ""
+                      }`
                 }
               >
                 <a href="#">{Messages.ComponentConfigLabels.traits}</a>
@@ -331,7 +355,11 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
                 class={
                   !(this.state.selectedItem in Messages.ComponentConfigLabels)
                     ? "hide"
-                    : `oj-navigationlist-item-element oj-navigationlist-item ${this.state.selectedItem === "scopes" ? "oj-selected" : ""}`
+                    : `oj-navigationlist-item-element oj-navigationlist-item ${
+                        this.state.selectedItem === "scopes"
+                          ? "oj-selected"
+                          : ""
+                      }`
                 }
               >
                 <a href="#">{Messages.ComponentConfigLabels.scopes}</a>
@@ -342,7 +370,11 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
                 class={
                   !(this.state.selectedItem in Messages.ComponentConfigLabels)
                     ? "hide"
-                    : `oj-navigationlist-item-element oj-navigationlist-item ${this.state.selectedItem === "params" ? "oj-selected" : ""}`
+                    : `oj-navigationlist-item-element oj-navigationlist-item ${
+                        this.state.selectedItem === "params"
+                          ? "oj-selected"
+                          : ""
+                      }`
                 }
               >
                 <a href="#">{Messages.ComponentConfigLabels.params}</a>

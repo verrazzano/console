@@ -12,7 +12,7 @@ import "ojs/ojpagingcontrol";
 import * as ko from "knockout";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages";
-import {ConsoleOAMAppComponentView} from "vz-console/oamapp-component-view/loader";
+import { ConsoleOAMAppComponentView } from "vz-console/oamapp-component-view/loader";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -211,8 +211,8 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
               </div>
 
               <ConsoleOAMAppComponentView
-              dataProvider={this.dataProvider()}
-              selectedComponent={this.props.selectedComponent}
+                dataProvider={this.dataProvider()}
+                selectedComponent={this.props.selectedComponent}
               />
 
               <div class="oj-flex card-border">

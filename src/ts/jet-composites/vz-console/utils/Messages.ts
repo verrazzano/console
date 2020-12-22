@@ -36,7 +36,8 @@ export const Nav = {
   oamAppDetails: () => Translations.getTranslatedString("nav.oamAppDetails"),
   oamCompDetails: () => Translations.getTranslatedString("nav.oamCompDetails"),
   compInstances: () => Translations.getTranslatedString("nav.compInstances"),
-  oamCompInstance: () => Translations.getTranslatedString("nav.oamCompInstance"),
+  oamCompInstance: () =>
+    Translations.getTranslatedString("nav.oamCompInstance"),
 };
 
 export const Instance = {
@@ -210,7 +211,8 @@ export const Labels = {
   oamCompRef: () => Translations.getTranslatedString("labels.oamCompRef"),
   byType: () => Translations.getTranslatedString("labels.byType"),
   byState: () => Translations.getTranslatedString("labels.byState"),
-  componentlInfo: () => Translations.getTranslatedString("labels.componentInfo"),
+  componentlInfo: () =>
+    Translations.getTranslatedString("labels.componentInfo"),
 };
 
 export const Api = {
@@ -237,4 +239,3 @@ export const ComponentConfigLabels = {
   scopes: Labels.scopes(),
   params: Labels.params(),
 };
-

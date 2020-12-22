@@ -91,7 +91,7 @@ export class ConsoleBindingList extends VComponent<Props> {
                 <p>
                   <oj-bind-if test="[[row.data.state === 'Running']]">
                     <span>
-                      <span class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-green">
+                      <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-green">
                         <span class="oj-icon-circle-inner status-icon"></span>
                       </span>
                       &nbsp;
@@ -101,7 +101,7 @@ export class ConsoleBindingList extends VComponent<Props> {
                     <span>
                       <span
                         id="status"
-                        class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-red"
+                        class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-red"
                       >
                         <span class="oj-icon-circle-inner status-icon"></span>
                       </span>
@@ -112,7 +112,7 @@ export class ConsoleBindingList extends VComponent<Props> {
                     <span>
                       <span
                         id="status"
-                        class="oj-icon-circle oj-icon-circle-xxs oj-icon-circle-orange"
+                        class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-orange"
                       >
                         <span class="oj-icon-circle-inner status-icon"></span>
                       </span>

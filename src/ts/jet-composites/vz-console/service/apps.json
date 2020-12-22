@@ -12,10 +12,10 @@
         },
         "creationTimestamp": "2020-11-19T13:06:41Z",
         "finalizers": ["scope.finalizer.core.oam.dev"],
-        "generation": 3,
+        "generation": 4,
         "name": "hello-helidon-appconf",
         "namespace": "oam-hello-helidon",
-        "resourceVersion": "59190473",
+        "resourceVersion": "62315235",
         "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/applicationconfigurations/hello-helidon-appconf",
         "uid": "83933032-73f7-49ad-a976-81c3ebe56bd5"
       },
@@ -23,6 +23,12 @@
         "components": [
           {
             "componentName": "hello-helidon-component",
+            "parameterValues": [
+              {
+                "name": "imageName",
+                "value": "ghcr.io/verrazzano/example-helidon-greet-app-v1:0.1.10-3-20201016220428-56fb4d4"
+              }
+            ],
             "scopes": [
               {
                 "scopeRef": {
@@ -60,23 +66,49 @@
       "status": {
         "conditions": [
           {
-            "lastTransitionTime": "2020-12-16T08:13:45Z",
-            "message": "cannot render components: cannot resolve parameter values for component \"hello-helidon-component\": required parameter \"imageName\" not specified",
-            "reason": "ReconcileError",
-            "status": "False",
+            "lastTransitionTime": "2020-12-22T11:04:01Z",
+            "reason": "ReconcileSuccess",
+            "status": "True",
             "type": "Synced"
           }
         ],
         "dependency": {},
-        "observedGeneration": 3,
+        "observedGeneration": 4,
         "workloads": [
           {
             "componentName": "hello-helidon-component",
-            "componentRevisionName": "hello-helidon-component-v1",
+            "componentRevisionName": "hello-helidon-component-v2",
+            "scopes": [
+              {
+                "scopeRef": {
+                  "apiVersion": "core.oam.dev/v1alpha2",
+                  "kind": "HealthScope",
+                  "name": "hello-helidon-health"
+                }
+              }
+            ],
             "workloadRef": {
               "apiVersion": "core.oam.dev/v1alpha2",
               "kind": "ContainerizedWorkload",
               "name": "hello-helidon-workload"
+            }
+          },
+          {
+            "componentName": "mysql-component",
+            "componentRevisionName": "mysql-component-v1",
+            "scopes": [
+              {
+                "scopeRef": {
+                  "apiVersion": "core.oam.dev/v1alpha2",
+                  "kind": "HealthScope",
+                  "name": "mysql-health-scope"
+                }
+              }
+            ],
+            "workloadRef": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload"
             }
           }
         ]
@@ -93,29 +125,35 @@
         },
         "creationTimestamp": "2020-12-16T09:11:08Z",
         "finalizers": ["scope.finalizer.core.oam.dev"],
-        "generation": 1,
+        "generation": 4,
         "name": "hello-helidon-appconf-1",
         "namespace": "oam-hello-helidon",
-        "resourceVersion": "59190464",
+        "resourceVersion": "62322608",
         "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/applicationconfigurations/hello-helidon-appconf-1",
         "uid": "b3c586ac-3351-4e0a-b005-2323af14513b"
       },
       "spec": {
         "components": [
           {
-            "componentName": "hello-helidon-component",
+            "componentName": "hello-helidon-component-1",
+            "parameterValues": [
+              {
+                "name": "imageName",
+                "value": "ghcr.io/verrazzano/example-helidon-greet-app-v1:0.1.10-3-20201016220428-56fb4d4"
+              }
+            ],
             "scopes": [
               {
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "hello-helidon-health"
+                  "name": "hello-helidon-health-1"
                 }
               }
             ]
           },
           {
-            "componentName": "mysql-component",
+            "componentName": "mysql-component-1",
             "parameterValues": [
               {
                 "name": "imageName",
@@ -131,7 +169,7 @@
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "mysql-health-scope"
+                  "name": "mysql-health-scope-1"
                 }
               }
             ]
@@ -141,15 +179,15 @@
       "status": {
         "conditions": [
           {
-            "lastTransitionTime": "2020-12-16T09:11:08Z",
-            "message": "cannot render components: cannot resolve parameter values for component \"hello-helidon-component\": required parameter \"imageName\" not specified",
+            "lastTransitionTime": "2020-12-22T11:23:43Z",
+            "message": "cannot apply components: cannot apply workload \"hello-helidon-workload\": existing object is not controlled by UID \"b3c586ac-3351-4e0a-b005-2323af14513b\"",
             "reason": "ReconcileError",
             "status": "False",
             "type": "Synced"
           }
         ],
         "dependency": {},
-        "observedGeneration": 1
+        "observedGeneration": 4
       }
     },
     {
@@ -163,29 +201,35 @@
         },
         "creationTimestamp": "2020-12-16T09:11:07Z",
         "finalizers": ["scope.finalizer.core.oam.dev"],
-        "generation": 1,
+        "generation": 3,
         "name": "hello-helidon-appconf-2",
         "namespace": "oam-hello-helidon",
-        "resourceVersion": "59190452",
+        "resourceVersion": "62323840",
         "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/applicationconfigurations/hello-helidon-appconf-2",
         "uid": "f326bfdd-301f-421d-8795-ab96eaa243e1"
       },
       "spec": {
         "components": [
           {
-            "componentName": "hello-helidon-component",
+            "componentName": "hello-helidon-component-2",
+            "parameterValues": [
+              {
+                "name": "imageName",
+                "value": "ghcr.io/verrazzano/example-helidon-greet-app-v1:0.1.10-3-20201016220428-56fb4d4"
+              }
+            ],
             "scopes": [
               {
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "hello-helidon-health"
+                  "name": "hello-helidon-health-2"
                 }
               }
             ]
           },
           {
-            "componentName": "mysql-component",
+            "componentName": "mysql-component-2",
             "parameterValues": [
               {
                 "name": "imageName",
@@ -201,7 +245,7 @@
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "mysql-health-scope"
+                  "name": "mysql-health-scope-2"
                 }
               }
             ]
@@ -211,15 +255,15 @@
       "status": {
         "conditions": [
           {
-            "lastTransitionTime": "2020-12-16T09:11:07Z",
-            "message": "cannot render components: cannot resolve parameter values for component \"hello-helidon-component\": required parameter \"imageName\" not specified",
+            "lastTransitionTime": "2020-12-22T11:26:47Z",
+            "message": "cannot apply components: cannot apply workload \"hello-helidon-workload\": existing object is not controlled by UID \"f326bfdd-301f-421d-8795-ab96eaa243e1\"",
             "reason": "ReconcileError",
             "status": "False",
             "type": "Synced"
           }
         ],
         "dependency": {},
-        "observedGeneration": 1
+        "observedGeneration": 3
       }
     },
     {
@@ -233,29 +277,35 @@
         },
         "creationTimestamp": "2020-12-16T09:11:06Z",
         "finalizers": ["scope.finalizer.core.oam.dev"],
-        "generation": 1,
+        "generation": 3,
         "name": "hello-helidon-appconf-3",
         "namespace": "oam-hello-helidon",
-        "resourceVersion": "59190410",
+        "resourceVersion": "62323939",
         "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/applicationconfigurations/hello-helidon-appconf-3",
         "uid": "8775d7a2-b3bb-4755-adce-fce293acdcf0"
       },
       "spec": {
         "components": [
           {
-            "componentName": "hello-helidon-component",
+            "componentName": "hello-helidon-component-3",
+            "parameterValues": [
+              {
+                "name": "imageName",
+                "value": "ghcr.io/verrazzano/example-helidon-greet-app-v1:0.1.10-3-20201016220428-56fb4d4"
+              }
+            ],
             "scopes": [
               {
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "hello-helidon-health"
+                  "name": "hello-helidon-health-3"
                 }
               }
             ]
           },
           {
-            "componentName": "mysql-component",
+            "componentName": "mysql-component-3",
             "parameterValues": [
               {
                 "name": "imageName",
@@ -271,7 +321,7 @@
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "mysql-health-scope"
+                  "name": "mysql-health-scope-3"
                 }
               }
             ]
@@ -281,15 +331,15 @@
       "status": {
         "conditions": [
           {
-            "lastTransitionTime": "2020-12-16T09:11:06Z",
-            "message": "cannot render components: cannot resolve parameter values for component \"hello-helidon-component\": required parameter \"imageName\" not specified",
+            "lastTransitionTime": "2020-12-22T11:27:02Z",
+            "message": "cannot apply components: cannot apply workload \"hello-helidon-workload\": existing object is not controlled by UID \"8775d7a2-b3bb-4755-adce-fce293acdcf0\"",
             "reason": "ReconcileError",
             "status": "False",
             "type": "Synced"
           }
         ],
         "dependency": {},
-        "observedGeneration": 1
+        "observedGeneration": 3
       }
     },
     {
@@ -303,29 +353,35 @@
         },
         "creationTimestamp": "2020-12-16T09:11:05Z",
         "finalizers": ["scope.finalizer.core.oam.dev"],
-        "generation": 1,
+        "generation": 3,
         "name": "hello-helidon-appconf-4",
         "namespace": "oam-hello-helidon",
-        "resourceVersion": "59190403",
+        "resourceVersion": "62323923",
         "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/applicationconfigurations/hello-helidon-appconf-4",
         "uid": "386a055a-6390-4cfd-b4ce-54ef9510c890"
       },
       "spec": {
         "components": [
           {
-            "componentName": "hello-helidon-component",
+            "componentName": "hello-helidon-component-4",
+            "parameterValues": [
+              {
+                "name": "imageName",
+                "value": "ghcr.io/verrazzano/example-helidon-greet-app-v1:0.1.10-3-20201016220428-56fb4d4"
+              }
+            ],
             "scopes": [
               {
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "hello-helidon-health"
+                  "name": "hello-helidon-health-4"
                 }
               }
             ]
           },
           {
-            "componentName": "mysql-component",
+            "componentName": "mysql-component-4",
             "parameterValues": [
               {
                 "name": "imageName",
@@ -341,7 +397,7 @@
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "mysql-health-scope"
+                  "name": "mysql-health-scope-4"
                 }
               }
             ]
@@ -351,15 +407,15 @@
       "status": {
         "conditions": [
           {
-            "lastTransitionTime": "2020-12-16T09:11:05Z",
-            "message": "cannot render components: cannot resolve parameter values for component \"hello-helidon-component\": required parameter \"imageName\" not specified",
+            "lastTransitionTime": "2020-12-22T11:27:00Z",
+            "message": "cannot apply components: cannot apply workload \"hello-helidon-workload\": existing object is not controlled by UID \"386a055a-6390-4cfd-b4ce-54ef9510c890\"",
             "reason": "ReconcileError",
             "status": "False",
             "type": "Synced"
           }
         ],
         "dependency": {},
-        "observedGeneration": 1
+        "observedGeneration": 3
       }
     },
     {
@@ -373,29 +429,35 @@
         },
         "creationTimestamp": "2020-12-16T09:11:04Z",
         "finalizers": ["scope.finalizer.core.oam.dev"],
-        "generation": 1,
+        "generation": 3,
         "name": "hello-helidon-appconf-5",
         "namespace": "oam-hello-helidon",
-        "resourceVersion": "59190390",
+        "resourceVersion": "62323973",
         "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/applicationconfigurations/hello-helidon-appconf-5",
         "uid": "861f72de-7cae-4a9b-8660-862519a31768"
       },
       "spec": {
         "components": [
           {
-            "componentName": "hello-helidon-component",
+            "componentName": "hello-helidon-component-5",
+            "parameterValues": [
+              {
+                "name": "imageName",
+                "value": "ghcr.io/verrazzano/example-helidon-greet-app-v1:0.1.10-3-20201016220428-56fb4d4"
+              }
+            ],
             "scopes": [
               {
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "hello-helidon-health"
+                  "name": "hello-helidon-health-5"
                 }
               }
             ]
           },
           {
-            "componentName": "mysql-component",
+            "componentName": "mysql-component-5",
             "parameterValues": [
               {
                 "name": "imageName",
@@ -411,7 +473,7 @@
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "mysql-health-scope"
+                  "name": "mysql-health-scope-5"
                 }
               }
             ]
@@ -421,15 +483,15 @@
       "status": {
         "conditions": [
           {
-            "lastTransitionTime": "2020-12-16T09:11:04Z",
-            "message": "cannot render components: cannot resolve parameter values for component \"hello-helidon-component\": required parameter \"imageName\" not specified",
+            "lastTransitionTime": "2020-12-22T11:27:08Z",
+            "message": "cannot apply components: cannot apply workload \"hello-helidon-workload\": existing object is not controlled by UID \"861f72de-7cae-4a9b-8660-862519a31768\"",
             "reason": "ReconcileError",
             "status": "False",
             "type": "Synced"
           }
         ],
         "dependency": {},
-        "observedGeneration": 1
+        "observedGeneration": 3
       }
     },
     {
@@ -443,29 +505,35 @@
         },
         "creationTimestamp": "2020-12-16T09:11:03Z",
         "finalizers": ["scope.finalizer.core.oam.dev"],
-        "generation": 1,
+        "generation": 3,
         "name": "hello-helidon-appconf-6",
         "namespace": "oam-hello-helidon",
-        "resourceVersion": "59190378",
+        "resourceVersion": "62323832",
         "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/applicationconfigurations/hello-helidon-appconf-6",
         "uid": "9efaf0e4-4f64-47fc-aae4-6ad0cba033aa"
       },
       "spec": {
         "components": [
           {
-            "componentName": "hello-helidon-component",
+            "componentName": "hello-helidon-component-6",
+            "parameterValues": [
+              {
+                "name": "imageName",
+                "value": "ghcr.io/verrazzano/example-helidon-greet-app-v1:0.1.10-3-20201016220428-56fb4d4"
+              }
+            ],
             "scopes": [
               {
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "hello-helidon-health"
+                  "name": "hello-helidon-health-6"
                 }
               }
             ]
           },
           {
-            "componentName": "mysql-component",
+            "componentName": "mysql-component-6",
             "parameterValues": [
               {
                 "name": "imageName",
@@ -481,7 +549,7 @@
                 "scopeRef": {
                   "apiVersion": "core.oam.dev/v1alpha2",
                   "kind": "HealthScope",
-                  "name": "mysql-health-scope"
+                  "name": "mysql-health-scope-6"
                 }
               }
             ]
@@ -491,15 +559,15 @@
       "status": {
         "conditions": [
           {
-            "lastTransitionTime": "2020-12-16T09:11:03Z",
-            "message": "cannot render components: cannot resolve parameter values for component \"hello-helidon-component\": required parameter \"imageName\" not specified",
+            "lastTransitionTime": "2020-12-22T11:26:47Z",
+            "message": "cannot apply components: cannot apply workload \"hello-helidon-workload\": existing object is not controlled by UID \"9efaf0e4-4f64-47fc-aae4-6ad0cba033aa\"",
             "reason": "ReconcileError",
             "status": "False",
             "type": "Synced"
           }
         ],
         "dependency": {},
-        "observedGeneration": 1
+        "observedGeneration": 3
       }
     },
     {
@@ -516,7 +584,7 @@
         "generation": 4,
         "name": "todo",
         "namespace": "todo",
-        "resourceVersion": "59175701",
+        "resourceVersion": "59507901",
         "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/todo/applicationconfigurations/todo",
         "uid": "b7cf944e-b045-4a6f-834e-f95330701d6d"
       },
@@ -595,7 +663,7 @@
       "status": {
         "conditions": [
           {
-            "lastTransitionTime": "2020-12-16T08:26:54Z",
+            "lastTransitionTime": "2020-12-16T23:58:15Z",
             "message": "cannot render components: cannot get scope \"domain-health-scope\": healthscopes.core.oam.dev \"domain-health-scope\" not found",
             "reason": "ReconcileError",
             "status": "False",

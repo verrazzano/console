@@ -82,9 +82,9 @@ html[dir="rtl"] .vz-icon {
 }
 
 .status-icon {
-  height: 0.55rem !important;
-  width: 0.55rem !important;
-  font-size: 0.55rem !important;
+  height: 0.75rem !important;
+  width: 0.75rem !important;
+  font-size: 0.75rem !important;
 }
 
 html {
@@ -339,6 +339,10 @@ html:not([dir="rtl"]) #components > * > .oj-pagingcontrol-nav-arrow-section {
   margin-left: -1rem;
 }
 
+#panelview > * > .oj-listview-item-element > div {
+  margin-left: -1.5rem;
+}
+
 .status-badge-status-error {
   fill: #e4001e;
   color: #e4001e;
@@ -474,7 +478,8 @@ oj-table > table > tbody > tr {
   background-color: #ecf3f8 !important;
 }
 
-#listview {
+#listview,
+#panelview {
   -webkit-user-select: auto !important;
   -moz-user-select: auto !important;
   -ms-user-select: auto !important;
@@ -615,4 +620,16 @@ oj-table > table > tbody > tr {
 pre {
   white-space: pre-wrap;
   word-break: keep-all;
+}
+
+.oj-listitemlayout-main > div > div {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#panelview > * > .oj-focus,
+#panelview > * > .oj-hover,
+#panelview > * > .oj-selected {
+  border: 0px !important;
+  background-color: white !important;
 }
