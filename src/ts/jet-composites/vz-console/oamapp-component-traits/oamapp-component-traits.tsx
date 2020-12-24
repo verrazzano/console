@@ -12,6 +12,8 @@ import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
+import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
+import * as yaml from "js-yaml";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -27,18 +29,50 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamapp-component-traits")
-export class ConsoleOamApplicationComponentTraits extends VComponent<Props> {
+export class ConsoleOamApplicationComponentTraits extends VComponent<
+  Props,
+  State
+> {
+  verrazzanoApi: VerrazzanoApi;
   state: State = {};
   dataProvider: ko.Observable = ko.observable();
 
+  constructor() {
+    super(new Props());
+    this.verrazzanoApi = new VerrazzanoApi();
+  }
+
   protected mounted() {
+    Promise.resolve(this.populateTraitData()).then((models) => {
+      this.updateState({
+        traits: new Model.Collection(models),
+      });
+    });
+  }
+
+  async populateTraitData() {
     const models: Model.Model[] = [];
-    this.props.traits.forEach((trait) => {
-      models.push(new Model.Model(trait));
-    });
-    this.updateState({
-      traits: new Model.Collection(models),
-    });
+    for (const trait of this.props.traits) {
+      if (trait.name && trait.namespace && trait.kind) {
+        const resource = await this.verrazzanoApi.getKubernetesResource(
+          trait.name,
+          trait.kind,
+          trait.namespace
+        );
+
+        trait.descriptor = yaml.dump(yaml.load(resource));
+        trait.traitOpenEventHandler = () => {
+          (document.getElementById(`popup_${trait.id}`) as any).open(
+            `#trait_${trait.id}`
+          );
+        };
+        trait.traitCloseEventHandler = () => {
+          (document.getElementById(`popup_${trait.id}`) as any).close();
+        };
+        models.push(new Model.Model(trait));
+      }
+    }
+    return models;
   }
 
   protected render() {
@@ -98,15 +132,38 @@ export class ConsoleOamApplicationComponentTraits extends VComponent<Props> {
                         </span>
                       </div>
                     </div>
-                    <div class="oj-flex">
-                      <div class="oj-sm-12 oj-flex-item">
-                        <strong>
-                          <span>{Messages.Labels.kind()}:&nbsp;</span>
-                        </strong>
-                        <span data-bind="attr: { id: item.data.id+'_kind' }">
-                          <oj-bind-text value="[[item.data.kind]]"></oj-bind-text>
-                        </span>
-                      </div>
+                    <div class="oj-sm-12 oj-flex-item">
+                      <strong>
+                        <span>{Messages.Labels.kind()}:&nbsp;</span>
+                      </strong>
+                      <a data-bind="event: { click: () => {item.data.traitOpenEventHandler()} }, attr: {id: 'trait_' + item.data.id}">
+                        <oj-bind-text value="[[item.data.kind]]"></oj-bind-text>
+                      </a>
+                      <oj-popup
+                        data-bind={`attr: {id: 'popup_' + item.data.id}`}
+                        modality="modal"
+                        {...{ "position.my.horizontal": "center" }}
+                        {...{ "position.my.vertical": "bottom" }}
+                        {...{ "position.at.horizontal": "center" }}
+                        {...{ "position.at.vertical": "bottom" }}
+                        {...{ "position.offset.y": "-10" }}
+                        tail="none"
+                        class="popup"
+                      >
+                        <div class="popupbody">
+                          <div>
+                            <a
+                              data-bind="event: { click: () => {item.data.traitCloseEventHandler()} }"
+                              class="closelink"
+                            >
+                              Close
+                            </a>
+                          </div>
+                          <pre class="popupcontent">
+                            <oj-bind-text value="[[item.data.descriptor]]"></oj-bind-text>
+                          </pre>
+                        </div>
+                      </oj-popup>
                     </div>
                   </oj-list-item-layout>
                 </template>

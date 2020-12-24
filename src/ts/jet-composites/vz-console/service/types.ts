@@ -252,20 +252,29 @@ export interface OAMComponentInstance {
   id?: string;
   eventHandler?: (selectedItem: string, selectedComponent: string) => void;
   data?: any;
+  descriptor?: any;
+  workloadOpenEventHandler?: () => void;
+  workloadCloseEventHandler?: () => void;
 }
 
 export interface OAMTrait {
   name?: string;
+  namespace?: string;
   kind?: string;
   descriptor?: any;
   id?: string;
+  traitOpenEventHandler?: () => void;
+  traitCloseEventHandler?: () => void;
 }
 
 export interface OAMScope {
   name?: string;
+  namespace?: string;
   kind?: string;
   id?: string;
   descriptor?: any;
+  scopeOpenEventHandler?: () => void;
+  scopeCloseEventHandler?: () => void;
 }
 
 export interface OAMParam {

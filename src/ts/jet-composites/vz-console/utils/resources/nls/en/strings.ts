@@ -89,6 +89,8 @@ export = {
     errOAMComponentDoesNotExist: "No OAM Component with id {0}.",
 
     errRenderOAMComponent: "Error displaying OAM Component {0}.",
+
+    errKubernetesResourceNotExists: "{0} {1}/{2} does not exist in cluster.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
@@ -140,6 +142,7 @@ export = {
     images: "Images",
     workloadType: "Workload Type",
     workloadSpec: "Workload Spec",
+    workload: "Workload",
     latestRevision: "Latest Revision",
     labels: "Labels",
     annotations: "Annotations",

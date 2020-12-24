@@ -252,6 +252,31 @@ export class VerrazzanoApi {
       });
   }
 
+  public async getKubernetesResource(
+    name: string,
+    kind: string,
+    namespace: string
+  ): Promise<string> {
+    return Promise.resolve(fakeApi.getKubernetesResource(name, kind, namespace))
+      .then((response) => {
+        if (!response) {
+          throw Messages.Error.errKubernetesResourceNotExists(
+            kind,
+            namespace,
+            name
+          );
+        }
+        return response;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
   public constructor() {
     this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
     this.listApplications = this.listApplications.bind(this);
@@ -261,5 +286,8 @@ export class VerrazzanoApi {
     this.getBinding = this.getBinding.bind(this);
     this.listOAMApplications = this.listApplications.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
+    this.getOAMApplication = this.getOAMApplication.bind(this);
+    this.getOAMComponent = this.getOAMComponent.bind(this);
+    this.getKubernetesResource = this.getKubernetesResource.bind(this);
   }
 }

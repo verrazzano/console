@@ -588,7 +588,7 @@ oj-table > table > tbody > tr {
   border-radius: 0px !important;
 }
 
-#popup {
+.popup {
   width: 55vw;
   height: 55vh;
   border: 1px solid #aeaeae;

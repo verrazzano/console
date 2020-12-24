@@ -9,6 +9,7 @@ import { KeySetImpl } from "ojs/ojkeyset";
 import * as ko from "knockout";
 import "ojs/ojlistview";
 import "ojs/ojlistitemlayout";
+import { OAMComponentInstance } from "vz-console/service/types";
 
 class Props {
   dataProvider?: ko.Observable;
@@ -21,6 +22,10 @@ class Props {
  */
 @customElement("vz-console-oamapp-component-view")
 export class ConsoleOAMAppComponentView extends VComponent<Props> {
+  check = (component: OAMComponentInstance): void => {
+    console.log(component);
+  };
+
   protected render() {
     return (
       <oj-list-view
@@ -106,6 +111,41 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                 >
                   <oj-bind-text value="[[item.data.oamComponent.data.metadata.name]]"></oj-bind-text>
                 </a>
+              </div>
+            </div>
+            <div class="oj-flex">
+              <div class="oj-sm-12 oj-flex-item">
+                <strong>
+                  <span>{Messages.Labels.workload()}:&nbsp;</span>
+                </strong>
+                <a data-bind="event: { click: () => {item.data.workloadOpenEventHandler()} }, attr: {id: 'workload_' + item.data.id}">
+                  <oj-bind-text value="[[item.data.oamComponent.workloadType]]"></oj-bind-text>
+                </a>
+                <oj-popup
+                  data-bind={`attr: {id: 'popup_' + item.data.id}`}
+                  modality="modal"
+                  {...{ "position.my.horizontal": "center" }}
+                  {...{ "position.my.vertical": "bottom" }}
+                  {...{ "position.at.horizontal": "center" }}
+                  {...{ "position.at.vertical": "bottom" }}
+                  {...{ "position.offset.y": "-10" }}
+                  tail="none"
+                  class="popup"
+                >
+                  <div class="popupbody">
+                    <div>
+                      <a
+                        data-bind="event: { click: () => {item.data.workloadCloseEventHandler()} }"
+                        class="closelink"
+                      >
+                        Close
+                      </a>
+                    </div>
+                    <pre class="popupcontent">
+                      <oj-bind-text value="[[item.data.descriptor]]"></oj-bind-text>
+                    </pre>
+                  </div>
+                </oj-popup>
               </div>
             </div>
           </oj-list-item-layout>

@@ -170,6 +170,7 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
               {...{ "position.at.horizontal": "center" }}
               {...{ "position.at.vertical": "bottom" }}
               {...{ "position.offset.y": "-10px" }}
+              class="popup"
             >
               <div class="popupbody">
                 <div>

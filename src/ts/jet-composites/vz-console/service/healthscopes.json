@@ -1,0 +1,706 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"hello-helidon-health\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"hello-helidon-workload\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:03:31Z",
+        "generation": 1,
+        "name": "hello-helidon-health",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62315023",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/hello-helidon-health",
+        "uid": "724f6306-644c-489e-85ea-aaba2d7e61e7"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "hello-helidon-workload"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "componentName": "hello-helidon-component",
+            "diagnosis": "Ready:1/1 ",
+            "healthStatus": "HEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "hello-helidon-workload",
+              "uid": "c7bfd0e6-ab5c-432d-812c-f5527b4cc263"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "HEALTHY",
+          "healthyWorkloads": 1,
+          "total": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"hello-helidon-health-1\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"hello-helidon-workload-1\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:23:37Z",
+        "generation": 1,
+        "name": "hello-helidon-health-1",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62322559",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/hello-helidon-health-1",
+        "uid": "ab67a0df-4bd9-467b-b6c3-17fe87ded52f"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "hello-helidon-workload-1"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"hello-helidon-workload-1\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"hello-helidon-workload-1\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "hello-helidon-workload-1"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"hello-helidon-health-2\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"hello-helidon-workload-2\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:23:39Z",
+        "generation": 1,
+        "name": "hello-helidon-health-2",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62322576",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/hello-helidon-health-2",
+        "uid": "eec97e55-1d99-4c0a-935a-e033b611eb20"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "hello-helidon-workload-2"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"hello-helidon-workload-2\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"hello-helidon-workload-2\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "hello-helidon-workload-2"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"hello-helidon-health-3\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"hello-helidon-workload-3\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:26:36Z",
+        "generation": 1,
+        "name": "hello-helidon-health-3",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62323744",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/hello-helidon-health-3",
+        "uid": "74e9092e-59b3-4910-8a36-b19bd4845bab"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "hello-helidon-workload-3"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"hello-helidon-workload-3\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"hello-helidon-workload-3\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "hello-helidon-workload-3"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"hello-helidon-health-4\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"hello-helidon-workload-4\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:23:41Z",
+        "generation": 1,
+        "name": "hello-helidon-health-4",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62322594",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/hello-helidon-health-4",
+        "uid": "cde50e22-ba56-4767-9c22-3147ea628609"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "hello-helidon-workload-4"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"hello-helidon-workload-4\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"hello-helidon-workload-4\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "hello-helidon-workload-4"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"hello-helidon-health-5\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"hello-helidon-workload-5\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:26:39Z",
+        "generation": 1,
+        "name": "hello-helidon-health-5",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62323759",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/hello-helidon-health-5",
+        "uid": "50d220b5-773a-4bff-b5f4-6a0f733bc9ee"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "hello-helidon-workload-5"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"hello-helidon-workload-5\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"hello-helidon-workload-5\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "hello-helidon-workload-5"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"hello-helidon-health-6\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"hello-helidon-workload-6\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:23:43Z",
+        "generation": 1,
+        "name": "hello-helidon-health-6",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62322612",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/hello-helidon-health-6",
+        "uid": "e3bd259a-0263-4e33-bbd4-a26d085a453c"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "hello-helidon-workload-6"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"hello-helidon-workload-6\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"hello-helidon-workload-6\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "hello-helidon-workload-6"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"mysql-health-scope\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"mysql-workload\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:03:32Z",
+        "generation": 1,
+        "name": "mysql-health-scope",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62315580",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/mysql-health-scope",
+        "uid": "6df57fff-e1aa-46d6-bfb7-f3c2ffda641e"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "mysql-workload"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "componentName": "mysql-component",
+            "diagnosis": "Ready:1/1 ",
+            "healthStatus": "HEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload",
+              "uid": "da6ce6c5-2008-41c0-9c9a-754ed0f86b0f"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "HEALTHY",
+          "healthyWorkloads": 1,
+          "total": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"mysql-health-scope-1\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"mysql-workload-1\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:23:38Z",
+        "generation": 1,
+        "name": "mysql-health-scope-1",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62322570",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/mysql-health-scope-1",
+        "uid": "f1c007ae-53b0-4230-90d4-6ab7e056d133"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "mysql-workload-1"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"mysql-workload-1\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"mysql-workload-1\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload-1"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"mysql-health-scope-2\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"mysql-workload-2\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:26:38Z",
+        "generation": 1,
+        "name": "mysql-health-scope-2",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62323751",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/mysql-health-scope-2",
+        "uid": "81164f41-5a6e-41b3-ae90-54a508cfd480"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "mysql-workload-2"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"mysql-workload-2\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"mysql-workload-2\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload-2"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"mysql-health-scope-3\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"mysql-workload-3\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:23:40Z",
+        "generation": 1,
+        "name": "mysql-health-scope-3",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62322584",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/mysql-health-scope-3",
+        "uid": "6a4a752e-e4ae-4d15-842c-38a9b90f5025"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "mysql-workload-3"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"mysql-workload-3\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"mysql-workload-3\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload-3"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"mysql-health-scope-4\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"mysql-workload-4\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:26:40Z",
+        "generation": 1,
+        "name": "mysql-health-scope-4",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62323770",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/mysql-health-scope-4",
+        "uid": "a1d0935c-1a1e-4299-aaad-6d8e92e565c3"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "mysql-workload-4"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"mysql-workload-4\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"mysql-workload-4\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload-4"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"mysql-health-scope-5\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"mysql-workload-5\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:23:42Z",
+        "generation": 1,
+        "name": "mysql-health-scope-5",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62322601",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/mysql-health-scope-5",
+        "uid": "e08c0fe8-2157-460a-9020-53641163dae0"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "mysql-workload-5"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"mysql-workload-5\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"mysql-workload-5\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload-5"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"mysql-health-scope-6\",\"namespace\":\"oam-hello-helidon\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"mysql-workload-6\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-22T11:26:41Z",
+        "generation": 1,
+        "name": "mysql-health-scope-6",
+        "namespace": "oam-hello-helidon",
+        "resourceVersion": "62323779",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/oam-hello-helidon/healthscopes/mysql-health-scope-6",
+        "uid": "7103dcba-b05a-4d49-90c3-acee7f1acb72"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "mysql-workload-6"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "diagnosis": "error occurs in health check : ContainerizedWorkload.core.oam.dev \"mysql-workload-6\" not found error occurs when get versioning peer workloads refs:containerizedworkloads.core.oam.dev \"mysql-workload-6\" not found",
+            "healthStatus": "UNHEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload-6"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unhealthyWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"domain-health-scope\",\"namespace\":\"todo\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"weblogic.oracle/v8\",\"kind\":\"Domain\",\"name\":\"todo\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-23T08:52:20Z",
+        "generation": 1,
+        "name": "domain-health-scope",
+        "namespace": "todo",
+        "resourceVersion": "62780162",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/todo/healthscopes/domain-health-scope",
+        "uid": "00577a89-6ce6-478f-8095-33c6a52f365c"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "weblogic.oracle/v8",
+            "kind": "Domain",
+            "name": "todo"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "componentName": "todo-wls",
+            "diagnosis": "APIVersion weblogic.oracle/v8 Kind Domain workload is unknown for HealthScope ",
+            "healthStatus": "UNKNOWN",
+            "targetWorkload": {
+              "apiVersion": "weblogic.oracle/v8",
+              "kind": "Domain",
+              "name": "todo"
+            },
+            "workloadStatus": "{\"clusters\":[],\"conditions\":[{\"lastTransitionTime\":\"2020-11-25T08:57:07.248Z\",\"reason\":\"ServersReady\",\"status\":\"True\",\"type\":\"Available\"}],\"message\":\"Cluster 'cluster-1' specified in the domain resource does not exist in the WebLogic domain home configuration.\",\"servers\":[{\"desiredState\":\"RUNNING\",\"health\":{\"activationTime\":\"2020-12-18T23:04:53.710Z\",\"overallHealth\":\"ok\",\"subsystems\":[{\"subsystemName\":\"ServerRuntime\",\"symptoms\":[]}]},\"nodeName\":\"10.0.10.2\",\"serverName\":\"AdminServer\",\"state\":\"RUNNING\"}],\"startTime\":\"2020-11-25T08:54:30.563Z\"}"
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "UNHEALTHY",
+          "total": 1,
+          "unknownWorkloads": 1
+        }
+      }
+    },
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "HealthScope",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"HealthScope\",\"metadata\":{\"annotations\":{},\"name\":\"mysql-health-scope\",\"namespace\":\"todo\"},\"spec\":{\"workloadRefs\":[{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ContainerizedWorkload\",\"name\":\"mysql-workload\"}]}}\n"
+        },
+        "creationTimestamp": "2020-12-23T08:52:21Z",
+        "generation": 1,
+        "name": "mysql-health-scope",
+        "namespace": "todo",
+        "resourceVersion": "62780385",
+        "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/todo/healthscopes/mysql-health-scope",
+        "uid": "8c7defdd-0750-45e0-8775-4b7b5c49eb55"
+      },
+      "spec": {
+        "workloadRefs": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "kind": "ContainerizedWorkload",
+            "name": "mysql-workload"
+          }
+        ]
+      },
+      "status": {
+        "healthConditions": [
+          {
+            "componentName": "mysql-component",
+            "diagnosis": "Ready:1/1 ",
+            "healthStatus": "HEALTHY",
+            "targetWorkload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload",
+              "uid": "28e88f27-40b4-42b9-9dfc-fda69edf23c0"
+            }
+          }
+        ],
+        "scopeHealthCondition": {
+          "healthStatus": "HEALTHY",
+          "healthyWorkloads": 1,
+          "total": 1
+        }
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": ""
+  }
+}

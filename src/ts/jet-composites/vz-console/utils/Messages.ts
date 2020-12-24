@@ -138,6 +138,12 @@ export const Error = {
 
   errRenderOAMComponent: (...args) =>
     Translations.getTranslatedString("error.errRenderOAMComponent", args),
+
+  errKubernetesResourceNotExists: (...args) =>
+    Translations.getTranslatedString(
+      "error.errKubernetesResourceNotExists",
+      args
+    ),
 };
 
 export const Auth = {
@@ -195,6 +201,7 @@ export const Labels = {
   images: () => Translations.getTranslatedString("labels.images"),
   workloadType: () => Translations.getTranslatedString("labels.workloadType"),
   workloadSpec: () => Translations.getTranslatedString("labels.workloadSpec"),
+  workload: () => Translations.getTranslatedString("labels.workload"),
   latestRevision: () =>
     Translations.getTranslatedString("labels.latestRevision"),
   labels: () => Translations.getTranslatedString("labels.labels"),

@@ -256,6 +256,16 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
               name: traitData.metadata ? traitData.metadata.name : "",
               kind: traitData.kind,
               descriptor: traitData,
+              namespace:
+                traitData.metadata && traitData.metadata.namespace
+                  ? traitData.metadata.namespace
+                  : selectedComponent.oamComponent.namespace,
+              id:
+                traitData.metadata && traitData.metadata.uid
+                  ? traitData.metadata.uid
+                  : `${selectedComponent.id}_trait_${traitData.kind}_${
+                      traitData.metadata ? traitData.metadata.name : ""
+                    }`,
             });
           });
         }
@@ -281,6 +291,14 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
               name: scopeData.name,
               kind: scopeData.kind,
               descriptor: scopeData,
+              namespace:
+                scopeData.metadata && scopeData.metadata.namespace
+                  ? scopeData.metadata.namespace
+                  : selectedComponent.oamComponent.namespace,
+              id:
+                scopeData.metadata && scopeData.metadata.uid
+                  ? scopeData.metadata.uid
+                  : `${selectedComponent.id}_scope_${scopeData.kind}_${scopeData.name}`,
             });
           });
         }

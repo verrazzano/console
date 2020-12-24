@@ -1,0 +1,62 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "oam.verrazzano.io/v1alpha1",
+      "kind": "IngressTrait",
+      "metadata": {
+        "annotations": {
+          "description": "ToDo example",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"core.oam.dev/v1alpha2\",\"kind\":\"ApplicationConfiguration\",\"metadata\":{\"annotations\":{\"description\":\"ToDo example\",\"version\":\"v1.0.0\"},\"name\":\"todo\",\"namespace\":\"todo\"},\"spec\":{\"components\":[{\"componentName\":\"todo-wls\",\"traits\":[{\"trait\":{\"apiVersion\":\"oam.verrazzano.io/v1alpha1\",\"kind\":\"IngressTrait\",\"metadata\":{\"name\":\"todo-ingress\"},\"spec\":{\"rules\":[{\"hosts\":[\"*\"],\"paths\":[{\"path\":\"/todo\",\"pathType\":\"Prefix\"}]}]}}}]}]}}\n",
+          "version": "v1.0.0"
+        },
+        "creationTimestamp": "2020-11-25T08:54:31Z",
+        "generation": 1,
+        "labels": {
+          "app.oam.dev/component": "todo-wls",
+          "app.oam.dev/name": "todo",
+          "app.oam.dev/resourceType": "TRAIT",
+          "app.oam.dev/revision": "todo-wls-v2"
+        },
+        "name": "todo-ingress",
+        "namespace": "todo",
+        "ownerReferences": [
+          {
+            "apiVersion": "core.oam.dev/v1alpha2",
+            "blockOwnerDeletion": true,
+            "controller": true,
+            "kind": "ApplicationConfiguration",
+            "name": "todo",
+            "uid": "b7cf944e-b045-4a6f-834e-f95330701d6d"
+          }
+        ],
+        "resourceVersion": "62780322",
+        "selfLink": "/apis/oam.verrazzano.io/v1alpha1/namespaces/todo/ingresstraits/todo-ingress",
+        "uid": "049fe454-4acc-4a04-aa92-ca445686bc44"
+      },
+      "spec": {
+        "rules": [
+          {
+            "hosts": ["*"],
+            "paths": [
+              {
+                "path": "/todo",
+                "pathType": "Prefix"
+              }
+            ]
+          }
+        ],
+        "workloadRef": {
+          "apiVersion": "weblogic.oracle/v8",
+          "kind": "Domain",
+          "name": "todo"
+        }
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": ""
+  }
+}

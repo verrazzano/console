@@ -7,6 +7,7 @@ import {
   VerrazzanoApi,
   Status,
   OAMApplication,
+  OAMComponentInstance,
 } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleError } from "vz-console/error/loader";
@@ -20,6 +21,7 @@ import { ConsoleOAMApplicationResources } from "vz-console/oamapp-resources/load
 import { ConsoleOAMAppComponentView } from "vz-console/oamapp-component-view/loader";
 import * as ko from "knockout";
 import * as Model from "ojs/ojmodel";
+import * as yaml from "js-yaml";
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
@@ -136,48 +138,78 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     return tabTitle;
   }
 
+  async populateWorkload(component: OAMComponentInstance) {
+    if (component.oamComponent) {
+      const workload = component.oamComponent.data.spec.workload;
+      const resource = await this.verrazzanoApi.getKubernetesResource(
+        workload.metadata.name,
+        workload.kind,
+        workload.metadata.namespace
+      );
+
+      component.descriptor = yaml.dump(yaml.load(resource));
+      component.workloadOpenEventHandler = () => {
+        (document.getElementById(`popup_${component.id}`) as any).open(
+          `#workload_${component.id}`
+        );
+      };
+      component.workloadCloseEventHandler = () => {
+        (document.getElementById(`popup_${component.id}`) as any).close();
+      };
+      return component;
+    }
+  }
+
   getPanelContents(): Element {
     if (this.state.selectedItem in Messages.ComponentConfigLabels) {
       const dataProvider: ko.Observable = ko.observable();
-      const oamComponent = this.state.oamApplication.componentInstances.find(
-        (component) => component.id === this.state.selectedComponent
+      const component = this.state.oamApplication.componentInstances.find(
+        (componentInstance) =>
+          componentInstance.id === this.state.selectedComponent
       );
-      oamComponent.eventHandler = this.state.linkSelectionCallback;
-      dataProvider(
-        new CollectionDataProvider(
-          new Model.Collection([new Model.Model(oamComponent)])
-        )
-      );
-      return (
-        <div class="oj-sm-12 oj-flex">
-          <div class="oj-sm-1 oj-flex-item"></div>
-          <div class="oj-sm-11 oj-flex-item">
-            <h1 class="title">{oamComponent.name}</h1>
-            <div class="oj-flex tablist">
-              <div class={`oj-sm-3 oj-flex-item tablistitem`}>
-                <button
-                  aria-label={Messages.Labels.oamAppInfo()}
-                  title={Messages.Labels.oamCompInfo()}
-                  class={"activebtn"}
-                  id="tabComponents"
-                  type="button"
-                >
-                  {Messages.Labels.oamCompInfo()}
-                </button>
+      component.eventHandler = this.state.linkSelectionCallback;
+      if (component.descriptor) {
+        dataProvider(
+          new CollectionDataProvider(
+            new Model.Collection([new Model.Model(component)])
+          )
+        );
+        return (
+          <div class="oj-sm-12 oj-flex">
+            <div class="oj-sm-1 oj-flex-item"></div>
+            <div class="oj-sm-11 oj-flex-item">
+              <h1 class="title">{component.name}</h1>
+              <div class="oj-flex tablist">
+                <div class={`oj-sm-3 oj-flex-item tablistitem`}>
+                  <button
+                    aria-label={Messages.Labels.oamAppInfo()}
+                    title={Messages.Labels.oamCompInfo()}
+                    class={"activebtn"}
+                    id="tabComponents"
+                    type="button"
+                  >
+                    {Messages.Labels.oamCompInfo()}
+                  </button>
+                </div>
+                <div class="oj-sm-9 oj-flex-item borderbottom"></div>
               </div>
-              <div class="oj-sm-9 oj-flex-item borderbottom"></div>
-            </div>
-            <div class="oj-panel oj-flex metatdata-panel bg paneltabbed">
-              <div class="oj-sm-12 oj-flex-item">
-                <ConsoleOAMAppComponentView
-                  dataProvider={dataProvider()}
-                  isRenderedOnPanel={true}
-                />
+              <div class="oj-panel oj-flex metatdata-panel bg paneltabbed">
+                <div class="oj-sm-12 oj-flex-item">
+                  <ConsoleOAMAppComponentView
+                    dataProvider={dataProvider()}
+                    isRenderedOnPanel={true}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      );
+        );
+      } else {
+        this.updateState({ loading: true });
+        Promise.resolve(this.populateWorkload(component)).then(() => {
+          this.updateState({ loading: false });
+        });
+      }
     } else {
       return (
         <div class="oj-sm-12 oj-flex">

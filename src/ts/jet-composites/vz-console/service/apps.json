@@ -584,7 +584,7 @@
         "generation": 4,
         "name": "todo",
         "namespace": "todo",
-        "resourceVersion": "59507901",
+        "resourceVersion": "62780324",
         "selfLink": "/apis/core.oam.dev/v1alpha2/namespaces/todo/applicationconfigurations/todo",
         "uid": "b7cf944e-b045-4a6f-834e-f95330701d6d"
       },
@@ -663,10 +663,9 @@
       "status": {
         "conditions": [
           {
-            "lastTransitionTime": "2020-12-16T23:58:15Z",
-            "message": "cannot render components: cannot get scope \"domain-health-scope\": healthscopes.core.oam.dev \"domain-health-scope\" not found",
-            "reason": "ReconcileError",
-            "status": "False",
+            "lastTransitionTime": "2020-12-23T08:52:47Z",
+            "reason": "ReconcileSuccess",
+            "status": "True",
             "type": "Synced"
           }
         ],
@@ -675,7 +674,16 @@
         "workloads": [
           {
             "componentName": "todo-wls",
-            "componentRevisionName": "todo-wls-v1",
+            "componentRevisionName": "todo-wls-v2",
+            "scopes": [
+              {
+                "scopeRef": {
+                  "apiVersion": "core.oam.dev/v1alpha2",
+                  "kind": "HealthScope",
+                  "name": "domain-health-scope"
+                }
+              }
+            ],
             "traits": [
               {
                 "traitRef": {
@@ -689,6 +697,24 @@
               "apiVersion": "weblogic.oracle/v8",
               "kind": "Domain",
               "name": "todo"
+            }
+          },
+          {
+            "componentName": "mysql-component",
+            "componentRevisionName": "mysql-component-v1",
+            "scopes": [
+              {
+                "scopeRef": {
+                  "apiVersion": "core.oam.dev/v1alpha2",
+                  "kind": "HealthScope",
+                  "name": "mysql-health-scope"
+                }
+              }
+            ],
+            "workloadRef": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "name": "mysql-workload"
             }
           }
         ]
