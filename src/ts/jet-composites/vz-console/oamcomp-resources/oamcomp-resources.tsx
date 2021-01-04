@@ -79,7 +79,7 @@ export class ConsoleOAMComponentResources extends VComponent<Props, State> {
                 onclick: () => {
                   parentRouter.go().then(() => {
                     this.updateState({ selectedItem: "params" });
-                    history.replaceState(
+                    history.pushState(
                       null,
                       "path",
                       this.props.oamComponent.data.metadata.uid

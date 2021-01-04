@@ -158,7 +158,7 @@ export = {
     oamCompRef: "OAM Component Ref",
     byType: "By Type",
     byState: "By State",
-    componentInfo: "Component Information",
+    componentInfo: "Component Details",
   },
 
   api: {

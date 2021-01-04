@@ -194,7 +194,8 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                 <div class="oj-sm-9 oj-flex-item borderbottom"></div>
               </div>
               <div class="oj-panel oj-flex metatdata-panel bg paneltabbed">
-                <div class="oj-sm-12 oj-flex-item">
+                <div class="oj-sm-12 oj-flex-item padleftunit">
+                  <h3>{Messages.Labels.generalInfo()}</h3>
                   <ConsoleOAMAppComponentView
                     dataProvider={dataProvider()}
                     isRenderedOnPanel={true}

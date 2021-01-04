@@ -264,7 +264,7 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
                 <h1 class="title">{this.state.oamComponent.name}</h1>
                 <div class="oj-flex tablist">
                   <div
-                    class={`oj-sm-3 oj-flex-item ${this.getTabClass(
+                    class={`oj-sm-2 oj-flex-item ${this.getTabClass(
                       "tabInfo"
                     )}`}
                   >
@@ -276,7 +276,7 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
                       onClick={this.tabSwitch}
                       type="button"
                     >
-                      {Messages.Labels.oamCompInfo()}
+                      {Messages.Labels.componentInfo()}
                     </button>
                   </div>
                   <div

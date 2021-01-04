@@ -120,7 +120,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
                       selectedComponent: "",
                       filter: null,
                     });
-                    history.replaceState(
+                    history.pushState(
                       null,
                       "path",
                       this.props.oamApplication.data.metadata.uid
@@ -179,6 +179,11 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
           this.router.go({ path: this.props.selectedItem });
         }
       });
+    this.props.toggleComponentViewCallBack(
+      this.props.selectedItem,
+      this.props.selectedComponent,
+      this.linkSelectionCallback
+    );
   }
 
   @listener({ capture: true, passive: true })
