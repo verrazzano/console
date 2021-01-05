@@ -107,6 +107,7 @@ export interface Instance {
   grafanaUrl?: string;
   prometheusUrl?: string;
   elasticUrl?: string;
+  isUsingSharedVMI?: boolean;
 }
 
 export interface Cluster {
