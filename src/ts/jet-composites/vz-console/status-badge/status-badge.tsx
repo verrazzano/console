@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
@@ -65,6 +65,23 @@ export class ConsoleStatusBadge extends VComponent<Props> {
           >
             <path d="M37.2,0C16.6,0,0,8.4,0,18.6v62.8C0,91.6,16.6,100,37.2,100c20.6,0,37.2-8.4,37.2-18.6V18.6C74.4,8.4,57.6,0,37.2,0z"></path>
             <text x="50%" y="50%" dy="0.67ex" class="badge-label">
+              {this.props.text}
+            </text>
+          </svg>
+        );
+        break;
+      }
+
+      case "circle": {
+        statusElement = (
+          <svg
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 110"
+            class="badge-circle"
+          >
+            <circle cx="50" cy="60" r="50" />
+            <text x="50%" y="55%" dy="0.67ex" class="badge-label">
               {this.props.text}
             </text>
           </svg>

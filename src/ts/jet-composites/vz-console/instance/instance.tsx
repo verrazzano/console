@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
@@ -10,6 +10,8 @@ import {
   Binding,
   Status,
   VMIType,
+  OAMApplication,
+  OAMComponent,
 } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader";
@@ -37,6 +39,8 @@ class State {
   loading?: boolean;
   error?: string;
   breadcrumbs?: BreadcrumbType[];
+  oamApplications?: OAMApplication[];
+  oamComponents?: OAMComponent[];
 }
 
 /**
@@ -64,14 +68,17 @@ export class ConsoleInstance extends VComponent<Props, State> {
     Promise.all([
       this.verrazzanoApi.getInstance("0"),
       this.verrazzanoApi.listApplications(),
+      this.verrazzanoApi.listOAMAppsAndComponents(),
     ])
-      .then(([instance, applications]) => {
+      .then(([instance, applications, { oamApplications, oamComponents }]) => {
         if (isIterable(applications)) {
           this.updateState({
             loading: false,
             instance: instance,
             models: extractModelsFromApplications(applications),
             bindings: extractBindingsFromApplications(applications),
+            oamApplications,
+            oamComponents,
           });
         }
       })
@@ -198,6 +205,8 @@ export class ConsoleInstance extends VComponent<Props, State> {
           bindings={this.state.bindings}
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.props.selectedItem}
+          oamApplications={this.state.oamApplications}
+          oamComponents={this.state.oamComponents}
         />
       </div>
     );

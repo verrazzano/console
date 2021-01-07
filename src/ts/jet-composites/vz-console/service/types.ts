@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 export enum ComponentType {
@@ -223,4 +223,70 @@ export interface Application {
   model: string;
   binding: string;
   status: string;
+}
+
+export interface OAMApplication {
+  name?: string;
+  namespace?: string;
+  data?: any;
+  status?: string;
+  // eslint-disable-next-line no-use-before-define
+  componentInstances?: OAMComponentInstance[];
+  createdOn?: string;
+}
+
+export interface OAMComponent {
+  name?: string;
+  namespace?: string;
+  workloadType?: string;
+  latestRevision?: string;
+  data?: any;
+  applications?: OAMApplication[];
+  createdOn?: string;
+}
+
+export interface OAMComponentInstance {
+  name: string;
+  status: Status;
+  creationDate?: string;
+  oamComponent: OAMComponent;
+  id?: string;
+  eventHandler?: (selectedItem: string, selectedComponent: string) => void;
+  data?: any;
+  descriptor?: any;
+  workloadOpenEventHandler?: () => void;
+  workloadCloseEventHandler?: () => void;
+}
+
+export interface OAMTrait {
+  name?: string;
+  namespace?: string;
+  kind?: string;
+  descriptor?: any;
+  id?: string;
+  traitOpenEventHandler?: () => void;
+  traitCloseEventHandler?: () => void;
+}
+
+export interface OAMScope {
+  name?: string;
+  namespace?: string;
+  kind?: string;
+  id?: string;
+  descriptor?: any;
+  scopeOpenEventHandler?: () => void;
+  scopeCloseEventHandler?: () => void;
+}
+
+export interface OAMParam {
+  name?: string;
+  value?: string;
+  id?: string;
+}
+
+export interface OAMComponentParam {
+  name?: string;
+  description?: string;
+  required?: boolean;
+  descriptor?: any;
 }

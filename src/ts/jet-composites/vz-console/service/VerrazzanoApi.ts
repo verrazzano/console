@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
@@ -9,14 +9,18 @@ import {
   Secret,
   Status,
   FetchApiSignature,
+  OAMApplication,
+  OAMComponent,
 } from "./types";
 import {
   extractModelsFromApplications,
   extractBindingsFromApplications,
   getVmiInstancesForBinding,
+  processOAMData,
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
+import * as fakeApi from "./fakeApi";
 
 export const ServicePrefix = "instances";
 
@@ -94,6 +98,185 @@ export class VerrazzanoApi {
       });
   }
 
+  public async listOAMAppsAndComponents(): Promise<{
+    oamApplications: OAMApplication[];
+    oamComponents: OAMComponent[];
+  }> {
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const applications: OAMApplication[] = [];
+        const components: OAMComponent[] = [];
+        const { oamApplications, oamComponents } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamApplications.forEach((element) => {
+          element.forEach((oamApplication) => {
+            applications.push(oamApplication);
+          });
+        });
+        oamComponents.forEach((element) => {
+          element.forEach((oamComponent) => {
+            components.push(oamComponent);
+          });
+        });
+        return { oamApplications: applications, oamComponents: components };
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async listOAMApplications(): Promise<OAMApplication[]> {
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const applications: OAMApplication[] = [];
+        const { oamApplications } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamApplications.forEach((element) => {
+          element.forEach((oamApplication) => {
+            applications.push(oamApplication);
+          });
+        });
+        return applications;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async listOAMComponents(): Promise<OAMComponent[]> {
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const components: OAMComponent[] = [];
+        const { oamComponents } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamComponents.forEach((element) => {
+          element.forEach((oamComponent) => {
+            components.push(oamComponent);
+          });
+        });
+        return components;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async getOAMApplication(oamAppId: string): Promise<OAMApplication> {
+    let oamApp: OAMApplication;
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const { oamApplications } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamApplications.forEach((element) => {
+          element.forEach((oamApplication) => {
+            if (oamApplication.data.metadata.uid === oamAppId) {
+              oamApp = oamApplication;
+            }
+          });
+        });
+        if (!oamApp) {
+          throw Messages.Error.errOAMApplicationDoesNotExist(oamAppId);
+        }
+        return oamApp;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async getOAMComponent(oamCompId: string): Promise<OAMApplication> {
+    let oamComp: OAMComponent;
+    return Promise.all([
+      fakeApi.getOamApplications(),
+      fakeApi.getOamComponents(),
+    ])
+      .then(([apps, comps]) => {
+        const { oamComponents } = processOAMData(
+          JSON.parse(apps),
+          JSON.parse(comps)
+        );
+        oamComponents.forEach((element) => {
+          element.forEach((oamComponent) => {
+            if (oamComponent.data.metadata.uid === oamCompId) {
+              oamComp = oamComponent;
+            }
+          });
+        });
+        if (!oamComp) {
+          throw Messages.Error.errOAMComponentDoesNotExist(oamCompId);
+        }
+        return oamComp;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async getKubernetesResource(
+    name: string,
+    kind: string,
+    namespace: string
+  ): Promise<string> {
+    return Promise.resolve(fakeApi.getKubernetesResource(name, kind, namespace))
+      .then((response) => {
+        if (!response) {
+          throw Messages.Error.errKubernetesResourceNotExists(
+            kind,
+            namespace,
+            name
+          );
+        }
+        return response;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
   public constructor() {
     this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
     this.listApplications = this.listApplications.bind(this);
@@ -101,5 +284,10 @@ export class VerrazzanoApi {
     this.getModel = this.getModel.bind(this);
     this.listSecrets = this.listSecrets.bind(this);
     this.getBinding = this.getBinding.bind(this);
+    this.listOAMApplications = this.listApplications.bind(this);
+    this.listOAMComponents = this.listOAMComponents.bind(this);
+    this.getOAMApplication = this.getOAMApplication.bind(this);
+    this.getOAMComponent = this.getOAMComponent.bind(this);
+    this.getKubernetesResource = this.getKubernetesResource.bind(this);
   }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
@@ -6,9 +6,16 @@ import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
 import { ConsoleBindingList } from "vz-console/binding-list/loader";
 import { ConsoleModelList } from "vz-console/model-list/loader";
 import * as Messages from "vz-console/utils/Messages";
-import { Model, Binding } from "vz-console/service/types";
+import {
+  Model,
+  Binding,
+  OAMApplication,
+  OAMComponent,
+} from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
+import { ConsoleOAMApplicationsList } from "vz-console/oamapps-list/loader";
+import { ConsoleOAMComponentsList } from "vz-console/oamcomps-list/loader";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
@@ -17,6 +24,8 @@ class Props {
   bindings?: [Binding];
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
+  oamApplications?: [OAMApplication];
+  oamComponents?: [OAMComponent];
 }
 
 class State {
@@ -42,6 +51,8 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
   labels = {
     models: Messages.Instance.appModels(),
     bindings: Messages.Instance.appBindings(),
+    oamapps: Messages.Instance.oamApps(),
+    oamcomps: Messages.Instance.oamCompoennts(),
   };
 
   state: State = {
@@ -52,7 +63,13 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     getDefaultRouter().destroy();
     history.replaceState(null, "path", `/${this.props.selectedItem}`);
     this.router = new CoreRouter(
-      [{ path: "" }, { path: "models" }, { path: "bindings" }],
+      [
+        { path: "" },
+        { path: "models" },
+        { path: "bindings" },
+        { path: "oamapps" },
+        { path: "oamcomps" },
+      ],
       {
         urlAdapter: new UrlPathAdapter("/"),
       }
@@ -100,6 +117,22 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
         break;
       }
 
+      case "oamapps": {
+        ResourceList = (
+          <ConsoleOAMApplicationsList oamapps={this.props.oamApplications} />
+        );
+        Heading = <h1 class="resheader">{this.labels.oamapps}</h1>;
+        break;
+      }
+
+      case "oamcomps": {
+        ResourceList = (
+          <ConsoleOAMComponentsList oamcomps={this.props.oamComponents} />
+        );
+        Heading = <h1 class="resheader">{this.labels.oamcomps}</h1>;
+        break;
+      }
+
       default: {
         break;
       }
@@ -124,6 +157,12 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
               <li id="bindings">
                 <a href="#">{this.labels.bindings}</a>
               </li>
+              {/* <li id="oamapps">
+                <a href="#">{this.labels.oamapps}</a>
+              </li>
+              <li id="oamcomps">
+                <a href="#">{this.labels.oamcomps}</a>
+              </li> */}
             </ul>
           </oj-navigation-list>
         </div>

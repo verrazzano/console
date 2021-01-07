@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 export = {
@@ -21,6 +21,12 @@ export = {
     home: "Home",
     modelDetails: "Model Details",
     bindingDetails: "Binding Details",
+    oamApp: "OAM Application",
+    oamComp: "OAM Component",
+    oamAppDetails: "OAM Application Details",
+    oamCompDetails: "OAM Component Details",
+    compInstances: "Component Instances",
+    oamCompInstance: "OAM Component Instance",
   },
   model: {
     modelsPageLoaded: "Models page loaded.",
@@ -37,6 +43,8 @@ export = {
     instanceHeading: "Verrazzano",
     appModels: "Application Models",
     appBindings: "Application Bindings",
+    oamApps: "OAM Applications",
+    oamComponents: "OAM Components",
   },
   error: {
     errSendAuthReq: "Error sending auth request: {0}",
@@ -69,6 +77,20 @@ export = {
     errRenderSecretList: "Error displaying secret list.",
 
     errBindingDoesNotExist: "No Binding with id {0}.",
+
+    errInvalidOamAppId: "Invalid OAM Application Id.",
+
+    errOAMApplicationDoesNotExist: "No OAM Application with id {0}.",
+
+    errRenderOAMApplication: "Error displaying OAM Application {0}.",
+
+    errInvalidOamCompId: "Invalid OAM Component Id.",
+
+    errOAMComponentDoesNotExist: "No OAM Component with id {0}.",
+
+    errRenderOAMComponent: "Error displaying OAM Component {0}.",
+
+    errKubernetesResourceNotExists: "{0} {1}/{2} does not exist in cluster.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
@@ -118,8 +140,25 @@ export = {
     created: "Created",
     selectOption: "Please select an option ...",
     images: "Images",
+    workloadType: "Workload Type",
+    workloadSpec: "Workload Spec",
+    workload: "Workload",
+    latestRevision: "Latest Revision",
+    labels: "Labels",
+    annotations: "Annotations",
+    oamAppInfo: "OAM Application Information",
+    scopes: "Scopes",
+    traits: "Traits",
+    params: "Parameters",
+    kind: "Kind",
+    value: "Value",
+    required: "Required",
+    oamCompInfo: "Component Instance Details",
+    applications: "Applications",
+    oamCompRef: "OAM Component Ref",
     byType: "By Type",
     byState: "By State",
+    componentInfo: "Component Details",
   },
 
   api: {

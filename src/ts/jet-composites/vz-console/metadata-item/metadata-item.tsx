@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
@@ -10,6 +10,7 @@ class Props {
   link?: boolean;
   replace?: boolean;
   target?: string;
+  onclick?: () => {};
 }
 
 /**
@@ -35,7 +36,7 @@ export class ConsoleMetadataItem extends VComponent<Props> {
         <strong>{this.props.label}:&nbsp;</strong>
         {this.props.link ? (
           <a
-            onClick={this.openLink}
+            onClick={this.props.onclick ? this.props.onclick : this.openLink}
             href={this.props.target ? this.props.target : this.props.value}
           >
             {this.props.value}

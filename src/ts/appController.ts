@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as ko from "knockout";
@@ -88,6 +88,14 @@ class RootViewModel {
       {
         path: "binding",
         detail: { label: Messages.Nav.binding(), iconClass: "" },
+      },
+      {
+        path: "oamapp",
+        detail: { label: Messages.Nav.oamApp(), iconClass: "" },
+      },
+      {
+        path: "oamcomp",
+        detail: { label: Messages.Nav.oamComp(), iconClass: "" },
       },
       {
         path: "instance",

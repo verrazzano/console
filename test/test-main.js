@@ -1,4 +1,4 @@
-// Copyright (C) 2020, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 var allTestFiles = [];
@@ -43,6 +43,7 @@ require.config({
     touchr: "libs/touchr/touchr",
     customElements: "libs/webcomponents/custom-elements.min",
     ojdnd: "libs/dnd-polyfill/dnd-polyfill-1.0.2",
+    text: "libs/require/text",
   },
 
   // dynamically load all test files

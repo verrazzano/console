@@ -1,4 +1,4 @@
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 /* eslint-disable import/no-webpack-loader-syntax */
@@ -31,6 +31,13 @@ export const Nav = {
   home: () => Translations.getTranslatedString("nav.home"),
   modelDetails: () => Translations.getTranslatedString("nav.modelDetails"),
   bindingDetails: () => Translations.getTranslatedString("nav.bindingDetails"),
+  oamApp: () => Translations.getTranslatedString("nav.oamApp"),
+  oamComp: () => Translations.getTranslatedString("nav.oamComp"),
+  oamAppDetails: () => Translations.getTranslatedString("nav.oamAppDetails"),
+  oamCompDetails: () => Translations.getTranslatedString("nav.oamCompDetails"),
+  compInstances: () => Translations.getTranslatedString("nav.compInstances"),
+  oamCompInstance: () =>
+    Translations.getTranslatedString("nav.oamCompInstance"),
 };
 
 export const Instance = {
@@ -41,6 +48,9 @@ export const Instance = {
     Translations.getTranslatedString("instance.instanceHeading"),
   appModels: () => Translations.getTranslatedString("instance.appModels"),
   appBindings: () => Translations.getTranslatedString("instance.appBindings"),
+  oamApps: () => Translations.getTranslatedString("instance.oamApps"),
+  oamCompoennts: () =>
+    Translations.getTranslatedString("instance.oamComponents"),
 };
 
 export const Binding = {
@@ -107,6 +117,33 @@ export const Error = {
 
   errBindingDoesNotExist: (...args) =>
     Translations.getTranslatedString("error.errBindingDoesNotExist", args),
+
+  errInvalidOamAppId: (...args) =>
+    Translations.getTranslatedString("error.errInvalidOamAppId", args),
+
+  errOAMApplicationDoesNotExist: (...args) =>
+    Translations.getTranslatedString(
+      "error.errOAMApplicationDoesNotExist",
+      args
+    ),
+
+  errRenderOAMApplication: (...args) =>
+    Translations.getTranslatedString("error.errRenderOAMApplication", args),
+
+  errInvalidOamCompId: (...args) =>
+    Translations.getTranslatedString("error.errInvalidOamCompId", args),
+
+  errOAMComponentDoesNotExist: (...args) =>
+    Translations.getTranslatedString("error.errOAMComponentDoesNotExist", args),
+
+  errRenderOAMComponent: (...args) =>
+    Translations.getTranslatedString("error.errRenderOAMComponent", args),
+
+  errKubernetesResourceNotExists: (...args) =>
+    Translations.getTranslatedString(
+      "error.errKubernetesResourceNotExists",
+      args
+    ),
 };
 
 export const Auth = {
@@ -162,8 +199,26 @@ export const Labels = {
   created: () => Translations.getTranslatedString("labels.created"),
   selectOption: () => Translations.getTranslatedString("labels.selectOption"),
   images: () => Translations.getTranslatedString("labels.images"),
+  workloadType: () => Translations.getTranslatedString("labels.workloadType"),
+  workloadSpec: () => Translations.getTranslatedString("labels.workloadSpec"),
+  workload: () => Translations.getTranslatedString("labels.workload"),
+  latestRevision: () =>
+    Translations.getTranslatedString("labels.latestRevision"),
+  labels: () => Translations.getTranslatedString("labels.labels"),
+  annotations: () => Translations.getTranslatedString("labels.annotations"),
+  oamAppInfo: () => Translations.getTranslatedString("labels.oamAppInfo"),
+  traits: () => Translations.getTranslatedString("labels.traits"),
+  scopes: () => Translations.getTranslatedString("labels.scopes"),
+  params: () => Translations.getTranslatedString("labels.params"),
+  kind: () => Translations.getTranslatedString("labels.kind"),
+  value: () => Translations.getTranslatedString("labels.value"),
+  required: () => Translations.getTranslatedString("labels.required"),
+  oamCompInfo: () => Translations.getTranslatedString("labels.oamCompInfo"),
+  applications: () => Translations.getTranslatedString("labels.applications"),
+  oamCompRef: () => Translations.getTranslatedString("labels.oamCompRef"),
   byType: () => Translations.getTranslatedString("labels.byType"),
   byState: () => Translations.getTranslatedString("labels.byState"),
+  componentInfo: () => Translations.getTranslatedString("labels.componentInfo"),
 };
 
 export const Api = {
@@ -183,4 +238,10 @@ export const Pagination = {
   msgItemRange: () =>
     Translations.getTranslatedString("pagination.msgItemRange"),
   msgItem: () => Translations.getTranslatedString("pagination.msgItem"),
+};
+
+export const ComponentConfigLabels = {
+  traits: Labels.traits(),
+  scopes: Labels.scopes(),
+  params: Labels.params(),
 };
