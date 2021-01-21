@@ -11,6 +11,7 @@ export class Wait {
 
   public static async waitForPresent(
     by: By,
+    // eslint-disable-next-line no-undef
     timeOut: number = Wait.TIMEOUT
   ): Promise<WebElement> {
     try {
@@ -31,6 +32,7 @@ export class Wait {
   // Wait until the web element is present in the DOM and immediately visible in the UI.
   public static async waitForVisible(
     by: By,
+    // eslint-disable-next-line no-undef
     timeOut: number = Wait.TIMEOUT
   ): Promise<WebElement> {
     try {
@@ -52,6 +54,7 @@ export class Wait {
   // Wait until the web element is enabled.
   public static async waitForEnable(
     by: By,
+    // eslint-disable-next-line no-undef
     timeOut: number = Wait.TIMEOUT
   ): Promise<WebElement> {
     try {
@@ -75,6 +78,7 @@ export class Wait {
     by: By,
     f: Function,
     timeOutMessage: string,
+    // eslint-disable-next-line no-undef
     timeOut: number = Wait.TIMEOUT
   ): Promise<WebElement> {
     let element = await Wait.waitForPresent(by, timeOut);
