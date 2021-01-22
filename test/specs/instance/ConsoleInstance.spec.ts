@@ -10,6 +10,7 @@ import {
   Application,
   extractModelsFromApplications,
   extractBindingsFromApplications,
+  OAMApplication,
 } from "vz-console/service/loader";
 import "vz-console/instance/loader";
 import * as Context from "ojs/ojcontext";
@@ -97,6 +98,9 @@ describe("instance panel screen tests", () => {
       .returns(Promise.resolve(applications));
     sandbox.stub(factory, "extractModelsFromApplications").returns([model]);
     sandbox.stub(factory, "extractBindingsFromApplications").returns([binding]);
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"listOAMAppsAndComponents")
+      .returns(Promise.resolve({}));
     await setup()
       .then(() => console.log("Instance view rendered"))
       .catch((err) => {
