@@ -8,6 +8,8 @@ import {
   Status,
   OAMApplication,
   OAMComponentInstance,
+  OAMTrait,
+  OAMScope,
 } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleError } from "vz-console/error/loader";
@@ -76,23 +78,28 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
 
   async getData() {
     this.updateState({ loading: true });
-    this.verrazzanoApi
-      .getOAMApplication(this.props.oamAppId)
-      .then((oamApplication) => {
-        this.updateState({
-          loading: false,
-          oamApplication,
-          selectedItem: this.props.selectedItem,
-          selectedComponent: this.props.selectedComponent,
-        });
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
+    try {
+      const oamApplication = await this.verrazzanoApi.getOAMApplication(
+        this.props.oamAppId
+      );
+      if (oamApplication.componentInstances) {
+        for (const component of oamApplication.componentInstances) {
+          await this.populateComponent(component);
         }
-        this.updateState({ error: errorMessage });
+      }
+      this.updateState({
+        loading: false,
+        oamApplication,
+        selectedItem: this.props.selectedItem,
+        selectedComponent: this.props.selectedComponent,
       });
+    } catch (error) {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      this.updateState({ error: errorMessage });
+    }
   }
 
   breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
@@ -138,16 +145,35 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     return tabTitle;
   }
 
+  async populateComponent(component: OAMComponentInstance) {
+    await this.populateWorkload(component);
+    await this.populateTraits(component);
+    await this.populateScopes(component);
+    this.populateParams(component);
+  }
+
   async populateWorkload(component: OAMComponentInstance) {
     if (component.oamComponent) {
       const workload = component.oamComponent.data.spec.workload;
-      const resource = await this.verrazzanoApi.getKubernetesResource(
-        workload.metadata.name,
-        workload.kind,
-        workload.metadata.namespace
-      );
+      try {
+        const response = await this.verrazzanoApi.getKubernetesResource(
+          {
+            ApiVersion: workload.apiVersion,
+            Kind: workload.kind,
+          },
+          workload.metadata.namespace,
+          workload.metadata.name
+        );
+        const resource = await response.json();
 
-      component.descriptor = yaml.dump(yaml.load(resource));
+        component.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
+      } catch (error) {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        this.updateState({ error: errorMessage });
+      }
       component.workloadOpenEventHandler = () => {
         (document.getElementById(`popup_${component.id}`) as any).open(
           `#workload_${component.id}`
@@ -156,7 +182,128 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
       component.workloadCloseEventHandler = () => {
         (document.getElementById(`popup_${component.id}`) as any).close();
       };
-      return component;
+    }
+  }
+
+  async populateTraits(component: OAMComponentInstance) {
+    component.traits = [];
+    if (component.data.traits) {
+      try {
+        for (const componentInstanceTrait of component.data.traits) {
+          const traitData = componentInstanceTrait.trait
+            ? componentInstanceTrait.trait
+            : componentInstanceTrait;
+          const trait: OAMTrait = {
+            name: traitData.metadata ? traitData.metadata.name : "",
+            kind: traitData.kind,
+            apiVersion: traitData.apiVersion,
+            descriptor: traitData,
+            namespace:
+              traitData.metadata && traitData.metadata.namespace
+                ? traitData.metadata.namespace
+                : component.oamComponent.namespace,
+            id:
+              traitData.metadata && traitData.metadata.uid
+                ? traitData.metadata.uid
+                : `${component.id}_trait_${traitData.kind}_${
+                    traitData.metadata ? traitData.metadata.name : ""
+                  }`,
+          };
+          if (trait.name && trait.namespace && trait.kind) {
+            const response = await this.verrazzanoApi.getKubernetesResource(
+              {
+                ApiVersion: trait.apiVersion,
+                Kind: trait.kind,
+              },
+              trait.namespace,
+              trait.name
+            );
+            const resource = await response.json();
+            trait.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
+            trait.traitOpenEventHandler = () => {
+              (document.getElementById(`popup_${trait.id}`) as any).open(
+                `#trait_${trait.id}`
+              );
+            };
+            trait.traitCloseEventHandler = () => {
+              (document.getElementById(`popup_${trait.id}`) as any).close();
+            };
+            component.traits.push(trait);
+          }
+        }
+      } catch (error) {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        this.updateState({ error: errorMessage });
+      }
+    }
+  }
+
+  async populateScopes(component: OAMComponentInstance) {
+    component.scopes = [];
+    if (component.data.scopes) {
+      try {
+        for (const componentInstanceScope of component.data.scopes) {
+          const scopeData = componentInstanceScope.scopeRef
+            ? componentInstanceScope.scopeRef
+            : componentInstanceScope;
+          const scope: OAMScope = {
+            name: scopeData.name,
+            kind: scopeData.kind,
+            apiVersion: scopeData.apiVersion,
+            descriptor: scopeData,
+            namespace:
+              scopeData.metadata && scopeData.metadata.namespace
+                ? scopeData.metadata.namespace
+                : component.oamComponent.namespace,
+            id:
+              scopeData.metadata && scopeData.metadata.uid
+                ? scopeData.metadata.uid
+                : `${component.id}_scope_${scopeData.kind}_${scopeData.name}`,
+          };
+          if (scope.name && scope.namespace && scope.kind) {
+            const response = await this.verrazzanoApi.getKubernetesResource(
+              {
+                ApiVersion: scope.apiVersion,
+                Kind: scope.kind,
+              },
+              scope.namespace,
+              scope.name
+            );
+            const resource = await response.json();
+            scope.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
+            scope.scopeOpenEventHandler = () => {
+              (document.getElementById(`popup_${scope.id}`) as any).open(
+                `#scope_${scope.id}`
+              );
+            };
+            scope.scopeCloseEventHandler = () => {
+              (document.getElementById(`popup_${scope.id}`) as any).close();
+            };
+            component.scopes.push(scope);
+          }
+        }
+      } catch (error) {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        this.updateState({ error: errorMessage });
+      }
+    }
+  }
+
+  populateParams(component: OAMComponentInstance) {
+    component.params = [];
+    if (component.data.parameterValues) {
+      component.data.parameterValues.forEach((param) => {
+        component.params.push({
+          name: param.name,
+          value: param.value,
+        });
+      });
     }
   }
 
@@ -205,11 +352,6 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
             </div>
           </div>
         );
-      } else {
-        this.updateState({ loading: true });
-        Promise.resolve(this.populateWorkload(component)).then(() => {
-          this.updateState({ loading: false });
-        });
       }
     } else {
       return (

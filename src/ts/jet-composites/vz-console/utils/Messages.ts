@@ -144,6 +144,45 @@ export const Error = {
       "error.errKubernetesResourceNotExists",
       args
     ),
+
+  errOAMApplicationsFetchError: (...args) =>
+    Translations.getTranslatedString(
+      "error.errOAMApplicationsFetchError",
+      args
+    ),
+
+  errOAMComponentsFetchError: (...args) =>
+    Translations.getTranslatedString("error.errOAMComponentsFetchError", args),
+
+  errRenderOAMScopes: (...args) =>
+    Translations.getTranslatedString("error.errRenderOAMScopes", args),
+
+  errRenderOAMTraits: (...args) =>
+    Translations.getTranslatedString("error.errRenderOAMTraits", args),
+
+  errRenderOAMCompInstances: (...args) =>
+    Translations.getTranslatedString("error.errRenderOAMCompInstances", args),
+
+  errIngressesFetchError: (...args) =>
+    Translations.getTranslatedString("error.errIngressesFetchError", args),
+
+  errVmcsFetchError: (...args) =>
+    Translations.getTranslatedString("error.errVmcFetchError", args),
+
+  errVmiFetchError: (...args) =>
+    Translations.getTranslatedString("error.errVmiFetchError", args),
+
+  errOperatorDeploymentFetchError: (...args) =>
+    Translations.getTranslatedString(
+      "error.errOperatorDeploymentFetchError",
+      args
+    ),
+
+  errVmcFetchError: (...args) =>
+    Translations.getTranslatedString("error.errVmcFetchError", args),
+
+  errIngressFetchError: (...args) =>
+    Translations.getTranslatedString("error.errIngressFetchError", args),
 };
 
 export const Auth = {

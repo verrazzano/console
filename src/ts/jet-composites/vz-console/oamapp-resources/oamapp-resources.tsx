@@ -5,12 +5,7 @@
 import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
 import { ConsoleOamApplicationComponents } from "vz-console/oamapp-components/loader";
 import * as Messages from "vz-console/utils/Messages";
-import {
-  OAMApplication,
-  OAMScope,
-  OAMTrait,
-  OAMParam,
-} from "vz-console/service/types";
+import { OAMApplication } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleOamApplicationComponentTraits } from "vz-console/oamapp-component-traits/loader";
@@ -253,28 +248,12 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
             return element.id === this.state.selectedComponent;
           }
         )[0];
-        const traits: OAMTrait[] = [];
-        if (selectedComponent.data.traits) {
-          selectedComponent.data.traits.forEach((trait) => {
-            const traitData = trait.trait ? trait.trait : trait;
-            traits.push({
-              name: traitData.metadata ? traitData.metadata.name : "",
-              kind: traitData.kind,
-              descriptor: traitData,
-              namespace:
-                traitData.metadata && traitData.metadata.namespace
-                  ? traitData.metadata.namespace
-                  : selectedComponent.oamComponent.namespace,
-              id:
-                traitData.metadata && traitData.metadata.uid
-                  ? traitData.metadata.uid
-                  : `${selectedComponent.id}_trait_${traitData.kind}_${
-                      traitData.metadata ? traitData.metadata.name : ""
-                    }`,
-            });
-          });
-        }
-        ResourceList = <ConsoleOamApplicationComponentTraits traits={traits} />;
+
+        ResourceList = (
+          <ConsoleOamApplicationComponentTraits
+            traits={selectedComponent.traits}
+          />
+        );
         Heading = (
           <h1 class="resheader">{Messages.ComponentConfigLabels.traits}</h1>
         );
@@ -288,26 +267,12 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
             return element.id === this.state.selectedComponent;
           }
         )[0];
-        const scopes: OAMScope[] = [];
-        if (selectedComponent.data.scopes) {
-          selectedComponent.data.scopes.forEach((scope) => {
-            const scopeData = scope.scopeRef ? scope.scopeRef : scope;
-            scopes.push({
-              name: scopeData.name,
-              kind: scopeData.kind,
-              descriptor: scopeData,
-              namespace:
-                scopeData.metadata && scopeData.metadata.namespace
-                  ? scopeData.metadata.namespace
-                  : selectedComponent.oamComponent.namespace,
-              id:
-                scopeData.metadata && scopeData.metadata.uid
-                  ? scopeData.metadata.uid
-                  : `${selectedComponent.id}_scope_${scopeData.kind}_${scopeData.name}`,
-            });
-          });
-        }
-        ResourceList = <ConsoleOamApplicationComponentScopes scopes={scopes} />;
+
+        ResourceList = (
+          <ConsoleOamApplicationComponentScopes
+            scopes={selectedComponent.scopes}
+          />
+        );
         Heading = (
           <h1 class="resheader">{Messages.ComponentConfigLabels.scopes}</h1>
         );
@@ -321,16 +286,11 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
             return element.id === this.state.selectedComponent;
           }
         )[0];
-        const params: OAMParam[] = [];
-        if (selectedComponent.data.parameterValues) {
-          selectedComponent.data.parameterValues.forEach((param) => {
-            params.push({
-              name: param.name,
-              value: param.value,
-            });
-          });
-        }
-        ResourceList = <ConsoleOamApplicationComponentParams params={params} />;
+        ResourceList = (
+          <ConsoleOamApplicationComponentParams
+            params={selectedComponent.params}
+          />
+        );
         Heading = (
           <h1 class="resheader">{Messages.ComponentConfigLabels.params}</h1>
         );

@@ -12,8 +12,6 @@ import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
-import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
-import * as yaml from "js-yaml";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -33,46 +31,22 @@ export class ConsoleOamApplicationComponentScopes extends VComponent<
   Props,
   State
 > {
-  verrazzanoApi: VerrazzanoApi;
   state: State = {};
   dataProvider: ko.Observable = ko.observable();
 
   constructor() {
     super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
   }
 
   protected mounted() {
-    Promise.resolve(this.populateScopeData()).then((models) => {
-      this.updateState({
-        scopes: new Model.Collection(models),
-      });
-    });
-  }
-
-  async populateScopeData() {
     const models: Model.Model[] = [];
     for (const scope of this.props.scopes) {
-      if (scope.name && scope.namespace && scope.kind) {
-        const resource = await this.verrazzanoApi.getKubernetesResource(
-          scope.name,
-          scope.kind,
-          scope.namespace
-        );
-
-        scope.descriptor = yaml.dump(yaml.load(resource));
-        scope.scopeOpenEventHandler = () => {
-          (document.getElementById(`popup_${scope.id}`) as any).open(
-            `#scope_${scope.id}`
-          );
-        };
-        scope.scopeCloseEventHandler = () => {
-          (document.getElementById(`popup_${scope.id}`) as any).close();
-        };
-        models.push(new Model.Model(scope));
-      }
+      models.push(new Model.Model(scope));
     }
-    return models;
+
+    this.updateState({
+      scopes: new Model.Collection(models),
+    });
   }
 
   protected render() {

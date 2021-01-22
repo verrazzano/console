@@ -12,8 +12,6 @@ import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
-import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
-import * as yaml from "js-yaml";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -33,46 +31,21 @@ export class ConsoleOamApplicationComponentTraits extends VComponent<
   Props,
   State
 > {
-  verrazzanoApi: VerrazzanoApi;
   state: State = {};
   dataProvider: ko.Observable = ko.observable();
 
   constructor() {
     super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
   }
 
   protected mounted() {
-    Promise.resolve(this.populateTraitData()).then((models) => {
-      this.updateState({
-        traits: new Model.Collection(models),
-      });
-    });
-  }
-
-  async populateTraitData() {
     const models: Model.Model[] = [];
     for (const trait of this.props.traits) {
-      if (trait.name && trait.namespace && trait.kind) {
-        const resource = await this.verrazzanoApi.getKubernetesResource(
-          trait.name,
-          trait.kind,
-          trait.namespace
-        );
-
-        trait.descriptor = yaml.dump(yaml.load(resource));
-        trait.traitOpenEventHandler = () => {
-          (document.getElementById(`popup_${trait.id}`) as any).open(
-            `#trait_${trait.id}`
-          );
-        };
-        trait.traitCloseEventHandler = () => {
-          (document.getElementById(`popup_${trait.id}`) as any).close();
-        };
-        models.push(new Model.Model(trait));
-      }
+      models.push(new Model.Model(trait));
     }
-    return models;
+    this.updateState({
+      traits: new Model.Collection(models),
+    });
   }
 
   protected render() {
