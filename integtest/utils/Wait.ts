@@ -1,17 +1,16 @@
-// Copyright (C) 2020, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By, until, WebElement } from "selenium-webdriver";
 import { Utils } from "./Utils";
 
 export const PAGE_LOAD_TIMEOUT = 10000;
+const DEFAULT_TIMEOUT = 30000;
 
 export class Wait {
-  private static TIMEOUT = 30000;
-
   public static async waitForPresent(
     by: By,
-    timeOut: number = Wait.TIMEOUT
+    timeOut: number = DEFAULT_TIMEOUT
   ): Promise<WebElement> {
     try {
       console.log(`Waiting for the element to locate "${by}"`);
@@ -31,7 +30,7 @@ export class Wait {
   // Wait until the web element is present in the DOM and immediately visible in the UI.
   public static async waitForVisible(
     by: By,
-    timeOut: number = Wait.TIMEOUT
+    timeOut: number = DEFAULT_TIMEOUT
   ): Promise<WebElement> {
     try {
       console.log(`Waiting for element to be visible: "${by}"`);
@@ -52,7 +51,7 @@ export class Wait {
   // Wait until the web element is enabled.
   public static async waitForEnable(
     by: By,
-    timeOut: number = Wait.TIMEOUT
+    timeOut: number = DEFAULT_TIMEOUT
   ): Promise<WebElement> {
     try {
       await Wait.waitForVisible(by);
@@ -75,7 +74,7 @@ export class Wait {
     by: By,
     f: Function,
     timeOutMessage: string,
-    timeOut: number = Wait.TIMEOUT
+    timeOut: number = DEFAULT_TIMEOUT
   ): Promise<WebElement> {
     let element = await Wait.waitForPresent(by, timeOut);
     console.log(`Entering WaitIgnoreStaleElement; Locator: "${by}" `);
