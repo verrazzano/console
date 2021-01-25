@@ -22,6 +22,7 @@ import {
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
+import * as yaml from "js-yaml";
 
 export const ServicePrefix = "instances";
 
@@ -235,33 +236,79 @@ export class VerrazzanoApi {
   }
 
   public async listApplications(): Promise<Application[]> {
-    return this.fetchApi(this.url + "/applications")
-      .then((response: Response) => response.json())
-      .then((data: Application[]) => {
-        return data;
+    return Promise.all([
+      this.getKubernetesResource(ResourceType.VerrazzanoBinding),
+      this.getKubernetesResource(ResourceType.VerrazzanoModel),
+    ])
+      .then(([bindingResponse, modelResponse]) => {
+        return Promise.all([bindingResponse.json(), modelResponse.json()]);
+      })
+      .then(([bindings, models]) => {
+        if (!bindings || !bindings.items) {
+          throw new Error(Messages.Error.errBindingsFetchError());
+        }
+
+        if (!models || !models.items) {
+          throw new Error(Messages.Error.errModelsFetchError());
+        }
+        return this.populateApplications(bindings.items, models.items);
       });
+  }
+
+  populateApplications(
+    bindings: Array<any>,
+    models: Array<any>
+  ): Application[] {
+    const applications: Application[] = [];
+    while (models.length > 0) {
+      const model = models.pop();
+      const bindingsForModel = bindings.filter(
+        (binding) =>
+          binding.metadata.namespace === model.metadata.namespace &&
+          binding.spec.modelName === model.metadata.name
+      );
+      if (bindingsForModel && bindingsForModel.length > 0) {
+        bindingsForModel.forEach((binding) => {
+          applications.push({
+            id: `${binding.metadata.uid}-${model.metadata.uid}`,
+            description: binding.spec.description,
+            name: binding.metadata.name,
+            model: yaml.dump(yaml.load(JSON.stringify(model))),
+            binding: yaml.dump(yaml.load(JSON.stringify(binding))),
+            status: "NYI",
+          });
+        });
+      } else {
+        applications.push({
+          id: `app-${model.metadata.uid}`,
+          description: "",
+          name: "",
+          model: yaml.dump(yaml.load(JSON.stringify(model))),
+          binding: "",
+          status: "NYI",
+        });
+      }
+    }
+    return applications;
   }
 
   public async getModel(modelId: string): Promise<Model> {
     console.log(Messages.Api.msgFetchModel(modelId));
-    return this.fetchApi(this.url + "/applications")
-      .then((response: Response) => response.json())
-      .then((data) => {
-        const applications: Application[] = data;
-        const models = extractModelsFromApplications(applications);
-        for (const model of models) {
-          if (modelId && model.id === modelId) {
-            return model;
-          }
+    return this.listApplications().then((data) => {
+      const applications: Application[] = data;
+      const models = extractModelsFromApplications(applications);
+      for (const model of models) {
+        if (modelId && model.id === modelId) {
+          return model;
         }
-      });
+      }
+    });
   }
 
   public async getBinding(bindingId: string): Promise<Binding> {
     console.log(Messages.Api.msgFetchBinding(bindingId));
     let binding: Binding;
-    return this.fetchApi(this.url + "/applications")
-      .then((response: Response) => response.json())
+    return this.listApplications()
       .then((applications: Application[]) => {
         const bindings = extractBindingsFromApplications(applications);
         binding = bindings.find((binding) => {
@@ -285,11 +332,168 @@ export class VerrazzanoApi {
   }
 
   public async listSecrets(): Promise<Secret[]> {
-    return this.fetchApi(this.url + "/secrets")
-      .then((response: Response) => response.json())
-      .then((data: Secret[]) => {
-        return data;
+    return Promise.all([
+      this.getKubernetesResource(ResourceType.VerrazzanoBinding),
+      this.getKubernetesResource(ResourceType.VerrazzanoModel),
+    ])
+      .then(([bindingResponse, modelResponse]) => {
+        return Promise.all([bindingResponse.json(), modelResponse.json()]);
+      })
+      .then(([bindings, models]) => {
+        if (!bindings || !bindings.items) {
+          throw new Error(Messages.Error.errBindingsFetchError());
+        }
+
+        if (!models || !models.items) {
+          throw new Error(Messages.Error.errModelsFetchError());
+        }
+        return this.populateSecrets(bindings.items, models.items);
       });
+  }
+
+  async populateSecrets(
+    bindings: Array<any>,
+    models: Array<any>
+  ): Promise<Secret[]> {
+    const secretsMap: Map<string, Map<string, Secret>> = new Map();
+    const secrets: Secret[] = [];
+    try {
+      for (const model of models) {
+        if (model.spec.weblogicDomains) {
+          for (const domain of model.spec.weblogicDomains as Array<any>) {
+            if (domain.domainCRValues.imagePullSecrets) {
+              for (const pullSecret of domain.domainCRValues
+                .imagePullSecrets as Array<any>) {
+                await this.addSecret(
+                  secretsMap,
+                  model.metadata.namespace,
+                  pullSecret.name
+                );
+              }
+            }
+
+            if (domain.domainCRValues.configOverrideSecrets) {
+              for (const configOverrideSecret of domain.domainCRValues
+                .configOverrideSecrets as Array<any>) {
+                await this.addSecret(
+                  secretsMap,
+                  model.metadata.namespace,
+                  configOverrideSecret
+                );
+              }
+            }
+
+            if (domain.domainCRValues.webLogicCredentialsSecret) {
+              await this.addSecret(
+                secretsMap,
+                model.metadata.namespace,
+                domain.domainCRValues.webLogicCredentialsSecret.name
+              );
+            }
+          }
+        }
+
+        if (model.spec.helidonApplications) {
+          for (const helidonApp of model.spec.helidonApplications as Array<
+            any
+          >) {
+            if (helidonApp.imagePullSecrets) {
+              for (const pullSecret of helidonApp.imagePullSecrets as Array<
+                any
+              >) {
+                await this.addSecret(
+                  secretsMap,
+                  model.metadata.namespace,
+                  pullSecret.name
+                );
+              }
+            }
+          }
+        }
+
+        if (model.spec.coherenceClusters) {
+          for (const coherenceCluster of model.spec.coherenceClusters as Array<
+            any
+          >) {
+            if (coherenceCluster.imagePullSecrets) {
+              for (const pullSecret of coherenceCluster.imagePullSecrets as Array<
+                any
+              >) {
+                await this.addSecret(
+                  secretsMap,
+                  model.metadata.namespace,
+                  pullSecret.name
+                );
+              }
+            }
+          }
+        }
+      }
+
+      for (const binding of bindings) {
+        if (binding.spec.databaseBindings) {
+          for (const dbBinding of binding.spec.databaseBindings as Array<any>) {
+            if (dbBinding.credentials) {
+              await this.addSecret(
+                secretsMap,
+                binding.metadata.namespace,
+                dbBinding.credentials
+              );
+            }
+          }
+        }
+      }
+    } catch (error) {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      throw new Error(errorMessage);
+    }
+
+    secretsMap.forEach((secretNameToSecretMap) =>
+      secretNameToSecretMap.forEach((secret) => secrets.push(secret))
+    );
+    return secrets;
+  }
+
+  async addSecret(
+    secrets: Map<string, Map<string, Secret>>,
+    namespace: string,
+    name: string
+  ) {
+    let secretsInNS = secrets.get(namespace);
+    if (!secretsInNS) {
+      secretsInNS = new Map();
+      secrets.set(namespace, secretsInNS);
+    }
+
+    if (secretsInNS.has(name)) {
+      return;
+    }
+
+    try {
+      const secret = await this.getKubernetesResource(
+        ResourceType.Secret,
+        namespace,
+        name
+      ).then((secretResponse) => secretResponse.json());
+      if (secret.metadata) {
+        secretsInNS.set(name, {
+          id: secret.metadata.uid,
+          name: secret.metadata.name,
+          namespace: secret.metadata.namespace,
+          type: secret.type,
+          status: Status.Ready,
+        });
+      }
+    } catch (error) {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      throw new Error(errorMessage);
+    }
   }
 
   public async listOAMAppsAndComponents(): Promise<{
@@ -514,8 +718,8 @@ export class VerrazzanoApi {
       )
     )
       .then((response) => {
-        if (!response) {
-          throw Messages.Error.errKubernetesResourceNotExists(
+        if (!response || !response.status || response.status >= 400) {
+          throw Messages.Error.errFetchingKubernetesResource(
             `${type.ApiVersion}/${type.Kind}`,
             namespace,
             name

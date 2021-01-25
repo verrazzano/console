@@ -158,7 +158,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
       try {
         const response = await this.verrazzanoApi.getKubernetesResource(
           {
-            ApiVersion: workload.apiVersion,
+            ApiVersion: `apis/${workload.apiVersion}`,
             Kind: workload.kind,
           },
           workload.metadata.namespace,
@@ -212,7 +212,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
           if (trait.name && trait.namespace && trait.kind) {
             const response = await this.verrazzanoApi.getKubernetesResource(
               {
-                ApiVersion: trait.apiVersion,
+                ApiVersion: `apis/${trait.apiVersion}`,
                 Kind: trait.kind,
               },
               trait.namespace,
@@ -266,7 +266,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
           if (scope.name && scope.namespace && scope.kind) {
             const response = await this.verrazzanoApi.getKubernetesResource(
               {
-                ApiVersion: scope.apiVersion,
+                ApiVersion: `apis/${scope.apiVersion}`,
                 Kind: scope.kind,
               },
               scope.namespace,

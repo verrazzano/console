@@ -139,9 +139,9 @@ export const Error = {
   errRenderOAMComponent: (...args) =>
     Translations.getTranslatedString("error.errRenderOAMComponent", args),
 
-  errKubernetesResourceNotExists: (...args) =>
+  errFetchingKubernetesResource: (...args) =>
     Translations.getTranslatedString(
-      "error.errKubernetesResourceNotExists",
+      "error.errFetchingKubernetesResource",
       args
     ),
 
@@ -183,6 +183,12 @@ export const Error = {
 
   errIngressFetchError: (...args) =>
     Translations.getTranslatedString("error.errIngressFetchError", args),
+
+  errBindingsFetchError: (...args) =>
+    Translations.getTranslatedString("error.errBindingsFetchError", args),
+
+  errModelsFetchError: (...args) =>
+    Translations.getTranslatedString("error.errModelsFetchError", args),
 };
 
 export const Auth = {

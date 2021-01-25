@@ -303,63 +303,63 @@ export interface ResourceTypeType {
 
 export const ResourceType = {
   Deployment: <ResourceTypeType>{
-    ApiVersion: "apps/v1",
+    ApiVersion: "apis/apps/v1",
     Kind: "Deployment",
   },
   VerrazzanoManagedCluster: <ResourceTypeType>{
-    ApiVersion: "verrazzano.io/v1beta1",
+    ApiVersion: "apis/verrazzano.io/v1beta1",
     Kind: "VerrazzanoManagedCluster",
   },
   VerrazzanoBinding: <ResourceTypeType>{
-    ApiVersion: "verrazzano.io/v1beta1",
+    ApiVersion: "apis/verrazzano.io/v1beta1",
     Kind: "VerrazzanoBinding",
   },
   VerrazzanoModel: <ResourceTypeType>{
-    ApiVersion: "verrazzano.io/v1beta1",
+    ApiVersion: "apis/verrazzano.io/v1beta1",
     Kind: "VerrazzanoModel",
   },
   VerrazzanoMonitoringInstance: <ResourceTypeType>{
-    ApiVersion: "verrazzano.io/v1",
+    ApiVersion: "apis/verrazzano.io/v1",
     Kind: "VerrazzanoMonitoringInstance",
   },
   ApplicationConfiguration: <ResourceTypeType>{
-    ApiVersion: "core.oam.dev/v1alpha2",
+    ApiVersion: "apis/core.oam.dev/v1alpha2",
     Kind: "ApplicationConfiguration",
   },
   Component: <ResourceTypeType>{
-    ApiVersion: "core.oam.dev/v1alpha2",
+    ApiVersion: "apis/core.oam.dev/v1alpha2",
     Kind: "Component",
   },
   Domain: <ResourceTypeType>{
-    ApiVersion: "weblogic.oracle/v8",
+    ApiVersion: "apis/weblogic.oracle/v8",
     Kind: "Domain",
   },
   CohCluster: <ResourceTypeType>{
-    ApiVersion: "verrazzano.io/v1beta1",
+    ApiVersion: "apis/verrazzano.io/v1beta1",
     Kind: "CohCluster",
   },
   CoherenceCluster: <ResourceTypeType>{
-    ApiVersion: "coherence.oracle.com/v1",
+    ApiVersion: "apis/coherence.oracle.com/v1",
     Kind: "CoherenceCluster",
   },
   IngressTrait: <ResourceTypeType>{
-    ApiVersion: "oam.verrazzano.io/v1alpha1",
+    ApiVersion: "apis/oam.verrazzano.io/v1alpha1",
     Kind: "IngressTrait",
   },
   HealthScope: <ResourceTypeType>{
-    ApiVersion: "core.oam.dev/v1alpha2",
+    ApiVersion: "apis/core.oam.dev/v1alpha2",
     Kind: "HealthScope",
   },
   ContainerizedWorkload: <ResourceTypeType>{
-    ApiVersion: "core.oam.dev/v1alpha2",
+    ApiVersion: "apis/core.oam.dev/v1alpha2",
     Kind: "ContainerizedWorkload",
   },
   Secret: <ResourceTypeType>{
-    ApiVersion: "v1",
+    ApiVersion: "api/v1",
     Kind: "Secret",
   },
   Ingress: <ResourceTypeType>{
-    ApiVersion: "extensions/v1beta1",
+    ApiVersion: "apis/extensions/v1beta1",
     Kind: "Ingress",
   },
 };

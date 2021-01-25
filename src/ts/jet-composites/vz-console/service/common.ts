@@ -259,7 +259,7 @@ export const processApplications = (
     const model = application.model && load(application.model);
     const binding = application.binding && load(application.binding);
     if (model) {
-      const modelKey = model.objectmeta.uid;
+      const modelKey = model.metadata.uid;
       if (!models.has(modelKey)) {
         models.set(modelKey, processModel(model));
       }
@@ -277,17 +277,17 @@ export const processApplications = (
 
 const processBinding = (binding, model, resultModel: Model): Binding => {
   const resultBinding: Binding = {
-    id: binding.objectmeta.uid,
+    id: binding.metadata.uid,
     model: resultModel,
-    name: binding.objectmeta.name,
+    name: binding.metadata.name,
     description: binding.spec.description,
     state: Status.Running,
     components: processComponents(model, binding),
     ingresses: processBindingIngresses(binding, resultModel.ingresses),
-    namespace: binding.objectmeta.namespace,
+    namespace: binding.metadata.namespace,
     createdOn: new DateTimeConverter.IntlDateTimeConverter({
       pattern: "dd-MMM-yyyy HH:mm:ss.s",
-    }).format(binding.objectmeta.creationtimestamp),
+    }).format(binding.metadata.creationtimestamp),
   };
   resultBinding.connections = extractBindingConnections(
     resultModel.connections,
@@ -301,16 +301,16 @@ const processModel = (model): Model => {
   const ingressArr: Ingress[] = [];
   processModelConnections(model, connectionArr, ingressArr);
   return {
-    id: model.objectmeta.uid,
-    name: model.objectmeta.name,
+    id: model.metadata.uid,
+    name: model.metadata.name,
     description: model.spec.description,
     modelComponents: processModelComponents(model),
     connections: connectionArr,
     ingresses: ingressArr,
-    namespace: model.objectmeta.namespace,
+    namespace: model.metadata.namespace,
     createdOn: new DateTimeConverter.IntlDateTimeConverter({
       pattern: "dd-MMM-yyyy HH:mm:ss.s",
-    }).format(model.objectmeta.creationtimestamp),
+    }).format(model.metadata.creationtimestamp),
   };
 };
 
@@ -320,7 +320,7 @@ export const processComponents = (
 ): BindingComponent[] => {
   const components: BindingComponent[] = [];
   if (model && binding) {
-    const bindingId = binding.objectmeta.uid;
+    const bindingId = binding.metadata.uid;
     const componentPlacements = processPlacements(binding);
     if (model.spec.weblogicDomains) {
       model.spec.weblogicDomains.forEach((wlsDomain: any) => {
@@ -570,7 +570,7 @@ export const processModelComponentFromApplications = (
   const components: Component[] = [];
   for (const app of applications) {
     const model = app.model && load(app.model);
-    if (model && modelId === model.objectmeta.uid) {
+    if (model && modelId === model.metadata.uid) {
       return processModelComponents(model);
     }
   }
@@ -586,22 +586,22 @@ export const processModelComponents = (model: any): Component[] => {
       model.spec.weblogicDomains.forEach((wlsDomain: any) => {
         const wlsDomainComponent = processWebLogicDomainComponent(
           wlsDomain,
-          model.objectmeta.uid
+          model.metadata.uid
         );
         components.push(wlsDomainComponent);
         wlsDomainComponent.secrets = [];
         if (wlsDomain.domainCRValues) {
-          if (wlsDomain.domainCRValues.imagepullsecrets) {
+          if (wlsDomain.domainCRValues.imagePullSecrets) {
             processModelSecrets(
-              wlsDomain.domainCRValues.imagepullsecrets,
+              wlsDomain.domainCRValues.imagePullSecrets,
               SecretUsage.ImagePullSecret,
               wlsDomainComponent.secrets
             );
           }
 
-          if (wlsDomain.domainCRValues.weblogiccredentialssecret) {
+          if (wlsDomain.domainCRValues.webLogicCredentialsSecret) {
             processModelSecrets(
-              [wlsDomain.domainCRValues.weblogiccredentialssecret],
+              [wlsDomain.domainCRValues.webLogicCredentialsSecret],
               SecretUsage.WebLogicCredentialsSecret,
               wlsDomainComponent.secrets
             );
@@ -614,7 +614,7 @@ export const processModelComponents = (model: any): Component[] => {
       model.spec.helidonApplications.forEach((helidonApp: any) => {
         const helidonAppComponent = processHelidonApplicationComponent(
           helidonApp,
-          model.objectmeta.uid
+          model.metadata.uid
         );
         components.push(helidonAppComponent);
         helidonAppComponent.secrets = [];
@@ -632,7 +632,7 @@ export const processModelComponents = (model: any): Component[] => {
       model.spec.coherenceClusters.forEach((coherenceCluster: any) => {
         const cohClusterComponent = processCoherenceClusterComponent(
           coherenceCluster,
-          model.objectmeta.uid
+          model.metadata.uid
         );
         components.push(cohClusterComponent);
         cohClusterComponent.secrets = [];
@@ -650,13 +650,13 @@ export const processModelComponents = (model: any): Component[] => {
       model.spec.genericComponents.forEach((component: any) => {
         const genericComponent = processGenericComponent(
           component,
-          model.objectmeta.uid
+          model.metadata.uid
         );
         components.push(genericComponent);
         genericComponent.secrets = [];
-        if (component.deployment && component.deployment.imagepullsecrets) {
+        if (component.deployment && component.deployment.imagePullSecrets) {
           processModelSecrets(
-            component.deployment.imagepullsecrets,
+            component.deployment.imagePullSecrets,
             SecretUsage.ImagePullSecret,
             genericComponent.secrets
           );
