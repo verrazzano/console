@@ -87,6 +87,9 @@ pipeline {
         }
 
         stage('Integ Test') {
+            when {
+                    expression { false == true }
+            }
             environment {
                 CLUSTER_NAME='console-integ-test'
             }
