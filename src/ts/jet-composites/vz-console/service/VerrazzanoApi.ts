@@ -33,7 +33,6 @@ export class VerrazzanoApi {
 
   private apiVersion: string = (window as any).vzApiVersion || "20210501";
   private url: string = `${(window as any).vzApiUrl || ""}/${this.apiVersion}`;
-  private oamApiUrl: string = (window as any).vzOamApiUrl;
 
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([
@@ -706,7 +705,7 @@ export class VerrazzanoApi {
   ): Promise<Response> {
     return Promise.resolve(
       this.fetchApi(
-        `${this.oamApiUrl}/${type.ApiVersion}/${
+        `${this.url}/${type.ApiVersion}/${
           namespace
             ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
                 type.Kind.endsWith("s") ? "es" : "s"
