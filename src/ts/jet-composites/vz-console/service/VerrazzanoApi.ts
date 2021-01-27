@@ -96,144 +96,6 @@ export class VerrazzanoApi {
       });
   }
 
-  populateInstance(
-    ingresses: Array<any>,
-    clusters: Array<any>,
-    vmi,
-    operatorDeployment,
-    instanceId
-  ): Instance {
-    const mgmtCluster = clusters.find(
-      (cluster) => cluster.metadata.name === "local"
-    );
-    if (!mgmtCluster) {
-      throw new Error(Messages.Error.errVmcFetchError("local"));
-    }
-
-    const consoleIngress = ingresses.find(
-      (ingress) =>
-        ingress.metadata.name === "verrazzano-console-ingress" &&
-        ingress.metadata.namespace === NamespaceVerrazzanoSystem
-    );
-    if (!consoleIngress) {
-      throw new Error(
-        Messages.Error.errIngressFetchError(
-          "verrazzano-system",
-          "verrazzano-console-ingress"
-        )
-      );
-    }
-
-    const consoleHost = ((consoleIngress.spec.tls as Array<any>)[0]
-      .hosts as Array<string>)[0];
-
-    const instance = <Instance>{
-      id: instanceId,
-      version: "0.1.0",
-      mgmtCluster: mgmtCluster.metadata.name,
-      mgmtPlatform: mgmtCluster.spec.type,
-      status: "OK",
-      name: consoleHost.split(".")[1],
-      vzApiUri: `https://${consoleHost}/${this.apiVersion}`,
-    };
-
-    const rancherIngress = ingresses.find(
-      (ingress) =>
-        ingress.metadata.name === "rancher" &&
-        ingress.metadata.namespace === "cattle-system"
-    );
-    if (rancherIngress) {
-      instance.rancherUrl = `https://${
-        ((rancherIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-      }`;
-    }
-
-    const keycloakIngress = ingresses.find(
-      (ingress) =>
-        ingress.metadata.name === "keycloak" &&
-        ingress.metadata.namespace === "keycloak"
-    );
-    if (keycloakIngress) {
-      instance.keyCloakUrl = `https://${
-        ((keycloakIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-      }`;
-    }
-
-    if (vmi.spec.elasticsearch && Boolean(vmi.spec.elasticsearch.enabled)) {
-      const esIngress = ingresses.find(
-        (ingress) =>
-          ingress.metadata.name === "vmi-system-es-ingest" &&
-          ingress.metadata.namespace === NamespaceVerrazzanoSystem
-      );
-      if (esIngress) {
-        instance.elasticUrl = `https://${
-          ((esIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-        }`;
-      }
-    }
-
-    if (vmi.spec.kibana && Boolean(vmi.spec.kibana.enabled)) {
-      const kibanaIngress = ingresses.find(
-        (ingress) =>
-          ingress.metadata.name === "vmi-system-kibana" &&
-          ingress.metadata.namespace === NamespaceVerrazzanoSystem
-      );
-      if (kibanaIngress) {
-        instance.kibanaUrl = `https://${
-          ((kibanaIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-        }`;
-      }
-    }
-
-    if (vmi.spec.prometheus && Boolean(vmi.spec.prometheus.enabled)) {
-      const prometheusIngress = ingresses.find(
-        (ingress) =>
-          ingress.metadata.name === "vmi-system-prometheus" &&
-          ingress.metadata.namespace === NamespaceVerrazzanoSystem
-      );
-      if (prometheusIngress) {
-        instance.prometheusUrl = `https://${
-          ((prometheusIngress.spec.tls as Array<any>)[0].hosts as Array<
-            string
-          >)[0]
-        }`;
-      }
-    }
-
-    if (vmi.spec.grafana && Boolean(vmi.spec.grafana.enabled)) {
-      const grafanaIngress = ingresses.find(
-        (ingress) =>
-          ingress.metadata.name === "vmi-system-grafana" &&
-          ingress.metadata.namespace === NamespaceVerrazzanoSystem
-      );
-      if (grafanaIngress) {
-        instance.grafanaUrl = `https://${
-          ((grafanaIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-        }`;
-      }
-    }
-
-    if (operatorDeployment && operatorDeployment.spec.containers) {
-      const container = (operatorDeployment.spec.containers as Array<any>).find(
-        (ct) => ct.name === "verrazzano-operator"
-      );
-      if (
-        container &&
-        container.env &&
-        (container.env as Array<any>).length > 0
-      ) {
-        const useSystemVmi = (container.env as Array<any>).find(
-          (envVar) => envVar.name === "USE_SYSTEM_VMI"
-        );
-        if (useSystemVmi) {
-          instance.isUsingSharedVMI = Boolean(useSystemVmi.value);
-        }
-      }
-    }
-
-    return instance;
-  }
-
   public async listApplications(): Promise<Application[]> {
     return Promise.all([
       this.getKubernetesResource(ResourceType.VerrazzanoBinding),
@@ -252,43 +114,6 @@ export class VerrazzanoApi {
         }
         return this.populateApplications(bindings.items, models.items);
       });
-  }
-
-  populateApplications(
-    bindings: Array<any>,
-    models: Array<any>
-  ): Application[] {
-    const applications: Application[] = [];
-    while (models.length > 0) {
-      const model = models.pop();
-      const bindingsForModel = bindings.filter(
-        (binding) =>
-          binding.metadata.namespace === model.metadata.namespace &&
-          binding.spec.modelName === model.metadata.name
-      );
-      if (bindingsForModel && bindingsForModel.length > 0) {
-        bindingsForModel.forEach((binding) => {
-          applications.push({
-            id: `${binding.metadata.uid}-${model.metadata.uid}`,
-            description: binding.spec.description,
-            name: binding.metadata.name,
-            model: yaml.dump(yaml.load(JSON.stringify(model))),
-            binding: yaml.dump(yaml.load(JSON.stringify(binding))),
-            status: "NYI",
-          });
-        });
-      } else {
-        applications.push({
-          id: `app-${model.metadata.uid}`,
-          description: "",
-          name: "",
-          model: yaml.dump(yaml.load(JSON.stringify(model))),
-          binding: "",
-          status: "NYI",
-        });
-      }
-    }
-    return applications;
   }
 
   public async getModel(modelId: string): Promise<Model> {
@@ -348,151 +173,6 @@ export class VerrazzanoApi {
         }
         return this.populateSecrets(bindings.items, models.items);
       });
-  }
-
-  async populateSecrets(
-    bindings: Array<any>,
-    models: Array<any>
-  ): Promise<Secret[]> {
-    const secretsMap: Map<string, Map<string, Secret>> = new Map();
-    const secrets: Secret[] = [];
-    try {
-      for (const model of models) {
-        if (model.spec.weblogicDomains) {
-          for (const domain of model.spec.weblogicDomains as Array<any>) {
-            if (domain.domainCRValues.imagePullSecrets) {
-              for (const pullSecret of domain.domainCRValues
-                .imagePullSecrets as Array<any>) {
-                await this.addSecret(
-                  secretsMap,
-                  model.metadata.namespace,
-                  pullSecret.name
-                );
-              }
-            }
-
-            if (domain.domainCRValues.configOverrideSecrets) {
-              for (const configOverrideSecret of domain.domainCRValues
-                .configOverrideSecrets as Array<any>) {
-                await this.addSecret(
-                  secretsMap,
-                  model.metadata.namespace,
-                  configOverrideSecret
-                );
-              }
-            }
-
-            if (domain.domainCRValues.webLogicCredentialsSecret) {
-              await this.addSecret(
-                secretsMap,
-                model.metadata.namespace,
-                domain.domainCRValues.webLogicCredentialsSecret.name
-              );
-            }
-          }
-        }
-
-        if (model.spec.helidonApplications) {
-          for (const helidonApp of model.spec.helidonApplications as Array<
-            any
-          >) {
-            if (helidonApp.imagePullSecrets) {
-              for (const pullSecret of helidonApp.imagePullSecrets as Array<
-                any
-              >) {
-                await this.addSecret(
-                  secretsMap,
-                  model.metadata.namespace,
-                  pullSecret.name
-                );
-              }
-            }
-          }
-        }
-
-        if (model.spec.coherenceClusters) {
-          for (const coherenceCluster of model.spec.coherenceClusters as Array<
-            any
-          >) {
-            if (coherenceCluster.imagePullSecrets) {
-              for (const pullSecret of coherenceCluster.imagePullSecrets as Array<
-                any
-              >) {
-                await this.addSecret(
-                  secretsMap,
-                  model.metadata.namespace,
-                  pullSecret.name
-                );
-              }
-            }
-          }
-        }
-      }
-
-      for (const binding of bindings) {
-        if (binding.spec.databaseBindings) {
-          for (const dbBinding of binding.spec.databaseBindings as Array<any>) {
-            if (dbBinding.credentials) {
-              await this.addSecret(
-                secretsMap,
-                binding.metadata.namespace,
-                dbBinding.credentials
-              );
-            }
-          }
-        }
-      }
-    } catch (error) {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      throw new Error(errorMessage);
-    }
-
-    secretsMap.forEach((secretNameToSecretMap) =>
-      secretNameToSecretMap.forEach((secret) => secrets.push(secret))
-    );
-    return secrets;
-  }
-
-  async addSecret(
-    secrets: Map<string, Map<string, Secret>>,
-    namespace: string,
-    name: string
-  ) {
-    let secretsInNS = secrets.get(namespace);
-    if (!secretsInNS) {
-      secretsInNS = new Map();
-      secrets.set(namespace, secretsInNS);
-    }
-
-    if (secretsInNS.has(name)) {
-      return;
-    }
-
-    try {
-      const secret = await this.getKubernetesResource(
-        ResourceType.Secret,
-        namespace,
-        name
-      ).then((secretResponse) => secretResponse.json());
-      if (secret.metadata) {
-        secretsInNS.set(name, {
-          id: secret.metadata.uid,
-          name: secret.metadata.name,
-          namespace: secret.metadata.namespace,
-          type: secret.type,
-          status: Status.Ready,
-        });
-      }
-    } catch (error) {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      throw new Error(errorMessage);
-    }
   }
 
   public async listOAMAppsAndComponents(): Promise<{
@@ -733,6 +413,326 @@ export class VerrazzanoApi {
         }
         throw new Error(errorMessage);
       });
+  }
+
+  populateInstance(
+    ingresses: Array<any>,
+    clusters: Array<any>,
+    vmi,
+    operatorDeployment,
+    instanceId
+  ): Instance {
+    const mgmtCluster = clusters.find(
+      (cluster) => cluster.metadata.name === "local"
+    );
+    if (!mgmtCluster) {
+      throw new Error(Messages.Error.errVmcFetchError("local"));
+    }
+
+    const consoleIngress = ingresses.find(
+      (ingress) =>
+        ingress.metadata.name === "verrazzano-console-ingress" &&
+        ingress.metadata.namespace === NamespaceVerrazzanoSystem
+    );
+    if (!consoleIngress) {
+      throw new Error(
+        Messages.Error.errIngressFetchError(
+          "verrazzano-system",
+          "verrazzano-console-ingress"
+        )
+      );
+    }
+
+    const consoleHost = ((consoleIngress.spec.tls as Array<any>)[0]
+      .hosts as Array<string>)[0];
+
+    const instance = <Instance>{
+      id: instanceId,
+      version: "0.1.0",
+      mgmtCluster: mgmtCluster.metadata.name,
+      mgmtPlatform: mgmtCluster.spec.type,
+      status: "OK",
+      name: consoleHost.split(".")[1],
+      vzApiUri: `https://${consoleHost}/${this.apiVersion}`,
+    };
+
+    const rancherIngress = ingresses.find(
+      (ingress) =>
+        ingress.metadata.name === "rancher" &&
+        ingress.metadata.namespace === "cattle-system"
+    );
+    if (rancherIngress) {
+      instance.rancherUrl = `https://${
+        ((rancherIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
+      }`;
+    }
+
+    const keycloakIngress = ingresses.find(
+      (ingress) =>
+        ingress.metadata.name === "keycloak" &&
+        ingress.metadata.namespace === "keycloak"
+    );
+    if (keycloakIngress) {
+      instance.keyCloakUrl = `https://${
+        ((keycloakIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
+      }`;
+    }
+
+    if (vmi.spec.elasticsearch && Boolean(vmi.spec.elasticsearch.enabled)) {
+      const esIngress = ingresses.find(
+        (ingress) =>
+          ingress.metadata.name === "vmi-system-es-ingest" &&
+          ingress.metadata.namespace === NamespaceVerrazzanoSystem
+      );
+      if (esIngress) {
+        instance.elasticUrl = `https://${
+          ((esIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
+        }`;
+      }
+    }
+
+    if (vmi.spec.kibana && Boolean(vmi.spec.kibana.enabled)) {
+      const kibanaIngress = ingresses.find(
+        (ingress) =>
+          ingress.metadata.name === "vmi-system-kibana" &&
+          ingress.metadata.namespace === NamespaceVerrazzanoSystem
+      );
+      if (kibanaIngress) {
+        instance.kibanaUrl = `https://${
+          ((kibanaIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
+        }`;
+      }
+    }
+
+    if (vmi.spec.prometheus && Boolean(vmi.spec.prometheus.enabled)) {
+      const prometheusIngress = ingresses.find(
+        (ingress) =>
+          ingress.metadata.name === "vmi-system-prometheus" &&
+          ingress.metadata.namespace === NamespaceVerrazzanoSystem
+      );
+      if (prometheusIngress) {
+        instance.prometheusUrl = `https://${
+          ((prometheusIngress.spec.tls as Array<any>)[0].hosts as Array<
+            string
+          >)[0]
+        }`;
+      }
+    }
+
+    if (vmi.spec.grafana && Boolean(vmi.spec.grafana.enabled)) {
+      const grafanaIngress = ingresses.find(
+        (ingress) =>
+          ingress.metadata.name === "vmi-system-grafana" &&
+          ingress.metadata.namespace === NamespaceVerrazzanoSystem
+      );
+      if (grafanaIngress) {
+        instance.grafanaUrl = `https://${
+          ((grafanaIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
+        }`;
+      }
+    }
+
+    if (operatorDeployment && operatorDeployment.spec.containers) {
+      const container = (operatorDeployment.spec.containers as Array<any>).find(
+        (ct) => ct.name === "verrazzano-operator"
+      );
+      if (
+        container &&
+        container.env &&
+        (container.env as Array<any>).length > 0
+      ) {
+        const useSystemVmi = (container.env as Array<any>).find(
+          (envVar) => envVar.name === "USE_SYSTEM_VMI"
+        );
+        if (useSystemVmi) {
+          instance.isUsingSharedVMI = Boolean(useSystemVmi.value);
+        }
+      }
+    }
+
+    return instance;
+  }
+
+  populateApplications(
+    bindings: Array<any>,
+    models: Array<any>
+  ): Application[] {
+    const applications: Application[] = [];
+    while (models.length > 0) {
+      const model = models.pop();
+      const bindingsForModel = bindings.filter(
+        (binding) =>
+          binding.metadata.namespace === model.metadata.namespace &&
+          binding.spec.modelName === model.metadata.name
+      );
+      if (bindingsForModel && bindingsForModel.length > 0) {
+        bindingsForModel.forEach((binding) => {
+          applications.push({
+            id: `${binding.metadata.uid}-${model.metadata.uid}`,
+            description: binding.spec.description,
+            name: binding.metadata.name,
+            model: yaml.dump(yaml.load(JSON.stringify(model))),
+            binding: yaml.dump(yaml.load(JSON.stringify(binding))),
+            status: "NYI",
+          });
+        });
+      } else {
+        applications.push({
+          id: `app-${model.metadata.uid}`,
+          description: "",
+          name: "",
+          model: yaml.dump(yaml.load(JSON.stringify(model))),
+          binding: "",
+          status: "NYI",
+        });
+      }
+    }
+    return applications;
+  }
+
+  async populateSecrets(
+    bindings: Array<any>,
+    models: Array<any>
+  ): Promise<Secret[]> {
+    const secretsMap: Map<string, Map<string, Secret>> = new Map();
+    const secrets: Secret[] = [];
+    try {
+      for (const model of models) {
+        if (model.spec.weblogicDomains) {
+          for (const domain of model.spec.weblogicDomains as Array<any>) {
+            if (domain.domainCRValues.imagePullSecrets) {
+              for (const pullSecret of domain.domainCRValues
+                .imagePullSecrets as Array<any>) {
+                await this.addSecret(
+                  secretsMap,
+                  model.metadata.namespace,
+                  pullSecret.name
+                );
+              }
+            }
+
+            if (domain.domainCRValues.configOverrideSecrets) {
+              for (const configOverrideSecret of domain.domainCRValues
+                .configOverrideSecrets as Array<any>) {
+                await this.addSecret(
+                  secretsMap,
+                  model.metadata.namespace,
+                  configOverrideSecret
+                );
+              }
+            }
+
+            if (domain.domainCRValues.webLogicCredentialsSecret) {
+              await this.addSecret(
+                secretsMap,
+                model.metadata.namespace,
+                domain.domainCRValues.webLogicCredentialsSecret.name
+              );
+            }
+          }
+        }
+
+        if (model.spec.helidonApplications) {
+          for (const helidonApp of model.spec.helidonApplications as Array<
+            any
+          >) {
+            if (helidonApp.imagePullSecrets) {
+              for (const pullSecret of helidonApp.imagePullSecrets as Array<
+                any
+              >) {
+                await this.addSecret(
+                  secretsMap,
+                  model.metadata.namespace,
+                  pullSecret.name
+                );
+              }
+            }
+          }
+        }
+
+        if (model.spec.coherenceClusters) {
+          for (const coherenceCluster of model.spec.coherenceClusters as Array<
+            any
+          >) {
+            if (coherenceCluster.imagePullSecrets) {
+              for (const pullSecret of coherenceCluster.imagePullSecrets as Array<
+                any
+              >) {
+                await this.addSecret(
+                  secretsMap,
+                  model.metadata.namespace,
+                  pullSecret.name
+                );
+              }
+            }
+          }
+        }
+      }
+
+      for (const binding of bindings) {
+        if (binding.spec.databaseBindings) {
+          for (const dbBinding of binding.spec.databaseBindings as Array<any>) {
+            if (dbBinding.credentials) {
+              await this.addSecret(
+                secretsMap,
+                binding.metadata.namespace,
+                dbBinding.credentials
+              );
+            }
+          }
+        }
+      }
+    } catch (error) {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      throw new Error(errorMessage);
+    }
+
+    secretsMap.forEach((secretNameToSecretMap) =>
+      secretNameToSecretMap.forEach((secret) => secrets.push(secret))
+    );
+    return secrets;
+  }
+
+  async addSecret(
+    secrets: Map<string, Map<string, Secret>>,
+    namespace: string,
+    name: string
+  ) {
+    let secretsInNS = secrets.get(namespace);
+    if (!secretsInNS) {
+      secretsInNS = new Map();
+      secrets.set(namespace, secretsInNS);
+    }
+
+    if (secretsInNS.has(name)) {
+      return;
+    }
+
+    try {
+      const secret = await this.getKubernetesResource(
+        ResourceType.Secret,
+        namespace,
+        name
+      ).then((secretResponse) => secretResponse.json());
+      if (secret.metadata) {
+        secretsInNS.set(name, {
+          id: secret.metadata.uid,
+          name: secret.metadata.name,
+          namespace: secret.metadata.namespace,
+          type: secret.type,
+          status: Status.Ready,
+        });
+      }
+    } catch (error) {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      throw new Error(errorMessage);
+    }
   }
 
   public constructor() {
