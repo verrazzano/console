@@ -532,8 +532,8 @@ export class VerrazzanoApi {
       }
     }
 
-    if (operatorDeployment && operatorDeployment.spec.containers) {
-      const container = (operatorDeployment.spec.containers as Array<any>).find(
+    if (operatorDeployment && operatorDeployment.spec.template.spec.containers) {
+      const container = (operatorDeployment.spec.template.spec.containers as Array<any>).find(
         (ct) => ct.name === "verrazzano-operator"
       );
       if (
