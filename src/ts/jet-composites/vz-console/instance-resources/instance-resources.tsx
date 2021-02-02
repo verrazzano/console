@@ -157,12 +157,12 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
               <li id="bindings">
                 <a href="#">{this.labels.bindings}</a>
               </li>
-              {/* <li id="oamapps">
+              <li id="oamapps">
                 <a href="#">{this.labels.oamapps}</a>
               </li>
               <li id="oamcomps">
                 <a href="#">{this.labels.oamcomps}</a>
-              </li> */}
+              </li>
             </ul>
           </oj-navigation-list>
         </div>

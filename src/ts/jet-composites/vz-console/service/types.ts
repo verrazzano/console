@@ -101,8 +101,8 @@ export interface Instance {
   status: string;
   version: string;
   vzApiUri: string;
-  rancherUrl: string;
-  keyCloakUrl: string;
+  rancherUrl?: string;
+  keyCloakUrl?: string;
   kibanaUrl?: string;
   grafanaUrl?: string;
   prometheusUrl?: string;
@@ -245,22 +245,10 @@ export interface OAMComponent {
   createdOn?: string;
 }
 
-export interface OAMComponentInstance {
-  name: string;
-  status: Status;
-  creationDate?: string;
-  oamComponent: OAMComponent;
-  id?: string;
-  eventHandler?: (selectedItem: string, selectedComponent: string) => void;
-  data?: any;
-  descriptor?: any;
-  workloadOpenEventHandler?: () => void;
-  workloadCloseEventHandler?: () => void;
-}
-
 export interface OAMTrait {
   name?: string;
   namespace?: string;
+  apiVersion: string;
   kind?: string;
   descriptor?: any;
   id?: string;
@@ -271,6 +259,7 @@ export interface OAMTrait {
 export interface OAMScope {
   name?: string;
   namespace?: string;
+  apiVersion: string;
   kind?: string;
   id?: string;
   descriptor?: any;
@@ -284,9 +273,93 @@ export interface OAMParam {
   id?: string;
 }
 
+export interface OAMComponentInstance {
+  name: string;
+  status: Status;
+  creationDate?: string;
+  oamComponent: OAMComponent;
+  id?: string;
+  eventHandler?: (selectedItem: string, selectedComponent: string) => void;
+  data?: any;
+  descriptor?: any;
+  workloadOpenEventHandler?: () => void;
+  workloadCloseEventHandler?: () => void;
+  traits?: OAMTrait[];
+  scopes?: OAMScope[];
+  params?: OAMParam[];
+}
+
 export interface OAMComponentParam {
   name?: string;
   description?: string;
   required?: boolean;
   descriptor?: any;
 }
+
+export interface ResourceTypeType {
+  ApiVersion?: string;
+  Kind?: string;
+}
+
+export const ResourceType = {
+  Deployment: <ResourceTypeType>{
+    ApiVersion: "apis/apps/v1",
+    Kind: "Deployment",
+  },
+  VerrazzanoManagedCluster: <ResourceTypeType>{
+    ApiVersion: "apis/verrazzano.io/v1beta1",
+    Kind: "VerrazzanoManagedCluster",
+  },
+  VerrazzanoBinding: <ResourceTypeType>{
+    ApiVersion: "apis/verrazzano.io/v1beta1",
+    Kind: "VerrazzanoBinding",
+  },
+  VerrazzanoModel: <ResourceTypeType>{
+    ApiVersion: "apis/verrazzano.io/v1beta1",
+    Kind: "VerrazzanoModel",
+  },
+  VerrazzanoMonitoringInstance: <ResourceTypeType>{
+    ApiVersion: "apis/verrazzano.io/v1",
+    Kind: "VerrazzanoMonitoringInstance",
+  },
+  ApplicationConfiguration: <ResourceTypeType>{
+    ApiVersion: "apis/core.oam.dev/v1alpha2",
+    Kind: "ApplicationConfiguration",
+  },
+  Component: <ResourceTypeType>{
+    ApiVersion: "apis/core.oam.dev/v1alpha2",
+    Kind: "Component",
+  },
+  Domain: <ResourceTypeType>{
+    ApiVersion: "apis/weblogic.oracle/v8",
+    Kind: "Domain",
+  },
+  CohCluster: <ResourceTypeType>{
+    ApiVersion: "apis/verrazzano.io/v1beta1",
+    Kind: "CohCluster",
+  },
+  CoherenceCluster: <ResourceTypeType>{
+    ApiVersion: "apis/coherence.oracle.com/v1",
+    Kind: "CoherenceCluster",
+  },
+  IngressTrait: <ResourceTypeType>{
+    ApiVersion: "apis/oam.verrazzano.io/v1alpha1",
+    Kind: "IngressTrait",
+  },
+  HealthScope: <ResourceTypeType>{
+    ApiVersion: "apis/core.oam.dev/v1alpha2",
+    Kind: "HealthScope",
+  },
+  ContainerizedWorkload: <ResourceTypeType>{
+    ApiVersion: "apis/core.oam.dev/v1alpha2",
+    Kind: "ContainerizedWorkload",
+  },
+  Secret: <ResourceTypeType>{
+    ApiVersion: "api/v1",
+    Kind: "Secret",
+  },
+  Ingress: <ResourceTypeType>{
+    ApiVersion: "apis/extensions/v1beta1",
+    Kind: "Ingress",
+  },
+};

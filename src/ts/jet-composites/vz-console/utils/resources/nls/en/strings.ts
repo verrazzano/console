@@ -90,7 +90,36 @@ export = {
 
     errRenderOAMComponent: "Error displaying OAM Component {0}.",
 
-    errKubernetesResourceNotExists: "{0} {1}/{2} does not exist in cluster.",
+    errFetchingKubernetesResource:
+      "Error fetching {0} {1}/{2} from the cluster.",
+
+    errOAMApplicationsFetchError:
+      "Error fetching OAM ApplicationConfigurations.",
+
+    errOAMComponentsFetchError: "Error fetching OAM Components.",
+
+    errRenderOAMScopes: "Error displaying scopes.",
+
+    errRenderOAMTraits: "Error displaying traits.",
+
+    errRenderOAMCompInstances: "Error displaying Component Instances.",
+
+    errIngressesFetchError: "Error fetching Ingresses.",
+
+    errVmcsFetchError: "Error fetching Managed Clusters.",
+
+    errVmiFetchError: "Error fetching System VMI.",
+
+    errOperatorDeploymentFetchError:
+      "Error fetching Verrazzano operator deployment.",
+
+    errVmcFetchError: "Error fetching Managed Cluster {0}",
+
+    errIngressFetchError: "Error fetching Ingress {0}/{1}",
+
+    errBindingsFetchError: "Error fetching Bindings.",
+
+    errModelsFetchError: "Error fetching Models.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",

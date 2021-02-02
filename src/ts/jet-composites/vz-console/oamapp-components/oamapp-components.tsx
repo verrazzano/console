@@ -3,11 +3,7 @@
 
 // eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import {
-  OAMComponentInstance,
-  Status,
-  VerrazzanoApi,
-} from "vz-console/service/loader";
+import { OAMComponentInstance, Status } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
@@ -17,7 +13,6 @@ import * as ko from "knockout";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages";
 import { ConsoleOAMAppComponentView } from "vz-console/oamapp-component-view/loader";
-import * as yaml from "js-yaml";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -41,7 +36,6 @@ class State {
  */
 @customElement("vz-console-oamapp-components")
 export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
-  verrazzanoApi: VerrazzanoApi;
   state: State = {};
   options = [
     { value: "name", label: "Name" },
@@ -62,7 +56,6 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
 
   constructor() {
     super(new Props());
-    this.verrazzanoApi = new VerrazzanoApi();
   }
 
   compare = (left: Model.Model, right: Model.Model): number => {
@@ -119,39 +112,15 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
   };
 
   protected mounted() {
-    Promise.resolve(this.populateWorkload()).then((models) => {
-      this.updateState({
-        components: new Model.Collection(models),
-        originalComponents: new Model.Collection(models),
-      });
-    });
-  }
-
-  async populateWorkload() {
     const models: Model.Model[] = [];
     for (const component of this.props.components) {
-      if (component.oamComponent) {
-        const workload = component.oamComponent.data.spec.workload;
-        const resource = await this.verrazzanoApi.getKubernetesResource(
-          workload.metadata.name,
-          workload.kind,
-          workload.metadata.namespace
-        );
-
-        component.descriptor = yaml.dump(yaml.load(resource));
-        component.workloadOpenEventHandler = () => {
-          (document.getElementById(`popup_${component.id}`) as any).open(
-            `#workload_${component.id}`
-          );
-        };
-        component.workloadCloseEventHandler = () => {
-          (document.getElementById(`popup_${component.id}`) as any).close();
-        };
-        component.eventHandler = this.props.linkSelectionCallback;
-        models.push(new Model.Model(component));
-      }
+      component.eventHandler = this.props.linkSelectionCallback;
+      models.push(new Model.Model(component));
     }
-    return models;
+    this.updateState({
+      components: new Model.Collection(models),
+      originalComponents: new Model.Collection(models),
+    });
   }
 
   @listener({ capture: true, passive: true })
