@@ -4,10 +4,7 @@
 // eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
 import * as Messages from "vz-console/utils/Messages";
-import {
-  OAMApplication,
-  OAMComponent,
-} from "vz-console/service/types";
+import { OAMApplication, OAMComponent } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleOAMApplicationsList } from "vz-console/oamapps-list/loader";
@@ -55,11 +52,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     getDefaultRouter().destroy();
     history.replaceState(null, "path", `/${this.props.selectedItem}`);
     this.router = new CoreRouter(
-      [
-        { path: "" },
-        { path: "oamapps" },
-        { path: "oamcomps" },
-      ],
+      [{ path: "" }, { path: "oamapps" }, { path: "oamcomps" }],
       {
         urlAdapter: new UrlPathAdapter("/"),
       }

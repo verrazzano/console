@@ -2,19 +2,17 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
-  Instance,
   Application,
-  Secret,
-  Status,
   FetchApiSignature,
+  Instance,
   OAMApplication,
   OAMComponent,
-  ResourceTypeType,
   ResourceType,
+  ResourceTypeType,
+  Secret,
+  Status,
 } from "./types";
-import {
-  processOAMData,
-} from "./common";
+import { processOAMData } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
 
@@ -142,7 +140,7 @@ export class VerrazzanoApi {
   }
 
   public async listSecrets(): Promise<Secret[]> {
-      return this.populateSecrets();
+    return this.populateSecrets();
   }
 
   public async listOAMApplications(): Promise<OAMApplication[]> {
@@ -480,14 +478,12 @@ export class VerrazzanoApi {
     return instance;
   }
 
-  populateApplications(
-  ): Application[] {
+  populateApplications(): Application[] {
     const applications: Application[] = [];
     return applications;
   }
 
-  async populateSecrets(
-  ): Promise<Secret[]> {
+  async populateSecrets(): Promise<Secret[]> {
     const secrets: Secret[] = [];
     return secrets;
   }
