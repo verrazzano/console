@@ -110,9 +110,6 @@ export = {
 
     errVmiFetchError: "Error fetching System VMI.",
 
-    errOperatorDeploymentFetchError:
-      "Error fetching Verrazzano operator deployment.",
-
     errVmcFetchError: "Error fetching Managed Cluster {0}",
 
     errIngressFetchError: "Error fetching Ingress {0}/{1}",

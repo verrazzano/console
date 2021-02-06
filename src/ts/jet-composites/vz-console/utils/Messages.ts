@@ -172,12 +172,6 @@ export const Error = {
   errVmiFetchError: (...args) =>
     Translations.getTranslatedString("error.errVmiFetchError", args),
 
-  errOperatorDeploymentFetchError: (...args) =>
-    Translations.getTranslatedString(
-      "error.errOperatorDeploymentFetchError",
-      args
-    ),
-
   errVmcFetchError: (...args) =>
     Translations.getTranslatedString("error.errVmcFetchError", args),
 

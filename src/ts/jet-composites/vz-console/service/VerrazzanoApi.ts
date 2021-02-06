@@ -35,23 +35,17 @@ export class VerrazzanoApi {
         NamespaceVerrazzanoSystem,
         "system"
       ),
-      this.getKubernetesResource(
-        ResourceType.Deployment,
-        NamespaceVerrazzanoSystem,
-        "verrazzano-operator"
-      ),
     ])
       .then(
-        ([ingressResponse, vmcResponse, vmiResponse, deploymentResponse]) => {
+        ([ingressResponse, vmcResponse, vmiResponse]) => {
           return Promise.all([
             ingressResponse.json(),
             vmcResponse.json(),
             vmiResponse.json(),
-            deploymentResponse.json(),
           ]);
         }
       )
-      .then(([ingresses, vmc, vmi, operatorDeployment]) => {
+      .then(([ingresses, vmc, vmi]) => {
         if (
           !ingresses ||
           !ingresses.items ||
@@ -68,14 +62,10 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errVmiFetchError());
         }
 
-        if (!operatorDeployment) {
-          throw new Error(Messages.Error.errOperatorDeploymentFetchError());
-        }
         return this.populateInstance(
           ingresses.items,
           vmc.items,
           vmi,
-          operatorDeployment,
           instanceId
         );
       })
@@ -340,7 +330,6 @@ export class VerrazzanoApi {
     ingresses: Array<any>,
     clusters: Array<any>,
     vmi,
-    operatorDeployment,
     instanceId
   ): Instance {
     const mgmtCluster = clusters.find(
@@ -453,28 +442,7 @@ export class VerrazzanoApi {
       }
     }
 
-    if (
-      operatorDeployment &&
-      operatorDeployment.spec.template.spec.containers
-    ) {
-      const container = (operatorDeployment.spec.template.spec
-        .containers as Array<any>).find(
-        (ct) => ct.name === "verrazzano-operator"
-      );
-      if (
-        container &&
-        container.env &&
-        (container.env as Array<any>).length > 0
-      ) {
-        const useSystemVmi = (container.env as Array<any>).find(
-          (envVar) => envVar.name === "USE_SYSTEM_VMI"
-        );
-        if (useSystemVmi) {
-          instance.isUsingSharedVMI = Boolean(useSystemVmi.value);
-        }
-      }
-    }
-
+    instance.isUsingSharedVMI = true;
     return instance;
   }
 
