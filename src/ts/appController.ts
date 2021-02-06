@@ -84,11 +84,6 @@ class RootViewModel {
 
     const navData = [
       { path: "", redirect: "instance" },
-      { path: "model", detail: { label: Messages.Nav.model(), iconClass: "" } },
-      {
-        path: "binding",
-        detail: { label: Messages.Nav.binding(), iconClass: "" },
-      },
       {
         path: "oamapp",
         detail: { label: Messages.Nav.oamApp(), iconClass: "" },
