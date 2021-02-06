@@ -3,12 +3,8 @@
 
 // eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
-import { ConsoleBindingList } from "vz-console/binding-list/loader";
-import { ConsoleModelList } from "vz-console/model-list/loader";
 import * as Messages from "vz-console/utils/Messages";
 import {
-  Model,
-  Binding,
   OAMApplication,
   OAMComponent,
 } from "vz-console/service/types";
@@ -20,8 +16,6 @@ import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
 class Props {
-  models?: [Model];
-  bindings?: [Binding];
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
   oamApplications?: [OAMApplication];
@@ -49,8 +43,6 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
   };
 
   labels = {
-    models: Messages.Instance.appModels(),
-    bindings: Messages.Instance.appBindings(),
     oamapps: Messages.Instance.oamApps(),
     oamcomps: Messages.Instance.oamCompoennts(),
   };
@@ -65,8 +57,6 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     this.router = new CoreRouter(
       [
         { path: "" },
-        { path: "models" },
-        { path: "bindings" },
         { path: "oamapps" },
         { path: "oamcomps" },
       ],
@@ -105,18 +95,6 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     let ResourceList: Element;
     let Heading: Element;
     switch (this.state.selectedItem) {
-      case "models": {
-        ResourceList = <ConsoleModelList models={this.props.models} />;
-        Heading = <h1 class="resheader">{this.labels.models}</h1>;
-        break;
-      }
-
-      case "bindings": {
-        ResourceList = <ConsoleBindingList bindings={this.props.bindings} />;
-        Heading = <h1 class="resheader">{this.labels.bindings}</h1>;
-        break;
-      }
-
       case "oamapps": {
         ResourceList = (
           <ConsoleOAMApplicationsList oamapps={this.props.oamApplications} />
@@ -151,12 +129,6 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
             aria-labelledby="resources"
           >
             <ul>
-              <li id="models">
-                <a href="#">{this.labels.models}</a>
-              </li>
-              <li id="bindings">
-                <a href="#">{this.labels.bindings}</a>
-              </li>
               <li id="oamapps">
                 <a href="#">{this.labels.oamapps}</a>
               </li>
