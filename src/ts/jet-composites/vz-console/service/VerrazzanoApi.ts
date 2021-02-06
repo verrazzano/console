@@ -36,15 +36,13 @@ export class VerrazzanoApi {
         "system"
       ),
     ])
-      .then(
-        ([ingressResponse, vmcResponse, vmiResponse]) => {
-          return Promise.all([
-            ingressResponse.json(),
-            vmcResponse.json(),
-            vmiResponse.json(),
-          ]);
-        }
-      )
+      .then(([ingressResponse, vmcResponse, vmiResponse]) => {
+        return Promise.all([
+          ingressResponse.json(),
+          vmcResponse.json(),
+          vmiResponse.json(),
+        ]);
+      })
       .then(([ingresses, vmc, vmi]) => {
         if (
           !ingresses ||
