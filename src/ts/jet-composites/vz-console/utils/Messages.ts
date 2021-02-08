@@ -25,12 +25,8 @@ export const Footer = {
 };
 
 export const Nav = {
-  model: () => Translations.getTranslatedString("nav.model"),
-  binding: () => Translations.getTranslatedString("nav.binding"),
   instance: () => Translations.getTranslatedString("nav.instance"),
   home: () => Translations.getTranslatedString("nav.home"),
-  modelDetails: () => Translations.getTranslatedString("nav.modelDetails"),
-  bindingDetails: () => Translations.getTranslatedString("nav.bindingDetails"),
   oamApp: () => Translations.getTranslatedString("nav.oamApp"),
   oamComp: () => Translations.getTranslatedString("nav.oamComp"),
   oamAppDetails: () => Translations.getTranslatedString("nav.oamAppDetails"),
@@ -46,24 +42,9 @@ export const Instance = {
     Translations.getTranslatedString("instance.instancePageLoaded"),
   instanceHeading: () =>
     Translations.getTranslatedString("instance.instanceHeading"),
-  appModels: () => Translations.getTranslatedString("instance.appModels"),
-  appBindings: () => Translations.getTranslatedString("instance.appBindings"),
   oamApps: () => Translations.getTranslatedString("instance.oamApps"),
   oamCompoennts: () =>
     Translations.getTranslatedString("instance.oamComponents"),
-};
-
-export const Binding = {
-  bindingsPageLoaded: () =>
-    Translations.getTranslatedString("binding.bindingsPageLoaded"),
-  heading: () => Translations.getTranslatedString("binding.heading"),
-  telemetry: () => Translations.getTranslatedString("binding.telemetry"),
-};
-
-export const Model = {
-  modelsPageLoaded: () =>
-    Translations.getTranslatedString("model.modelsPageLoaded"),
-  heading: () => Translations.getTranslatedString("model.heading"),
 };
 
 export const Error = {
@@ -80,19 +61,6 @@ export const Error = {
   errFetchFailed: (...args) =>
     Translations.getTranslatedString("error.errFetchFailed", args),
 
-  errInvalidBindingId: (...args) =>
-    Translations.getTranslatedString("error.errInvalidBindingId", args),
-  errRenderBinding: (...args) =>
-    Translations.getTranslatedString("error.errRenderBinding", args),
-
-  errRenderBindingComponents: (...args) =>
-    Translations.getTranslatedString("error.errRenderBindingComponents", args),
-
-  errRenderBindingList: (...args) =>
-    Translations.getTranslatedString("error.errRenderBindingList", args),
-  errRenderBindingTelemetry: (...args) =>
-    Translations.getTranslatedString("error.errRenderBindingTelemetry", args),
-
   errRenderConnectionList: (...args) =>
     Translations.getTranslatedString("error.errRenderConnectionList", args),
   errRenderIngList: (...args) =>
@@ -101,22 +69,8 @@ export const Error = {
   errRenderInstance: (...args) =>
     Translations.getTranslatedString("error.errRenderInstance", args),
 
-  errInvalidModelId: (...args) =>
-    Translations.getTranslatedString("error.errInvalidModelId", args),
-  errRenderModel: (...args) =>
-    Translations.getTranslatedString("error.errRenderModel", args),
-
-  errRenderModelComponents: (...args) =>
-    Translations.getTranslatedString("error.errRenderModelComponents", args),
-
-  errRenderModelList: (...args) =>
-    Translations.getTranslatedString("error.errRenderModelList", args),
-
   errRenderSecretList: (...args) =>
     Translations.getTranslatedString("error.errRenderSecretList", args),
-
-  errBindingDoesNotExist: (...args) =>
-    Translations.getTranslatedString("error.errBindingDoesNotExist", args),
 
   errInvalidOamAppId: (...args) =>
     Translations.getTranslatedString("error.errInvalidOamAppId", args),
@@ -177,12 +131,6 @@ export const Error = {
 
   errIngressFetchError: (...args) =>
     Translations.getTranslatedString("error.errIngressFetchError", args),
-
-  errBindingsFetchError: (...args) =>
-    Translations.getTranslatedString("error.errBindingsFetchError", args),
-
-  errModelsFetchError: (...args) =>
-    Translations.getTranslatedString("error.errModelsFetchError", args),
 };
 
 export const Auth = {
@@ -203,7 +151,6 @@ export const Labels = {
   generalInfo: () => Translations.getTranslatedString("labels.generalInfo"),
   name: () => Translations.getTranslatedString("labels.name"),
   desc: () => Translations.getTranslatedString("labels.desc"),
-  model: () => Translations.getTranslatedString("labels.model"),
   loading: () => Translations.getTranslatedString("labels.loading"),
   refineBy: () => Translations.getTranslatedString("labels.refineBy"),
   state: () => Translations.getTranslatedString("labels.state"),
@@ -231,8 +178,6 @@ export const Labels = {
   mgmtCluster: () => Translations.getTranslatedString("labels.mgmtCluster"),
   rancher: () => Translations.getTranslatedString("labels.rancher"),
   keycloak: () => Translations.getTranslatedString("labels.keycloak"),
-  bindings: () => Translations.getTranslatedString("labels.bindings"),
-  modelBindings: () => Translations.getTranslatedString("labels.modelBindings"),
   compType: () => Translations.getTranslatedString("labels.compType"),
   usage: () => Translations.getTranslatedString("labels.usage"),
   created: () => Translations.getTranslatedString("labels.created"),
@@ -261,10 +206,6 @@ export const Labels = {
 };
 
 export const Api = {
-  msgFetchBinding: (...args) =>
-    Translations.getTranslatedString("api.msgFetchBinding", args),
-  msgFetchModel: (...args) =>
-    Translations.getTranslatedString("api.msgFetchModel", args),
   msgFetchInstance: (...args) =>
     Translations.getTranslatedString("api.msgFetchInstance", args),
   msgFetchComponent: (...args) =>

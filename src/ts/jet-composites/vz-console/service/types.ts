@@ -186,42 +186,10 @@ export interface Secret {
   status: string;
   type: string;
 }
-
-export interface Binding {
-  id: string;
-  name: string;
-  description: string;
-  state?: string;
-  // eslint-disable-next-line no-use-before-define
-  model: Model;
-  components?: BindingComponent[];
-  connections?: Connection[];
-  ingresses?: Ingress[];
-  vmiInstances?: VMI[];
-  secrets?: ComponentSecret[];
-  namespace?: string;
-  createdOn?: string;
-}
-
-export interface Model {
-  id: string;
-  name: string;
-  description: string;
-  bindings?: Binding[];
-  modelComponents?: Component[];
-  connections?: Connection[];
-  ingresses?: Ingress[];
-  secrets?: ComponentSecret[];
-  namespace?: string;
-  createdOn?: string;
-}
-
 export interface Application {
   id: string;
   name: string;
   description: string;
-  model: string;
-  binding: string;
   status: string;
 }
 
@@ -309,14 +277,6 @@ export const ResourceType = {
   VerrazzanoManagedCluster: <ResourceTypeType>{
     ApiVersion: "apis/verrazzano.io/v1beta1",
     Kind: "VerrazzanoManagedCluster",
-  },
-  VerrazzanoBinding: <ResourceTypeType>{
-    ApiVersion: "apis/verrazzano.io/v1beta1",
-    Kind: "VerrazzanoBinding",
-  },
-  VerrazzanoModel: <ResourceTypeType>{
-    ApiVersion: "apis/verrazzano.io/v1beta1",
-    Kind: "VerrazzanoModel",
   },
   VerrazzanoMonitoringInstance: <ResourceTypeType>{
     ApiVersion: "apis/verrazzano.io/v1",

@@ -6,8 +6,6 @@ import { VComponent, customElement, h } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
 import {
   Instance,
-  Model,
-  Binding,
   Status,
   VMIType,
   OAMApplication,
@@ -17,10 +15,6 @@ import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages";
-import {
-  extractModelsFromApplications,
-  extractBindingsFromApplications,
-} from "vz-console/service/common";
 import {
   ConsoleBreadcrumb,
   BreadcrumbType,
@@ -34,8 +28,6 @@ class Props {
 
 class State {
   instance?: Instance;
-  models?: Model[];
-  bindings?: Binding[];
   loading?: boolean;
   error?: string;
   breadcrumbs?: BreadcrumbType[];
@@ -75,8 +67,6 @@ export class ConsoleInstance extends VComponent<Props, State> {
           this.updateState({
             loading: false,
             instance: instance,
-            models: extractModelsFromApplications(applications),
-            bindings: extractBindingsFromApplications(applications),
             oamApplications,
             oamComponents,
           });
@@ -201,8 +191,6 @@ export class ConsoleInstance extends VComponent<Props, State> {
           </div>
         </div>
         <ConsoleInstanceResources
-          models={this.state.models}
-          bindings={this.state.bindings}
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.props.selectedItem}
           oamApplications={this.state.oamApplications}
