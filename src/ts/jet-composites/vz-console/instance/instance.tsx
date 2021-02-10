@@ -6,8 +6,6 @@ import { VComponent, customElement, h } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
 import {
   Instance,
-  Model,
-  Binding,
   Status,
   VMIType,
   OAMApplication,
@@ -18,15 +16,10 @@ import { ConsoleInstanceResources } from "vz-console/instance-resources/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages";
 import {
-  extractModelsFromApplications,
-  extractBindingsFromApplications,
-} from "vz-console/service/common";
-import {
   ConsoleBreadcrumb,
   BreadcrumbType,
 } from "vz-console/breadcrumb/loader";
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader";
-import { isIterable } from "vz-console/utils/utils";
 
 class Props {
   selectedItem?: string;
@@ -34,8 +27,6 @@ class Props {
 
 class State {
   instance?: Instance;
-  models?: Model[];
-  bindings?: Binding[];
   loading?: boolean;
   error?: string;
   breadcrumbs?: BreadcrumbType[];
@@ -67,20 +58,15 @@ export class ConsoleInstance extends VComponent<Props, State> {
     this.updateState({ loading: true });
     Promise.all([
       this.verrazzanoApi.getInstance("0"),
-      this.verrazzanoApi.listApplications(),
       this.verrazzanoApi.listOAMAppsAndComponents(),
     ])
-      .then(([instance, applications, { oamApplications, oamComponents }]) => {
-        if (isIterable(applications)) {
-          this.updateState({
-            loading: false,
-            instance: instance,
-            models: extractModelsFromApplications(applications),
-            bindings: extractBindingsFromApplications(applications),
-            oamApplications,
-            oamComponents,
-          });
-        }
+      .then(([instance, { oamApplications, oamComponents }]) => {
+        this.updateState({
+          loading: false,
+          instance: instance,
+          oamApplications,
+          oamComponents,
+        });
       })
       .catch((error) => {
         let errorMessage = error;
@@ -201,8 +187,6 @@ export class ConsoleInstance extends VComponent<Props, State> {
           </div>
         </div>
         <ConsoleInstanceResources
-          models={this.state.models}
-          bindings={this.state.bindings}
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.props.selectedItem}
           oamApplications={this.state.oamApplications}

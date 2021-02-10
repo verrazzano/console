@@ -33,28 +33,10 @@ TMP_INTEG_DIR=$(mktemp -d) || exit 1
 
 function deploy_crds() {
   local verrazzanoHelmChartDir="${VERRAZZANO_REPO_PATH}/platform-operator/scripts/install/chart"
-  local modelCrdFile="${verrazzanoHelmChartDir}/crds/verrazzano.io_verrazzanomodels_crd.yaml";
-  local bindingCrdFile="${verrazzanoHelmChartDir}/crds/verrazzano.io_verrazzanobindings_crd.yaml";
   local monitoringInstCrdFile="${verrazzanoHelmChartDir}/crds/verrazzano.io_verrazzanomonitoringinstances_crd.yaml";
   local vmcCrdFile="${verrazzanoHelmChartDir}/crds/verrazzano.io_verrazzanomanagedclusters_crd.yaml";
   local KUBECTL_ERR
   local kubectlStatus=0
-
-  # tolerate AlreadyExists errors
-  echo "Creating Verrazzano Model CRD from file ${modelCrdFile}";
-  kubectlErr=$(kubectl create -f $modelCrdFile 2>&1)
-  if [ $? -ne 0 ] && [ "$(echo $kubectlErr | grep AlreadyExists)" == "" ]; then
-      kubectlStatus=1
-  fi
-  consoleerr $kubectlErr
-
-  echo
-  echo "Creating Verrazzano Binding CRD from file ${bindingCrdFile}"
-  kubectlErr=$(kubectl create -f $bindingCrdFile 2>&1)
-  if [ $? -ne 0 ] && [ "$(echo $kubectlErr | grep AlreadyExists)" == "" ]; then
-      kubectlStatus=1
-  fi
-  consoleerr $kubectlErr
 
   echo
   echo "Creating Verrazzano Monitoring Instances CRD from file ${monitoringInstCrdFile}"

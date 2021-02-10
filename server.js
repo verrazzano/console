@@ -54,39 +54,17 @@ function createEnvJs() {
 createEnvJs();
 app.use(express.static(staticPath));
 
-app.get("/models", (req, res, next) => {
-  res.redirect(`/?ojr=instance&selectedItem=models`);
-});
-app.get("/bindings", (req, res, next) => {
-  res.redirect(`/?ojr=instance&selectedItem=bindings`);
-});
 app.get("/oamapps", (req, res, next) => {
   res.redirect(`/?ojr=instance&selectedItem=oamapps`);
 });
 app.get("/oamcomps", (req, res, next) => {
   res.redirect(`/?ojr=instance&selectedItem=oamcomps`);
 });
-app.get("/models/:id", (req, res, next) => {
-  res.redirect(`/?ojr=model&modelId=${req.params.id}`);
-});
-app.get("/bindings/:id", (req, res, next) => {
-  res.redirect(`/?ojr=binding&bindingId=${req.params.id}`);
-});
 app.get("/oamapps/:id", (req, res, next) => {
   res.redirect(`/?ojr=oamapp&oamAppId=${req.params.id}`);
 });
 app.get("/oamcomps/:id", (req, res, next) => {
   res.redirect(`/?ojr=oamcomp&oamCompId=${req.params.id}`);
-});
-app.get("/models/:id/:selectedItem", (req, res, next) => {
-  res.redirect(
-    `/?ojr=model&modelId=${req.params.id}&selectedItem=${req.params.selectedItem}`
-  );
-});
-app.get("/bindings/:id/:selectedItem", (req, res, next) => {
-  res.redirect(
-    `/?ojr=binding&bindingId=${req.params.id}&selectedItem=${req.params.selectedItem}`
-  );
 });
 app.get("/oamapps/:id/components", (req, res, next) => {
   res.redirect(

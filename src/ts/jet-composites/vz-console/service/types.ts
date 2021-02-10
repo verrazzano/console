@@ -1,25 +1,6 @@
 // Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-export enum ComponentType {
-  // eslint-disable-next-line no-unused-vars
-  ING = "Ingress",
-  // eslint-disable-next-line no-unused-vars
-  ATP = "ATP",
-  // eslint-disable-next-line no-unused-vars
-  DB = "Database",
-  // eslint-disable-next-line no-unused-vars
-  WLS = "WebLogic Domain",
-  // eslint-disable-next-line no-unused-vars
-  MS = "Helidon Microservice",
-  // eslint-disable-next-line no-unused-vars
-  COH = "Coherence cluster",
-  // eslint-disable-next-line no-unused-vars
-  ANY = "Any",
-  // eslint-disable-next-line no-unused-vars
-  GEN = "Generic Component",
-}
-
 export enum VMIType {
   // eslint-disable-next-line no-unused-vars
   Kibana = "Kibana",
@@ -52,42 +33,6 @@ export enum Status {
   Unknown = "Unknown",
 }
 
-export enum SecretUsage {
-  // eslint-disable-next-line no-unused-vars
-  ImagePullSecret = "ImagePullSecret",
-  // eslint-disable-next-line no-unused-vars
-  WebLogicCredentialsSecret = "WebLogicCredentialsSecret",
-  // eslint-disable-next-line no-unused-vars
-  DatabaseSecret = "DatabaseSecret",
-}
-
-// This is the secret info we have returned in the model/binding
-export interface PartialSecret {
-  name: string;
-  usage: string;
-}
-
-export interface Component {
-  id?: string;
-  name?: string;
-  type?: ComponentType;
-  images?: string[];
-  secrets?: PartialSecret[];
-}
-
-export interface Placement {
-  id?: string;
-  cluster?: string;
-  namespace?: string;
-  component?: string;
-  componentType?: string;
-}
-
-export interface BindingComponent extends Component {
-  placement?: Placement;
-  status?: Status;
-}
-
 export interface FetchApiSignature {
   // eslint-disable-next-line no-undef
   (input: string | Request, init?: RequestInit): Promise<Response>;
@@ -110,119 +55,10 @@ export interface Instance {
   isUsingSharedVMI?: boolean;
 }
 
-export interface Cluster {
-  id: string;
-  name: string;
-  type: string;
-  status: string;
-  serverAddress: string;
-}
-
-export interface Connection {
-  id: string;
-  name: string;
-  source: string;
-  target: string;
-  component: string;
-  type: string;
-}
-
-export interface Ingress {
-  id: string;
-  name: string;
-  path: string;
-  port: string;
-  component: string;
-  prefix: string;
-  dnsName: string;
-}
-
-export interface ComponentSecret {
-  id: string;
-  name: string;
-  type: string;
-  componentName: string;
-  componentType: string;
-  usage: string;
-}
-
 export interface VMI {
   id?: string;
   type?: VMIType;
   url?: string;
-}
-
-export interface Domain {
-  id: string;
-  name: string;
-  adminPort: string;
-  t3Port: string;
-}
-
-export interface CohCluster {
-  id: string;
-  cluster: string;
-  name: string;
-  podName: string;
-  role: string;
-  image: string;
-  namespace: string;
-  status: string;
-}
-
-export interface HelidonApp {
-  id: string;
-  cluster: string;
-  name: string;
-  type: string;
-  namespace: string;
-  status: string;
-}
-
-export interface Secret {
-  id: string;
-  name: string;
-  namespace: string;
-  status: string;
-  type: string;
-}
-
-export interface Binding {
-  id: string;
-  name: string;
-  description: string;
-  state?: string;
-  // eslint-disable-next-line no-use-before-define
-  model: Model;
-  components?: BindingComponent[];
-  connections?: Connection[];
-  ingresses?: Ingress[];
-  vmiInstances?: VMI[];
-  secrets?: ComponentSecret[];
-  namespace?: string;
-  createdOn?: string;
-}
-
-export interface Model {
-  id: string;
-  name: string;
-  description: string;
-  bindings?: Binding[];
-  modelComponents?: Component[];
-  connections?: Connection[];
-  ingresses?: Ingress[];
-  secrets?: ComponentSecret[];
-  namespace?: string;
-  createdOn?: string;
-}
-
-export interface Application {
-  id: string;
-  name: string;
-  description: string;
-  model: string;
-  binding: string;
-  status: string;
 }
 
 export interface OAMApplication {
@@ -309,14 +145,6 @@ export const ResourceType = {
   VerrazzanoManagedCluster: <ResourceTypeType>{
     ApiVersion: "apis/verrazzano.io/v1beta1",
     Kind: "VerrazzanoManagedCluster",
-  },
-  VerrazzanoBinding: <ResourceTypeType>{
-    ApiVersion: "apis/verrazzano.io/v1beta1",
-    Kind: "VerrazzanoBinding",
-  },
-  VerrazzanoModel: <ResourceTypeType>{
-    ApiVersion: "apis/verrazzano.io/v1beta1",
-    Kind: "VerrazzanoModel",
   },
   VerrazzanoMonitoringInstance: <ResourceTypeType>{
     ApiVersion: "apis/verrazzano.io/v1",

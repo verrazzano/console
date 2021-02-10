@@ -2,27 +2,16 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
-  Instance,
-  Application,
-  Model,
-  Binding,
-  Secret,
-  Status,
   FetchApiSignature,
+  Instance,
   OAMApplication,
   OAMComponent,
-  ResourceTypeType,
   ResourceType,
+  ResourceTypeType,
 } from "./types";
-import {
-  extractModelsFromApplications,
-  extractBindingsFromApplications,
-  getVmiInstancesForBinding,
-  processOAMData,
-} from "./common";
+import { processOAMData } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
-import * as yaml from "js-yaml";
 
 export const ServicePrefix = "instances";
 
@@ -43,23 +32,15 @@ export class VerrazzanoApi {
         NamespaceVerrazzanoSystem,
         "system"
       ),
-      this.getKubernetesResource(
-        ResourceType.Deployment,
-        NamespaceVerrazzanoSystem,
-        "verrazzano-operator"
-      ),
     ])
-      .then(
-        ([ingressResponse, vmcResponse, vmiResponse, deploymentResponse]) => {
-          return Promise.all([
-            ingressResponse.json(),
-            vmcResponse.json(),
-            vmiResponse.json(),
-            deploymentResponse.json(),
-          ]);
-        }
-      )
-      .then(([ingresses, vmc, vmi, operatorDeployment]) => {
+      .then(([ingressResponse, vmcResponse, vmiResponse]) => {
+        return Promise.all([
+          ingressResponse.json(),
+          vmcResponse.json(),
+          vmiResponse.json(),
+        ]);
+      })
+      .then(([ingresses, vmc, vmi]) => {
         if (
           !ingresses ||
           !ingresses.items ||
@@ -76,14 +57,10 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errVmiFetchError());
         }
 
-        if (!operatorDeployment) {
-          throw new Error(Messages.Error.errOperatorDeploymentFetchError());
-        }
         return this.populateInstance(
           ingresses.items,
           vmc.items,
           vmi,
-          operatorDeployment,
           instanceId
         );
       })
@@ -93,85 +70,6 @@ export class VerrazzanoApi {
           errorMessage = error.message;
         }
         throw new Error(errorMessage);
-      });
-  }
-
-  public async listApplications(): Promise<Application[]> {
-    return Promise.all([
-      this.getKubernetesResource(ResourceType.VerrazzanoBinding),
-      this.getKubernetesResource(ResourceType.VerrazzanoModel),
-    ])
-      .then(([bindingResponse, modelResponse]) => {
-        return Promise.all([bindingResponse.json(), modelResponse.json()]);
-      })
-      .then(([bindings, models]) => {
-        if (!bindings || !bindings.items) {
-          throw new Error(Messages.Error.errBindingsFetchError());
-        }
-
-        if (!models || !models.items) {
-          throw new Error(Messages.Error.errModelsFetchError());
-        }
-        return this.populateApplications(bindings.items, models.items);
-      });
-  }
-
-  public async getModel(modelId: string): Promise<Model> {
-    console.log(Messages.Api.msgFetchModel(modelId));
-    return this.listApplications().then((data) => {
-      const applications: Application[] = data;
-      const models = extractModelsFromApplications(applications);
-      for (const model of models) {
-        if (modelId && model.id === modelId) {
-          return model;
-        }
-      }
-    });
-  }
-
-  public async getBinding(bindingId: string): Promise<Binding> {
-    console.log(Messages.Api.msgFetchBinding(bindingId));
-    let binding: Binding;
-    return this.listApplications()
-      .then((applications: Application[]) => {
-        const bindings = extractBindingsFromApplications(applications);
-        binding = bindings.find((binding) => {
-          return binding.id === bindingId;
-        });
-        if (!binding) {
-          throw Messages.Error.errBindingDoesNotExist(bindingId);
-        }
-      })
-      .then(() => this.getInstance("0"))
-      .then((instance) => {
-        binding.vmiInstances = getVmiInstancesForBinding(
-          binding.name,
-          instance
-        );
-        binding.components.forEach((component) => {
-          component.status = Status.Running;
-        });
-        return binding;
-      });
-  }
-
-  public async listSecrets(): Promise<Secret[]> {
-    return Promise.all([
-      this.getKubernetesResource(ResourceType.VerrazzanoBinding),
-      this.getKubernetesResource(ResourceType.VerrazzanoModel),
-    ])
-      .then(([bindingResponse, modelResponse]) => {
-        return Promise.all([bindingResponse.json(), modelResponse.json()]);
-      })
-      .then(([bindings, models]) => {
-        if (!bindings || !bindings.items) {
-          throw new Error(Messages.Error.errBindingsFetchError());
-        }
-
-        if (!models || !models.items) {
-          throw new Error(Messages.Error.errModelsFetchError());
-        }
-        return this.populateSecrets(bindings.items, models.items);
       });
   }
 
@@ -419,7 +317,6 @@ export class VerrazzanoApi {
     ingresses: Array<any>,
     clusters: Array<any>,
     vmi,
-    operatorDeployment,
     instanceId
   ): Instance {
     const mgmtCluster = clusters.find(
@@ -532,221 +429,13 @@ export class VerrazzanoApi {
       }
     }
 
-    if (
-      operatorDeployment &&
-      operatorDeployment.spec.template.spec.containers
-    ) {
-      const container = (operatorDeployment.spec.template.spec
-        .containers as Array<any>).find(
-        (ct) => ct.name === "verrazzano-operator"
-      );
-      if (
-        container &&
-        container.env &&
-        (container.env as Array<any>).length > 0
-      ) {
-        const useSystemVmi = (container.env as Array<any>).find(
-          (envVar) => envVar.name === "USE_SYSTEM_VMI"
-        );
-        if (useSystemVmi) {
-          instance.isUsingSharedVMI = Boolean(useSystemVmi.value);
-        }
-      }
-    }
-
+    instance.isUsingSharedVMI = true;
     return instance;
-  }
-
-  populateApplications(
-    bindings: Array<any>,
-    models: Array<any>
-  ): Application[] {
-    const applications: Application[] = [];
-    while (models.length > 0) {
-      const model = models.pop();
-      const bindingsForModel = bindings.filter(
-        (binding) =>
-          binding.metadata.namespace === model.metadata.namespace &&
-          binding.spec.modelName === model.metadata.name
-      );
-      if (bindingsForModel && bindingsForModel.length > 0) {
-        bindingsForModel.forEach((binding) => {
-          applications.push({
-            id: `${binding.metadata.uid}-${model.metadata.uid}`,
-            description: binding.spec.description,
-            name: binding.metadata.name,
-            model: yaml.dump(yaml.load(JSON.stringify(model))),
-            binding: yaml.dump(yaml.load(JSON.stringify(binding))),
-            status: "NYI",
-          });
-        });
-      } else {
-        applications.push({
-          id: `app-${model.metadata.uid}`,
-          description: "",
-          name: "",
-          model: yaml.dump(yaml.load(JSON.stringify(model))),
-          binding: "",
-          status: "NYI",
-        });
-      }
-    }
-    return applications;
-  }
-
-  async populateSecrets(
-    bindings: Array<any>,
-    models: Array<any>
-  ): Promise<Secret[]> {
-    const secretsMap: Map<string, Map<string, Secret>> = new Map();
-    const secrets: Secret[] = [];
-    try {
-      for (const model of models) {
-        if (model.spec.weblogicDomains) {
-          for (const domain of model.spec.weblogicDomains as Array<any>) {
-            if (domain.domainCRValues.imagePullSecrets) {
-              for (const pullSecret of domain.domainCRValues
-                .imagePullSecrets as Array<any>) {
-                await this.addSecret(
-                  secretsMap,
-                  model.metadata.namespace,
-                  pullSecret.name
-                );
-              }
-            }
-
-            if (domain.domainCRValues.configOverrideSecrets) {
-              for (const configOverrideSecret of domain.domainCRValues
-                .configOverrideSecrets as Array<any>) {
-                await this.addSecret(
-                  secretsMap,
-                  model.metadata.namespace,
-                  configOverrideSecret
-                );
-              }
-            }
-
-            if (domain.domainCRValues.webLogicCredentialsSecret) {
-              await this.addSecret(
-                secretsMap,
-                model.metadata.namespace,
-                domain.domainCRValues.webLogicCredentialsSecret.name
-              );
-            }
-          }
-        }
-
-        if (model.spec.helidonApplications) {
-          for (const helidonApp of model.spec.helidonApplications as Array<
-            any
-          >) {
-            if (helidonApp.imagePullSecrets) {
-              for (const pullSecret of helidonApp.imagePullSecrets as Array<
-                any
-              >) {
-                await this.addSecret(
-                  secretsMap,
-                  model.metadata.namespace,
-                  pullSecret.name
-                );
-              }
-            }
-          }
-        }
-
-        if (model.spec.coherenceClusters) {
-          for (const coherenceCluster of model.spec.coherenceClusters as Array<
-            any
-          >) {
-            if (coherenceCluster.imagePullSecrets) {
-              for (const pullSecret of coherenceCluster.imagePullSecrets as Array<
-                any
-              >) {
-                await this.addSecret(
-                  secretsMap,
-                  model.metadata.namespace,
-                  pullSecret.name
-                );
-              }
-            }
-          }
-        }
-      }
-
-      for (const binding of bindings) {
-        if (binding.spec.databaseBindings) {
-          for (const dbBinding of binding.spec.databaseBindings as Array<any>) {
-            if (dbBinding.credentials) {
-              await this.addSecret(
-                secretsMap,
-                binding.metadata.namespace,
-                dbBinding.credentials
-              );
-            }
-          }
-        }
-      }
-    } catch (error) {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      throw new Error(errorMessage);
-    }
-
-    secretsMap.forEach((secretNameToSecretMap) =>
-      secretNameToSecretMap.forEach((secret) => secrets.push(secret))
-    );
-    return secrets;
-  }
-
-  async addSecret(
-    secrets: Map<string, Map<string, Secret>>,
-    namespace: string,
-    name: string
-  ) {
-    let secretsInNS = secrets.get(namespace);
-    if (!secretsInNS) {
-      secretsInNS = new Map();
-      secrets.set(namespace, secretsInNS);
-    }
-
-    if (secretsInNS.has(name)) {
-      return;
-    }
-
-    try {
-      const secret = await this.getKubernetesResource(
-        ResourceType.Secret,
-        namespace,
-        name
-      ).then((secretResponse) => secretResponse.json());
-      if (secret.metadata) {
-        secretsInNS.set(name, {
-          id: secret.metadata.uid,
-          name: secret.metadata.name,
-          namespace: secret.metadata.namespace,
-          type: secret.type,
-          status: Status.Ready,
-        });
-      }
-    } catch (error) {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      throw new Error(errorMessage);
-    }
   }
 
   public constructor() {
     this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
-    this.listApplications = this.listApplications.bind(this);
     this.getInstance = this.getInstance.bind(this);
-    this.getModel = this.getModel.bind(this);
-    this.listSecrets = this.listSecrets.bind(this);
-    this.getBinding = this.getBinding.bind(this);
-    this.listOAMApplications = this.listApplications.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
     this.getOAMApplication = this.getOAMApplication.bind(this);
     this.getOAMComponent = this.getOAMComponent.bind(this);

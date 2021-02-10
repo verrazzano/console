@@ -1,15 +1,10 @@
-// Copyright (C) 2020, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
-  Binding,
   Instance,
   VerrazzanoApi,
-  Model,
   VMIType,
-  Application,
-  extractModelsFromApplications,
-  extractBindingsFromApplications,
   OAMApplication,
 } from "vz-console/service/loader";
 import "vz-console/instance/loader";
@@ -35,36 +30,6 @@ const instance = <Instance>{
   mgmtCluster: "test",
   version: "1.0",
   status: "OK",
-};
-let model: Model;
-let binding: Binding;
-model = {
-  id: "test-model",
-  name: "test-model",
-  description: "test model",
-  modelComponents: [],
-  bindings: [binding],
-};
-binding = <Binding>{
-  id: "test-model",
-  name: "test-binding",
-  description: "test binding",
-  components: [],
-  model,
-};
-const applications: Application[] = [
-  {
-    id: "test-application",
-    name: "test-application",
-    description: "test application",
-    status: "",
-    model: "",
-    binding: "",
-  },
-];
-const factory = {
-  extractModelsFromApplications,
-  extractBindingsFromApplications,
 };
 const sandbox = sinon.createSandbox();
 
@@ -93,11 +58,6 @@ describe("instance panel screen tests", () => {
     sandbox
       .stub(VerrazzanoApi.prototype, <any>"getInstance")
       .returns(Promise.resolve(instance));
-    sandbox
-      .stub(VerrazzanoApi.prototype, <any>"listApplications")
-      .returns(Promise.resolve(applications));
-    sandbox.stub(factory, "extractModelsFromApplications").returns([model]);
-    sandbox.stub(factory, "extractBindingsFromApplications").returns([binding]);
     sandbox
       .stub(VerrazzanoApi.prototype, <any>"listOAMAppsAndComponents")
       .returns(Promise.resolve({}));
