@@ -20,7 +20,6 @@ import {
   BreadcrumbType,
 } from "vz-console/breadcrumb/loader";
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader";
-import { isIterable } from "vz-console/utils/utils";
 
 class Props {
   selectedItem?: string;
@@ -59,18 +58,15 @@ export class ConsoleInstance extends VComponent<Props, State> {
     this.updateState({ loading: true });
     Promise.all([
       this.verrazzanoApi.getInstance("0"),
-      this.verrazzanoApi.listApplications(),
       this.verrazzanoApi.listOAMAppsAndComponents(),
     ])
-      .then(([instance, applications, { oamApplications, oamComponents }]) => {
-        if (isIterable(applications)) {
-          this.updateState({
-            loading: false,
-            instance: instance,
-            oamApplications,
-            oamComponents,
-          });
-        }
+      .then(([instance, { oamApplications, oamComponents }]) => {
+        this.updateState({
+          loading: false,
+          instance: instance,
+          oamApplications,
+          oamComponents,
+        });
       })
       .catch((error) => {
         let errorMessage = error;

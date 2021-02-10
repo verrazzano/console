@@ -39,14 +39,7 @@ export = {
     errCallKeyCloak: "Error calling keycloak {0}",
     errFetchFailed: "Failed to perform fetch {0}",
 
-    errRenderConnectionList: "Error displaying connections list",
-    errRenderIngList: "Error displaying ingress list.",
-
     errRenderInstance: "Error displaying verrazzano instance",
-
-    errRenderSecretList: "Error displaying secret list.",
-
-    errBindingDoesNotExist: "No Binding with id {0}.",
 
     errInvalidOamAppId: "Invalid OAM Application Id.",
 
@@ -100,35 +93,21 @@ export = {
     loading: "Loading...",
     refineBy: "Filters",
     state: "State",
-    type: "Type",
     sortBy: "Sort by:",
     status: "Status",
-    cluster: "Cluster",
-    image: "Image",
     ns: "Namespace",
     resources: "Resources",
     components: "Components",
-    connections: "Connections",
-    ingresses: "Ingresses",
-    secrets: "Secrets",
     kibana: "Kibana",
     grafana: "Grafana",
     prom: "Prometheus",
     es: "Elasticsearch",
-    target: "Target",
-    comp: "Component",
-    prefix: "Prefix",
-    port: "Port",
-    dnsName: "Dns Name",
     version: "Version",
     mgmtCluster: "Management Cluster",
     rancher: "Rancher",
     keycloak: "Keycloak",
-    compType: "Component Type",
-    usage: "Usage",
     created: "Created",
     selectOption: "Please select an option ...",
-    images: "Images",
     workloadType: "Workload Type",
     workloadSpec: "Workload Spec",
     workload: "Workload",
@@ -148,12 +127,6 @@ export = {
     byType: "By Type",
     byState: "By State",
     componentInfo: "Component Details",
-  },
-
-  api: {
-    msgFetchInstance: "Fetching instance details for instance {0}.",
-    msgFetchComponent: "Fetching Component status for {0} {1}",
-    msgFetchVmi: "Fetching VMI details for binding {0}",
   },
 
   pagination: {

@@ -61,16 +61,8 @@ export const Error = {
   errFetchFailed: (...args) =>
     Translations.getTranslatedString("error.errFetchFailed", args),
 
-  errRenderConnectionList: (...args) =>
-    Translations.getTranslatedString("error.errRenderConnectionList", args),
-  errRenderIngList: (...args) =>
-    Translations.getTranslatedString("error.errRenderIngList", args),
-
   errRenderInstance: (...args) =>
     Translations.getTranslatedString("error.errRenderInstance", args),
-
-  errRenderSecretList: (...args) =>
-    Translations.getTranslatedString("error.errRenderSecretList", args),
 
   errInvalidOamAppId: (...args) =>
     Translations.getTranslatedString("error.errInvalidOamAppId", args),
@@ -154,35 +146,21 @@ export const Labels = {
   loading: () => Translations.getTranslatedString("labels.loading"),
   refineBy: () => Translations.getTranslatedString("labels.refineBy"),
   state: () => Translations.getTranslatedString("labels.state"),
-  type: () => Translations.getTranslatedString("labels.type"),
   sortBy: () => Translations.getTranslatedString("labels.sortBy"),
   status: () => Translations.getTranslatedString("labels.status"),
-  cluster: () => Translations.getTranslatedString("labels.cluster"),
-  image: () => Translations.getTranslatedString("labels.image"),
   ns: () => Translations.getTranslatedString("labels.ns"),
   resources: () => Translations.getTranslatedString("labels.resources"),
   components: () => Translations.getTranslatedString("labels.components"),
-  connections: () => Translations.getTranslatedString("labels.connections"),
-  ingresses: () => Translations.getTranslatedString("labels.ingresses"),
-  secrets: () => Translations.getTranslatedString("labels.secrets"),
   kibana: () => Translations.getTranslatedString("labels.kibana"),
   grafana: () => Translations.getTranslatedString("labels.grafana"),
   prom: () => Translations.getTranslatedString("labels.prom"),
   es: () => Translations.getTranslatedString("labels.es"),
-  target: () => Translations.getTranslatedString("labels.target"),
-  comp: () => Translations.getTranslatedString("labels.comp"),
-  prefix: () => Translations.getTranslatedString("labels.prefix"),
-  port: () => Translations.getTranslatedString("labels.port"),
-  dnsName: () => Translations.getTranslatedString("labels.dnsName"),
   version: () => Translations.getTranslatedString("labels.version"),
   mgmtCluster: () => Translations.getTranslatedString("labels.mgmtCluster"),
   rancher: () => Translations.getTranslatedString("labels.rancher"),
   keycloak: () => Translations.getTranslatedString("labels.keycloak"),
-  compType: () => Translations.getTranslatedString("labels.compType"),
-  usage: () => Translations.getTranslatedString("labels.usage"),
   created: () => Translations.getTranslatedString("labels.created"),
   selectOption: () => Translations.getTranslatedString("labels.selectOption"),
-  images: () => Translations.getTranslatedString("labels.images"),
   workloadType: () => Translations.getTranslatedString("labels.workloadType"),
   workloadSpec: () => Translations.getTranslatedString("labels.workloadSpec"),
   workload: () => Translations.getTranslatedString("labels.workload"),
@@ -203,15 +181,6 @@ export const Labels = {
   byType: () => Translations.getTranslatedString("labels.byType"),
   byState: () => Translations.getTranslatedString("labels.byState"),
   componentInfo: () => Translations.getTranslatedString("labels.componentInfo"),
-};
-
-export const Api = {
-  msgFetchInstance: (...args) =>
-    Translations.getTranslatedString("api.msgFetchInstance", args),
-  msgFetchComponent: (...args) =>
-    Translations.getTranslatedString("api.msgFetchComponent", args),
-  msgFetchVmi: (...args) =>
-    Translations.getTranslatedString("api.msgFetchVmi", args),
 };
 
 export const Pagination = {

@@ -5,7 +5,6 @@ import {
   Instance,
   VerrazzanoApi,
   VMIType,
-  Application,
   OAMApplication,
 } from "vz-console/service/loader";
 import "vz-console/instance/loader";
@@ -32,14 +31,6 @@ const instance = <Instance>{
   version: "1.0",
   status: "OK",
 };
-const applications: Application[] = [
-  {
-    id: "test-application",
-    name: "test-application",
-    description: "test application",
-    status: "",
-  },
-];
 const sandbox = sinon.createSandbox();
 
 async function setup(selectedItem?: string) {
@@ -67,9 +58,6 @@ describe("instance panel screen tests", () => {
     sandbox
       .stub(VerrazzanoApi.prototype, <any>"getInstance")
       .returns(Promise.resolve(instance));
-    sandbox
-      .stub(VerrazzanoApi.prototype, <any>"listApplications")
-      .returns(Promise.resolve(applications));
     sandbox
       .stub(VerrazzanoApi.prototype, <any>"listOAMAppsAndComponents")
       .returns(Promise.resolve({}));

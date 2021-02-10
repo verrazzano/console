@@ -3,14 +3,7 @@
 
 import {
   Instance,
-  Cluster,
-  Domain,
-  CohCluster,
-  HelidonApp,
-  Secret,
   Status,
-  Component,
-  ComponentSecret,
   OAMApplication,
   OAMComponent,
   OAMComponentInstance,
@@ -31,108 +24,6 @@ export const extractInstances = (instances: any[]): Instance[] => {
       keyCloakUrl: instance.keyCloakUrl,
       rancherUrl: instance.rancherUrl,
       vzApiUri: instance.vzApiUri,
-    });
-  });
-  return result;
-};
-
-export const extractClusters = (clusters: any[]): Cluster[] => {
-  const result: Cluster[] = [];
-  clusters.forEach((cluster) => {
-    result.push({
-      id: cluster.id,
-      name: cluster.name,
-      type: cluster.type,
-      status: cluster.status,
-      serverAddress: cluster.serverAddress,
-    });
-  });
-  return result;
-};
-
-// Extract the secrets used by components
-export const extractSecretsForComponents = (
-  components: Component[],
-  secrets: Secret[]
-): ComponentSecret[] => {
-  const secretSet: Map<string, Secret> = new Map();
-  for (const secret of secrets) {
-    secretSet.set(secret.name, secret);
-  }
-  const componentSecrets: ComponentSecret[] = [];
-  for (const component of components) {
-    if (!component.secrets) {
-      continue;
-    }
-    for (const componentSecret of component.secrets) {
-      if (secretSet.has(componentSecret.name)) {
-        const secret = secretSet.get(componentSecret.name);
-        componentSecrets.push({
-          id: secret.id,
-          name: secret.name,
-          type: secret.type,
-          usage: componentSecret.usage,
-          componentName: component.name,
-          componentType: component.type,
-        });
-      }
-    }
-  }
-  return componentSecrets;
-};
-
-export const extractDomains = (domains: any[]): Domain[] => {
-  const result: Domain[] = [];
-  domains.forEach((domain) => {
-    let t3Port = "";
-    if (domain.t3Address) {
-      const split = domain.t3Address.split(":", 3);
-      if (split.length >= 3 && split[2]) {
-        t3Port = split[2];
-      }
-    }
-
-    let adminPort = "";
-    if (domain.adminServerAddress) {
-      const split = domain.adminServerAddress.split(":", 3);
-      if (split.length >= 3 && split[2]) {
-        adminPort = split[2];
-      }
-    }
-    const id = domain.id;
-    const name = domain.id;
-    result.push({ id, name, adminPort, t3Port });
-  });
-  return result;
-};
-
-export const extractCohClusters = (cohClusters: any[]): CohCluster[] => {
-  const result: CohCluster[] = [];
-  cohClusters.forEach((cohCluster) => {
-    result.push({
-      id: cohCluster.id,
-      name: cohCluster.name,
-      cluster: cohCluster.cluster,
-      image: cohCluster.image,
-      namespace: cohCluster.namespace,
-      podName: cohCluster.podName,
-      role: cohCluster.role,
-      status: cohCluster.status,
-    });
-  });
-  return result;
-};
-
-export const extractHelidonApps = (helidonApps: any[]): HelidonApp[] => {
-  const result: HelidonApp[] = [];
-  helidonApps.forEach((helidonApp) => {
-    result.push({
-      id: helidonApp.name,
-      name: helidonApp.name,
-      cluster: helidonApp.cluster,
-      namespace: helidonApp.namespace,
-      type: helidonApp.type,
-      status: helidonApp.status,
     });
   });
   return result;

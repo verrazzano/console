@@ -2,15 +2,12 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
-  Application,
   FetchApiSignature,
   Instance,
   OAMApplication,
   OAMComponent,
   ResourceType,
   ResourceTypeType,
-  Secret,
-  Status,
 } from "./types";
 import { processOAMData } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
@@ -76,10 +73,6 @@ export class VerrazzanoApi {
       });
   }
 
-  public async listApplications(): Promise<Application[]> {
-    return this.populateApplications();
-  }
-
   public async listOAMAppsAndComponents(): Promise<{
     oamApplications: OAMApplication[];
     oamComponents: OAMComponent[];
@@ -125,10 +118,6 @@ export class VerrazzanoApi {
         }
         throw new Error(errorMessage);
       });
-  }
-
-  public async listSecrets(): Promise<Secret[]> {
-    return this.populateSecrets();
   }
 
   public async listOAMApplications(): Promise<OAMApplication[]> {
@@ -444,61 +433,9 @@ export class VerrazzanoApi {
     return instance;
   }
 
-  populateApplications(): Application[] {
-    const applications: Application[] = [];
-    return applications;
-  }
-
-  async populateSecrets(): Promise<Secret[]> {
-    const secrets: Secret[] = [];
-    return secrets;
-  }
-
-  async addSecret(
-    secrets: Map<string, Map<string, Secret>>,
-    namespace: string,
-    name: string
-  ) {
-    let secretsInNS = secrets.get(namespace);
-    if (!secretsInNS) {
-      secretsInNS = new Map();
-      secrets.set(namespace, secretsInNS);
-    }
-
-    if (secretsInNS.has(name)) {
-      return;
-    }
-
-    try {
-      const secret = await this.getKubernetesResource(
-        ResourceType.Secret,
-        namespace,
-        name
-      ).then((secretResponse) => secretResponse.json());
-      if (secret.metadata) {
-        secretsInNS.set(name, {
-          id: secret.metadata.uid,
-          name: secret.metadata.name,
-          namespace: secret.metadata.namespace,
-          type: secret.type,
-          status: Status.Ready,
-        });
-      }
-    } catch (error) {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      throw new Error(errorMessage);
-    }
-  }
-
   public constructor() {
     this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
-    this.listApplications = this.listApplications.bind(this);
     this.getInstance = this.getInstance.bind(this);
-    this.listSecrets = this.listSecrets.bind(this);
-    this.listOAMApplications = this.listApplications.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
     this.getOAMApplication = this.getOAMApplication.bind(this);
     this.getOAMComponent = this.getOAMComponent.bind(this);

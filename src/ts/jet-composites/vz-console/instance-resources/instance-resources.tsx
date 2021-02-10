@@ -45,7 +45,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
   };
 
   state: State = {
-    selectedItem: this.props.selectedItem ? this.props.selectedItem : "models",
+    selectedItem: this.props.selectedItem ? this.props.selectedItem : "oamapps",
   };
 
   protected mounted() {
@@ -66,7 +66,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
           this.updateState({ selectedItem: args.state.path });
           this.props.breadcrumbCallback(breadcrumbs);
         } else {
-          this.updateState({ selectedItem: "models" });
+          this.updateState({ selectedItem: "oamapps" });
           this.props.breadcrumbCallback([this.baseBreadcrumb]);
         }
       }
