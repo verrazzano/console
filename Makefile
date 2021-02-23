@@ -12,7 +12,7 @@ JET_CLI_VERSION=9.1.0
 CLUSTER_NAME ?= console-integ
 VZ_UITEST_CONFIG_TEMPLATE ?= $(shell pwd)/integtest/config.uitest.json
 VERRAZZANO_REPO_PATH ?= $(shell pwd)/../verrazzano
-NODEJS_VERSION=v14.7
+NODEJS_VERSION=v14.15
 
 ifeq ($(MAKECMDGOALS),$(filter $(MAKECMDGOALS),push))
 	ifndef DOCKER_REPO
