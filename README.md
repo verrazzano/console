@@ -19,7 +19,7 @@ The Verrazzano Console repository includes:
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    nvm install 14.7
+    nvm install 14.15
   ```
 
 - [Oracle JET CLI](https://github.com/oracle/ojet-cli) 9.1.x+
@@ -48,7 +48,7 @@ Clone the `git` repository and install `npm` dependencies:
 ```bash
   git clone https://github.com/verrazzano/console.git
   cd console
-  nvm use 14.7
+  nvm use 14.15
   npm install
 ```
 

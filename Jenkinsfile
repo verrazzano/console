@@ -21,7 +21,7 @@ pipeline {
         DOCKER_CREDS = credentials('github-packages-credentials-rw')
         DOCKER_REPO = 'ghcr.io'
         DOCKER_NAMESPACE = 'verrazzano'
-        NODE_VERSION='14.7'
+        NODE_VERSION='14.15'
         NVM_VERSION='v0.35.3'
     }
 
