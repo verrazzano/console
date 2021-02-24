@@ -21,8 +21,6 @@ pipeline {
         DOCKER_CREDS = credentials('github-packages-credentials-rw')
         DOCKER_REPO = 'ghcr.io'
         DOCKER_NAMESPACE = 'verrazzano'
-        NODE_VERSION='14.15'
-        NVM_VERSION='v0.35.3'
     }
 
     stages {
@@ -33,24 +31,10 @@ pipeline {
             }
         }
 
-        stage('Get node') {
-            steps {
-                sh """
-                    sudo yum install -y bzip2
-                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash
-                    [ -s "${HOME}/.nvm/nvm.sh" ] && . "${HOME}/.nvm/nvm.sh"
-                    nvm install ${env.NODE_VERSION}
-                    nvm ls
-                    nvm use ${env.NODE_VERSION}
-                """
-            }
-        }
         stage('Lint code') {
             when { not { buildingTag() } }
             steps {
                 sh """
-                    [ -s "${HOME}/.nvm/nvm.sh" ] && . "${HOME}/.nvm/nvm.sh"
-                    nvm use ${env.NODE_VERSION}
                     make lint-code
                 """
             }
@@ -60,8 +44,6 @@ pipeline {
             when { not { buildingTag() } }
             steps {
                 sh """
-                    [ -s "${HOME}/.nvm/nvm.sh" ] && . "${HOME}/.nvm/nvm.sh"
-                    nvm use ${env.NODE_VERSION}
                     make unit-test
                 """
             }
@@ -79,8 +61,6 @@ pipeline {
                 }
                 sh """
                     echo "${DOCKER_CREDS_PSW}" | docker login ${env.DOCKER_REPO} -u ${DOCKER_CREDS_USR} --password-stdin
-                    [ -s "${HOME}/.nvm/nvm.sh" ] && . "${HOME}/.nvm/nvm.sh"
-                    nvm use ${env.NODE_VERSION}
                     make push DOCKER_REPO=${env.DOCKER_REPO} DOCKER_NAMESPACE=${env.DOCKER_NAMESPACE} DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME} DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG} CREATE_LATEST_TAG=${CREATE_LATEST_TAG}
                 """
             }
@@ -109,8 +89,6 @@ pipeline {
                         ],
                 ]
                 sh """
-                    [ -s "${HOME}/.nvm/nvm.sh" ] && . "${HOME}/.nvm/nvm.sh"
-                    nvm use ${env.NODE_VERSION}
                     VERRAZZANO_REPO_PATH=${WORKSPACE}/verrazzano CLUSTER_NAME=${env.CLUSTER_NAME} make integ-test
                 """
             }
