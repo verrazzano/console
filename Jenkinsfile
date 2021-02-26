@@ -6,11 +6,10 @@ def DOCKER_IMAGE_TAG
 pipeline {
     agent {
        docker {
-            image "${EXPERIMENTAL_RUNNER_DOCKER_IMAGE}"
+            image "${RUNNER_DOCKER_IMAGE}"
             args "${RUNNER_DOCKER_ARGS}"
             registryUrl "${RUNNER_DOCKER_REGISTRY_URL}"
             registryCredentialsId 'ocir-pull-and-push-account'
-            label "largeexperimental"
         }
     }
 
