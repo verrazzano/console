@@ -1,4 +1,4 @@
-# Copyright (C) 2020, Oracle and/or its affiliates.
+# Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 NAME:=console
@@ -12,7 +12,6 @@ JET_CLI_VERSION=9.1.0
 CLUSTER_NAME ?= console-integ
 VZ_UITEST_CONFIG_TEMPLATE ?= $(shell pwd)/integtest/config.uitest.json
 VERRAZZANO_REPO_PATH ?= $(shell pwd)/../verrazzano
-NODEJS_VERSION=v14.15
 
 ifeq ($(MAKECMDGOALS),$(filter $(MAKECMDGOALS),push))
 	ifndef DOCKER_REPO
@@ -33,9 +32,6 @@ all: build
 .PHONY: npm-install
 npm-install:
 	echo NodeJS version is $(shell node --version)
-ifneq ($(NODEJS_VERSION), $(findstring $(NODEJS_VERSION), $(shell node --version)))
-	$(error NodeJS version must be $(NODEJS_VERSION))
-endif
 	npm install && \
 	npm install @oracle/ojet-cli@${JET_CLI_VERSION}
 
