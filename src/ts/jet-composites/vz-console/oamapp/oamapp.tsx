@@ -156,6 +156,13 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     if (component.oamComponent) {
       const workload = component.oamComponent.data.spec.workload;
       try {
+        const workloadMetadata = workload.metadata
+          ? workload.metadata
+          : workload.spec &&
+            workload.spec.template &&
+            workload.spec.template.metadata
+          ? workload.spec.template.metadata
+          : component.oamComponent.data.metadata;
         const response = await this.verrazzanoApi.getKubernetesResource(
           {
             ApiVersion:
@@ -164,8 +171,12 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                 : `apis/${workload.apiVersion}`,
             Kind: workload.kind,
           },
-          workload.metadata.namespace,
-          workload.metadata.name
+          workloadMetadata.namespace
+            ? workloadMetadata.namespace
+            : component.oamComponent.data.metadata.namespace,
+          workloadMetadata.name
+            ? workloadMetadata.name
+            : component.oamComponent.data.metadata.name
         );
         const resource = await response.json();
 
