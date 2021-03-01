@@ -123,6 +123,9 @@ export const Error = {
 
   errIngressFetchError: (...args) =>
     Translations.getTranslatedString("error.errIngressFetchError", args),
+
+  errInvalidWorkload: (...args) =>
+    Translations.getTranslatedString("error.errInvalidWorkload", args),
 };
 
 export const Auth = {
