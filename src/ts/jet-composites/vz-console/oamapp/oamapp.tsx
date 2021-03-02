@@ -155,6 +155,13 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
   async populateWorkload(component: OAMComponentInstance) {
     if (component.oamComponent) {
       const workload = component.oamComponent.data.spec.workload;
+      const workloadMetadata: {
+        name: string;
+        namespace: string;
+      } = this.getWorkloadMetadata(
+        workload,
+        component.oamComponent.data.metadata
+      );
       try {
         const response = await this.verrazzanoApi.getKubernetesResource(
           {
@@ -164,8 +171,8 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                 : `apis/${workload.apiVersion}`,
             Kind: workload.kind,
           },
-          workload.metadata.namespace,
-          workload.metadata.name
+          workloadMetadata.namespace,
+          workloadMetadata.name
         );
         const resource = await response.json();
 
@@ -186,6 +193,44 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
         (document.getElementById(`popup_${component.id}`) as any).close();
       };
     }
+  }
+
+  getWorkloadMetadata(
+    workload: any,
+    componentMetadata: any
+  ): { name: string; namespace: string } {
+    if (workload.kind.toLowerCase().startsWith("verrazzano")) {
+      return {
+        name: componentMetadata.name,
+        namespace: componentMetadata.namespace,
+      };
+    }
+
+    if (
+      workload.spec &&
+      workload.spec.template &&
+      workload.spec.template.metadata &&
+      workload.spec.template.metadata.name &&
+      workload.spec.template.metadata.namespace
+    ) {
+      return {
+        name: workload.spec.template.metadata.name,
+        namespace: workload.spec.template.metadata.namespace,
+      };
+    }
+
+    if (
+      workload.metadata &&
+      workload.metadata.name &&
+      workload.metadata.namespace
+    ) {
+      return {
+        name: workload.metadata.name,
+        namespace: workload.metadata.namespace,
+      };
+    }
+
+    throw new Error(Messages.Error.errInvalidWorkload());
   }
 
   async populateTraits(component: OAMComponentInstance) {

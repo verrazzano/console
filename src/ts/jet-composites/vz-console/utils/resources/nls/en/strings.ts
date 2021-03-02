@@ -76,6 +76,8 @@ export = {
     errVmcFetchError: "Error fetching Managed Cluster {0}",
 
     errIngressFetchError: "Error fetching Ingress {0}/{1}",
+
+    errInvalidWorkload: "Invalid workload metadata for component {0}/{1}",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
