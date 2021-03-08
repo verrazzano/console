@@ -80,11 +80,13 @@ export class VerrazzanoApi {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
+      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent)
     ])
-      .then(([appsResponse, compsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json()]);
+      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
       })
-      .then(([apps, components]) => {
+      .then(([apps, components, mcApps, mcComponents]) => {
         if (!apps) {
           throw new Error(Messages.Error.errOAMApplicationsFetchError());
         }
@@ -93,11 +95,21 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errOAMComponentsFetchError());
         }
 
+        if (!mcApps) {
+          throw new Error(Messages.Error.errMCApplicationsFetchError());
+        }
+
+        if (!mcComponents) {
+          throw new Error(Messages.Error.errMCComponentsFetchError());
+        }
+
         const applications: OAMApplication[] = [];
         const comps: OAMComponent[] = [];
         const { oamApplications, oamComponents } = processOAMData(
           apps.items,
-          components.items
+          components.items,
+          mcApps.items,
+          mcComponents.items
         );
         oamApplications.forEach((element) => {
           element.forEach((oamApplication) => {
@@ -124,11 +136,13 @@ export class VerrazzanoApi {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
+      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent)
     ])
-      .then(([appsResponse, compsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json()]);
+      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
       })
-      .then(([apps, components]) => {
+      .then(([apps, components, mcApps, mcComponents]) => {
         const applications: OAMApplication[] = [];
         if (!apps) {
           throw new Error(Messages.Error.errOAMApplicationsFetchError());
@@ -138,9 +152,19 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errOAMComponentsFetchError());
         }
 
+        if (!mcApps) {
+          throw new Error(Messages.Error.errMCApplicationsFetchError());
+        }
+
+        if (!mcComponents) {
+          throw new Error(Messages.Error.errMCComponentsFetchError());
+        }
+
         const { oamApplications } = processOAMData(
           apps.items,
-          components.items
+          components.items,
+          mcApps.items,
+          mcComponents.items
         );
         oamApplications.forEach((element) => {
           element.forEach((oamApplication) => {
@@ -162,11 +186,13 @@ export class VerrazzanoApi {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
+      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent)
     ])
-      .then(([appsResponse, compsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json()]);
+      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
       })
-      .then(([apps, components]) => {
+      .then(([apps, components, mcApps, mcComponents]) => {
         const comps: OAMComponent[] = [];
         if (!apps) {
           throw new Error(Messages.Error.errOAMApplicationsFetchError());
@@ -176,7 +202,17 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errOAMComponentsFetchError());
         }
 
-        const { oamComponents } = processOAMData(apps.items, components.items);
+        if (!mcApps) {
+          throw new Error(Messages.Error.errMCApplicationsFetchError());
+        }
+
+        if (!mcComponents) {
+          throw new Error(Messages.Error.errMCComponentsFetchError());
+        }
+
+        const { oamComponents } = processOAMData(apps.items, components.items,
+          mcApps.items,
+          mcComponents.items);
         oamComponents.forEach((element) => {
           element.forEach((oamComponent) => {
             comps.push(oamComponent);
@@ -197,11 +233,13 @@ export class VerrazzanoApi {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
+      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent)
     ])
-      .then(([appsResponse, compsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json()]);
+      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
       })
-      .then(([apps, components]) => {
+      .then(([apps, components, mcApps, mcComponents]) => {
         let oamApp: OAMApplication;
         if (!apps) {
           throw new Error(Messages.Error.errOAMApplicationsFetchError());
@@ -211,9 +249,18 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errOAMComponentsFetchError());
         }
 
+        if (!mcApps) {
+          throw new Error(Messages.Error.errMCApplicationsFetchError());
+        }
+
+        if (!mcComponents) {
+          throw new Error(Messages.Error.errMCComponentsFetchError());
+        }
+
         const { oamApplications } = processOAMData(
           apps.items,
-          components.items
+          components.items,mcApps.items,
+          mcComponents.items
         );
         oamApplications.forEach((element) => {
           element.forEach((oamApplication) => {
@@ -240,11 +287,13 @@ export class VerrazzanoApi {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
+      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent)
     ])
-      .then(([appsResponse, compsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json()]);
+      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
       })
-      .then(([apps, components]) => {
+      .then(([apps, components, mcApps, mcComponents]) => {
         let oamComp: OAMComponent;
         if (!apps) {
           throw new Error(Messages.Error.errOAMApplicationsFetchError());
@@ -254,7 +303,16 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errOAMComponentsFetchError());
         }
 
-        const { oamComponents } = processOAMData(apps.items, components.items);
+        if (!mcApps) {
+          throw new Error(Messages.Error.errMCApplicationsFetchError());
+        }
+
+        if (!mcComponents) {
+          throw new Error(Messages.Error.errMCComponentsFetchError());
+        }
+
+        const { oamComponents } = processOAMData(apps.items, components.items,mcApps.items,
+          mcComponents.items);
         oamComponents.forEach((element) => {
           element.forEach((oamComponent) => {
             if (oamComponent.data.metadata.uid === oamCompId) {

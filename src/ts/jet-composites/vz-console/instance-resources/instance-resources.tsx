@@ -7,7 +7,7 @@ import * as Messages from "vz-console/utils/Messages";
 import { OAMApplication, OAMComponent } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
-import { ConsoleOAMApplicationsList } from "vz-console/oamapps-list/loader";
+import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
 import { ConsoleOAMComponentsList } from "vz-console/oamcomps-list/loader";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
@@ -21,6 +21,7 @@ class Props {
 
 class State {
   selectedItem: string;
+  filter?: Element;
 }
 
 /**
@@ -84,13 +85,18 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     }
   }
 
+  filterCallback = (filter: Element): void => {
+    this.updateState({ filter: filter });
+  };
+
+
   protected render() {
     let ResourceList: Element;
     let Heading: Element;
     switch (this.state.selectedItem) {
       case "oamapps": {
         ResourceList = (
-          <ConsoleOAMApplicationsList oamapps={this.props.oamApplications} />
+          <ConsoleInstanceApps applications={this.props.oamApplications} filterCallback={this.filterCallback}/>
         );
         Heading = <h1 class="resheader">{this.labels.oamapps}</h1>;
         break;
@@ -129,6 +135,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
                 <a href="#">{this.labels.oamcomps}</a>
               </li>
             </ul>
+            <div id="filters">{this.state.filter}</div>
           </oj-navigation-list>
         </div>
         <div class="oj-sm-10 oj-flex-item">
