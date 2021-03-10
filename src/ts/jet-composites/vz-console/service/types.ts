@@ -14,8 +14,6 @@ export enum VMIType {
 
 export enum Status {
   // eslint-disable-next-line no-unused-vars
-  Creating = "Creating",
-  // eslint-disable-next-line no-unused-vars
   Available = "Available",
   // eslint-disable-next-line no-unused-vars
   Ready = "Ready",
@@ -30,7 +28,7 @@ export enum Status {
   // eslint-disable-next-line no-unused-vars
   Unbound = "Unbound",
   // eslint-disable-next-line no-unused-vars
-  Unknown = "Unknown",
+  Pending = "Pending",
 }
 
 export interface FetchApiSignature {
@@ -69,7 +67,7 @@ export interface OAMApplication {
   // eslint-disable-next-line no-use-before-define
   componentInstances?: OAMComponentInstance[];
   createdOn?: string;
-  clusters?: {name: string}[];
+  cluster: { name: string };
 }
 
 export interface OAMComponent {
@@ -80,7 +78,7 @@ export interface OAMComponent {
   data?: any;
   applications?: OAMApplication[];
   createdOn?: string;
-  clusters?: {name: string}[];
+  cluster: { name: string };
 }
 
 export interface OAMTrait {

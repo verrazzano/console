@@ -8,7 +8,7 @@ import { OAMApplication, OAMComponent } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
-import { ConsoleOAMComponentsList } from "vz-console/oamcomps-list/loader";
+import { ConsoleInstanceComponents } from "vz-console/instance-components/loader";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
@@ -89,14 +89,16 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     this.updateState({ filter: filter });
   };
 
-
   protected render() {
     let ResourceList: Element;
     let Heading: Element;
     switch (this.state.selectedItem) {
       case "oamapps": {
         ResourceList = (
-          <ConsoleInstanceApps applications={this.props.oamApplications} filterCallback={this.filterCallback}/>
+          <ConsoleInstanceApps
+            applications={this.props.oamApplications}
+            filterCallback={this.filterCallback}
+          />
         );
         Heading = <h1 class="resheader">{this.labels.oamapps}</h1>;
         break;
@@ -104,7 +106,10 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
 
       case "oamcomps": {
         ResourceList = (
-          <ConsoleOAMComponentsList oamcomps={this.props.oamComponents} />
+          <ConsoleInstanceComponents
+            components={this.props.oamComponents}
+            filterCallback={this.filterCallback}
+          />
         );
         Heading = <h1 class="resheader">{this.labels.oamcomps}</h1>;
         break;

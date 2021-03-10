@@ -55,38 +55,66 @@ createEnvJs();
 app.use(express.static(staticPath));
 
 app.get("/oamapps", (req, res, next) => {
-  res.redirect(`/?ojr=instance&selectedItem=oamapps`);
+  res.redirect(
+    `/?ojr=instance&selectedItem=oamapps${
+      req.query.cluster ? "&cluster=" + req.query.cluster : ""
+    }`
+  );
 });
 app.get("/oamcomps", (req, res, next) => {
-  res.redirect(`/?ojr=instance&selectedItem=oamcomps`);
+  res.redirect(
+    `/?ojr=instance&selectedItem=oamcomps${
+      req.query.cluster ? "&cluster=" + req.query.cluster : ""
+    }`
+  );
 });
 app.get("/oamapps/:id", (req, res, next) => {
-  res.redirect(`/?ojr=oamapp&oamAppId=${req.params.id}`);
+  res.redirect(
+    `/?ojr=oamapp&oamAppId=${req.params.id}${
+      req.query.cluster ? "&cluster=" + req.query.cluster : ""
+    }`
+  );
 });
 app.get("/oamcomps/:id", (req, res, next) => {
-  res.redirect(`/?ojr=oamcomp&oamCompId=${req.params.id}`);
+  res.redirect(
+    `/?ojr=oamcomp&oamCompId=${req.params.id}${
+      req.query.cluster ? "&cluster=" + req.query.cluster : ""
+    }`
+  );
 });
 app.get("/oamapps/:id/components", (req, res, next) => {
   res.redirect(
-    `/?ojr=oamapp&oamAppId=${req.params.id}&selectedItem=components`
+    `/?ojr=oamapp&oamAppId=${req.params.id}&selectedItem=components${
+      req.query.cluster ? "&cluster=" + req.query.cluster : ""
+    }`
   );
 });
 app.get("/oamapps/:id/components/:selectedComponent", (req, res, next) => {
   res.redirect(
-    `/?ojr=oamapp&oamAppId=${req.params.id}&selectedItem=components&selectedComponent=${req.params.selectedComponent}`
+    `/?ojr=oamapp&oamAppId=${
+      req.params.id
+    }&selectedItem=components&selectedComponent=${
+      req.params.selectedComponent
+    }${req.query.cluster ? "&cluster=" + req.query.cluster : ""}`
   );
 });
 app.get(
   "/oamapps/:id/components/:selectedComponent/:selectedItem",
   (req, res, next) => {
     res.redirect(
-      `/?ojr=oamapp&oamAppId=${req.params.id}&selectedItem=${req.params.selectedItem}&selectedComponent=${req.params.selectedComponent}`
+      `/?ojr=oamapp&oamAppId=${req.params.id}&selectedItem=${
+        req.params.selectedItem
+      }&selectedComponent=${req.params.selectedComponent}${
+        req.query.cluster ? "&cluster=" + req.query.cluster : ""
+      }`
     );
   }
 );
 app.get("/oamcomps/:id/:selectedItem", (req, res, next) => {
   res.redirect(
-    `/?ojr=oamcomp&oamCompId=${req.params.id}&selectedItem=${req.params.selectedItem}`
+    `/?ojr=oamcomp&oamCompId=${req.params.id}&selectedItem=${
+      req.params.selectedItem
+    }${req.query.cluster ? "&cluster=" + req.query.cluster : ""}`
   );
 });
 

@@ -19,6 +19,7 @@ import * as yaml from "js-yaml";
 class Props {
   oamCompId?: string;
   selectedItem?: string;
+  cluster?: string;
 }
 
 class State {
@@ -62,7 +63,10 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
   async getData() {
     this.updateState({ loading: true });
     this.verrazzanoApi
-      .getOAMComponent(this.props.oamCompId)
+      .getOAMComponent(
+        this.props.oamCompId,
+        this.props.cluster ? this.props.cluster : "local"
+      )
       .then((oamComponent) => {
         this.updateState({ loading: false, oamComponent });
       })
@@ -114,11 +118,11 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
               <a
                 onClick={() => {
                   window.open(
-                    `/oamapps/${application.data.metadata.uid}`,
+                    `/oamapps/${application.data.metadata.uid}?cluster=${application.cluster.name}`,
                     "_blank"
                   );
                 }}
-                href={`/oamapps/${application.data.metadata.uid}`}
+                href={`/oamapps/${application.data.metadata.uid}?cluster=${application.cluster.name}`}
               >
                 {application.name}
               </a>

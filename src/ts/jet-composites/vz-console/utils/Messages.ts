@@ -128,10 +128,7 @@ export const Error = {
     Translations.getTranslatedString("error.errInvalidWorkload", args),
 
   errMCApplicationsFetchError: (...args) =>
-    Translations.getTranslatedString(
-      "error.errMCApplicationsFetchError",
-      args
-    ),
+    Translations.getTranslatedString("error.errMCApplicationsFetchError", args),
 
   errMCComponentsFetchError: (...args) =>
     Translations.getTranslatedString("error.errMCComponentsFetchError", args),
@@ -194,6 +191,7 @@ export const Labels = {
   byState: () => Translations.getTranslatedString("labels.byState"),
   componentInfo: () => Translations.getTranslatedString("labels.componentInfo"),
   clusters: () => Translations.getTranslatedString("labels.clusters"),
+  cluster: () => Translations.getTranslatedString("labels.cluster"),
 };
 
 export const Pagination = {

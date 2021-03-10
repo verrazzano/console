@@ -35,23 +35,60 @@ export const processOAMData = (
   mcApplications: any[],
   mcComponents: any[]
 ): {
-  oamApplications: Map<string, Map<string, OAMApplication>>;
-  oamComponents: Map<string, Map<string, OAMComponent>>;
+  oamApplications: Map<string, Map<string, Map<string, OAMApplication>>>;
+  oamComponents: Map<string, Map<string, Map<string, OAMComponent>>>;
 } => {
-  const oamApplications = new Map<string, Map<string, OAMApplication>>();
-  const oamComponents = new Map<string, Map<string, OAMComponent>>();
-  const mcOamApplications = new  Map<string, Map<string, OAMApplication>>();
-  const mcOamComponents = new  Map<string, Map<string, OAMComponent>>();
+  const oamApplications = new Map<
+    string,
+    Map<string, Map<string, OAMApplication>>
+  >();
+  const oamComponents = new Map<
+    string,
+    Map<string, Map<string, OAMComponent>>
+  >();
+  const mcOamApplications = new Map<
+    string,
+    Map<string, Map<string, OAMApplication>>
+  >();
+  const mcOamComponents = new Map<
+    string,
+    Map<string, Map<string, OAMComponent>>
+  >();
   mcApplications.forEach((mcApp) => {
-    if (mcApp && mcApp.spec && mcApp.spec.template && mcApp.spec.template.spec &&  mcApp.spec.template.metadata && mcApp.spec.placement && mcApp.spec.placement.clusters && mcApp.spec.placement.clusters.length > 0) {
-      applications.push({metadata: mcApp.spec.template.metadata, spec: mcApp.spec.template.spec, clusters: mcApp.spec.placement.clusters})
+    if (
+      mcApp &&
+      mcApp.spec &&
+      mcApp.spec.template &&
+      mcApp.spec.template.spec &&
+      mcApp.spec.template.metadata &&
+      mcApp.spec.placement &&
+      mcApp.spec.placement.clusters &&
+      mcApp.spec.placement.clusters.length > 0
+    ) {
+      applications.push({
+        metadata: mcApp.spec.template.metadata,
+        spec: mcApp.spec.template.spec,
+        clusters: mcApp.spec.placement.clusters,
+      });
     }
-  })
+  });
   mcComponents.forEach((mcComponent) => {
-    if (mcComponent && mcComponent.spec && mcComponent.spec.template && mcComponent.spec.template.spec && mcComponent.spec.placement && mcComponent.spec.placement.clusters && mcComponent.spec.placement.clusters.length > 0) {
-      components.push({metadata: mcComponent.metadata, spec: mcComponent.spec.template.spec, clusters: mcComponent.spec.placement.clusters})
+    if (
+      mcComponent &&
+      mcComponent.spec &&
+      mcComponent.spec.template &&
+      mcComponent.spec.template.spec &&
+      mcComponent.spec.placement &&
+      mcComponent.spec.placement.clusters &&
+      mcComponent.spec.placement.clusters.length > 0
+    ) {
+      components.push({
+        metadata: mcComponent.metadata,
+        spec: mcComponent.spec.template.spec,
+        clusters: mcComponent.spec.placement.clusters,
+      });
     }
-  })
+  });
   components.forEach((component) => {
     if (
       component.metadata &&
@@ -76,24 +113,64 @@ export const processOAMData = (
         createdOn: convertDate(component.metadata.creationTimestamp),
       };
 
-      if(component.clusters) {
-        oamComponent.clusters = component.clusters
-        let mcOamComponentsForNS = mcOamComponents.get(component.metadata.namespace)
-        if (!mcOamComponentsForNS) {
-          mcOamComponentsForNS = new Map<string, OAMComponent>();
-          mcOamComponents.set(component.metadata.namespace, mcOamComponentsForNS);
-        }
-        mcOamComponentsForNS.set(component.metadata.name, oamComponent);
+      if (component.clusters) {
+        component.clusters.forEach((cluster) => {
+          if (cluster.name === "local") {
+            return;
+          }
+
+          let mcOamComponentsForCluster = mcOamComponents.get(cluster.name);
+          if (!mcOamComponentsForCluster) {
+            mcOamComponentsForCluster = new Map<
+              string,
+              Map<string, OAMComponent>
+            >();
+            mcOamComponents.set(cluster.name, mcOamComponentsForCluster);
+          }
+
+          let mcOamComponentsForNS = mcOamComponentsForCluster.get(
+            component.metadata.namespace
+          );
+          if (!mcOamComponentsForNS) {
+            mcOamComponentsForNS = new Map<string, OAMComponent>();
+            mcOamComponentsForCluster.set(
+              component.metadata.namespace,
+              mcOamComponentsForNS
+            );
+          }
+
+          const componentInClusterNS = { ...oamComponent };
+          componentInClusterNS.cluster = cluster;
+          mcOamComponentsForNS.set(
+            component.metadata.name,
+            componentInClusterNS
+          );
+        });
       } else {
-        oamComponent.clusters = [{name: "local"}]
-        let oamComponentsForNS = oamComponents.get(component.metadata.namespace);
+        oamComponent.cluster = { name: "local" };
+        let oamComponentsForCluster = oamComponents.get(
+          oamComponent.cluster.name
+        );
+        if (!oamComponentsForCluster) {
+          oamComponentsForCluster = new Map<
+            string,
+            Map<string, OAMComponent>
+          >();
+          oamComponents.set(oamComponent.cluster.name, oamComponentsForCluster);
+        }
+
+        let oamComponentsForNS = oamComponentsForCluster.get(
+          component.metadata.namespace
+        );
         if (!oamComponentsForNS) {
           oamComponentsForNS = new Map<string, OAMComponent>();
-          oamComponents.set(component.metadata.namespace, oamComponentsForNS);
+          oamComponentsForCluster.set(
+            component.metadata.namespace,
+            oamComponentsForNS
+          );
         }
         oamComponentsForNS.set(component.metadata.name, oamComponent);
       }
- 
     }
   });
   applications.forEach((application) => {
@@ -111,8 +188,12 @@ export const processOAMData = (
           application.status.conditions &&
           application.status.conditions.length > 0
             ? getStatusForOAMResource(application.status.conditions[0].status)
-            : Status.Unknown,
-        createdOn: convertDate(application.metadata.creationTimestamp),
+            : Status.Pending,
+        createdOn: convertDate(
+          application.creationTimestamp
+            ? application.creationTimestamp
+            : application.metadata.creationTimestamp
+        ),
       };
 
       if (application.spec && application.spec.components) {
@@ -120,11 +201,11 @@ export const processOAMData = (
         let idx = 0;
         application.spec.components.forEach((appComponent) => {
           if (appComponent.componentName) {
-            const oamComponentsForApplicationNS = application.clusters? mcOamComponents.get(
-              application.metadata.namespace
-            ) : oamComponents.get(
-              application.metadata.namespace
-            );
+            const oamComponentsForApplicationNS = application.cluster
+              ? mcOamComponents
+                  .get(application.cluster)
+                  .get(application.metadata.namespace)
+              : oamComponents.get("local").get(application.metadata.namespace);
             if (oamComponentsForApplicationNS) {
               const oamComponentForApplicationComponent = oamComponentsForApplicationNS.get(
                 appComponent.componentName
@@ -161,39 +242,79 @@ export const processOAMData = (
         });
       }
 
-      if(application.clusters) {
-        oamApplication.clusters = application.clusters
-        let mcOamApplicationsForNS = mcOamApplications.get(
-          application.metadata.namespace
+      if (application.clusters) {
+        application.clusters.forEach((cluster) => {
+          if (cluster.name === "local") {
+            return;
+          }
+
+          let mcOamApplicationsForCluster = mcOamApplications.get(cluster.name);
+          if (!mcOamApplicationsForCluster) {
+            mcOamApplicationsForCluster = new Map<
+              string,
+              Map<string, OAMApplication>
+            >();
+            mcOamApplications.set(cluster.name, mcOamApplicationsForCluster);
+          }
+
+          let mcOamApplicationsForNS = mcOamApplicationsForCluster.get(
+            application.metadata.namespace
+          );
+          if (!mcOamApplicationsForNS) {
+            mcOamApplicationsForNS = new Map<string, OAMApplication>();
+            mcOamApplicationsForCluster.set(
+              application.metadata.namespace,
+              mcOamApplicationsForNS
+            );
+          }
+
+          const applicationInClusterNS = { ...oamApplication };
+          applicationInClusterNS.cluster = cluster;
+          mcOamApplicationsForNS.set(
+            application.metadata.name,
+            applicationInClusterNS
+          );
+        });
+      } else {
+        oamApplication.cluster = { name: "local" };
+        let oamApplicationsForCluster = oamApplications.get(
+          oamApplication.cluster.name
         );
-        if (!mcOamApplicationsForNS) {
-          mcOamApplicationsForNS = new Map<string, OAMApplication>();
-          mcOamApplications.set(
-            application.metadata.namespace,
-            mcOamApplicationsForNS
+        if (!oamApplicationsForCluster) {
+          oamApplicationsForCluster = new Map<
+            string,
+            Map<string, OAMApplication>
+          >();
+          oamApplications.set(
+            oamApplication.cluster.name,
+            oamApplicationsForCluster
           );
         }
-        mcOamApplicationsForNS.set(application.metadata, oamApplication);
-      } else {
-        oamApplication.clusters = [{name: "local"}]
-        let oamApplicationsForNS = oamApplications.get(
+
+        let oamApplicationsForNS = oamApplicationsForCluster.get(
           application.metadata.namespace
         );
         if (!oamApplicationsForNS) {
-          oamApplicationsForNS = new Map<string, OAMApplication>();
-          oamApplications.set(
+          oamApplicationsForNS = new Map<string, OAMComponent>();
+          oamApplicationsForCluster.set(
             application.metadata.namespace,
             oamApplicationsForNS
           );
         }
-        oamApplicationsForNS.set(application.metadata, oamApplication);
+        oamApplicationsForNS.set(application.metadata.name, oamApplication);
       }
     }
   });
 
-  const mergedOamApplications = new Map([...oamApplications, ...mcOamApplications])
-  const mergedOamComponents = new Map([...oamComponents, ...mcOamComponents])
-  return { oamApplications: mergedOamApplications, oamComponents: mergedOamComponents };
+  const mergedOamApplications = new Map([
+    ...oamApplications,
+    ...mcOamApplications,
+  ]);
+  const mergedOamComponents = new Map([...oamComponents, ...mcOamComponents]);
+  return {
+    oamApplications: mergedOamApplications,
+    oamComponents: mergedOamComponents,
+  };
 };
 
 export const convertDate = (timestamps: string): string => {

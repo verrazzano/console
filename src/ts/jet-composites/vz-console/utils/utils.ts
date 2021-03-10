@@ -27,7 +27,7 @@ export const isIterable = (object) =>
   object != null && typeof object[Symbol.iterator] === "function";
 
 export const getStatusForOAMResource = (resourceStatus: string): string => {
-  let status = Status.Unknown;
+  let status = Status.Pending;
   switch (resourceStatus) {
     case "True":
       status = Status.Running;

@@ -79,9 +79,10 @@ export = {
 
     errInvalidWorkload: "Invalid workload metadata for component {0}/{1}",
 
-    errMCApplicationsFetchError: "Error fetching Multi-cluster OAM ApplicationConfigurations.",
+    errMCApplicationsFetchError:
+      "Error fetching Multi-cluster OAM ApplicationConfigurations.",
 
-    errMCComponentsFetchError: "Error fetching Multi-cluster OAM Components."
+    errMCComponentsFetchError: "Error fetching Multi-cluster OAM Components.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
@@ -133,7 +134,8 @@ export = {
     byType: "By Type",
     byState: "By State",
     componentInfo: "Component Details",
-    clusters: "Clusters"
+    clusters: "Clusters",
+    cluster: "Cluster",
   },
 
   pagination: {

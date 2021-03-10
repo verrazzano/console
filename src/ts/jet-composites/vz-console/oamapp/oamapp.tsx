@@ -30,6 +30,7 @@ class Props {
   oamAppId?: string;
   selectedItem?: string;
   selectedComponent?: string;
+  cluster?: string;
 }
 
 class State {
@@ -80,7 +81,8 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     this.updateState({ loading: true });
     try {
       const oamApplication = await this.verrazzanoApi.getOAMApplication(
-        this.props.oamAppId
+        this.props.oamAppId,
+        this.props.cluster ? this.props.cluster : "local"
       );
       if (oamApplication.componentInstances) {
         for (const component of oamApplication.componentInstances) {
@@ -519,7 +521,8 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
               </div>
             );
             break;
-          case Status.Creating:
+          case Status.Pending:
+          default:
             tabContents.push(
               <div class="oj-flex">
                 <div class="oj-sm-12 oj-flex-item metadata-item">
@@ -529,20 +532,6 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
                       <span class="oj-icon-circle-inner status-icon"></span>
                     </span>
                     &nbsp;{this.state.oamApplication.status}
-                  </span>
-                </div>
-              </div>
-            );
-            break;
-          default:
-            tabContents.push(
-              <div class="oj-flex">
-                <div class="oj-sm-12 oj-flex-item compstatus">
-                  <span id="appStatus">
-                    <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-mauve">
-                      <span class="oj-icon-circle-inner status-icon"></span>
-                    </span>
-                    {this.state.oamApplication.status}
                   </span>
                 </div>
               </div>

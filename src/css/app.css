@@ -634,7 +634,8 @@ pre {
   word-break: keep-all;
 }
 
-.oj-listitemlayout-main > div > div {
+.oj-listitemlayout-main > div > div,
+.carditem {
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -650,4 +651,8 @@ pre {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.cardmargin {
+  margin-left: 1rem !important;
 }

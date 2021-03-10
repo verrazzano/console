@@ -80,12 +80,21 @@ export class VerrazzanoApi {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent)
+      this.getKubernetesResource(
+        ResourceType.MultiClusterApplicationConfiguration
+      ),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent),
     ])
-      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
-      })
+      .then(
+        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+          return Promise.all([
+            appsResponse.json(),
+            compsResponse.json(),
+            mcAppsResponse.json(),
+            mcCompsResponse.json(),
+          ]);
+        }
+      )
       .then(([apps, components, mcApps, mcComponents]) => {
         if (!apps) {
           throw new Error(Messages.Error.errOAMApplicationsFetchError());
@@ -112,13 +121,17 @@ export class VerrazzanoApi {
           mcComponents.items
         );
         oamApplications.forEach((element) => {
-          element.forEach((oamApplication) => {
-            applications.push(oamApplication);
+          element.forEach((oamApplications) => {
+            oamApplications.forEach((oamApplication) => {
+              applications.push(oamApplication);
+            });
           });
         });
         oamComponents.forEach((element) => {
-          element.forEach((oamComponent) => {
-            comps.push(oamComponent);
+          element.forEach((oamComponents) => {
+            oamComponents.forEach((oamComponent) => {
+              comps.push(oamComponent);
+            });
           });
         });
         return { oamApplications: applications, oamComponents: comps };
@@ -136,12 +149,21 @@ export class VerrazzanoApi {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent)
+      this.getKubernetesResource(
+        ResourceType.MultiClusterApplicationConfiguration
+      ),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent),
     ])
-      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
-      })
+      .then(
+        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+          return Promise.all([
+            appsResponse.json(),
+            compsResponse.json(),
+            mcAppsResponse.json(),
+            mcCompsResponse.json(),
+          ]);
+        }
+      )
       .then(([apps, components, mcApps, mcComponents]) => {
         const applications: OAMApplication[] = [];
         if (!apps) {
@@ -167,8 +189,10 @@ export class VerrazzanoApi {
           mcComponents.items
         );
         oamApplications.forEach((element) => {
-          element.forEach((oamApplication) => {
-            applications.push(oamApplication);
+          element.forEach((oamApplications) => {
+            oamApplications.forEach((oamApplication) => {
+              applications.push(oamApplication);
+            });
           });
         });
         return applications;
@@ -186,12 +210,21 @@ export class VerrazzanoApi {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent)
+      this.getKubernetesResource(
+        ResourceType.MultiClusterApplicationConfiguration
+      ),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent),
     ])
-      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
-      })
+      .then(
+        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+          return Promise.all([
+            appsResponse.json(),
+            compsResponse.json(),
+            mcAppsResponse.json(),
+            mcCompsResponse.json(),
+          ]);
+        }
+      )
       .then(([apps, components, mcApps, mcComponents]) => {
         const comps: OAMComponent[] = [];
         if (!apps) {
@@ -210,12 +243,17 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errMCComponentsFetchError());
         }
 
-        const { oamComponents } = processOAMData(apps.items, components.items,
+        const { oamComponents } = processOAMData(
+          apps.items,
+          components.items,
           mcApps.items,
-          mcComponents.items);
+          mcComponents.items
+        );
         oamComponents.forEach((element) => {
-          element.forEach((oamComponent) => {
-            comps.push(oamComponent);
+          element.forEach((oamComponents) => {
+            oamComponents.forEach((oamComponent) => {
+              comps.push(oamComponent);
+            });
           });
         });
         return comps;
@@ -229,16 +267,28 @@ export class VerrazzanoApi {
       });
   }
 
-  public async getOAMApplication(oamAppId: string): Promise<OAMApplication> {
+  public async getOAMApplication(
+    oamAppId: string,
+    cluster: string
+  ): Promise<OAMApplication> {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent)
+      this.getKubernetesResource(
+        ResourceType.MultiClusterApplicationConfiguration
+      ),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent),
     ])
-      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
-      })
+      .then(
+        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+          return Promise.all([
+            appsResponse.json(),
+            compsResponse.json(),
+            mcAppsResponse.json(),
+            mcCompsResponse.json(),
+          ]);
+        }
+      )
       .then(([apps, components, mcApps, mcComponents]) => {
         let oamApp: OAMApplication;
         if (!apps) {
@@ -259,14 +309,20 @@ export class VerrazzanoApi {
 
         const { oamApplications } = processOAMData(
           apps.items,
-          components.items,mcApps.items,
+          components.items,
+          mcApps.items,
           mcComponents.items
         );
         oamApplications.forEach((element) => {
-          element.forEach((oamApplication) => {
-            if (oamApplication.data.metadata.uid === oamAppId) {
-              oamApp = oamApplication;
-            }
+          element.forEach((oamApplications) => {
+            oamApplications.forEach((oamApplication) => {
+              if (
+                oamApplication.data.metadata.uid === oamAppId &&
+                oamApplication.cluster.name === cluster
+              ) {
+                oamApp = oamApplication;
+              }
+            });
           });
         });
         if (!oamApp) {
@@ -283,16 +339,28 @@ export class VerrazzanoApi {
       });
   }
 
-  public async getOAMComponent(oamCompId: string): Promise<OAMComponent> {
+  public async getOAMComponent(
+    oamCompId: string,
+    cluster: string
+  ): Promise<OAMComponent> {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(ResourceType.MultiClusterApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent)
+      this.getKubernetesResource(
+        ResourceType.MultiClusterApplicationConfiguration
+      ),
+      this.getKubernetesResource(ResourceType.MultiClusterComponent),
     ])
-      .then(([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-        return Promise.all([appsResponse.json(), compsResponse.json(), mcAppsResponse.json(), mcCompsResponse.json()]);
-      })
+      .then(
+        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
+          return Promise.all([
+            appsResponse.json(),
+            compsResponse.json(),
+            mcAppsResponse.json(),
+            mcCompsResponse.json(),
+          ]);
+        }
+      )
       .then(([apps, components, mcApps, mcComponents]) => {
         let oamComp: OAMComponent;
         if (!apps) {
@@ -311,13 +379,22 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errMCComponentsFetchError());
         }
 
-        const { oamComponents } = processOAMData(apps.items, components.items,mcApps.items,
-          mcComponents.items);
+        const { oamComponents } = processOAMData(
+          apps.items,
+          components.items,
+          mcApps.items,
+          mcComponents.items
+        );
         oamComponents.forEach((element) => {
-          element.forEach((oamComponent) => {
-            if (oamComponent.data.metadata.uid === oamCompId) {
-              oamComp = oamComponent;
-            }
+          element.forEach((oamComponents) => {
+            oamComponents.forEach((oamComponent) => {
+              if (
+                oamComponent.data.metadata.uid === oamCompId &&
+                oamComponent.cluster.name === cluster
+              ) {
+                oamComp = oamComponent;
+              }
+            });
           });
         });
         if (!oamComp) {

@@ -33,9 +33,19 @@ class State {
 export class ConsoleInstanceApps extends VComponent<Props, State> {
   state: State = {};
   options = [
-    { value: "name", label: "Name" },
-    { value: "namespace", label: "Namespace" },
-    { value: "status", label: "Status" },
+    {
+      value: Messages.Labels.name().toLowerCase(),
+      label: Messages.Labels.name(),
+    },
+    { value: Messages.Labels.ns().toLowerCase(), label: Messages.Labels.ns() },
+    {
+      value: Messages.Labels.status().toLowerCase(),
+      label: Messages.Labels.status(),
+    },
+    {
+      value: Messages.Labels.cluster().toLowerCase(),
+      label: Messages.Labels.cluster(),
+    },
   ];
 
   optionsDataProvider = new ArrayDataProvider(this.options, {
@@ -50,28 +60,39 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
 
   currentStatusFilter = ko.observable([Status.Any]);
 
+  currentClusterFilter = ko.observable([""]);
+
   constructor() {
     super(new Props());
   }
 
   compare = (left: Model.Model, right: Model.Model): number => {
     let result = 0;
-    const leftComponent = left.attributes as OAMApplication;
-    const rightComponent = right.attributes as OAMApplication;
+    const leftApplication = left.attributes as OAMApplication;
+    const rightApplication = right.attributes as OAMApplication;
     switch (this.currentSort()) {
       case "default":
-      case "name": {
-        result = leftComponent.name?.localeCompare(rightComponent.name);
+      case Messages.Labels.name().toLowerCase(): {
+        result = leftApplication.name?.localeCompare(rightApplication.name);
         break;
       }
 
-      case "namespace": {
-        result = leftComponent.namespace?.localeCompare(rightComponent.namespace);
+      case Messages.Labels.ns().toLowerCase(): {
+        result = leftApplication.namespace?.localeCompare(
+          rightApplication.namespace
+        );
         break;
       }
 
-      case "status": {
-        result = leftComponent.status?.localeCompare(rightComponent.status);
+      case Messages.Labels.status().toLowerCase(): {
+        result = leftApplication.status?.localeCompare(rightApplication.status);
+        break;
+      }
+
+      case Messages.Labels.cluster().toLowerCase(): {
+        result = leftApplication.cluster.name?.localeCompare(
+          rightApplication.cluster.name
+        );
         break;
       }
 
@@ -97,9 +118,12 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
       models = models.filter((model) => {
         const application = model.attributes as OAMApplication;
         const statusFilter = this.currentStatusFilter();
+        const clusterFilter = this.currentClusterFilter();
         if (
-          statusFilter.includes(Status.Any) ||
-          statusFilter.includes(application.status)
+          (statusFilter.includes(Status.Any) ||
+            statusFilter.includes(application.status)) &&
+          (clusterFilter.includes("") ||
+            clusterFilter.includes(application.cluster.name))
         ) {
           return true;
         }
@@ -137,9 +161,24 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
   }
 
   @listener({ capture: true, passive: true })
+  private handleClusterFilterChanged(event: CustomEvent) {
+    if (
+      event.detail.previousValue.length > 0 &&
+      event.detail.value.length === 0
+    ) {
+      this.currentClusterFilter([""]);
+    } else {
+      this.currentClusterFilter(event.detail.value);
+    }
+    this.updateState({ applications: this.executeFilters() });
+  }
+
+  @listener({ capture: true, passive: true })
   private handleSortCriteriaChanged(event: CustomEvent) {
     this.currentSort(event.detail.value.toLowerCase());
-    this.updateState({ applications: this.executeSort(this.state.applications) });
+    this.updateState({
+      applications: this.executeSort(this.state.applications),
+    });
   }
 
   protected render() {
@@ -154,6 +193,18 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
     );
 
     if (this.props.filterCallback) {
+      const clusterOptions: Map<
+        string,
+        { label: string; value: string }
+      > = new Map();
+      this.props.applications.forEach((application) => {
+        if (application.cluster) {
+          clusterOptions.set(application.cluster.name, {
+            label: application.cluster.name,
+            value: application.cluster.name,
+          });
+        }
+      });
       this.props.filterCallback(
         <div>
           <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
@@ -161,10 +212,15 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
             label={Messages.Labels.state()}
             options={[
               { label: Status.Running, value: Status.Running },
-              { label: Status.Creating, value: Status.Creating },
+              { label: Status.Pending, value: Status.Pending },
               { label: Status.Terminated, value: Status.Terminated },
             ]}
             onValueChanged={this.handleStatusFilterChanged}
+          />
+          <ConsoleFilter
+            label={Messages.Labels.clusters()}
+            options={Array.from(clusterOptions.values())}
+            onValueChanged={this.handleClusterFilterChanged}
           />
         </div>
       );
@@ -214,117 +270,88 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
               </div>
 
               <oj-list-view
-       id="listview"
-        ariaLabel="oam applicationa"
-        data={this.dataProvider()}
-        selectionMode="single"
-        class="oj-complete"
-      >
-        <template slot="itemTemplate" data-oj-as="item">
-          <oj-list-item-layout class="oj-complete">
-          <div class="oj-flex">
-              <div class="oj-sm-10 oj-flex-item">
+                id="listview"
+                ariaLabel="oam applications"
+                data={this.dataProvider()}
+                selectionMode="single"
+                class="oj-complete"
+              >
+                <template slot="itemTemplate" data-oj-as="item">
+                  <oj-list-item-layout class="oj-complete">
+                    <div class="oj-flex cardmargin">
+                      <div class="oj-sm-10 oj-flex-item">
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.name()}:&nbsp;</span>
+                          </strong>
+                          <oj-bind-if test="[[item.data.cluster.name === 'local']]">
+                            <a
+                              data-bind={`attr: {href: '/oamapps/' + item.data.data.metadata.uid + '?cluster=' + item.data.cluster.name}`}
+                            >
+                              <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                            </a>
+                          </oj-bind-if>
+                          <oj-bind-if test="[[item.data.cluster.name !== 'local']]">
+                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                          </oj-bind-if>
+                        </div>
 
-              <div class="oj-flex">
-              <div class="oj-sm-12 oj-flex-item">
-                <strong>
-                  <span>{Messages.Labels.name()}:&nbsp;</span>
-                </strong>
-                <span>
-                  <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                </span>
-              </div>
-              </div>
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.ns()}:&nbsp;</span>
+                          </strong>
+                          <span>
+                            <oj-bind-text value="[[item.data.namespace]]"></oj-bind-text>
+                          </span>
+                        </div>
 
-              <div class="oj-flex">
-              <div class="oj-sm-12 oj-flex-item">
-                <strong>
-                  <span>{Messages.Labels.ns()}:&nbsp;</span>
-                </strong>
-                <span>
-                  <oj-bind-text value="[[item.data.namespace]]"></oj-bind-text>
-                </span>
-              </div>
-            </div>
+                        <div class="carditem">
+                          <strong>{Messages.Labels.status()}:&nbsp;</strong>
+                          <span>
+                            <oj-bind-if test="[[item.data.status === 'Running']]">
+                              <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-green">
+                                <span class="oj-icon-circle-inner status-icon"></span>
+                              </span>
+                            </oj-bind-if>
+                            <oj-bind-if test="[[item.data.status === 'Terminated']]">
+                              <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-red">
+                                <span class="oj-icon-circle-inner status-icon"></span>
+                              </span>
+                            </oj-bind-if>
+                            <oj-bind-if test="[[item.data.status === 'Pending']]">
+                              <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-orange">
+                                <span class="oj-icon-circle-inner status-icon"></span>
+                              </span>
+                            </oj-bind-if>
+                            &nbsp;
+                            <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                          </span>
+                        </div>
 
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.created()}:&nbsp;</span>
+                          </strong>
+                          <span>
+                            <oj-bind-text value="[[item.data.createdOn]]"></oj-bind-text>
+                          </span>
+                        </div>
+                      </div>
 
-            <div class="oj-flex">
-              <div class="oj-sm-12 oj-flex-item compstatus">
-                <strong>{Messages.Labels.status()}:&nbsp;</strong>
-                <span>
-                  <oj-bind-if test="[[item.data.status === 'Running']]">
-                    <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-green">
-                      <span class="oj-icon-circle-inner status-icon"></span>
-                    </span>
-                  </oj-bind-if>
-                  <oj-bind-if test="[[item.data.status === 'Terminated']]">
-                    <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-red">
-                      <span class="oj-icon-circle-inner status-icon"></span>
-                    </span>
-                  </oj-bind-if>
-                  <oj-bind-if test="[[item.data.status === 'Creating']]">
-                    <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-orange">
-                      <span class="oj-icon-circle-inner status-icon"></span>
-                    </span>
-                  </oj-bind-if>
-                  &nbsp;
-                  <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
-                </span>
-              </div>
-            </div>
-
-            <div class="oj-flex">
-              <div class="oj-sm-12 oj-flex-item">
-                <strong>
-                  <span>{Messages.Labels.created()}:&nbsp;</span>
-                </strong>
-                <span>
-                  <oj-bind-text value="[[item.data.createdOn]]"></oj-bind-text>
-                </span>
-              </div>
-            </div>
-
-
-                </div>
-                <div class="oj-sm-2 oj-flex-item">
-              <div class="oj-flex">
-              <div class="oj-sm-12 oj-flex-item">
-                <ul class="liststyle">
-                  <li>
-                  <strong>
-                  <span>{Messages.Labels.clusters()}</span>
-
-                </strong>
-                  </li>
-                  <oj-bind-for-each data="[[item.data.clusters]]">
-  <template>
-  <li>
-   <oj-bind-text value="[[$current.data.name]]"></oj-bind-text>
-   </li>
-  </template>
-
-</oj-bind-for-each>
-
-                </ul>
-              
-                </div>
-                </div>
-               
-
-              </div>
-
-                </div>
-  
-      
-
- 
-          
-     
-
-
-          </oj-list-item-layout>
-        </template>
-      </oj-list-view>
+                      <div class="oj-sm-2 oj-flex-item">
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.cluster()}:&nbsp;</span>
+                          </strong>
+                          <span>
+                            <oj-bind-text value="[[item.data.cluster.name]]"></oj-bind-text>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </oj-list-item-layout>
+                </template>
+              </oj-list-view>
 
               <div class="oj-flex card-border">
                 <div class="oj-sm-7 oj-flex-item"></div>

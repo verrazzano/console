@@ -106,7 +106,7 @@ export class ConsoleStatusBadge extends VComponent<Props> {
         break;
       }
 
-      case Status.Creating: {
+      case Status.Pending: {
         statusClass = "status-badge-status-info status-badge-container";
         break;
       }
