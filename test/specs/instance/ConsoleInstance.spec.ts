@@ -1,12 +1,7 @@
 // Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import {
-  Instance,
-  VerrazzanoApi,
-  VMIType,
-  OAMApplication,
-} from "vz-console/service/loader";
+import { Instance, VerrazzanoApi, VMIType } from "vz-console/service/loader";
 import "vz-console/instance/loader";
 import * as Context from "ojs/ojcontext";
 import * as ko from "knockout";
@@ -53,7 +48,7 @@ async function setup(selectedItem?: string) {
       chai.assert.fail(err);
     });
 }
-xdescribe("instance panel screen tests", () => {
+describe("instance panel screen tests", () => {
   before(async () => {
     sandbox
       .stub(VerrazzanoApi.prototype, <any>"getInstance")

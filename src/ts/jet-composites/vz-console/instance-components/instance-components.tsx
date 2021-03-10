@@ -179,14 +179,16 @@ export class ConsoleInstanceComponents extends VComponent<Props, State> {
         string,
         { label: string; value: string }
       > = new Map();
-      this.props.components.forEach((component) => {
-        if (component.cluster) {
-          clusterOptions.set(component.cluster.name, {
-            label: component.cluster.name,
-            value: component.cluster.name,
-          });
-        }
-      });
+      if (this.props.components) {
+        this.props.components.forEach((component) => {
+          if (component.cluster) {
+            clusterOptions.set(component.cluster.name, {
+              label: component.cluster.name,
+              value: component.cluster.name,
+            });
+          }
+        });
+      }
       this.props.filterCallback(
         <div>
           <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>

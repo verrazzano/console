@@ -197,14 +197,16 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
         string,
         { label: string; value: string }
       > = new Map();
-      this.props.applications.forEach((application) => {
-        if (application.cluster) {
-          clusterOptions.set(application.cluster.name, {
-            label: application.cluster.name,
-            value: application.cluster.name,
-          });
-        }
-      });
+      if (this.props.applications) {
+        this.props.applications.forEach((application) => {
+          if (application.cluster) {
+            clusterOptions.set(application.cluster.name, {
+              label: application.cluster.name,
+              value: application.cluster.name,
+            });
+          }
+        });
+      }
       this.props.filterCallback(
         <div>
           <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
