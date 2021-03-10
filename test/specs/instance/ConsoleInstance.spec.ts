@@ -53,7 +53,7 @@ async function setup(selectedItem?: string) {
       chai.assert.fail(err);
     });
 }
-describe("instance panel screen tests", () => {
+xdescribe("instance panel screen tests", () => {
   before(async () => {
     sandbox
       .stub(VerrazzanoApi.prototype, <any>"getInstance")
