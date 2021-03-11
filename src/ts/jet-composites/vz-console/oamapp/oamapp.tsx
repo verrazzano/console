@@ -202,9 +202,24 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     componentMetadata: any
   ): { name: string; namespace: string } {
     if (workload.kind.toLowerCase().startsWith("verrazzano")) {
+      let name = "";
+      let namespace = "";
+      if (workload.metadata && workload.metadata.name) {
+        name = workload.metadata.name;
+      }
+      if (workload.metadata && workload.metadata.namespace) {
+        namespace = workload.metadata.namespace;
+      }
+      if (!name) {
+        name = componentMetadata.name;
+      }
+      if (!namespace) {
+        namespace = componentMetadata.namespace;
+      }
+
       return {
-        name: componentMetadata.name,
-        namespace: componentMetadata.namespace,
+        name,
+        namespace,
       };
     }
 
