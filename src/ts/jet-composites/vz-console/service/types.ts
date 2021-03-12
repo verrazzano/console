@@ -142,10 +142,6 @@ export const ResourceType = {
     ApiVersion: "apis/apps/v1",
     Kind: "Deployment",
   },
-  VerrazzanoManagedCluster: <ResourceTypeType>{
-    ApiVersion: "apis/verrazzano.io/v1beta1",
-    Kind: "VerrazzanoManagedCluster",
-  },
   VerrazzanoMonitoringInstance: <ResourceTypeType>{
     ApiVersion: "apis/verrazzano.io/v1",
     Kind: "VerrazzanoMonitoringInstance",
