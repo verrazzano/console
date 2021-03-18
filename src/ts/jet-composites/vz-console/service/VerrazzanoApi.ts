@@ -26,21 +26,16 @@ export class VerrazzanoApi {
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([
       this.getKubernetesResource(ResourceType.Ingress),
-      this.getKubernetesResource(ResourceType.VerrazzanoManagedCluster),
       this.getKubernetesResource(
         ResourceType.VerrazzanoMonitoringInstance,
         NamespaceVerrazzanoSystem,
         "system"
       ),
     ])
-      .then(([ingressResponse, vmcResponse, vmiResponse]) => {
-        return Promise.all([
-          ingressResponse.json(),
-          vmcResponse.json(),
-          vmiResponse.json(),
-        ]);
+      .then(([ingressResponse, vmiResponse]) => {
+        return Promise.all([ingressResponse.json(), vmiResponse.json()]);
       })
-      .then(([ingresses, vmc, vmi]) => {
+      .then(([ingresses, vmi]) => {
         if (
           !ingresses ||
           !ingresses.items ||
@@ -49,20 +44,11 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errIngressesFetchError());
         }
 
-        if (!vmc || !vmc.items || !((vmc.items as Array<any>).length > 0)) {
-          throw new Error(Messages.Error.errVmcsFetchError());
-        }
-
         if (!vmi) {
           throw new Error(Messages.Error.errVmiFetchError());
         }
 
-        return this.populateInstance(
-          ingresses.items,
-          vmc.items,
-          vmi,
-          instanceId
-        );
+        return this.populateInstance(ingresses.items, vmi, instanceId);
       })
       .catch((error) => {
         let errorMessage = error;
@@ -448,19 +434,7 @@ export class VerrazzanoApi {
       });
   }
 
-  populateInstance(
-    ingresses: Array<any>,
-    clusters: Array<any>,
-    vmi,
-    instanceId
-  ): Instance {
-    const mgmtCluster = clusters.find(
-      (cluster) => cluster.metadata.name === "local"
-    );
-    if (!mgmtCluster) {
-      throw new Error(Messages.Error.errVmcFetchError("local"));
-    }
-
+  populateInstance(ingresses: Array<any>, vmi, instanceId): Instance {
     const consoleIngress = ingresses.find(
       (ingress) =>
         ingress.metadata.name === "verrazzano-console-ingress" &&
@@ -481,8 +455,7 @@ export class VerrazzanoApi {
     const instance = <Instance>{
       id: instanceId,
       version: "0.1.0",
-      mgmtCluster: mgmtCluster.metadata.name,
-      mgmtPlatform: mgmtCluster.spec.type,
+      mgmtCluster: "local",
       status: "OK",
       name: consoleHost.split(".")[1],
       vzApiUri: `https://${consoleHost}/${this.apiVersion}`,
