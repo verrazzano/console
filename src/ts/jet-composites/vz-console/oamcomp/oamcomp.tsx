@@ -62,6 +62,10 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
 
   async getData() {
     this.updateState({ loading: true });
+    if(this.props.cluster) {
+      const apiUrl = await this.verrazzanoApi.getAPIUrl(this.props.cluster)
+      this.verrazzanoApi = new VerrazzanoApi(apiUrl);
+    }
     this.verrazzanoApi
       .getOAMComponent(
         this.props.oamCompId,

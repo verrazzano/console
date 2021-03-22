@@ -21,7 +21,8 @@ export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
 
   private apiVersion: string = (window as any).vzApiVersion || "20210501";
-  private url: string = `${(window as any).vzApiUrl || ""}/${this.apiVersion}`;
+  private defaultUrl: string;
+  private url: string;
 
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([
@@ -97,15 +98,32 @@ export class VerrazzanoApi {
         if (!mcComponents) {
           throw new Error(Messages.Error.errMCComponentsFetchError());
         }
-
+        return [apps.items, components.items, mcApps.items,  mcComponents.items]
+      }).then(([apps, components, mcApps, mcComponents]) => {
+        const clusters = new Set<string>();
+        mcApps.forEach((mcApp) => {
+          if (
+            mcApp &&
+            mcApp.spec.placement &&
+            mcApp.spec.placement.clusters &&
+            mcApp.spec.placement.clusters.length > 0
+          ) {
+            applications.push({
+              metadata: {...mcApp.spec.template.metadata, name: mcApp.metadata.name, namespace: mcApp.metadata.namespace},
+              spec: mcApp.spec.template.spec,
+              clusters: mcApp.spec.placement.clusters,
+            });
+          }
+        });
+        return processOAMData(
+          apps,
+          components,
+          mcApps,
+          mcComponents
+        )
+      }).then(({oamApplications, oamComponents}) => {
         const applications: OAMApplication[] = [];
         const comps: OAMComponent[] = [];
-        const { oamApplications, oamComponents } = processOAMData(
-          apps.items,
-          components.items,
-          mcApps.items,
-          mcComponents.items
-        );
         oamApplications.forEach((element) => {
           element.forEach((oamApplications) => {
             oamApplications.forEach((oamApplication) => {
@@ -131,270 +149,33 @@ export class VerrazzanoApi {
       });
   }
 
+
+
   public async listOAMApplications(): Promise<OAMApplication[]> {
-    return Promise.all([
-      this.getKubernetesResource(ResourceType.ApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(
-        ResourceType.MultiClusterApplicationConfiguration
-      ),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent),
-    ])
-      .then(
-        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-          return Promise.all([
-            appsResponse.json(),
-            compsResponse.json(),
-            mcAppsResponse.json(),
-            mcCompsResponse.json(),
-          ]);
-        }
-      )
-      .then(([apps, components, mcApps, mcComponents]) => {
-        const applications: OAMApplication[] = [];
-        if (!apps) {
-          throw new Error(Messages.Error.errOAMApplicationsFetchError());
-        }
-
-        if (!components) {
-          throw new Error(Messages.Error.errOAMComponentsFetchError());
-        }
-
-        if (!mcApps) {
-          throw new Error(Messages.Error.errMCApplicationsFetchError());
-        }
-
-        if (!mcComponents) {
-          throw new Error(Messages.Error.errMCComponentsFetchError());
-        }
-
-        const { oamApplications } = processOAMData(
-          apps.items,
-          components.items,
-          mcApps.items,
-          mcComponents.items
-        );
-        oamApplications.forEach((element) => {
-          element.forEach((oamApplications) => {
-            oamApplications.forEach((oamApplication) => {
-              applications.push(oamApplication);
-            });
-          });
-        });
-        return applications;
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
-      });
+    return (await this.listOAMAppsAndComponents()).oamApplications
   }
 
   public async listOAMComponents(): Promise<OAMComponent[]> {
-    return Promise.all([
-      this.getKubernetesResource(ResourceType.ApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(
-        ResourceType.MultiClusterApplicationConfiguration
-      ),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent),
-    ])
-      .then(
-        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-          return Promise.all([
-            appsResponse.json(),
-            compsResponse.json(),
-            mcAppsResponse.json(),
-            mcCompsResponse.json(),
-          ]);
-        }
-      )
-      .then(([apps, components, mcApps, mcComponents]) => {
-        const comps: OAMComponent[] = [];
-        if (!apps) {
-          throw new Error(Messages.Error.errOAMApplicationsFetchError());
-        }
-
-        if (!components) {
-          throw new Error(Messages.Error.errOAMComponentsFetchError());
-        }
-
-        if (!mcApps) {
-          throw new Error(Messages.Error.errMCApplicationsFetchError());
-        }
-
-        if (!mcComponents) {
-          throw new Error(Messages.Error.errMCComponentsFetchError());
-        }
-
-        const { oamComponents } = processOAMData(
-          apps.items,
-          components.items,
-          mcApps.items,
-          mcComponents.items
-        );
-        oamComponents.forEach((element) => {
-          element.forEach((oamComponents) => {
-            oamComponents.forEach((oamComponent) => {
-              comps.push(oamComponent);
-            });
-          });
-        });
-        return comps;
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
-      });
+    return (await this.listOAMAppsAndComponents()).oamComponents
   }
 
   public async getOAMApplication(
     oamAppId: string,
     cluster: string
   ): Promise<OAMApplication> {
-    return Promise.all([
-      this.getKubernetesResource(ResourceType.ApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(
-        ResourceType.MultiClusterApplicationConfiguration
-      ),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent),
-    ])
-      .then(
-        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-          return Promise.all([
-            appsResponse.json(),
-            compsResponse.json(),
-            mcAppsResponse.json(),
-            mcCompsResponse.json(),
-          ]);
-        }
-      )
-      .then(([apps, components, mcApps, mcComponents]) => {
-        let oamApp: OAMApplication;
-        if (!apps) {
-          throw new Error(Messages.Error.errOAMApplicationsFetchError());
-        }
-
-        if (!components) {
-          throw new Error(Messages.Error.errOAMComponentsFetchError());
-        }
-
-        if (!mcApps) {
-          throw new Error(Messages.Error.errMCApplicationsFetchError());
-        }
-
-        if (!mcComponents) {
-          throw new Error(Messages.Error.errMCComponentsFetchError());
-        }
-
-        const { oamApplications } = processOAMData(
-          apps.items,
-          components.items,
-          mcApps.items,
-          mcComponents.items
-        );
-        oamApplications.forEach((element) => {
-          element.forEach((oamApplications) => {
-            oamApplications.forEach((oamApplication) => {
-              if (
-                oamApplication.data.metadata.uid === oamAppId &&
-                oamApplication.cluster.name === cluster
-              ) {
-                oamApp = oamApplication;
-              }
-            });
-          });
-        });
-        if (!oamApp) {
-          throw Messages.Error.errOAMApplicationDoesNotExist(oamAppId);
-        }
-        return oamApp;
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
-      });
+    return (await this.listOAMAppsAndComponents()).oamApplications.find((oamApplication) => 
+      oamApplication.data.metadata.uid === oamAppId && oamApplication.cluster.name === cluster
+    )
   }
 
   public async getOAMComponent(
     oamCompId: string,
     cluster: string
   ): Promise<OAMComponent> {
-    return Promise.all([
-      this.getKubernetesResource(ResourceType.ApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(
-        ResourceType.MultiClusterApplicationConfiguration
-      ),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent),
-    ])
-      .then(
-        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-          return Promise.all([
-            appsResponse.json(),
-            compsResponse.json(),
-            mcAppsResponse.json(),
-            mcCompsResponse.json(),
-          ]);
-        }
-      )
-      .then(([apps, components, mcApps, mcComponents]) => {
-        let oamComp: OAMComponent;
-        if (!apps) {
-          throw new Error(Messages.Error.errOAMApplicationsFetchError());
-        }
-
-        if (!components) {
-          throw new Error(Messages.Error.errOAMComponentsFetchError());
-        }
-
-        if (!mcApps) {
-          throw new Error(Messages.Error.errMCApplicationsFetchError());
-        }
-
-        if (!mcComponents) {
-          throw new Error(Messages.Error.errMCComponentsFetchError());
-        }
-
-        const { oamComponents } = processOAMData(
-          apps.items,
-          components.items,
-          mcApps.items,
-          mcComponents.items
-        );
-        oamComponents.forEach((element) => {
-          element.forEach((oamComponents) => {
-            oamComponents.forEach((oamComponent) => {
-              if (
-                oamComponent.data.metadata.uid === oamCompId &&
-                oamComponent.cluster.name === cluster
-              ) {
-                oamComp = oamComponent;
-              }
-            });
-          });
-        });
-        if (!oamComp) {
-          throw Messages.Error.errOAMComponentDoesNotExist(oamCompId);
-        }
-        return oamComp;
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
-      });
+    return (await this.listOAMAppsAndComponents()).oamComponents.find((oamComponent) => 
+    oamComponent.data.metadata.uid === oamCompId &&
+    oamComponent.cluster.name === cluster
+    )
   }
 
   public async getKubernetesResource(
@@ -541,12 +322,48 @@ export class VerrazzanoApi {
     return instance;
   }
 
-  public constructor() {
-    this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
+  public async getAPIUrl(clusterName: string): Promise<string> {
+    return  this.getKubernetesResource(ResourceType.VerrazzanoManagedCluster, "verrazzano-mc", clusterName)
+    .then(vmcResponse => {return vmcResponse.json()})
+    .then(vmc => {
+      if (!vmc) {
+        throw new Error(
+          Messages.Error.errVmcFetchError(
+            clusterName
+          )
+        );
+      }
+
+      if (!vmc.status || !vmc.status.apiUrl) {
+        throw new Error(
+          Messages.Error.errFetchApiURLFromVMCError(
+            clusterName
+          )
+        );
+      }
+
+      return vmc.status.apiUrl
+    })
+    .catch((error) => {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      throw new Error(errorMessage);
+    });
+    
+  }
+
+
+  public constructor(url: string = "") {
+    this.defaultUrl = `${(window as any).vzApiUrl || ""}`
+    this.url = `${url || this.defaultUrl}/${this.apiVersion}`
+    this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi(!!url);
     this.getInstance = this.getInstance.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
     this.getOAMApplication = this.getOAMApplication.bind(this);
     this.getOAMComponent = this.getOAMComponent.bind(this);
     this.getKubernetesResource = this.getKubernetesResource.bind(this);
+    this.getAPIUrl = this.getAPIUrl.bind(this)
   }
 }

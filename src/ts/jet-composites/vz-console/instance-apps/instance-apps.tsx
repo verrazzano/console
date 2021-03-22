@@ -286,16 +286,14 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
                           <strong>
                             <span>{Messages.Labels.name()}:&nbsp;</span>
                           </strong>
-                          <oj-bind-if test="[[item.data.cluster.name === 'local']]">
+                         
                             <a
                               data-bind={`attr: {href: '/oamapps/' + item.data.data.metadata.uid + '?cluster=' + item.data.cluster.name}`}
                             >
                               <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
                             </a>
-                          </oj-bind-if>
-                          <oj-bind-if test="[[item.data.cluster.name !== 'local']]">
-                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                          </oj-bind-if>
+                         
+
                         </div>
 
                         <div class="carditem">

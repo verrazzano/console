@@ -10,6 +10,8 @@ import {
 } from "../service/types";
 import * as DateTimeConverter from "ojs/ojconverter-datetime";
 import { getStatusForOAMResource } from "vz-console/utils/utils";
+import {
+  VerrazzanoApi } from "vz-console/service/loader";
 
 export const extractInstances = (instances: any[]): Instance[] => {
   const result: Instance[] = [];
@@ -29,15 +31,15 @@ export const extractInstances = (instances: any[]): Instance[] => {
   return result;
 };
 
-export const processOAMData = (
+export const processOAMData = async(
   applications: any[],
   components: any[],
   mcApplications: any[],
   mcComponents: any[]
-): {
+): Promise<{
   oamApplications: Map<string, Map<string, Map<string, OAMApplication>>>;
   oamComponents: Map<string, Map<string, Map<string, OAMComponent>>>;
-} => {
+}> => {
   const oamApplications = new Map<
     string,
     Map<string, Map<string, OAMApplication>>
@@ -66,7 +68,7 @@ export const processOAMData = (
       mcApp.spec.placement.clusters.length > 0
     ) {
       applications.push({
-        metadata: mcApp.spec.template.metadata,
+        metadata: {...mcApp.spec.template.metadata, name: mcApp.metadata.name, namespace: mcApp.metadata.namespace},
         spec: mcApp.spec.template.spec,
         clusters: mcApp.spec.placement.clusters,
       });

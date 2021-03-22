@@ -194,4 +194,8 @@ export const ResourceType = {
     ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
     Kind: "MultiClusterComponent",
   },
+  VerrazzanoManagedCluster: <ResourceTypeType>{
+    ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
+    Kind: "VerrazzanoManagedCluster",
+  },
 };

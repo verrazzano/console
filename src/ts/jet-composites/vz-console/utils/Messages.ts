@@ -132,6 +132,9 @@ export const Error = {
 
   errMCComponentsFetchError: (...args) =>
     Translations.getTranslatedString("error.errMCComponentsFetchError", args),
+
+  errFetchApiURLFromVMCError: (...args) =>
+    Translations.getTranslatedString("error.errFetchApiURLFromVMCError", args),
 };
 
 export const Auth = {

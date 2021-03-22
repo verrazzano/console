@@ -83,6 +83,8 @@ export = {
       "Error fetching Multi-cluster OAM ApplicationConfigurations.",
 
     errMCComponentsFetchError: "Error fetching Multi-cluster OAM Components.",
+
+    errFetchApiURLFromVMCError: "Error fetching apiUrl from VMC status for VMC {0}.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
