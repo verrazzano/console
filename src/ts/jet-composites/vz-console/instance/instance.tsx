@@ -125,6 +125,11 @@ export class ConsoleInstance extends VComponent<Props, State> {
                       id={"instance-version-metaitem"}
                     />
                     <ConsoleMetadataItem
+                        label={Messages.Labels.profile()}
+                        value={this.state.instance.profile}
+                        id={"instance-profile-metaitem"}
+                    />
+                    <ConsoleMetadataItem
                       label={Messages.Labels.mgmtCluster()}
                       value={this.state.instance.mgmtCluster}
                       id={"instance-mgmtcluster-metaitem"}

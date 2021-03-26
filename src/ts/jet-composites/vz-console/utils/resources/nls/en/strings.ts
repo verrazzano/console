@@ -69,6 +69,8 @@ export = {
 
     errIngressesFetchError: "Error fetching Ingresses.",
 
+    errVzFetchError: "Error fetching Verrazzano instance.",
+
     errVmcsFetchError: "Error fetching Managed Clusters.",
 
     errVmiFetchError: "Error fetching System VMI.",
@@ -105,6 +107,7 @@ export = {
     prom: "Prometheus",
     es: "Elasticsearch",
     version: "Version",
+    profile: "Install Profile",
     mgmtCluster: "Management Cluster",
     rancher: "Rancher",
     keycloak: "Keycloak",
@@ -129,6 +132,9 @@ export = {
     byType: "By Type",
     byState: "By State",
     componentInfo: "Component Details",
+    mgdClusterProfile: "Managed Cluster",
+    prodProfile: "Production",
+    devProfile: "Development",
   },
 
   pagination: {
