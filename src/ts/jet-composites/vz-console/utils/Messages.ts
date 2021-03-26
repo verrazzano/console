@@ -113,7 +113,7 @@ export const Error = {
     Translations.getTranslatedString("error.errIngressesFetchError", args),
 
   errVzFetchError: (...args) =>
-      Translations.getTranslatedString("error.errVzFetchError", args),
+    Translations.getTranslatedString("error.errVzFetchError", args),
 
   errVmcsFetchError: (...args) =>
     Translations.getTranslatedString("error.errVmcFetchError", args),
@@ -188,7 +188,8 @@ export const Labels = {
   byType: () => Translations.getTranslatedString("labels.byType"),
   byState: () => Translations.getTranslatedString("labels.byState"),
   componentInfo: () => Translations.getTranslatedString("labels.componentInfo"),
-  mgdClusterProfile: () => Translations.getTranslatedString("labels.mgdClusterProfile"),
+  mgdClusterProfile: () =>
+    Translations.getTranslatedString("labels.mgdClusterProfile"),
   prodProfile: () => Translations.getTranslatedString("labels.prodProfile"),
   devProfile: () => Translations.getTranslatedString("labels.devProfile"),
 };

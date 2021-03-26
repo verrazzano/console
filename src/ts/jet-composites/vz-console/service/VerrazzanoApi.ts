@@ -41,14 +41,10 @@ export class VerrazzanoApi {
         }
 
         // There can be only one installed Verrazzano instance
-        if (
-            !vzs ||
-            !vzs.items ||
-            ((vzs.items as Array<any>).length !== 1)
-        ) {
+        if (!vzs || !vzs.items || (vzs.items as Array<any>).length !== 1) {
           throw new Error(Messages.Error.errIngressesFetchError());
         }
-        const vzArray = (vzs.items as Array<any>)
+        const vzArray = vzs.items as Array<any>;
         return this.populateInstance(ingresses.items, vzArray[0], instanceId);
       })
       .catch((error) => {
@@ -301,8 +297,7 @@ export class VerrazzanoApi {
   }
 
   populateInstance(ingresses: Array<any>, vzInstance, instanceId): Instance {
-
-    const instanceURLs = vzInstance.status.instance
+    const instanceURLs = vzInstance.status.instance;
 
     const consoleIngress = ingresses.find(
       (ingress) =>
@@ -331,18 +326,18 @@ export class VerrazzanoApi {
       vzApiUri: `${vzInstance.status.consoleUrl}/${this.apiVersion}`,
     };
 
-    instance.rancherUrl = instanceURLs.rancherUrl
-    instance.keyCloakUrl = instanceURLs.keyCloakUrl
-    instance.elasticUrl = instanceURLs.elasticUrl
-    instance.kibanaUrl = instanceURLs.kibanaUrl
-    instance.prometheusUrl = instanceURLs.prometheusUrl
-    instance.grafanaUrl = instanceURLs.grafanaUrl
+    instance.rancherUrl = instanceURLs.rancherUrl;
+    instance.keyCloakUrl = instanceURLs.keyCloakUrl;
+    instance.elasticUrl = instanceURLs.elasticUrl;
+    instance.kibanaUrl = instanceURLs.kibanaUrl;
+    instance.prometheusUrl = instanceURLs.prometheusUrl;
+    instance.grafanaUrl = instanceURLs.grafanaUrl;
 
     instance.isUsingSharedVMI = true;
     return instance;
   }
 
-  getInstallProfileValue(profileName) : String {
+  getInstallProfileValue(profileName): String {
     let profileString = Messages.Labels.prodProfile();
     switch (profileName) {
       case "dev":
@@ -351,7 +346,7 @@ export class VerrazzanoApi {
       case "managed-cluster":
         profileString = Messages.Labels.mgdClusterProfile();
     }
-    return profileString
+    return profileString;
   }
 
   public constructor() {
