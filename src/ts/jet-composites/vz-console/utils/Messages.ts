@@ -112,6 +112,9 @@ export const Error = {
   errIngressesFetchError: (...args) =>
     Translations.getTranslatedString("error.errIngressesFetchError", args),
 
+  errVzFetchError: (...args) =>
+    Translations.getTranslatedString("error.errVzFetchError", args),
+
   errVmcsFetchError: (...args) =>
     Translations.getTranslatedString("error.errVmcFetchError", args),
 
@@ -159,6 +162,7 @@ export const Labels = {
   prom: () => Translations.getTranslatedString("labels.prom"),
   es: () => Translations.getTranslatedString("labels.es"),
   version: () => Translations.getTranslatedString("labels.version"),
+  profile: () => Translations.getTranslatedString("labels.profile"),
   mgmtCluster: () => Translations.getTranslatedString("labels.mgmtCluster"),
   rancher: () => Translations.getTranslatedString("labels.rancher"),
   keycloak: () => Translations.getTranslatedString("labels.keycloak"),
@@ -184,6 +188,10 @@ export const Labels = {
   byType: () => Translations.getTranslatedString("labels.byType"),
   byState: () => Translations.getTranslatedString("labels.byState"),
   componentInfo: () => Translations.getTranslatedString("labels.componentInfo"),
+  mgdClusterProfile: () =>
+    Translations.getTranslatedString("labels.mgdClusterProfile"),
+  prodProfile: () => Translations.getTranslatedString("labels.prodProfile"),
+  devProfile: () => Translations.getTranslatedString("labels.devProfile"),
 };
 
 export const Pagination = {

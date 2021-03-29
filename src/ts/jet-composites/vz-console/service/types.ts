@@ -45,6 +45,7 @@ export interface Instance {
   mgmtPlatform: string;
   status: string;
   version: string;
+  profile: string;
   vzApiUri: string;
   rancherUrl?: string;
   keyCloakUrl?: string;
@@ -145,6 +146,10 @@ export const ResourceType = {
   VerrazzanoMonitoringInstance: <ResourceTypeType>{
     ApiVersion: "apis/verrazzano.io/v1",
     Kind: "VerrazzanoMonitoringInstance",
+  },
+  Verrazzano: <ResourceTypeType>{
+    ApiVersion: "apis/install.verrazzano.io/v1alpha1",
+    Kind: "Verrazzano",
   },
   ApplicationConfiguration: <ResourceTypeType>{
     ApiVersion: "apis/core.oam.dev/v1alpha2",

@@ -26,16 +26,12 @@ export class VerrazzanoApi {
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([
       this.getKubernetesResource(ResourceType.Ingress),
-      this.getKubernetesResource(
-        ResourceType.VerrazzanoMonitoringInstance,
-        NamespaceVerrazzanoSystem,
-        "system"
-      ),
+      this.getKubernetesResource(ResourceType.Verrazzano),
     ])
-      .then(([ingressResponse, vmiResponse]) => {
-        return Promise.all([ingressResponse.json(), vmiResponse.json()]);
+      .then(([ingressResponse, vzResponse]) => {
+        return Promise.all([ingressResponse.json(), vzResponse.json()]);
       })
-      .then(([ingresses, vmi]) => {
+      .then(([ingresses, vzs]) => {
         if (
           !ingresses ||
           !ingresses.items ||
@@ -44,11 +40,12 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errIngressesFetchError());
         }
 
-        if (!vmi) {
-          throw new Error(Messages.Error.errVmiFetchError());
+        // There can be only one installed Verrazzano instance
+        if (!vzs || !vzs.items || (vzs.items as Array<any>).length !== 1) {
+          throw new Error(Messages.Error.errIngressesFetchError());
         }
-
-        return this.populateInstance(ingresses.items, vmi, instanceId);
+        const vzArray = vzs.items as Array<any>;
+        return this.populateInstance(ingresses.items, vzArray[0], instanceId);
       })
       .catch((error) => {
         let errorMessage = error;
@@ -299,7 +296,9 @@ export class VerrazzanoApi {
       });
   }
 
-  populateInstance(ingresses: Array<any>, vmi, instanceId): Instance {
+  populateInstance(ingresses: Array<any>, vzInstance, instanceId): Instance {
+    const instanceURLs = vzInstance.status.instance;
+
     const consoleIngress = ingresses.find(
       (ingress) =>
         ingress.metadata.name === "verrazzano-console-ingress" &&
@@ -319,91 +318,35 @@ export class VerrazzanoApi {
 
     const instance = <Instance>{
       id: instanceId,
-      version: "0.1.0",
+      version: vzInstance.status.version,
       mgmtCluster: "local",
-      status: "OK",
+      status: vzInstance.status.state,
       name: consoleHost.split(".")[1],
-      vzApiUri: `https://${consoleHost}/${this.apiVersion}`,
+      profile: this.getInstallProfileValue(vzInstance.spec.profile),
+      vzApiUri: `${vzInstance.status.consoleUrl}/${this.apiVersion}`,
     };
 
-    const rancherIngress = ingresses.find(
-      (ingress) =>
-        ingress.metadata.name === "rancher" &&
-        ingress.metadata.namespace === "cattle-system"
-    );
-    if (rancherIngress) {
-      instance.rancherUrl = `https://${
-        ((rancherIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-      }`;
-    }
-
-    const keycloakIngress = ingresses.find(
-      (ingress) =>
-        ingress.metadata.name === "keycloak" &&
-        ingress.metadata.namespace === "keycloak"
-    );
-    if (keycloakIngress) {
-      instance.keyCloakUrl = `https://${
-        ((keycloakIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-      }`;
-    }
-
-    if (vmi.spec.elasticsearch && Boolean(vmi.spec.elasticsearch.enabled)) {
-      const esIngress = ingresses.find(
-        (ingress) =>
-          ingress.metadata.name === "vmi-system-es-ingest" &&
-          ingress.metadata.namespace === NamespaceVerrazzanoSystem
-      );
-      if (esIngress) {
-        instance.elasticUrl = `https://${
-          ((esIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-        }`;
-      }
-    }
-
-    if (vmi.spec.kibana && Boolean(vmi.spec.kibana.enabled)) {
-      const kibanaIngress = ingresses.find(
-        (ingress) =>
-          ingress.metadata.name === "vmi-system-kibana" &&
-          ingress.metadata.namespace === NamespaceVerrazzanoSystem
-      );
-      if (kibanaIngress) {
-        instance.kibanaUrl = `https://${
-          ((kibanaIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-        }`;
-      }
-    }
-
-    if (vmi.spec.prometheus && Boolean(vmi.spec.prometheus.enabled)) {
-      const prometheusIngress = ingresses.find(
-        (ingress) =>
-          ingress.metadata.name === "vmi-system-prometheus" &&
-          ingress.metadata.namespace === NamespaceVerrazzanoSystem
-      );
-      if (prometheusIngress) {
-        instance.prometheusUrl = `https://${
-          ((prometheusIngress.spec.tls as Array<any>)[0].hosts as Array<
-            string
-          >)[0]
-        }`;
-      }
-    }
-
-    if (vmi.spec.grafana && Boolean(vmi.spec.grafana.enabled)) {
-      const grafanaIngress = ingresses.find(
-        (ingress) =>
-          ingress.metadata.name === "vmi-system-grafana" &&
-          ingress.metadata.namespace === NamespaceVerrazzanoSystem
-      );
-      if (grafanaIngress) {
-        instance.grafanaUrl = `https://${
-          ((grafanaIngress.spec.tls as Array<any>)[0].hosts as Array<string>)[0]
-        }`;
-      }
-    }
+    instance.rancherUrl = instanceURLs.rancherUrl;
+    instance.keyCloakUrl = instanceURLs.keyCloakUrl;
+    instance.elasticUrl = instanceURLs.elasticUrl;
+    instance.kibanaUrl = instanceURLs.kibanaUrl;
+    instance.prometheusUrl = instanceURLs.prometheusUrl;
+    instance.grafanaUrl = instanceURLs.grafanaUrl;
 
     instance.isUsingSharedVMI = true;
     return instance;
+  }
+
+  getInstallProfileValue(profileName): String {
+    let profileString = Messages.Labels.prodProfile();
+    switch (profileName) {
+      case "dev":
+        profileString = Messages.Labels.devProfile();
+        break;
+      case "managed-cluster":
+        profileString = Messages.Labels.mgdClusterProfile();
+    }
+    return profileString;
   }
 
   public constructor() {
