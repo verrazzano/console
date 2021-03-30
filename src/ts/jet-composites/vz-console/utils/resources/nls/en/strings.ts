@@ -69,7 +69,7 @@ export = {
 
     errIngressesFetchError: "Error fetching Ingresses.",
 
-    errVzFetchError: "Error fetching Verrazzano instance.",
+    errVzFetchError: "Error fetching Verrazzano instance; either no instance found, or more than one instance is present.",
 
     errVmcsFetchError: "Error fetching Managed Clusters.",
 
