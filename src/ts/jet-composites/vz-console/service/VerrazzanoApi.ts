@@ -15,8 +15,6 @@ import * as Messages from "vz-console/utils/Messages";
 
 export const ServicePrefix = "instances";
 
-const NamespaceVerrazzanoSystem = "verrazzano-system";
-
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
 
@@ -24,9 +22,7 @@ export class VerrazzanoApi {
   private url: string = `${(window as any).vzApiUrl || ""}/${this.apiVersion}`;
 
   public async getInstance(instanceId: string): Promise<Instance> {
-    return Promise.all([
-      this.getKubernetesResource(ResourceType.Verrazzano),
-    ])
+    return Promise.all([this.getKubernetesResource(ResourceType.Verrazzano)])
       .then(([vzResponse]) => {
         return Promise.all([vzResponse.json()]);
       })
@@ -289,7 +285,6 @@ export class VerrazzanoApi {
   }
 
   populateInstance(vzInstance, instanceId): Instance {
-
     const instance = <Instance>{
       id: instanceId,
       version: vzInstance.status?.version,
@@ -297,7 +292,10 @@ export class VerrazzanoApi {
       status: vzInstance.status?.state,
       name: vzInstance.spec.environmentName,
       profile: this.getInstallProfileValue(vzInstance.spec.profile),
-      vzApiUri: vzInstance.status != null ? `${vzInstance.status.consoleUrl}/${this.apiVersion}` : "",
+      vzApiUri:
+        vzInstance.status != null
+          ? `${vzInstance.status.consoleUrl}/${this.apiVersion}`
+          : "",
     };
 
     if (vzInstance.status != null) {
