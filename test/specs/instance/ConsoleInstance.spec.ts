@@ -25,6 +25,7 @@ const instance = <Instance>{
   mgmtCluster: "test",
   version: "1.0",
   status: "OK",
+  profile: "Production",
 };
 const sandbox = sinon.createSandbox();
 
@@ -149,6 +150,11 @@ describe("instance panel screen tests", () => {
     );
     expect(rancherMetaItem).not.to.be.null;
 
+    const profileMetaItem = instanceElement.querySelector(
+      `#instance-profile-metaitem`
+    );
+    expect(profileMetaItem).not.to.be.null;
+
     checkMetaItemLabelValue(
       statusMetaItem.textContent,
       Messages.Labels.status(),
@@ -173,6 +179,11 @@ describe("instance panel screen tests", () => {
       rancherMetaItem.textContent,
       Messages.Labels.rancher(),
       instance.rancherUrl
+    );
+    checkMetaItemLabelValue(
+      profileMetaItem.textContent,
+      Messages.Labels.profile(),
+      instance.profile
     );
     expect(
       keycloakMetaItem.querySelector("* > a").getAttribute("href")

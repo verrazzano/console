@@ -21,6 +21,7 @@ export const extractInstances = (instances: any[]): Instance[] => {
       mgmtPlatform: instance.mgmtPlatform,
       status: instance.status,
       version: instance.version,
+      profile: instance.profile,
       keyCloakUrl: instance.keyCloakUrl,
       rancherUrl: instance.rancherUrl,
       vzApiUri: instance.vzApiUri,
