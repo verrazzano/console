@@ -481,7 +481,6 @@ export class VerrazzanoApi {
     return instance;
   }
 
-
   getInstallProfileValue(profileName): String {
     let profileString = Messages.Labels.prodProfile();
     switch (profileName) {
@@ -493,7 +492,6 @@ export class VerrazzanoApi {
     }
     return profileString;
   }
-
 
   public async getAPIUrl(clusterName: string): Promise<string> {
     return this.getKubernetesResource(
