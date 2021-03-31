@@ -256,12 +256,9 @@ export class Keycloak {
    * @param request
    * @returns a Promise of a modified Request object
    */
-  public async createAuthorizedRequest(
-    request: Request,
-    addKcAuthHeader: boolean = false
-  ): Promise<Request> {
+  public async createAuthorizedRequest(request: Request): Promise<Request> {
     await this.handleTokenExpirations();
-    return this.addAuthHeader(request, addKcAuthHeader);
+    return this.addAuthHeader(request);
   }
 
   /**
@@ -292,14 +289,12 @@ export class Keycloak {
   /**
    * Add the access code as a bearer token to the Authorization header
    */
-  public addAuthHeader(req: Request, addKcAuthHeader): Request {
+  public addAuthHeader(req: Request): Request {
     const token = AuthStorage.getAccessToken();
     if (!token) {
       return req;
     }
     req.headers.set("Authorization", "Bearer " + token);
-    if (addKcAuthHeader) {
-    }
     return req;
   }
 
