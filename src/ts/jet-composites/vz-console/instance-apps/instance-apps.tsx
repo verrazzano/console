@@ -286,14 +286,12 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
                           <strong>
                             <span>{Messages.Labels.name()}:&nbsp;</span>
                           </strong>
-                         
-                            <a
-                              data-bind={`attr: {href: '/oamapps/' + item.data.data.metadata.uid + '?cluster=' + item.data.cluster.name}`}
-                            >
-                              <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                            </a>
-                         
 
+                          <a
+                            data-bind={`attr: {href: '/oamapps/' + item.data.data.metadata.uid + '?cluster=' + item.data.cluster.name}`}
+                          >
+                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                          </a>
                         </div>
 
                         <div class="carditem">

@@ -61,9 +61,11 @@ export class KeycloakJet {
   /**
    * Get an authentication-enabled version of the fetch API, for use with Verrazzano API
    */
-  public getAuthenticatedFetchApi(addKcAuthHeader: boolean = false): FetchApiSignature {
+  public getAuthenticatedFetchApi(
+    addKcAuthHeader: boolean = false
+  ): FetchApiSignature {
     if (KeycloakUrls.getInstance().isAuthEnabled) {
-      this.addKcAuthHeader = addKcAuthHeader
+      this.addKcAuthHeader = addKcAuthHeader;
       return this.authenticatedFetch.bind(this);
     } else {
       return window.fetch.bind(window);
@@ -86,7 +88,8 @@ export class KeycloakJet {
         const request =
           input instanceof Request ? input : new Request(input, init);
         const authRequest = await this.keycloak.createAuthorizedRequest(
-          request, this.addKcAuthHeader
+          request,
+          this.addKcAuthHeader
         );
         return window.fetch(authRequest);
       }

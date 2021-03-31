@@ -80,11 +80,11 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
   async getData() {
     this.updateState({ loading: true });
     try {
-      if(this.props.cluster) {
-        const apiUrl = await this.verrazzanoApi.getAPIUrl(this.props.cluster)
-        this.verrazzanoApi = new VerrazzanoApi(apiUrl);
+      if (this.props.cluster) {
+        const apiUrl = await this.verrazzanoApi.getAPIUrl(this.props.cluster);
+        this.verrazzanoApi = new VerrazzanoApi(apiUrl, this.props.cluster);
       }
-      
+
       const oamApplication = await this.verrazzanoApi.getOAMApplication(
         this.props.oamAppId,
         this.props.cluster ? this.props.cluster : "local"

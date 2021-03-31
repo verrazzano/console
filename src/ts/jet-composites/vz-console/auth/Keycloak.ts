@@ -256,7 +256,10 @@ export class Keycloak {
    * @param request
    * @returns a Promise of a modified Request object
    */
-  public async createAuthorizedRequest(request: Request, addKcAuthHeader: boolean = false): Promise<Request> {
+  public async createAuthorizedRequest(
+    request: Request,
+    addKcAuthHeader: boolean = false
+  ): Promise<Request> {
     await this.handleTokenExpirations();
     return this.addAuthHeader(request, addKcAuthHeader);
   }
@@ -295,8 +298,7 @@ export class Keycloak {
       return req;
     }
     req.headers.set("Authorization", "Bearer " + token);
-    if(addKcAuthHeader) {
-      req.headers.set("x-kc-auth-url", `${KeycloakUrls.getInstance().getKeycloakURL()}/auth/realms/verrazzano-system`)
+    if (addKcAuthHeader) {
     }
     return req;
   }

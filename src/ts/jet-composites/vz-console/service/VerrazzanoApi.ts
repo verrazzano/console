@@ -23,6 +23,7 @@ export class VerrazzanoApi {
   private apiVersion: string = (window as any).vzApiVersion || "20210501";
   private defaultUrl: string;
   private url: string;
+  private cluster: string = "local";
 
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([
@@ -67,18 +68,33 @@ export class VerrazzanoApi {
     return Promise.all([
       this.getKubernetesResource(ResourceType.ApplicationConfiguration),
       this.getKubernetesResource(ResourceType.Component),
-      this.getKubernetesResource(
-        ResourceType.MultiClusterApplicationConfiguration
-      ),
-      this.getKubernetesResource(ResourceType.MultiClusterComponent),
     ])
+      .then(([appsResponse, compsResponse]) => {
+        if (this.cluster === "local") {
+          return Promise.all([
+            appsResponse,
+            compsResponse,
+            this.getKubernetesResource(
+              ResourceType.MultiClusterApplicationConfiguration
+            ),
+            this.getKubernetesResource(ResourceType.MultiClusterComponent),
+          ]);
+        } else {
+          return Promise.all([
+            appsResponse,
+            compsResponse,
+            <Response>{},
+            <Response>{},
+          ]);
+        }
+      })
       .then(
         ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
           return Promise.all([
             appsResponse.json(),
             compsResponse.json(),
-            mcAppsResponse.json(),
-            mcCompsResponse.json(),
+            mcAppsResponse.json ? mcAppsResponse.json() : {},
+            mcCompsResponse.json ? mcCompsResponse.json() : {},
           ]);
         }
       )
@@ -98,9 +114,22 @@ export class VerrazzanoApi {
         if (!mcComponents) {
           throw new Error(Messages.Error.errMCComponentsFetchError());
         }
-        return [apps.items, components.items, mcApps.items,  mcComponents.items]
-      }).then(([apps, components, mcApps, mcComponents]) => {
-        const clusters = new Set<string>();
+        return [
+          apps.items,
+          components.items,
+          mcApps.items ? mcApps.items : [],
+          mcComponents.items ? mcComponents.items : [],
+        ];
+      })
+      .then(([apps, components, mcApps, mcComponents]) => {
+        const mcApplicationsByClusterAndNamespace = new Map<
+          string,
+          Map<string, Map<string, any>>
+        >();
+        const mcComponentsByClusterAndNamespace = new Map<
+          string,
+          Map<string, Map<string, any>>
+        >();
         mcApps.forEach((mcApp) => {
           if (
             mcApp &&
@@ -108,38 +137,175 @@ export class VerrazzanoApi {
             mcApp.spec.placement.clusters &&
             mcApp.spec.placement.clusters.length > 0
           ) {
-            applications.push({
-              metadata: {...mcApp.spec.template.metadata, name: mcApp.metadata.name, namespace: mcApp.metadata.namespace},
-              spec: mcApp.spec.template.spec,
-              clusters: mcApp.spec.placement.clusters,
+            mcApp.spec.placement.clusters.forEach((cluster) => {
+              let mcAppsInCluster = mcApplicationsByClusterAndNamespace.get(
+                cluster.name
+              );
+              if (!mcAppsInCluster) {
+                mcAppsInCluster = new Map<string, Map<string, any>>();
+                mcApplicationsByClusterAndNamespace.set(
+                  cluster.name,
+                  mcAppsInCluster
+                );
+              }
+              if (
+                mcApp.metadata &&
+                mcApp.metadata.name &&
+                mcApp.metadata.namespace
+              ) {
+                let mcAppsInNamespace = mcAppsInCluster.get(
+                  mcApp.metadata.namespace
+                );
+                if (!mcAppsInNamespace) {
+                  mcAppsInNamespace = new Map<string, any>();
+                  mcAppsInCluster.set(
+                    mcApp.metadata.namespace,
+                    mcAppsInNamespace
+                  );
+                }
+                mcAppsInNamespace.set(mcApp.metadata.name, {});
+              }
             });
           }
         });
-        return processOAMData(
+        mcComponents.forEach((mcComponent) => {
+          if (
+            mcComponent &&
+            mcComponent.spec &&
+            mcComponent.spec.placement &&
+            mcComponent.spec.placement.clusters &&
+            mcComponent.spec.placement.clusters.length > 0
+          ) {
+            mcComponent.spec.placement.clusters.forEach((cluster) => {
+              let mcComponentsInCluster = mcComponentsByClusterAndNamespace.get(
+                cluster.name
+              );
+              if (!mcComponentsInCluster) {
+                mcComponentsInCluster = new Map<string, Map<string, any>>();
+                mcComponentsByClusterAndNamespace.set(
+                  cluster.name,
+                  mcComponentsInCluster
+                );
+              }
+              if (
+                mcComponent.metadata &&
+                mcComponent.metadata.name &&
+                mcComponent.metadata.namespace
+              ) {
+                let mcComponentsInNamespace = mcComponentsInCluster.get(
+                  mcComponent.metadata.namespace
+                );
+                if (!mcComponentsInNamespace) {
+                  mcComponentsInNamespace = new Map<string, any>();
+                  mcComponentsInCluster.set(
+                    mcComponent.metadata.namespace,
+                    mcComponentsInNamespace
+                  );
+                }
+                mcComponentsInNamespace.set(mcComponent.metadata.name, {});
+              }
+            });
+          }
+        });
+        return {
           apps,
           components,
-          mcApps,
-          mcComponents
-        )
-      }).then(({oamApplications, oamComponents}) => {
-        const applications: OAMApplication[] = [];
-        const comps: OAMComponent[] = [];
-        oamApplications.forEach((element) => {
-          element.forEach((oamApplications) => {
-            oamApplications.forEach((oamApplication) => {
-              applications.push(oamApplication);
-            });
-          });
-        });
-        oamComponents.forEach((element) => {
-          element.forEach((oamComponents) => {
-            oamComponents.forEach((oamComponent) => {
-              comps.push(oamComponent);
-            });
-          });
-        });
-        return { oamApplications: applications, oamComponents: comps };
+          mcApplicationsByClusterAndNamespace,
+          mcComponentsByClusterAndNamespace,
+        };
       })
+      .then(
+        ({
+          apps,
+          components,
+          mcApplicationsByClusterAndNamespace,
+          mcComponentsByClusterAndNamespace,
+        }) => {
+          return this.populateMCAppsAndComponents(
+            apps,
+            components,
+            mcApplicationsByClusterAndNamespace,
+            mcComponentsByClusterAndNamespace
+          );
+        }
+      )
+      .then(
+        ({
+          apps,
+          components,
+          mcApplicationsByClusterAndNamespace,
+          mcComponentsByClusterAndNamespace,
+        }) => {
+          const applicationsByClusterAndNamespace = new Map<
+            string,
+            Map<string, Map<string, any>>
+          >();
+          const componentsByClusterAndNamespace = new Map<
+            string,
+            Map<string, Map<string, any>>
+          >();
+          const { oamApplications, oamComponents } = processOAMData(
+            apps,
+            components,
+            this.cluster
+          );
+          applicationsByClusterAndNamespace.set(this.cluster, oamApplications);
+          componentsByClusterAndNamespace.set(this.cluster, oamComponents);
+          mcApplicationsByClusterAndNamespace.forEach(
+            (mcAppsByNamespace, cluster) => {
+              const mcApps: any[] = [];
+              const mcComps: any[] = [];
+              mcAppsByNamespace.forEach((mcAppsByName, namespace) => {
+                mcAppsByName.forEach((mcApp) => {
+                  mcApps.push(mcApp);
+                  mcComponentsByClusterAndNamespace
+                    .get(cluster)
+                    .get(namespace)
+                    .forEach((mcComp) => {
+                      mcComps.push(mcComp);
+                    });
+                });
+              });
+
+              const { oamApplications, oamComponents } = processOAMData(
+                mcApps,
+                mcComps,
+                cluster
+              );
+              applicationsByClusterAndNamespace.set(cluster, oamApplications);
+              componentsByClusterAndNamespace.set(cluster, oamComponents);
+            }
+          );
+          return {
+            applicationsByClusterAndNamespace,
+            componentsByClusterAndNamespace,
+          };
+        }
+      )
+      .then(
+        ({
+          applicationsByClusterAndNamespace,
+          componentsByClusterAndNamespace,
+        }) => {
+          const applications: OAMApplication[] = [];
+          const comps: OAMComponent[] = [];
+          applicationsByClusterAndNamespace.forEach((element) => {
+            element.forEach((oamApplications) => {
+              oamApplications.forEach((oamApplication) => {
+                applications.push(oamApplication);
+              });
+            });
+          });
+          componentsByClusterAndNamespace.forEach((element) => {
+            element.forEach((oamComponents) => {
+              oamComponents.forEach((oamComponent) => {
+                comps.push(oamComponent);
+              });
+            });
+          });
+          return { oamApplications: applications, oamComponents: comps };
+        }
+      )
       .catch((error) => {
         let errorMessage = error;
         if (error && error.message) {
@@ -149,33 +315,95 @@ export class VerrazzanoApi {
       });
   }
 
+  private async populateMCAppsAndComponents(
+    apps: any,
+    components: any,
+    mcApplicationsByClusterAndNamespace: Map<
+      string,
+      Map<string, Map<string, any>>
+    >,
+    mcComponentsByClusterAndNamespace: Map<
+      string,
+      Map<string, Map<string, any>>
+    >
+  ) {
+    for (const [
+      cluster,
+      mcAppsByNamespace,
+    ] of mcApplicationsByClusterAndNamespace) {
+      const apiUrl = await this.getAPIUrl(cluster);
+      for (const [namespace, mcApps] of mcAppsByNamespace) {
+        for (const [name] of mcApps) {
+          const resource = await new VerrazzanoApi(
+            apiUrl,
+            cluster
+          ).getKubernetesResource(
+            ResourceType.ApplicationConfiguration,
+            namespace,
+            name
+          );
+          const app = await resource.json();
+          mcApps.set(name, app);
+        }
+      }
 
+      for (const [
+        namespace,
+        mcComponents,
+      ] of mcComponentsByClusterAndNamespace.get(cluster)) {
+        for (const [name] of mcComponents) {
+          const resource = await new VerrazzanoApi(
+            apiUrl,
+            cluster
+          ).getKubernetesResource(ResourceType.Component, namespace, name);
+          const component = await resource.json();
+          mcComponents.set(name, component);
+        }
+      }
+    }
+
+    return {
+      apps,
+      components,
+      mcApplicationsByClusterAndNamespace,
+      mcComponentsByClusterAndNamespace,
+    };
+  }
 
   public async listOAMApplications(): Promise<OAMApplication[]> {
-    return (await this.listOAMAppsAndComponents()).oamApplications
+    const { oamApplications } = await this.listOAMAppsAndComponents();
+    return oamApplications;
   }
 
   public async listOAMComponents(): Promise<OAMComponent[]> {
-    return (await this.listOAMAppsAndComponents()).oamComponents
+    const { oamComponents } = await this.listOAMAppsAndComponents();
+    return oamComponents;
   }
 
   public async getOAMApplication(
     oamAppId: string,
     cluster: string
   ): Promise<OAMApplication> {
-    return (await this.listOAMAppsAndComponents()).oamApplications.find((oamApplication) => 
-      oamApplication.data.metadata.uid === oamAppId && oamApplication.cluster.name === cluster
-    )
+    const oamApplications = await this.listOAMApplications();
+    const oamApplictaion = oamApplications.find(
+      (oamApplication) =>
+        oamApplication.data.metadata.uid === oamAppId &&
+        oamApplication.cluster.name === cluster
+    );
+    return oamApplictaion;
   }
 
   public async getOAMComponent(
     oamCompId: string,
     cluster: string
   ): Promise<OAMComponent> {
-    return (await this.listOAMAppsAndComponents()).oamComponents.find((oamComponent) => 
-    oamComponent.data.metadata.uid === oamCompId &&
-    oamComponent.cluster.name === cluster
-    )
+    const oamComponents = await this.listOAMComponents();
+    const oamComponent = oamComponents.find(
+      (oamComponent) =>
+        oamComponent.data.metadata.uid === oamCompId &&
+        oamComponent.cluster.name === cluster
+    );
+    return oamComponent;
   }
 
   public async getKubernetesResource(
@@ -323,47 +551,46 @@ export class VerrazzanoApi {
   }
 
   public async getAPIUrl(clusterName: string): Promise<string> {
-    return  this.getKubernetesResource(ResourceType.VerrazzanoManagedCluster, "verrazzano-mc", clusterName)
-    .then(vmcResponse => {return vmcResponse.json()})
-    .then(vmc => {
-      if (!vmc) {
-        throw new Error(
-          Messages.Error.errVmcFetchError(
-            clusterName
-          )
-        );
-      }
+    return this.getKubernetesResource(
+      ResourceType.VerrazzanoManagedCluster,
+      "verrazzano-mc",
+      clusterName
+    )
+      .then((vmcResponse) => {
+        return vmcResponse.json();
+      })
+      .then((vmc) => {
+        if (!vmc) {
+          throw new Error(Messages.Error.errVmcFetchError(clusterName));
+        }
 
-      if (!vmc.status || !vmc.status.apiUrl) {
-        throw new Error(
-          Messages.Error.errFetchApiURLFromVMCError(
-            clusterName
-          )
-        );
-      }
+        if (!vmc.status || !vmc.status.apiUrl) {
+          throw new Error(
+            Messages.Error.errFetchApiURLFromVMCError(clusterName)
+          );
+        }
 
-      return vmc.status.apiUrl
-    })
-    .catch((error) => {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      throw new Error(errorMessage);
-    });
-    
+        return vmc.status.apiUrl;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
   }
 
-
-  public constructor(url: string = "") {
-    this.defaultUrl = `${(window as any).vzApiUrl || ""}`
-    this.url = `${url || this.defaultUrl}/${this.apiVersion}`
+  public constructor(url: string = "", cluster: string = "local") {
+    this.defaultUrl = `${(window as any).vzApiUrl || ""}`;
+    this.cluster = cluster;
+    this.url = `${url || this.defaultUrl}/${this.apiVersion}`;
     this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi(!!url);
     this.getInstance = this.getInstance.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
     this.getOAMApplication = this.getOAMApplication.bind(this);
     this.getOAMComponent = this.getOAMComponent.bind(this);
     this.getKubernetesResource = this.getKubernetesResource.bind(this);
-    this.getAPIUrl = this.getAPIUrl.bind(this)
+    this.getAPIUrl = this.getAPIUrl.bind(this);
   }
 }
