@@ -15,8 +15,6 @@ import * as Messages from "vz-console/utils/Messages";
 
 export const ServicePrefix = "instances";
 
-const NamespaceVerrazzanoSystem = "verrazzano-system";
-
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
 
@@ -26,28 +24,18 @@ export class VerrazzanoApi {
   private cluster: string = "local";
 
   public async getInstance(instanceId: string): Promise<Instance> {
-    return Promise.all([
-      this.getKubernetesResource(ResourceType.Ingress),
-      this.getKubernetesResource(ResourceType.Verrazzano),
-    ])
-      .then(([ingressResponse, vzResponse]) => {
-        return Promise.all([ingressResponse.json(), vzResponse.json()]);
+    return Promise.all([this.getKubernetesResource(ResourceType.Verrazzano)])
+      .then(([vzResponse]) => {
+        return Promise.all([vzResponse.json()]);
       })
-      .then(([ingresses, vzs]) => {
-        if (
-          !ingresses ||
-          !ingresses.items ||
-          !((ingresses.items as Array<any>).length > 0)
-        ) {
-          throw new Error(Messages.Error.errIngressesFetchError());
-        }
-
-        // There can be only one installed Verrazzano instance
+      .then(([vzs]) => {
+        // There can be only one installed Verrazzano instance, but we don't know
+        // the coordinates ahead of time; do a list and find the instance
         if (!vzs || !vzs.items || (vzs.items as Array<any>).length !== 1) {
-          throw new Error(Messages.Error.errIngressesFetchError());
+          throw new Error(Messages.Error.errVzFetchError());
         }
         const vzArray = vzs.items as Array<any>;
-        return this.populateInstance(ingresses.items, vzArray[0], instanceId);
+        return this.populateInstance(vzArray[0], instanceId);
       })
       .catch((error) => {
         let errorMessage = error;
@@ -440,43 +428,29 @@ export class VerrazzanoApi {
       });
   }
 
-  populateInstance(ingresses: Array<any>, vzInstance, instanceId): Instance {
-    const instanceURLs = vzInstance.status.instance;
-
-    const consoleIngress = ingresses.find(
-      (ingress) =>
-        ingress.metadata.name === "verrazzano-console-ingress" &&
-        ingress.metadata.namespace === NamespaceVerrazzanoSystem
-    );
-    if (!consoleIngress) {
-      throw new Error(
-        Messages.Error.errIngressFetchError(
-          "verrazzano-system",
-          "verrazzano-console-ingress"
-        )
-      );
-    }
-
-    const consoleHost = ((consoleIngress.spec.tls as Array<any>)[0]
-      .hosts as Array<string>)[0];
-
+  populateInstance(vzInstance, instanceId): Instance {
     const instance = <Instance>{
       id: instanceId,
-      version: vzInstance.status.version,
+      version: vzInstance.status?.version,
       mgmtCluster: "local",
-      status: vzInstance.status.state,
-      name: consoleHost.split(".")[1],
+      status: vzInstance.status?.state,
+      name: vzInstance.spec.environmentName,
       profile: this.getInstallProfileValue(vzInstance.spec.profile),
-      vzApiUri: `${vzInstance.status.consoleUrl}/${this.apiVersion}`,
+      vzApiUri:
+        vzInstance.status != null
+          ? `${vzInstance.status.consoleUrl}/${this.apiVersion}`
+          : "",
     };
 
-    instance.rancherUrl = instanceURLs.rancherUrl;
-    instance.keyCloakUrl = instanceURLs.keyCloakUrl;
-    instance.elasticUrl = instanceURLs.elasticUrl;
-    instance.kibanaUrl = instanceURLs.kibanaUrl;
-    instance.prometheusUrl = instanceURLs.prometheusUrl;
-    instance.grafanaUrl = instanceURLs.grafanaUrl;
-
+    if (vzInstance.status != null) {
+      const instanceURLs = vzInstance.status.instance;
+      instance.rancherUrl = instanceURLs.rancherUrl;
+      instance.keyCloakUrl = instanceURLs.keyCloakUrl;
+      instance.elasticUrl = instanceURLs.elasticUrl;
+      instance.kibanaUrl = instanceURLs.kibanaUrl;
+      instance.prometheusUrl = instanceURLs.prometheusUrl;
+      instance.grafanaUrl = instanceURLs.grafanaUrl;
+    }
     instance.isUsingSharedVMI = true;
     return instance;
   }
