@@ -32,7 +32,8 @@ export const extractInstances = (instances: any[]): Instance[] => {
 
 export const processOAMData = (
   applications: any[],
-  components: any[]
+  components: any[],
+  clusterName: string = "local"
 ): {
   oamApplications: Map<string, Map<string, OAMApplication>>;
   oamComponents: Map<string, Map<string, OAMComponent>>;
@@ -61,6 +62,7 @@ export const processOAMData = (
         data: component,
         applications: [],
         createdOn: convertDate(component.metadata.creationTimestamp),
+        cluster: { name: clusterName },
       };
       let oamComponentsForNS = oamComponents.get(component.metadata.namespace);
       if (!oamComponentsForNS) {
@@ -85,8 +87,9 @@ export const processOAMData = (
           application.status.conditions &&
           application.status.conditions.length > 0
             ? getStatusForOAMResource(application.status.conditions[0].status)
-            : Status.Unknown,
+            : Status.Pending,
         createdOn: convertDate(application.metadata.creationTimestamp),
+        cluster: { name: clusterName },
       };
 
       if (application.spec && application.spec.components) {

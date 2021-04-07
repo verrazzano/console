@@ -14,8 +14,6 @@ export enum VMIType {
 
 export enum Status {
   // eslint-disable-next-line no-unused-vars
-  Creating = "Creating",
-  // eslint-disable-next-line no-unused-vars
   Available = "Available",
   // eslint-disable-next-line no-unused-vars
   Ready = "Ready",
@@ -30,7 +28,7 @@ export enum Status {
   // eslint-disable-next-line no-unused-vars
   Unbound = "Unbound",
   // eslint-disable-next-line no-unused-vars
-  Unknown = "Unknown",
+  Pending = "Pending",
 }
 
 export interface FetchApiSignature {
@@ -66,10 +64,11 @@ export interface OAMApplication {
   name?: string;
   namespace?: string;
   data?: any;
-  status?: string;
+  status?: Status;
   // eslint-disable-next-line no-use-before-define
   componentInstances?: OAMComponentInstance[];
   createdOn?: string;
+  cluster: { name: string };
 }
 
 export interface OAMComponent {
@@ -80,6 +79,7 @@ export interface OAMComponent {
   data?: any;
   applications?: OAMApplication[];
   createdOn?: string;
+  cluster: { name: string };
 }
 
 export interface OAMTrait {
@@ -190,5 +190,17 @@ export const ResourceType = {
   Ingress: <ResourceTypeType>{
     ApiVersion: "apis/extensions/v1beta1",
     Kind: "Ingress",
+  },
+  MultiClusterApplicationConfiguration: <ResourceTypeType>{
+    ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
+    Kind: "MultiClusterApplicationConfiguration",
+  },
+  MultiClusterComponent: <ResourceTypeType>{
+    ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
+    Kind: "MultiClusterComponent",
+  },
+  VerrazzanoManagedCluster: <ResourceTypeType>{
+    ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
+    Kind: "VerrazzanoManagedCluster",
   },
 };

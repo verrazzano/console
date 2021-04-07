@@ -66,7 +66,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                       <span class="oj-icon-circle-inner status-icon"></span>
                     </span>
                   </oj-bind-if>
-                  <oj-bind-if test="[[item.data.status === 'Creating']]">
+                  <oj-bind-if test="[[item.data.status === 'Pending']]">
                     <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-orange">
                       <span class="oj-icon-circle-inner status-icon"></span>
                     </span>
@@ -102,7 +102,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                   <span>{Messages.Labels.oamCompRef()}:&nbsp;</span>
                 </strong>
                 <a
-                  data-bind={`attr: {href: '/oamcomps/' + item.data.oamComponent.data.metadata.uid}`}
+                  data-bind={`attr: {href: '/oamcomps/' + item.data.oamComponent.data.metadata.uid + '?cluster=' + item.data.oamComponent.cluster.name}`}
                 >
                   <oj-bind-text value="[[item.data.oamComponent.data.metadata.name]]"></oj-bind-text>
                 </a>
