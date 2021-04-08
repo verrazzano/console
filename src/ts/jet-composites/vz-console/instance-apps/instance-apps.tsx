@@ -288,7 +288,7 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
                           </strong>
 
                           <a
-                            data-bind={`attr: {href: '/oamapps/' + item.data.data.metadata.uid + '?cluster=' + item.data.cluster.name}`}
+                            data-bind={`attr: {href: '/oamapps/' + item.data.data.metadata.uid + (item.data.cluster && item.data.cluster.name !== 'local' ? ('?cluster=' + item.data.cluster.name) : '')}`}
                           >
                             <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
                           </a>
