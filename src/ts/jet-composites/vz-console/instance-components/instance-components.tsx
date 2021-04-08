@@ -260,7 +260,7 @@ export class ConsoleInstanceComponents extends VComponent<Props, State> {
                             <span>{Messages.Labels.name()}:&nbsp;</span>
                           </strong>
                           <a
-                            data-bind={`attr: {href: '/oamcomps/' + item.data.data.metadata.uid + '?cluster=' + item.data.cluster.name}`}
+                            data-bind={`attr: {href: '/oamcomps/' + item.data.data.metadata.uid + (item.data.cluster && item.data.cluster.name !== 'local' ? ('?cluster=' + item.data.cluster.name) : '')}`}
                           >
                             <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
                           </a>

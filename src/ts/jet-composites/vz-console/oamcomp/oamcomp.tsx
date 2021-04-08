@@ -122,11 +122,20 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
               <a
                 onClick={() => {
                   window.open(
-                    `/oamapps/${application.data.metadata.uid}?cluster=${application.cluster.name}`,
+                    `/oamapps/${application.data.metadata.uid}${
+                      application.cluster &&
+                      application.cluster.name !== "local"
+                        ? "?cluster=" + application.cluster.name
+                        : ""
+                    }`,
                     "_blank"
                   );
                 }}
-                href={`/oamapps/${application.data.metadata.uid}?cluster=${application.cluster.name}`}
+                href={`/oamapps/${application.data.metadata.uid}${
+                  application.cluster && application.cluster.name !== "local"
+                    ? "?cluster=" + application.cluster.name
+                    : ""
+                }`}
               >
                 {application.name}
               </a>
