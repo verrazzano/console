@@ -6,6 +6,7 @@
       "*": ["../src/ts/jet-composites/*", "../node_modules/*"],
       "ojs/*": ["../node_modules/@oracle/oraclejet/dist/types/*"],
     },
+    "sourceMap": true,
     "typeRoots": [
       "../node_modules/@types",
       "../node_modules/@oracle/oraclejet/dist/types"
