@@ -26,7 +26,7 @@ HEALTHCHECK --interval=1m --timeout=10s \
 
 RUN groupadd -r verrazzano \
     && useradd --no-log-init -r -g verrazzano -u 1000 verrazzano \
-    && chown -R 1000:verrazzano /verrazzano
+    && chown -R 1000:verrazzano /verrazzano \
     && chown -R 1000:verrazzano /license
 
 USER 1000
