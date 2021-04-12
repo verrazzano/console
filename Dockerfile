@@ -2,6 +2,9 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 FROM container-registry.oracle.com/os/oraclelinux:7-slim@sha256:fcc6f54bb01fc83319990bf5fa1b79f1dec93cbb87db3c5a8884a5a44148e7bb
+RUN groupadd -r verrazzano && useradd --no-log-init -r -g verrazzano -u 1000 verrazzano \
+    && mkdir /home/verrazzano \
+    && chown -R 1000:verrazzano /home/verrazzano
 RUN yum update -y python curl openssl-libs glibc \
     && yum install -y oracle-nodejs-release-el7 \
     && yum install -y nodejs \
@@ -21,5 +24,11 @@ RUN npm install --save express express-http-proxy
 HEALTHCHECK --interval=1m --timeout=10s \
   CMD /verrazzano/livenessProbe.sh
 
+RUN groupadd -r verrazzano \
+    && useradd --no-log-init -r -g verrazzano -u 1000 verrazzano \
+    && chown -R 1000:verrazzano /verrazzano
+    && chown -R 1000:verrazzano /license
+
+USER 1000
 WORKDIR /verrazzano/
 CMD ["./start.sh"]
