@@ -10,7 +10,7 @@ import {
   ResourceType,
   ResourceTypeType,
 } from "./types";
-import { processClusterData , processOAMData } from "./common";
+import { processClusterData, processOAMData } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
 
