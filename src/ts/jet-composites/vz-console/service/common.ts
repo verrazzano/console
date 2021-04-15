@@ -31,19 +31,17 @@ export const extractInstances = (instances: any[]): Instance[] => {
   return result;
 };
 
-export const processClusterData = (clustersData: any[]): {
+export const processClusterData = (
+  clustersData: any[]
+): {
   clusters: Map<string, Map<String, Cluster>>;
 } => {
   const clusters = new Map<string, Map<String, Cluster>>();
 
   clustersData.forEach((clusterData) => {
     if (clusterData.metadata.name) {
-    /*  const cluster = <Cluster>{
+      const cluster = <Cluster>{
         name: clusterData.metadata.name,
-        namespace: clusterData.metadata.namespace,
-      };*/
-const cluster = <Cluster> {
-      name: clusterData.metadata.name,
         namespace: clusterData.metadata.namespace,
         workloadType:
           clusterData.spec &&
@@ -58,7 +56,7 @@ const cluster = <Cluster> {
         data: clusterData,
         applications: [],
         createdOn: convertDate(clusterData.metadata.creationTimestamp),
-}
+      };
       let clustersForNamespace = clusters.get(cluster.namespace);
 
       if (!clustersForNamespace) {
@@ -68,7 +66,7 @@ const cluster = <Cluster> {
 
       clustersForNamespace.set(cluster.name, cluster);
     }
-  })
+  });
   return { clusters };
 };
 

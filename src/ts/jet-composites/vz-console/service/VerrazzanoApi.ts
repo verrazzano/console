@@ -133,20 +133,18 @@ export class VerrazzanoApi {
 
   public async listClusters(): Promise<Cluster[]> {
     return this.getKubernetesResource(ResourceType.Cluster)
-      .then(clusterResponse => {
+      .then((clusterResponse) => {
         return clusterResponse.json();
       })
-      .then(clustersResponse => {
+      .then((clustersResponse) => {
         const clustersResult: Cluster[] = [];
 
-        const { clusters } = processClusterData(
-          clustersResponse.items
-        );
+        const { clusters } = processClusterData(clustersResponse.items);
 
         clusters.forEach((element) => {
           element.forEach((cluster) => {
             clustersResult.push(cluster);
-          })
+          });
         });
         return clustersResult;
       })
@@ -155,7 +153,7 @@ export class VerrazzanoApi {
         if (error && error.message) {
           errorMessage = error.message;
         }
-         
+
         throw new Error(errorMessage);
       });
   }

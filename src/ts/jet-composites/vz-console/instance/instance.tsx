@@ -63,13 +63,13 @@ export class ConsoleInstance extends VComponent<Props, State> {
       this.verrazzanoApi.listOAMAppsAndComponents(),
       this.verrazzanoApi.listClusters(),
     ])
-      .then(([instance, { oamApplications, oamComponents}, clusters]) => {
+      .then(([instance, { oamApplications, oamComponents }, clusters]) => {
         this.updateState({
           loading: false,
           instance: instance,
           oamApplications,
           oamComponents,
-          clusters
+          clusters,
         });
       })
       .catch((error) => {
@@ -201,7 +201,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
           clusters={this.state.clusters}
           oamApplications={this.state.oamApplications}
           oamComponents={this.state.oamComponents}
-         />
+        />
       </div>
     );
   }

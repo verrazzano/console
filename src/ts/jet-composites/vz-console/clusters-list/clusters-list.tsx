@@ -79,7 +79,7 @@ export class ConsoleClustersList extends VComponent<Props> {
               </td>
               <td>
                 <p>
-                  <oj-bind-text value="[[row.data.data.spec.description]]"/>
+                  <oj-bind-text value="[[row.data.data.spec.description]]" />
                 </p>
               </td>
               <td>

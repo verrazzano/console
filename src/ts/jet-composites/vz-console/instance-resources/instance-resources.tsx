@@ -56,7 +56,12 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     getDefaultRouter().destroy();
     history.replaceState(null, "path", `/${this.props.selectedItem}`);
     this.router = new CoreRouter(
-      [{ path: "" }, {path: "clusters"}, { path: "oamapps" }, { path: "oamcomps" }],
+      [
+        { path: "" },
+        { path: "clusters" },
+        { path: "oamapps" },
+        { path: "oamcomps" },
+      ],
       {
         urlAdapter: new UrlPathAdapter("/"),
       }
@@ -93,9 +98,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     let Heading: Element;
     switch (this.state.selectedItem) {
       case "clusters": {
-        ResourceList = (
-          <ConsoleClustersList clusters={this.props.clusters} />
-        );
+        ResourceList = <ConsoleClustersList clusters={this.props.clusters} />;
         Heading = <h1 class="resheader">{this.labels.clusters}</h1>;
         break;
       }

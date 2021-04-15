@@ -43,7 +43,7 @@ export const Instance = {
     Translations.getTranslatedString("instance.instancePageLoaded"),
   instanceHeading: () =>
     Translations.getTranslatedString("instance.instanceHeading"),
-  clusters: () => Translations.getTranslatedString("instance.clusters"),  
+  clusters: () => Translations.getTranslatedString("instance.clusters"),
   oamApps: () => Translations.getTranslatedString("instance.oamApps"),
   oamCompoennts: () =>
     Translations.getTranslatedString("instance.oamComponents"),
