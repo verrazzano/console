@@ -2,6 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
+  Cluster,
   FetchApiSignature,
   Instance,
   OAMApplication,
@@ -9,6 +10,7 @@ import {
   ResourceType,
   ResourceTypeType,
 } from "./types";
+import { processClusterData } from "./common";
 import { processOAMData } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
@@ -125,6 +127,35 @@ export class VerrazzanoApi {
         if (error && error.message) {
           errorMessage = error.message;
         }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async listClusters(): Promise<Cluster[]> {
+    return this.getKubernetesResource(ResourceType.Cluster)
+      .then(clusterResponse => {
+        return clusterResponse.json();
+      })
+      .then(clustersResponse => {
+        const clustersResult: Cluster[] = [];
+
+        const { clusters } = processClusterData(
+          clustersResponse.items
+        );
+
+        clusters.forEach((element) => {
+          element.forEach((cluster) => {
+            clustersResult.push(cluster);
+          })
+        });
+        return clustersResult;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+         
         throw new Error(errorMessage);
       });
   }

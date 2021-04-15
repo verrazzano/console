@@ -6,6 +6,7 @@
   "displayName": "Console VComponents",
   "description": "Console and its related components.",
   "dependencies": {
+    "vz-console-clusters-list": "1.0.0",
     "vz-console-instance": "1.0.0",
     "vz-console-metadata-item": "1.0.0",
     "vz-console-instance-resources": "1.0.0",

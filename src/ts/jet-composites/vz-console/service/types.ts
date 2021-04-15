@@ -38,6 +38,11 @@ export interface FetchApiSignature {
   (input: string | Request, init?: RequestInit): Promise<Response>;
 }
 
+export interface Cluster {
+  name?: string;
+  namespace?: string;
+}
+
 export interface Instance {
   id: string;
   name: string;
@@ -139,6 +144,10 @@ export interface ResourceTypeType {
 }
 
 export const ResourceType = {
+  Cluster: <ResourceTypeType>{
+    ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
+    Kind: "VerrazzanoManagedCluster",
+  },
   Deployment: <ResourceTypeType>{
     ApiVersion: "apis/apps/v1",
     Kind: "Deployment",

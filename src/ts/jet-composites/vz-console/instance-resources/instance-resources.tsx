@@ -7,14 +7,17 @@ import * as Messages from "vz-console/utils/Messages";
 import { OAMApplication, OAMComponent } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
+import { ConsoleClustersList } from "vz-console/clusters-list/loader";
 import { ConsoleOAMApplicationsList } from "vz-console/oamapps-list/loader";
 import { ConsoleOAMComponentsList } from "vz-console/oamcomps-list/loader";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
+import { Cluster } from "node:cluster";
 
 class Props {
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
+  clusters?: [Cluster];
   oamApplications?: [OAMApplication];
   oamComponents?: [OAMComponent];
 }
@@ -40,6 +43,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
   };
 
   labels = {
+    clusters: Messages.Instance.clusters(),
     oamapps: Messages.Instance.oamApps(),
     oamcomps: Messages.Instance.oamCompoennts(),
   };
@@ -52,7 +56,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     getDefaultRouter().destroy();
     history.replaceState(null, "path", `/${this.props.selectedItem}`);
     this.router = new CoreRouter(
-      [{ path: "" }, { path: "oamapps" }, { path: "oamcomps" }],
+      [{ path: "" }, {path: "clusters"}, { path: "oamapps" }, { path: "oamcomps" }],
       {
         urlAdapter: new UrlPathAdapter("/"),
       }
@@ -88,6 +92,14 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     let ResourceList: Element;
     let Heading: Element;
     switch (this.state.selectedItem) {
+      case "clusters": {
+        ResourceList = (
+          <ConsoleClustersList clusters={this.props.clusters} />
+        );
+        Heading = <h1 class="resheader">{this.labels.clusters}</h1>;
+        break;
+      }
+
       case "oamapps": {
         ResourceList = (
           <ConsoleOAMApplicationsList oamapps={this.props.oamApplications} />
@@ -127,6 +139,9 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
               </li>
               <li id="oamcomps">
                 <a href="#">{this.labels.oamcomps}</a>
+              </li>
+              <li id="clusters">
+                <a href="#">{this.labels.clusters}</a>
               </li>
             </ul>
           </oj-navigation-list>

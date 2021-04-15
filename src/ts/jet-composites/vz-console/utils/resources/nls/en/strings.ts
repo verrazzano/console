@@ -15,6 +15,7 @@ export = {
     yourPrivacyRights: "Your Privacy Rights",
   },
   nav: {
+    cluster: "Clusters",
     instance: "Verrazzano",
     home: "Home",
     oamApp: "OAM Application",
@@ -25,6 +26,7 @@ export = {
     oamCompInstance: "OAM Component Instance",
   },
   instance: {
+    clusters: "Clusters",
     details: "Instance Details",
     instancePageLoaded: "Instance page loaded.",
     instanceHeading: "Verrazzano",

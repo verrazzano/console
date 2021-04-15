@@ -5,6 +5,7 @@
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
 import {
+  Cluster,
   Instance,
   Status,
   VMIType,
@@ -30,6 +31,7 @@ class State {
   loading?: boolean;
   error?: string;
   breadcrumbs?: BreadcrumbType[];
+  clusters?: Cluster[];
   oamApplications?: OAMApplication[];
   oamComponents?: OAMComponent[];
 }
@@ -59,13 +61,15 @@ export class ConsoleInstance extends VComponent<Props, State> {
     Promise.all([
       this.verrazzanoApi.getInstance("0"),
       this.verrazzanoApi.listOAMAppsAndComponents(),
+      this.verrazzanoApi.listClusters(),
     ])
-      .then(([instance, { oamApplications, oamComponents }]) => {
+      .then(([instance, { oamApplications, oamComponents}, clusters]) => {
         this.updateState({
           loading: false,
           instance: instance,
           oamApplications,
           oamComponents,
+          clusters
         });
       })
       .catch((error) => {
@@ -194,9 +198,10 @@ export class ConsoleInstance extends VComponent<Props, State> {
         <ConsoleInstanceResources
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.props.selectedItem}
+          clusters={this.state.clusters}
           oamApplications={this.state.oamApplications}
           oamComponents={this.state.oamComponents}
-        />
+         />
       </div>
     );
   }

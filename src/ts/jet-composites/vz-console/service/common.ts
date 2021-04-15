@@ -2,6 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
+  Cluster,
   Instance,
   Status,
   OAMApplication,
@@ -28,6 +29,47 @@ export const extractInstances = (instances: any[]): Instance[] => {
     });
   });
   return result;
+};
+
+export const processClusterData = (clustersData: any[]): {
+  clusters: Map<string, Map<String, Cluster>>;
+} => {
+  const clusters = new Map<string, Map<String, Cluster>>();
+
+  clustersData.forEach((clusterData) => {
+    if (clusterData.metadata.name) {
+    /*  const cluster = <Cluster>{
+        name: clusterData.metadata.name,
+        namespace: clusterData.metadata.namespace,
+      };*/
+const cluster = <Cluster> {
+      name: clusterData.metadata.name,
+        namespace: clusterData.metadata.namespace,
+        workloadType:
+          clusterData.spec &&
+          clusterData.spec.workload &&
+          clusterData.spec.workload.kind
+            ? clusterData.spec.workload.kind
+            : "",
+        latestRevision:
+          clusterData.status &&
+          clusterData.status.latestRevision &&
+          clusterData.status.latestRevision.name,
+        data: clusterData,
+        applications: [],
+        createdOn: convertDate(clusterData.metadata.creationTimestamp),
+}
+      let clustersForNamespace = clusters.get(cluster.namespace);
+
+      if (!clustersForNamespace) {
+        clustersForNamespace = new Map<String, Cluster>();
+        clusters.set(cluster.namespace, clustersForNamespace);
+      }
+
+      clustersForNamespace.set(cluster.name, cluster);
+    }
+  })
+  return { clusters };
 };
 
 export const processOAMData = (
