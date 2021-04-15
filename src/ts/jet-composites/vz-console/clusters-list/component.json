@@ -1,0 +1,8 @@
+{
+  "name": "auth",
+  "version": "1.0.0",
+  "jetVersion": "^9.0.0",
+  "pack": "vz-console",
+  "displayName": "clusters list component.",
+  "description": "clusters list component."
+}
