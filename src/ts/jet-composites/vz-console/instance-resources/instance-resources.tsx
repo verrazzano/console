@@ -10,9 +10,9 @@ import { getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleClustersList } from "vz-console/clusters-list/loader";
 import { ConsoleOAMApplicationsList } from "vz-console/oamapps-list/loader";
 import { ConsoleOAMComponentsList } from "vz-console/oamcomps-list/loader";
+import { Cluster } from "node:cluster";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
-import { Cluster } from "node:cluster";
 
 class Props {
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
