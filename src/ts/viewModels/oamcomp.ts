@@ -6,9 +6,11 @@ import * as AccUtils from "../accUtils";
 class ModelViewModel {
   oamCompId: string | null;
   selectedItem: string | null;
+  cluster: string | "local";
   constructor() {
     this.oamCompId = getQueryParam("oamCompId");
     this.selectedItem = getQueryParam("selectedItem");
+    this.cluster = getQueryParam("cluster");
   }
 
   /**

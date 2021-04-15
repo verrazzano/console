@@ -131,6 +131,15 @@ export const Error = {
 
   errInvalidWorkload: (...args) =>
     Translations.getTranslatedString("error.errInvalidWorkload", args),
+
+  errMCApplicationsFetchError: (...args) =>
+    Translations.getTranslatedString("error.errMCApplicationsFetchError", args),
+
+  errMCComponentsFetchError: (...args) =>
+    Translations.getTranslatedString("error.errMCComponentsFetchError", args),
+
+  errFetchApiURLFromVMCError: (...args) =>
+    Translations.getTranslatedString("error.errFetchApiURLFromVMCError", args),
 };
 
 export const Auth = {
@@ -190,6 +199,8 @@ export const Labels = {
   byType: () => Translations.getTranslatedString("labels.byType"),
   byState: () => Translations.getTranslatedString("labels.byState"),
   componentInfo: () => Translations.getTranslatedString("labels.componentInfo"),
+  clusters: () => Translations.getTranslatedString("labels.clusters"),
+  cluster: () => Translations.getTranslatedString("labels.cluster"),
   mgdClusterProfile: () =>
     Translations.getTranslatedString("labels.mgdClusterProfile"),
   prodProfile: () => Translations.getTranslatedString("labels.prodProfile"),

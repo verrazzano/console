@@ -7,10 +7,12 @@ class ModelViewModel {
   oamAppId: string | null;
   selectedItem: string | null;
   selectedComponent: string | null;
+  cluster: string | "local";
   constructor() {
     this.oamAppId = getQueryParam("oamAppId");
     this.selectedItem = getQueryParam("selectedItem");
     this.selectedComponent = getQueryParam("selectedComponent");
+    this.cluster = getQueryParam("cluster");
   }
 
   /**

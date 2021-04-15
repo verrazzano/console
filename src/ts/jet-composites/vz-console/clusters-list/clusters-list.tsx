@@ -18,7 +18,7 @@ class Props {
 /**
  * @ojmetadata pack "vz-console"
  */
-@customElement("vz-console-oamapps-list")
+@customElement("vz-console-clusters-list")
 export class ConsoleClustersList extends VComponent<Props> {
   columnArray = [
     {

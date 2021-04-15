@@ -83,6 +83,13 @@ export = {
     errIngressFetchError: "Error fetching Ingress {0}/{1}",
 
     errInvalidWorkload: "Invalid workload metadata for component {0}/{1}",
+
+    errMCApplicationsFetchError:
+      "Error fetching Multi-cluster OAM ApplicationConfigurations.",
+
+    errMCComponentsFetchError: "Error fetching Multi-cluster OAM Components.",
+
+    errFetchApiURLFromVMCError: "Unable to read apiUrl from status of VMC {0}.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
@@ -135,6 +142,8 @@ export = {
     byType: "By Type",
     byState: "By State",
     componentInfo: "Component Details",
+    clusters: "Clusters",
+    cluster: "Cluster",
     mgdClusterProfile: "Managed Cluster",
     prodProfile: "Production",
     devProfile: "Development",

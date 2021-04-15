@@ -3,7 +3,7 @@
 
 // eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
-import { OAMComponentInstance, Status } from "vz-console/service/loader";
+import { OAMComponent } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
@@ -12,18 +12,13 @@ import "ojs/ojpagingcontrol";
 import * as ko from "knockout";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages";
-import { ConsoleOAMAppComponentView } from "vz-console/oamapp-component-view/loader";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
-  components: [OAMComponentInstance];
+  components: [OAMComponent];
   filterCallback?: (filter: Element) => {};
-  selectedComponent?: string;
-  linkSelectionCallback?: (
-    selectedItem: string,
-    selectedComponent: string
-  ) => {};
+  selectedItem?: string;
 }
 
 class State {
@@ -34,12 +29,23 @@ class State {
 /**
  * @ojmetadata pack "vz-console"
  */
-@customElement("vz-console-oamapp-components")
-export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
+@customElement("vz-console-instance-components")
+export class ConsoleInstanceComponents extends VComponent<Props, State> {
   state: State = {};
   options = [
-    { value: "name", label: "Name" },
-    { value: "status", label: "Status" },
+    {
+      value: Messages.Labels.name().toLowerCase(),
+      label: Messages.Labels.name(),
+    },
+    { value: Messages.Labels.ns().toLowerCase(), label: Messages.Labels.ns() },
+    {
+      value: Messages.Labels.workloadType().toLowerCase(),
+      label: Messages.Labels.workloadType(),
+    },
+    {
+      value: Messages.Labels.cluster().toLowerCase(),
+      label: Messages.Labels.cluster(),
+    },
   ];
 
   optionsDataProvider = new ArrayDataProvider(this.options, {
@@ -52,7 +58,7 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
 
   currentSort = ko.observable(this.defaultSort);
 
-  currentStatusFilter = ko.observable([Status.Any]);
+  currentClusterFilter = ko.observable([""]);
 
   constructor() {
     super(new Props());
@@ -60,17 +66,33 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
 
   compare = (left: Model.Model, right: Model.Model): number => {
     let result = 0;
-    const leftComponent = left.attributes as OAMComponentInstance;
-    const rightComponent = right.attributes as OAMComponentInstance;
+    const leftComponent = left.attributes as OAMComponent;
+    const rightComponent = right.attributes as OAMComponent;
     switch (this.currentSort()) {
       case "default":
-      case "name": {
+      case Messages.Labels.name().toLowerCase(): {
         result = leftComponent.name?.localeCompare(rightComponent.name);
         break;
       }
 
-      case "status": {
-        result = leftComponent.status?.localeCompare(rightComponent.status);
+      case Messages.Labels.ns().toLowerCase(): {
+        result = leftComponent.namespace?.localeCompare(
+          rightComponent.namespace
+        );
+        break;
+      }
+
+      case Messages.Labels.cluster().toLowerCase(): {
+        result = leftComponent.cluster.name?.localeCompare(
+          rightComponent.cluster.name
+        );
+        break;
+      }
+
+      case Messages.Labels.workloadType().toLowerCase(): {
+        result = leftComponent.workloadType?.localeCompare(
+          rightComponent.workloadType
+        );
         break;
       }
 
@@ -94,11 +116,11 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
     if (components) {
       let models = components.models;
       models = models.filter((model) => {
-        const component = model.attributes as OAMComponentInstance;
-        const statusFilter = this.currentStatusFilter();
+        const component = model.attributes as OAMComponent;
+        const clusterFilter = this.currentClusterFilter();
         if (
-          statusFilter.includes(Status.Any) ||
-          statusFilter.includes(component.status)
+          clusterFilter.includes("") ||
+          clusterFilter.includes(component.cluster.name)
         ) {
           return true;
         }
@@ -114,7 +136,6 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
   protected mounted() {
     const models: Model.Model[] = [];
     for (const component of this.props.components) {
-      component.eventHandler = this.props.linkSelectionCallback;
       models.push(new Model.Model(component));
     }
     this.updateState({
@@ -124,14 +145,14 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
   }
 
   @listener({ capture: true, passive: true })
-  private handleStatusFilterChanged(event: CustomEvent) {
+  private handleClusterFilterChanged(event: CustomEvent) {
     if (
       event.detail.previousValue.length > 0 &&
       event.detail.value.length === 0
     ) {
-      this.currentStatusFilter([Status.Any]);
+      this.currentClusterFilter([""]);
     } else {
-      this.currentStatusFilter(event.detail.value);
+      this.currentClusterFilter(event.detail.value);
     }
     this.updateState({ components: this.executeFilters() });
   }
@@ -154,17 +175,27 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
     );
 
     if (this.props.filterCallback) {
+      const clusterOptions: Map<
+        string,
+        { label: string; value: string }
+      > = new Map();
+      if (this.props.components) {
+        this.props.components.forEach((component) => {
+          if (component.cluster) {
+            clusterOptions.set(component.cluster.name, {
+              label: component.cluster.name,
+              value: component.cluster.name,
+            });
+          }
+        });
+      }
       this.props.filterCallback(
         <div>
           <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
           <ConsoleFilter
-            label={Messages.Labels.state()}
-            options={[
-              { label: Status.Running, value: Status.Running },
-              { label: Status.Pending, value: Status.Pending },
-              { label: Status.Terminated, value: Status.Terminated },
-            ]}
-            onValueChanged={this.handleStatusFilterChanged}
+            label={Messages.Labels.clusters()}
+            options={Array.from(clusterOptions.values())}
+            onValueChanged={this.handleClusterFilterChanged}
           />
         </div>
       );
@@ -213,10 +244,69 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
                 </div>
               </div>
 
-              <ConsoleOAMAppComponentView
-                dataProvider={this.dataProvider()}
-                selectedComponent={this.props.selectedComponent}
-              />
+              <oj-list-view
+                id="listview"
+                ariaLabel="oam components"
+                data={this.dataProvider()}
+                selectionMode="single"
+                class="oj-complete"
+              >
+                <template slot="itemTemplate" data-oj-as="item">
+                  <oj-list-item-layout class="oj-complete">
+                    <div class="oj-flex cardmargin">
+                      <div class="oj-sm-10 oj-flex-item">
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.name()}:&nbsp;</span>
+                          </strong>
+                          <a
+                            data-bind={`attr: {href: '/oamcomps/' + item.data.data.metadata.uid + (item.data.cluster && item.data.cluster.name !== 'local' ? ('?cluster=' + item.data.cluster.name) : '')}`}
+                          >
+                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                          </a>
+                        </div>
+
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.ns()}:&nbsp;</span>
+                          </strong>
+                          <span>
+                            <oj-bind-text value="[[item.data.namespace]]"></oj-bind-text>
+                          </span>
+                        </div>
+
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.created()}:&nbsp;</span>
+                          </strong>
+                          <span>
+                            <oj-bind-text value="[[item.data.createdOn]]"></oj-bind-text>
+                          </span>
+                        </div>
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.workloadType()}:&nbsp;</span>
+                          </strong>
+                          <span>
+                            <oj-bind-text value="[[item.data.workloadType]]"></oj-bind-text>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="oj-sm-2 oj-flex-item">
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.cluster()}:&nbsp;</span>
+                          </strong>
+                          <span>
+                            <oj-bind-text value="[[item.data.cluster.name]]"></oj-bind-text>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </oj-list-item-layout>
+                </template>
+              </oj-list-view>
 
               <div class="oj-flex card-border">
                 <div class="oj-sm-7 oj-flex-item"></div>
