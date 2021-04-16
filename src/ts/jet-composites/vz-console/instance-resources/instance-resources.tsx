@@ -4,11 +4,10 @@
 // eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
 import * as Messages from "vz-console/utils/Messages";
-import { OAMApplication, OAMComponent } from "vz-console/service/types";
+import { OAMApplication, OAMComponent, Cluster } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleClustersList } from "vz-console/clusters-list/loader";
-import { Cluster } from "node:cluster";
 import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
 import { ConsoleInstanceComponents } from "vz-console/instance-components/loader";
 import CoreRouter = require("ojs/ojcorerouter");
