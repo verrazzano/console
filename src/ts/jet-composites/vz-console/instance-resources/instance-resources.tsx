@@ -20,9 +20,9 @@ import UrlPathAdapter = require("ojs/ojurlpathadapter");
 class Props {
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
-  clusters?: [Cluster];
   oamApplications?: [OAMApplication];
   oamComponents?: [OAMComponent];
+  clusters?: [Cluster];
 }
 
 class State {
@@ -105,12 +105,6 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     let ResourceList: Element;
     let Heading: Element;
     switch (this.state.selectedItem) {
-      case "clusters": {
-        ResourceList = <ConsoleClustersList clusters={this.props.clusters} />;
-        Heading = <h1 class="resheader">{this.labels.clusters}</h1>;
-        break;
-      }
-
       case "oamapps": {
         ResourceList = (
           <ConsoleInstanceApps
@@ -130,6 +124,12 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
           />
         );
         Heading = <h1 class="resheader">{this.labels.oamcomps}</h1>;
+        break;
+      }
+
+      case "clusters": {
+        ResourceList = <ConsoleClustersList clusters={this.props.clusters} />;
+        Heading = <h1 class="resheader">{this.labels.clusters}</h1>;
         break;
       }
 

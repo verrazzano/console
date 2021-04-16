@@ -6,7 +6,6 @@
   "displayName": "Console VComponents",
   "description": "Console and its related components.",
   "dependencies": {
-    "vz-console-clusters-list": "1.0.0",
     "vz-console-instance": "1.0.0",
     "vz-console-metadata-item": "1.0.0",
     "vz-console-instance-resources": "1.0.0",
@@ -28,6 +27,7 @@
     "vz-console-oamcomp-params-list": "1.0.0",
     "vz-console-oamapp-component-view": "1.0.0",
     "vz-console-instance-apps": "1.0.0",
-    "vz-console-instance-components": "1.0.0"
+    "vz-console-instance-components": "1.0.0",
+    "vz-console-clusters-list": "1.0.0"
   }
 }

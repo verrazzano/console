@@ -366,10 +366,8 @@ export class VerrazzanoApi {
 
         const { clusters } = processClusterData(clustersResponse.items);
 
-        clusters.forEach((element) => {
-          element.forEach((cluster) => {
-            clustersResult.push(cluster);
-          });
+        clusters.forEach((cluster) => {
+          clustersResult.push(cluster);
         });
         return clustersResult;
       })

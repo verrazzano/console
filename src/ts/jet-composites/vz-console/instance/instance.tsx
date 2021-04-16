@@ -198,9 +198,9 @@ export class ConsoleInstance extends VComponent<Props, State> {
         <ConsoleInstanceResources
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.props.selectedItem}
-          clusters={this.state.clusters}
           oamApplications={this.state.oamApplications}
           oamComponents={this.state.oamComponents}
+          clusters={this.state.clusters}
         />
       </div>
     );
