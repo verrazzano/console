@@ -6,6 +6,7 @@ import {
   Instance,
   OAMApplication,
   OAMComponent,
+  Project,
   ResourceType,
   ResourceTypeType,
 } from "./types";
@@ -488,6 +489,37 @@ export class VerrazzanoApi {
         }
 
         return vmc.status.apiUrl;
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async listProjects(): Promise<Project[]> {
+   return this.getKubernetesResource(ResourceType.VerrazzanoProject)
+      .then((projectsResponse) => {
+        return projectsResponse.json();
+      })
+      .then((projects) => {
+        if (!projects) {
+          throw new Error(Messages.Error.errOAMApplicationsFetchError());
+        }
+        
+        const vps : Project[] = []
+        if(projects.items) {
+          projects.items.forEach(project => {
+            const vp = <Project> {
+              name: project.metadata?.name,
+              namespace:  project.metadata?.namespace
+            }
+            vps.push(vp)
+          });
+        }
+        return vps;
       })
       .catch((error) => {
         let errorMessage = error;

@@ -89,6 +89,8 @@ export = {
     errMCComponentsFetchError: "Error fetching Multi-cluster OAM Components.",
 
     errFetchApiURLFromVMCError: "Unable to read apiUrl from status of VMC {0}.",
+
+    errProjectsFetchError: "Error fetching Projects.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
