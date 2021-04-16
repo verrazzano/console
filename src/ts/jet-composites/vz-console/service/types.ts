@@ -133,6 +133,14 @@ export interface OAMComponentParam {
   descriptor?: any;
 }
 
+export interface Project {
+  name?: string;
+  namespace?: string;
+  namespaces?: any[];
+  clusters?: any[];
+  data?: any;
+}
+
 export interface ResourceTypeType {
   ApiVersion?: string;
   Kind?: string;
@@ -202,5 +210,9 @@ export const ResourceType = {
   VerrazzanoManagedCluster: <ResourceTypeType>{
     ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
     Kind: "VerrazzanoManagedCluster",
+  },
+  VerrazzanoProject: <ResourceTypeType>{
+    ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
+    Kind: "VerrazzanoProject",
   },
 };

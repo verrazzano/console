@@ -23,6 +23,7 @@ export = {
     oamCompDetails: "OAM Component Details",
     compInstances: "Component Instances",
     oamCompInstance: "OAM Component Instance",
+    project: "Project",
   },
   instance: {
     details: "Instance Details",

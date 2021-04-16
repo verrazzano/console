@@ -34,6 +34,7 @@ export const Nav = {
   compInstances: () => Translations.getTranslatedString("nav.compInstances"),
   oamCompInstance: () =>
     Translations.getTranslatedString("nav.oamCompInstance"),
+  project: () => Translations.getTranslatedString("nav.project"),
 };
 
 export const Instance = {
