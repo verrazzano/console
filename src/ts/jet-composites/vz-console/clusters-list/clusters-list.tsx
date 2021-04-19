@@ -21,28 +21,6 @@ class Props {
  */
 @customElement("vz-console-clusters-list")
 export class ConsoleClustersList extends VComponent<Props> {
-  columnArray = [
-    {
-      headerText: Messages.Labels.name(),
-      sortable: "enabled",
-      sortProperty: "name",
-    },
-    {
-      headerText: Messages.Labels.ns(),
-      sortable: "enabled",
-      sortProperty: "namespace",
-    },
-    {
-      headerText: Messages.Labels.desc(),
-      sortable: "enabled",
-      sortProperty: "status",
-    },
-    {
-      headerText: Messages.Labels.created(),
-      sortable: "enabled",
-      sortProperty: "createdOn",
-    },
-  ];
 
   dataProvider: ko.Observable = ko.observable();
 
