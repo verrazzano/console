@@ -19,8 +19,8 @@ class Props {
 /**
  * @ojmetadata pack "vz-console"
  */
-@customElement("vz-console-clusters-list")
-export class ConsoleClustersList extends VComponent<Props> {
+@customElement("vz-console-instance-clusters")
+export class ConsoleInstanceClusters extends VComponent<Props> {
 
   dataProvider: ko.Observable = ko.observable();
 

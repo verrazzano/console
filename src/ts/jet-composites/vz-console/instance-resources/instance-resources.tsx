@@ -11,7 +11,7 @@ import {
 } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
-import { ConsoleClustersList } from "vz-console/clusters-list/loader";
+import { ConsoleInstanceClusters } from "vz-console/instance-clusters/loader";
 import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
 import { ConsoleInstanceComponents } from "vz-console/instance-components/loader";
 import CoreRouter = require("ojs/ojcorerouter");
@@ -128,7 +128,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
       }
 
       case "clusters": {
-        ResourceList = <ConsoleClustersList clusters={this.props.clusters} />;
+        ResourceList = <ConsoleInstanceClusters clusters={this.props.clusters} />;
         Heading = <h1 class="resheader">{this.labels.clusters}</h1>;
         break;
       }
