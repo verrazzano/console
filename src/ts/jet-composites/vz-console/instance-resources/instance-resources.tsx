@@ -128,7 +128,9 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
       }
 
       case "clusters": {
-        ResourceList = <ConsoleInstanceClusters clusters={this.props.clusters} />;
+        ResourceList = (
+          <ConsoleInstanceClusters clusters={this.props.clusters} />
+        );
         Heading = <h1 class="resheader">{this.labels.clusters}</h1>;
         break;
       }

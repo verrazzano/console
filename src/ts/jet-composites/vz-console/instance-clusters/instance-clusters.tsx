@@ -21,7 +21,6 @@ class Props {
  */
 @customElement("vz-console-instance-clusters")
 export class ConsoleInstanceClusters extends VComponent<Props> {
-
   dataProvider: ko.Observable = ko.observable();
 
   defaultSort = "default";
@@ -52,9 +51,7 @@ export class ConsoleInstanceClusters extends VComponent<Props> {
       }
 
       case Messages.Labels.ns().toLowerCase(): {
-        result = leftCluster.namespace?.localeCompare(
-          rightCluster.namespace
-        );
+        result = leftCluster.namespace?.localeCompare(rightCluster.namespace);
         break;
       }
 
