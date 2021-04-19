@@ -42,18 +42,18 @@ export class ConsoleClustersList extends VComponent<Props> {
 
   compare = (left: Model.Model, right: Model.Model): number => {
     let result = 0;
-    const leftApplication = left.attributes as Cluster;
-    const rightApplication = right.attributes as Cluster;
+    const leftCluster = left.attributes as Cluster;
+    const rightCluster = right.attributes as Cluster;
     switch (this.currentSort()) {
       case "default":
       case Messages.Labels.name().toLowerCase(): {
-        result = leftApplication.name?.localeCompare(rightApplication.name);
+        result = leftCluster.name?.localeCompare(rightCluster.name);
         break;
       }
 
       case Messages.Labels.ns().toLowerCase(): {
-        result = leftApplication.namespace?.localeCompare(
-          rightApplication.namespace
+        result = leftCluster.namespace?.localeCompare(
+          rightCluster.namespace
         );
         break;
       }
