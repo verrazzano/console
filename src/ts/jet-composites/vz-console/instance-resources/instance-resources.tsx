@@ -62,9 +62,9 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     this.router = new CoreRouter(
       [
         { path: "" },
-        { path: "clusters" },
         { path: "oamapps" },
         { path: "oamcomps" },
+        { path: "clusters" },
       ],
       {
         urlAdapter: new UrlPathAdapter("/"),

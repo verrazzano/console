@@ -53,6 +53,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
   }
 
   protected mounted() {
+    console.log("HERE instance");
     this.getData();
   }
 

@@ -31,12 +31,8 @@ export const extractInstances = (instances: any[]): Instance[] => {
   return result;
 };
 
-export const processClusterData = (
-  clustersData: any[]
-): {
-  clusters: Map<String, Cluster>;
-} => {
-  const clusters = new Map<String, Cluster>();
+export const processClusterData = (clustersData: any[]): Cluster[] => {
+  const clusters = <Cluster[]>[];
 
   clustersData.forEach((clusterData) => {
     if (clusterData.metadata.name) {
@@ -47,10 +43,10 @@ export const processClusterData = (
         createdOn: convertDate(clusterData.metadata.creationTimestamp),
       };
 
-      clusters.set(cluster.name, cluster);
+      clusters.push(cluster);
     }
   });
-  return { clusters };
+  return clusters;
 };
 
 export const processOAMData = (

@@ -106,6 +106,10 @@ function rewriteUrls() {
       }${req.query.cluster ? "&cluster=" + req.query.cluster : ""}`
     );
   });
+  app.get("/clusters", (req, res, next) => {
+    res.redirect("/?ojr=instance&selectedItem=clusters");
+  });
+  
   return app;
 }
 

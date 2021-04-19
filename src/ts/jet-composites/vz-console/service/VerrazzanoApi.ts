@@ -362,14 +362,7 @@ export class VerrazzanoApi {
         return clusterResponse.json();
       })
       .then((clustersResponse) => {
-        const clustersResult: Cluster[] = [];
-
-        const { clusters } = processClusterData(clustersResponse.items);
-
-        clusters.forEach((cluster) => {
-          clustersResult.push(cluster);
-        });
-        return clustersResult;
+        return processClusterData(clustersResponse.items);
       })
       .catch((error) => {
         let errorMessage = error;
