@@ -31,6 +31,7 @@ export = {
     instanceHeading: "Verrazzano",
     oamApps: "OAM Applications",
     oamComponents: "OAM Components",
+    projects: "Projects",
   },
   error: {
     errSendAuthReq: "Error sending auth request: {0}",
@@ -91,6 +92,8 @@ export = {
     errFetchApiURLFromVMCError: "Unable to read apiUrl from status of VMC {0}.",
 
     errProjectsFetchError: "Error fetching Projects.",
+    errInvalidProjectId: "Invalid Project Id.",
+    errRenderProject: "Error displaying Project {0}.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
@@ -148,6 +151,8 @@ export = {
     mgdClusterProfile: "Managed Cluster",
     prodProfile: "Production",
     devProfile: "Development",
+    projectInfo: "Project Details",
+    namespaces: "Namespaces",
   },
 
   pagination: {

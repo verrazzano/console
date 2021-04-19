@@ -46,6 +46,8 @@ export const Instance = {
   oamApps: () => Translations.getTranslatedString("instance.oamApps"),
   oamCompoennts: () =>
     Translations.getTranslatedString("instance.oamComponents"),
+  projects: () =>
+    Translations.getTranslatedString("instance.projects"),
 };
 
 export const Error = {
@@ -145,6 +147,12 @@ export const Error = {
       "error.errProjectsFetchError",
       args
     ),
+
+  errInvalidProjectId: (...args) =>
+    Translations.getTranslatedString("error.errInvalidProjectId", args),
+  
+  errRenderProject: (...args) =>
+    Translations.getTranslatedString("error.errRenderProject", args),
 };
 
 export const Auth = {
@@ -210,6 +218,8 @@ export const Labels = {
     Translations.getTranslatedString("labels.mgdClusterProfile"),
   prodProfile: () => Translations.getTranslatedString("labels.prodProfile"),
   devProfile: () => Translations.getTranslatedString("labels.devProfile"),
+  projectInfo: () => Translations.getTranslatedString("labels.projectInfo"),
+  namespaces: () => Translations.getTranslatedString("labels.namespaces"),
 };
 
 export const Pagination = {

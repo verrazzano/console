@@ -10,7 +10,7 @@ import {
   ResourceType,
   ResourceTypeType,
 } from "./types";
-import { processOAMData } from "./common";
+import { processOAMData, processProjectsData } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
 
@@ -509,17 +509,8 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errOAMApplicationsFetchError());
         }
         
-        const vps : Project[] = []
-        if(projects.items) {
-          projects.items.forEach(project => {
-            const vp = <Project> {
-              name: project.metadata?.name,
-              namespace:  project.metadata?.namespace
-            }
-            vps.push(vp)
-          });
-        }
-        return vps;
+       return processProjectsData(projects.items)
+       
       })
       .catch((error) => {
         let errorMessage = error;
@@ -528,6 +519,18 @@ export class VerrazzanoApi {
         }
         throw new Error(errorMessage);
       });
+  }
+
+
+  public async getProject(
+    projectId: string
+  ): Promise<Project> {
+    const projects = await this.listProjects();
+    const project = projects.find(
+      (project) =>
+      project.data.metadata.uid === projectId
+    );
+    return project;
   }
 
   public constructor(url: string = "", cluster: string = "local") {

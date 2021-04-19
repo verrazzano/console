@@ -4,11 +4,12 @@
 // eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
 import * as Messages from "vz-console/utils/Messages";
-import { OAMApplication, OAMComponent } from "vz-console/service/types";
+import { OAMApplication, OAMComponent, Project } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
 import { ConsoleInstanceComponents } from "vz-console/instance-components/loader";
+import { ConsoleInstanceProjects } from "vz-console/instance-projects/loader";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
@@ -17,6 +18,7 @@ class Props {
   selectedItem?: string;
   oamApplications?: [OAMApplication];
   oamComponents?: [OAMComponent];
+  projects: [Project];
 }
 
 class State {
@@ -43,6 +45,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
   labels = {
     oamapps: Messages.Instance.oamApps(),
     oamcomps: Messages.Instance.oamCompoennts(),
+    projects: Messages.Instance.projects(),
   };
 
   state: State = {
@@ -53,7 +56,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     getDefaultRouter().destroy();
     history.replaceState(null, "path", `/${this.props.selectedItem}`);
     this.router = new CoreRouter(
-      [{ path: "" }, { path: "oamapps" }, { path: "oamcomps" }],
+      [{ path: "" }, { path: "oamapps" }, { path: "oamcomps" },  { path: "projects" }],
       {
         urlAdapter: new UrlPathAdapter("/"),
       }
@@ -115,6 +118,17 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
         break;
       }
 
+      case "projects": {
+        ResourceList = (
+          <ConsoleInstanceProjects
+            projects={this.props.projects}
+            filterCallback={this.filterCallback}
+          />
+        );
+        Heading = <h1 class="resheader">{this.labels.projects}</h1>;
+        break;
+      }
+
       default: {
         break;
       }
@@ -138,6 +152,9 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
               </li>
               <li id="oamcomps">
                 <a href="#">{this.labels.oamcomps}</a>
+              </li>
+              <li id="projects">
+                <a href="#">{this.labels.projects}</a>
               </li>
             </ul>
             <div id="filters">{this.state.filter}</div>

@@ -139,6 +139,7 @@ export interface Project {
   namespaces?: any[];
   clusters?: any[];
   data?: any;
+  createdOn?: string;
 }
 
 export interface ResourceTypeType {

@@ -10,6 +10,7 @@ import {
   VMIType,
   OAMApplication,
   OAMComponent,
+  Project
 } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader";
@@ -32,6 +33,7 @@ class State {
   breadcrumbs?: BreadcrumbType[];
   oamApplications?: OAMApplication[];
   oamComponents?: OAMComponent[];
+  projects?: Project[];
 }
 
 /**
@@ -59,13 +61,15 @@ export class ConsoleInstance extends VComponent<Props, State> {
     Promise.all([
       this.verrazzanoApi.getInstance("0"),
       this.verrazzanoApi.listOAMAppsAndComponents(),
+      this.verrazzanoApi.listProjects()
     ])
-      .then(([instance, { oamApplications, oamComponents }]) => {
+      .then(([instance, { oamApplications, oamComponents }, projects]) => {
         this.updateState({
           loading: false,
           instance: instance,
           oamApplications,
           oamComponents,
+          projects
         });
       })
       .catch((error) => {
@@ -196,6 +200,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
           selectedItem={this.props.selectedItem}
           oamApplications={this.state.oamApplications}
           oamComponents={this.state.oamComponents}
+          projects={this.state.projects}
         />
       </div>
     );
