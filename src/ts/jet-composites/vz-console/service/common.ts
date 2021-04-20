@@ -40,6 +40,12 @@ export const processClusterData = (clustersData: any[]): Cluster[] => {
         name: clusterData.metadata.name,
         namespace: clusterData.metadata.namespace,
         data: clusterData,
+        status:
+          clusterData.status &&
+          clusterData.status.conditions &&
+          clusterData.status.conditions.length > 0
+            ? getStatusForOAMResource(clusterData.status.conditions[0].status)
+            : Status.Pending,
         createdOn: convertDate(clusterData.metadata.creationTimestamp),
       };
 

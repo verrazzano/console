@@ -11,16 +11,22 @@ import * as Messages from "vz-console/utils/Messages";
 import * as ko from "knockout";
 import "ojs/ojpagingcontrol";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
-
+import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 class Props {
   clusters?: [Cluster];
+}
+
+class State {
+  clusters?: Model.Collection;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-instance-clusters")
-export class ConsoleInstanceClusters extends VComponent<Props> {
+export class ConsoleInstanceClusters extends VComponent<Props, State> {
+  state: State = {};
+
   dataProvider: ko.Observable = ko.observable();
 
   defaultSort = "default";
@@ -33,6 +39,10 @@ export class ConsoleInstanceClusters extends VComponent<Props> {
       label: Messages.Labels.name(),
     },
     { value: Messages.Labels.ns().toLowerCase(), label: Messages.Labels.ns() },
+    {
+      value: Messages.Labels.status().toLowerCase(),
+      label: Messages.Labels.status(),
+    },
   ];
 
   optionsDataProvider = new ArrayDataProvider(this.options, {
@@ -55,6 +65,10 @@ export class ConsoleInstanceClusters extends VComponent<Props> {
         break;
       }
 
+      case Messages.Labels.status().toLowerCase(): {
+        result = leftCluster.status?.localeCompare(rightCluster.status);
+        break;
+      }
       default: {
         break;
       }
@@ -78,13 +92,22 @@ export class ConsoleInstanceClusters extends VComponent<Props> {
     });
   }
 
+  protected mounted() {
+    const models: Model.Model[] = [];
+    for (const cluster of this.props.clusters) {
+      models.push(new Model.Model(cluster));
+    }
+    this.updateState({
+      clusters: new Model.Collection(models),
+    });
+  }
+
   protected render() {
     this.dataProvider(
       new PagingDataProviderView(
-        new ArrayDataProvider(this.props.clusters ? this.props.clusters : [], {
-          keyAttributes: "name",
-          implicitSort: [{ attribute: "data.name", direction: "ascending" }],
-        })
+        new CollectionDataProvider(
+          this.state.clusters ? this.state.clusters : new Model.Collection([])
+        )
       )
     );
     return (
@@ -155,6 +178,29 @@ export class ConsoleInstanceClusters extends VComponent<Props> {
                           </strong>
                           <span>
                             <oj-bind-text value="[[item.data.namespace]]"></oj-bind-text>
+                          </span>
+                        </div>
+
+                        <div class="carditem">
+                          <strong>{Messages.Labels.status()}:&nbsp;</strong>
+                          <span>
+                            <oj-bind-if test="[[item.data.status === 'Running']]">
+                              <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-green">
+                                <span class="oj-icon-circle-inner status-icon"></span>
+                              </span>
+                            </oj-bind-if>
+                            <oj-bind-if test="[[item.data.status === 'Terminated']]">
+                              <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-red">
+                                <span class="oj-icon-circle-inner status-icon"></span>
+                              </span>
+                            </oj-bind-if>
+                            <oj-bind-if test="[[item.data.status === 'Pending']]">
+                              <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-orange">
+                                <span class="oj-icon-circle-inner status-icon"></span>
+                              </span>
+                            </oj-bind-if>
+                            &nbsp;
+                            <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
                           </span>
                         </div>
 
