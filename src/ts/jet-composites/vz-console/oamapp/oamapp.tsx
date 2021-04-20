@@ -577,7 +577,10 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
             );
             break;
         }
-        if (this.state.oamApplication.cluster) {
+        if (
+          this.state.oamApplication.cluster &&
+          this.state.oamApplication.cluster.name !== "local"
+        ) {
           tabContents.push(
             <ConsoleMetadataItem
               label={Messages.Labels.cluster()}

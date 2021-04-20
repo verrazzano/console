@@ -192,7 +192,10 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
             id="tabMetaInfo"
           />,
         ];
-        if (this.state.oamComponent.cluster) {
+        if (
+          this.state.oamComponent.cluster &&
+          this.state.oamComponent.cluster.name !== "local"
+        ) {
           metadataItems.push(
             <ConsoleMetadataItem
               label={Messages.Labels.cluster()}

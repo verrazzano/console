@@ -64,40 +64,45 @@ export class ConsoleInstance extends VComponent<Props, State> {
       this.verrazzanoApi.listProjects(),
     ])
       .then(([instance, { oamApplications, oamComponents }, projects]) => {
-        oamApplications.forEach((application) => {
-          projects.forEach((project) => {
-            if (
-              project.namespaces &&
-              project.namespaces.some(
-                (namespace) =>
-                  application.namespace === namespace.metadata?.name
-              ) &&
-              project.clusters &&
-              project.clusters.some(
-                (cluster) => cluster.name === application.cluster.name
-              )
-            ) {
-              application.project = project;
-            }
+        if (oamApplications && projects) {
+          oamApplications.forEach((application) => {
+            projects.forEach((project) => {
+              if (
+                project.namespaces &&
+                project.namespaces.some(
+                  (namespace) =>
+                    application.namespace === namespace.metadata?.name
+                ) &&
+                project.clusters &&
+                project.clusters.some(
+                  (cluster) => cluster.name === application.cluster.name
+                )
+              ) {
+                application.project = project;
+              }
+            });
           });
-        });
+        }
 
-        oamComponents.forEach((component) => {
-          projects.forEach((project) => {
-            if (
-              project.namespaces &&
-              project.namespaces.some(
-                (namespace) => component.namespace === namespace.metadata?.name
-              ) &&
-              project.clusters &&
-              project.clusters.some(
-                (cluster) => cluster.name === component.cluster.name
-              )
-            ) {
-              component.project = project;
-            }
+        if (oamComponents && projects) {
+          oamComponents.forEach((component) => {
+            projects.forEach((project) => {
+              if (
+                project.namespaces &&
+                project.namespaces.some(
+                  (namespace) =>
+                    component.namespace === namespace.metadata?.name
+                ) &&
+                project.clusters &&
+                project.clusters.some(
+                  (cluster) => cluster.name === component.cluster.name
+                )
+              ) {
+                component.project = project;
+              }
+            });
           });
-        });
+        }
 
         this.updateState({
           loading: false,
