@@ -153,6 +153,8 @@ export = {
     devProfile: "Development",
     projectInfo: "Project Details",
     namespaces: "Namespaces",
+    projects: "Projects",
+    project: "Project",
   },
 
   pagination: {

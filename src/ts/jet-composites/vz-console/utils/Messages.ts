@@ -216,6 +216,8 @@ export const Labels = {
   devProfile: () => Translations.getTranslatedString("labels.devProfile"),
   projectInfo: () => Translations.getTranslatedString("labels.projectInfo"),
   namespaces: () => Translations.getTranslatedString("labels.namespaces"),
+  projects: () => Translations.getTranslatedString("labels.projects"),
+  project: () => Translations.getTranslatedString("labels.project"),
 };
 
 export const Pagination = {

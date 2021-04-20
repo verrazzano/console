@@ -60,6 +60,15 @@ export interface VMI {
   url?: string;
 }
 
+export interface Project {
+  name?: string;
+  namespace?: string;
+  namespaces?: any[];
+  clusters?: any[];
+  data?: any;
+  createdOn?: string;
+}
+
 export interface OAMApplication {
   name?: string;
   namespace?: string;
@@ -69,6 +78,7 @@ export interface OAMApplication {
   componentInstances?: OAMComponentInstance[];
   createdOn?: string;
   cluster: { name: string };
+  project?: Project;
 }
 
 export interface OAMComponent {
@@ -80,6 +90,7 @@ export interface OAMComponent {
   applications?: OAMApplication[];
   createdOn?: string;
   cluster: { name: string };
+  project?: Project;
 }
 
 export interface OAMTrait {
@@ -131,15 +142,6 @@ export interface OAMComponentParam {
   description?: string;
   required?: boolean;
   descriptor?: any;
-}
-
-export interface Project {
-  name?: string;
-  namespace?: string;
-  namespaces?: any[];
-  clusters?: any[];
-  data?: any;
-  createdOn?: string;
 }
 
 export interface ResourceTypeType {

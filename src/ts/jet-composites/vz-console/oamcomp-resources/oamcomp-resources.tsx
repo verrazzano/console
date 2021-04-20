@@ -19,6 +19,7 @@ class Props {
   oamComponent: OAMComponent;
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
+  cluster?: string;
 }
 
 /**
@@ -46,12 +47,20 @@ export class ConsoleOAMComponentResources extends VComponent<Props, State> {
     history.replaceState(
       null,
       "path",
-      `oamcomps/${this.props.oamComponent.data.metadata.uid}`
+      `oamcomps/${this.props.oamComponent.data.metadata.uid}${
+        this.props.cluster ? "?cluster=" + this.props.cluster : ""
+      }`
     );
     const parentRouter = new CoreRouter(
       [
         { path: "", redirect: this.props.oamComponent.data.metadata.uid },
         { path: this.props.oamComponent.data.metadata.uid },
+        {
+          path: this.props.oamComponent.data.metadata.uid,
+          redirect: `${this.props.oamComponent.data.metadata.uid}${
+            this.props.cluster ? "?cluster=" + this.props.cluster : ""
+          }`,
+        },
       ],
       {
         urlAdapter: new UrlPathAdapter("/oamcomps"),
