@@ -164,7 +164,7 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
                 <template slot="itemTemplate" data-oj-as="item">
                   <oj-list-item-layout class="oj-complete">
                     <div class="oj-flex cardmargin">
-                      <div class="oj-sm-10 oj-flex-item">
+                      <div class="oj-sm-12 oj-flex-item">
                         <div class="carditem">
                           <strong>
                             <span>{Messages.Labels.name()}:&nbsp;</span>
