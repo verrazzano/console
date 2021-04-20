@@ -6,7 +6,7 @@ import * as AccUtils from "../accUtils";
 class ModelViewModel {
   projectId: string | null;
   selectedItem: string | null;
-  
+
   constructor() {
     this.projectId = getQueryParam("projectId");
     this.selectedItem = getQueryParam("selectedItem");

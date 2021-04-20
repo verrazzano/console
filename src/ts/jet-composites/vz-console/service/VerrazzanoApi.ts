@@ -500,7 +500,7 @@ export class VerrazzanoApi {
   }
 
   public async listProjects(): Promise<Project[]> {
-   return this.getKubernetesResource(ResourceType.VerrazzanoProject)
+    return this.getKubernetesResource(ResourceType.VerrazzanoProject)
       .then((projectsResponse) => {
         return projectsResponse.json();
       })
@@ -508,9 +508,8 @@ export class VerrazzanoApi {
         if (!projects) {
           throw new Error(Messages.Error.errOAMApplicationsFetchError());
         }
-        
-       return processProjectsData(projects.items)
-       
+
+        return processProjectsData(projects.items);
       })
       .catch((error) => {
         let errorMessage = error;
@@ -521,14 +520,10 @@ export class VerrazzanoApi {
       });
   }
 
-
-  public async getProject(
-    projectId: string
-  ): Promise<Project> {
+  public async getProject(projectId: string): Promise<Project> {
     const projects = await this.listProjects();
     const project = projects.find(
-      (project) =>
-      project.data.metadata.uid === projectId
+      (project) => project.data.metadata.uid === projectId
     );
     return project;
   }
@@ -544,5 +539,7 @@ export class VerrazzanoApi {
     this.getOAMComponent = this.getOAMComponent.bind(this);
     this.getKubernetesResource = this.getKubernetesResource.bind(this);
     this.getAPIUrl = this.getAPIUrl.bind(this);
+    this.listProjects = this.listProjects.bind(this);
+    this.getProject = this.getProject.bind(this);
   }
 }

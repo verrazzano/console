@@ -15,7 +15,7 @@ import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
-  clusters: [{name: string}];
+  clusters: [{ name: string }];
 }
 
 class State {
@@ -26,10 +26,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-project-clusters")
-export class ConsoleProjectClusters extends VComponent<
-  Props,
-  State
-> {
+export class ConsoleProjectClusters extends VComponent<Props, State> {
   state: State = {};
   dataProvider: ko.Observable = ko.observable();
 

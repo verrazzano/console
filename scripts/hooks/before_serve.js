@@ -58,9 +58,7 @@ function rewriteUrls() {
     );
   });
   app.get("/projects", (req, res, next) => {
-    res.redirect(
-      `/?ojr=instance&selectedItem=projects`
-    );
+    res.redirect(`/?ojr=instance&selectedItem=projects`);
   });
   app.get("/oamapps/:id", (req, res, next) => {
     res.redirect(
@@ -77,9 +75,7 @@ function rewriteUrls() {
     );
   });
   app.get("/projects/:id", (req, res, next) => {
-    res.redirect(
-      `/?ojr=project&projectId=${req.params.id}`
-    );
+    res.redirect(`/?ojr=project&projectId=${req.params.id}`);
   });
   app.get("/oamapps/:id/components", (req, res, next) => {
     res.redirect(

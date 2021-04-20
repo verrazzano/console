@@ -46,8 +46,7 @@ export const Instance = {
   oamApps: () => Translations.getTranslatedString("instance.oamApps"),
   oamCompoennts: () =>
     Translations.getTranslatedString("instance.oamComponents"),
-  projects: () =>
-    Translations.getTranslatedString("instance.projects"),
+  projects: () => Translations.getTranslatedString("instance.projects"),
 };
 
 export const Error = {
@@ -143,14 +142,11 @@ export const Error = {
     Translations.getTranslatedString("error.errFetchApiURLFromVMCError", args),
 
   errProjectsFetchError: (...args) =>
-    Translations.getTranslatedString(
-      "error.errProjectsFetchError",
-      args
-    ),
+    Translations.getTranslatedString("error.errProjectsFetchError", args),
 
   errInvalidProjectId: (...args) =>
     Translations.getTranslatedString("error.errInvalidProjectId", args),
-  
+
   errRenderProject: (...args) =>
     Translations.getTranslatedString("error.errRenderProject", args),
 };

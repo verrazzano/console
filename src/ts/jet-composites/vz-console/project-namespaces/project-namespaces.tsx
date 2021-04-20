@@ -15,7 +15,7 @@ import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
-  namespaces: [{name: string}];
+  namespaces: [{ name: string }];
 }
 
 class State {
@@ -26,10 +26,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-project-namespaces")
-export class ConsoleProjectNamespaces extends VComponent<
-  Props,
-  State
-> {
+export class ConsoleProjectNamespaces extends VComponent<Props, State> {
   state: State = {};
   dataProvider: ko.Observable = ko.observable();
 
@@ -48,7 +45,9 @@ export class ConsoleProjectNamespaces extends VComponent<
     this.dataProvider(
       new PagingDataProviderView(
         new CollectionDataProvider(
-          this.state.namespaces ? this.state.namespaces : new Model.Collection([])
+          this.state.namespaces
+            ? this.state.namespaces
+            : new Model.Collection([])
         )
       )
     );

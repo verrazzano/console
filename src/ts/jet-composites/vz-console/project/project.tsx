@@ -61,9 +61,7 @@ export class ConsoleProject extends VComponent<Props, State> {
   async getData() {
     this.updateState({ loading: true });
     this.verrazzanoApi
-      .getProject(
-        this.props.projectId
-      )
+      .getProject(this.props.projectId)
       .then((project) => {
         this.updateState({ loading: false, project });
       })

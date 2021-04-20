@@ -40,7 +40,9 @@ export class ConsoleProjectResources extends VComponent<Props, State> {
   };
 
   state: State = {
-    selectedItem: this.props.selectedItem ? this.props.selectedItem : "clusters",
+    selectedItem: this.props.selectedItem
+      ? this.props.selectedItem
+      : "clusters",
   };
 
   protected mounted() {
@@ -91,7 +93,7 @@ export class ConsoleProjectResources extends VComponent<Props, State> {
               });
               if (args.state.path in this.labels) {
                 breadcrumbs.push({
-                  label: Messages.Labels.clusters(),
+                  label: this.labels[args.state.path],
                 });
               }
               this.updateState({ selectedItem: args.state.path });
@@ -137,14 +139,11 @@ export class ConsoleProjectResources extends VComponent<Props, State> {
     let Heading: Element;
     switch (this.state.selectedItem) {
       case "clusters": {
-        const clusters: {name: string}[] = [];
-        if (
-          this.props.project &&
-          this.props.project.clusters
-        ) {
+        const clusters: { name: string }[] = [];
+        if (this.props.project && this.props.project.clusters) {
           this.props.project.clusters.forEach((cluster) => {
             clusters.push({
-              name: cluster.name
+              name: cluster.name,
             });
           });
         }
@@ -154,14 +153,11 @@ export class ConsoleProjectResources extends VComponent<Props, State> {
         break;
       }
       case "namespaces": {
-        const namespaces: {name: string}[] = [];
-        if (
-          this.props.project &&
-          this.props.project.namespaces
-        ) {
+        const namespaces: { name: string }[] = [];
+        if (this.props.project && this.props.project.namespaces) {
           this.props.project.namespaces.forEach((namespace) => {
             namespaces.push({
-              name: namespace.name
+              name: namespace.metadata?.name,
             });
           });
         }

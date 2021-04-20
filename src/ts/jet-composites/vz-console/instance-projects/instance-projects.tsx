@@ -65,9 +65,7 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
       }
 
       case Messages.Labels.ns().toLowerCase(): {
-        result = leftProject.namespace?.localeCompare(
-          rightProject.namespace
-        );
+        result = leftProject.namespace?.localeCompare(rightProject.namespace);
         break;
       }
 
@@ -86,7 +84,6 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
     return projects;
   };
 
-
   protected mounted() {
     const models: Model.Model[] = [];
     for (const project of this.props.projects) {
@@ -98,7 +95,6 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
     });
   }
 
-
   @listener({ capture: true, passive: true })
   private handleSortCriteriaChanged(event: CustomEvent) {
     this.currentSort(event.detail.value.toLowerCase());
@@ -108,16 +104,15 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
   }
 
   protected render() {
+    this.props.filterCallback(null);
     this.dataProvider(
       new PagingDataProviderView(
         new CollectionDataProvider(
-          this.state.projects
-            ? this.state.projects
-            : new Model.Collection([])
+          this.state.projects ? this.state.projects : new Model.Collection([])
         )
       )
     );
-   
+
     return (
       <div id="applications" class="oj-flex component-margin">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
@@ -194,7 +189,6 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
                           </span>
                         </div>
 
-                        
                         <div class="carditem">
                           <strong>
                             <span>{Messages.Labels.created()}:&nbsp;</span>
