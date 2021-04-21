@@ -46,6 +46,10 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
       value: Messages.Labels.cluster().toLowerCase(),
       label: Messages.Labels.cluster(),
     },
+    {
+      value: Messages.Labels.project().toLowerCase(),
+      label: Messages.Labels.project(),
+    },
   ];
 
   optionsDataProvider = new ArrayDataProvider(this.options, {
@@ -61,6 +65,8 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
   currentStatusFilter = ko.observable([Status.Any]);
 
   currentClusterFilter = ko.observable([""]);
+
+  currentProjectFilter = ko.observable([""]);
 
   constructor() {
     super(new Props());
@@ -96,6 +102,13 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
         break;
       }
 
+      case Messages.Labels.project().toLowerCase(): {
+        result = leftApplication.project?.name?.localeCompare(
+          rightApplication.project?.name
+        );
+        break;
+      }
+
       default: {
         break;
       }
@@ -119,11 +132,15 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
         const application = model.attributes as OAMApplication;
         const statusFilter = this.currentStatusFilter();
         const clusterFilter = this.currentClusterFilter();
+        const projectFilter = this.currentProjectFilter();
         if (
           (statusFilter.includes(Status.Any) ||
             statusFilter.includes(application.status)) &&
           (clusterFilter.includes("") ||
-            clusterFilter.includes(application.cluster.name))
+            clusterFilter.includes(application.cluster.name)) &&
+          (projectFilter.includes("") ||
+            (application.project &&
+              projectFilter.includes(application.project.name)))
         ) {
           return true;
         }
@@ -174,6 +191,19 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
   }
 
   @listener({ capture: true, passive: true })
+  private handleProjectFilterChanged(event: CustomEvent) {
+    if (
+      event.detail.previousValue.length > 0 &&
+      event.detail.value.length === 0
+    ) {
+      this.currentProjectFilter([""]);
+    } else {
+      this.currentProjectFilter(event.detail.value);
+    }
+    this.updateState({ applications: this.executeFilters() });
+  }
+
+  @listener({ capture: true, passive: true })
   private handleSortCriteriaChanged(event: CustomEvent) {
     this.currentSort(event.detail.value.toLowerCase());
     this.updateState({
@@ -197,12 +227,22 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
         string,
         { label: string; value: string }
       > = new Map();
+      const projectOptions: Map<
+        string,
+        { label: string; value: string }
+      > = new Map();
       if (this.props.applications) {
         this.props.applications.forEach((application) => {
           if (application.cluster) {
             clusterOptions.set(application.cluster.name, {
               label: application.cluster.name,
               value: application.cluster.name,
+            });
+          }
+          if (application.project) {
+            projectOptions.set(application.project.name, {
+              label: application.project.name,
+              value: application.project.name,
             });
           }
         });
@@ -220,9 +260,14 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
             onValueChanged={this.handleStatusFilterChanged}
           />
           <ConsoleFilter
-            label={Messages.Labels.clusters()}
+            label={Messages.Labels.cluster()}
             options={Array.from(clusterOptions.values())}
             onValueChanged={this.handleClusterFilterChanged}
+          />
+          <ConsoleFilter
+            label={Messages.Labels.project()}
+            options={Array.from(projectOptions.values())}
+            onValueChanged={this.handleProjectFilterChanged}
           />
         </div>
       );
@@ -345,6 +390,19 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
                             <oj-bind-text value="[[item.data.cluster.name]]"></oj-bind-text>
                           </span>
                         </div>
+                        <oj-bind-if test="[[item.data.project]]">
+                          <div class="carditem">
+                            <strong>
+                              <span>{Messages.Labels.project()}:&nbsp;</span>
+                            </strong>
+
+                            <a
+                              data-bind={`attr: {href: '/projects/' + item.data.project.data.metadata.uid }`}
+                            >
+                              <oj-bind-text value="[[item.data.project.name]]"></oj-bind-text>
+                            </a>
+                          </div>
+                        </oj-bind-if>
                       </div>
                     </div>
                   </oj-list-item-layout>

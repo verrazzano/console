@@ -3,9 +3,10 @@
 
 // eslint-disable-next-line no-unused-vars
 import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
-import { ConsoleOAMCompParamsList } from "vz-console/oamcomp-params-list/loader";
+import { ConsoleProjectClusters } from "vz-console/project-clusters/loader";
+import { ConsoleProjectNamespaces } from "vz-console/project-namespaces/loader";
 import * as Messages from "vz-console/utils/Messages";
-import { OAMComponent, OAMComponentParam } from "vz-console/service/types";
+import { Project } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import CoreRouter = require("ojs/ojcorerouter");
@@ -16,30 +17,32 @@ class State {
 }
 
 class Props {
-  oamComponent: OAMComponent;
+  project: Project;
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
   selectedItem?: string;
-  cluster?: string;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
-@customElement("vz-console-oamcomp-resources")
-export class ConsoleOAMComponentResources extends VComponent<Props, State> {
+@customElement("vz-console-project-resources")
+export class ConsoleProjectResources extends VComponent<Props, State> {
   router: CoreRouter;
 
   baseBreadcrumbs: BreadcrumbType[] = [
     { label: Messages.Nav.home(), href: "/" },
-    { label: Messages.Instance.oamCompoennts(), href: "/oamcomps" },
+    { label: Messages.Instance.projects(), href: "/projects" },
   ];
 
   labels = {
-    params: Messages.Labels.params(),
+    namespaces: Messages.Labels.namespaces(),
+    clusters: Messages.Labels.clusters(),
   };
 
   state: State = {
-    selectedItem: this.props.selectedItem ? this.props.selectedItem : "params",
+    selectedItem: this.props.selectedItem
+      ? this.props.selectedItem
+      : "clusters",
   };
 
   protected mounted() {
@@ -47,33 +50,25 @@ export class ConsoleOAMComponentResources extends VComponent<Props, State> {
     history.replaceState(
       null,
       "path",
-      `oamcomps/${this.props.oamComponent.data.metadata.uid}${
-        this.props.cluster ? "?cluster=" + this.props.cluster : ""
-      }`
+      `projects/${this.props.project.data.metadata.uid}`
     );
     const parentRouter = new CoreRouter(
       [
-        { path: "", redirect: this.props.oamComponent.data.metadata.uid },
-        { path: this.props.oamComponent.data.metadata.uid },
-        {
-          path: this.props.oamComponent.data.metadata.uid,
-          redirect: `${this.props.oamComponent.data.metadata.uid}${
-            this.props.cluster ? "?cluster=" + this.props.cluster : ""
-          }`,
-        },
+        { path: "", redirect: this.props.project.data.metadata.uid },
+        { path: this.props.project.data.metadata.uid },
       ],
       {
-        urlAdapter: new UrlPathAdapter("/oamcomps"),
+        urlAdapter: new UrlPathAdapter("/projects"),
       }
     );
     parentRouter
       .sync()
       .then(() => {
         this.router = new CoreRouter(
-          [{ path: "" }, { path: `params` }],
+          [{ path: "" }, { path: `clusters` }, { path: `namespaces` }],
           {
             urlAdapter: new UrlPathAdapter(
-              `/oamapps/${this.props.oamComponent.data.metadata.uid}`
+              `/projects/${this.props.project.data.metadata.uid}`
             ),
           },
           parentRouter
@@ -83,28 +78,28 @@ export class ConsoleOAMComponentResources extends VComponent<Props, State> {
           if (args.state) {
             if (args.state.path) {
               breadcrumbs.push({
-                label: Messages.Nav.oamCompDetails(),
+                label: Messages.Labels.projectInfo(),
                 href: "#",
                 onclick: () => {
                   parentRouter.go().then(() => {
-                    this.updateState({ selectedItem: "params" });
+                    this.updateState({ selectedItem: "clusters" });
                     history.pushState(
                       null,
                       "path",
-                      this.props.oamComponent.data.metadata.uid
+                      this.props.project.data.metadata.uid
                     );
                   });
                 },
               });
               if (args.state.path in this.labels) {
                 breadcrumbs.push({
-                  label: Messages.Labels.params(),
+                  label: this.labels[args.state.path],
                 });
               }
               this.updateState({ selectedItem: args.state.path });
             } else {
               breadcrumbs.push({
-                label: Messages.Nav.oamCompDetails(),
+                label: Messages.Labels.projectInfo(),
               });
             }
           }
@@ -143,27 +138,31 @@ export class ConsoleOAMComponentResources extends VComponent<Props, State> {
     let ResourceList: Element;
     let Heading: Element;
     switch (this.state.selectedItem) {
-      case "params": {
-        const params: OAMComponentParam[] = [];
-        if (
-          this.props.oamComponent &&
-          this.props.oamComponent.data &&
-          this.props.oamComponent.data.spec &&
-          this.props.oamComponent.data.spec.parameters
-        ) {
-          this.props.oamComponent.data.spec.parameters.forEach((parameter) => {
-            const parameterData = parameter.parameter
-              ? parameter.parameter
-              : parameter;
-            params.push({
-              name: parameterData.name,
-              description: parameterData.description,
-              required: parameterData.required,
+      case "clusters": {
+        const clusters: { name: string }[] = [];
+        if (this.props.project && this.props.project.clusters) {
+          this.props.project.clusters.forEach((cluster) => {
+            clusters.push({
+              name: cluster.name,
             });
           });
         }
-        ResourceList = <ConsoleOAMCompParamsList params={params} />;
-        Heading = <h1 class="resheader">{this.labels.params}</h1>;
+        ResourceList = <ConsoleProjectClusters clusters={clusters} />;
+        Heading = <h1 class="resheader">{this.labels.clusters}</h1>;
+
+        break;
+      }
+      case "namespaces": {
+        const namespaces: { name: string }[] = [];
+        if (this.props.project && this.props.project.namespaces) {
+          this.props.project.namespaces.forEach((namespace) => {
+            namespaces.push({
+              name: namespace.metadata?.name,
+            });
+          });
+        }
+        ResourceList = <ConsoleProjectNamespaces namespaces={namespaces} />;
+        Heading = <h1 class="resheader">{this.labels.namespaces}</h1>;
 
         break;
       }
@@ -184,8 +183,11 @@ export class ConsoleOAMComponentResources extends VComponent<Props, State> {
             aria-labelledby="resources"
           >
             <ul>
-              <li id="params">
-                <a href="#">{this.labels.params}</a>
+              <li id="clusters">
+                <a href="#">{this.labels.clusters}</a>
+              </li>
+              <li id="namespaces">
+                <a href="#">{this.labels.namespaces}</a>
               </li>
             </ul>
           </oj-navigation-list>

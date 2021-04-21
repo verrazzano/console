@@ -7,6 +7,7 @@ import {
   OAMApplication,
   OAMComponent,
   OAMComponentInstance,
+  Project,
 } from "../service/types";
 import * as DateTimeConverter from "ojs/ojconverter-datetime";
 import { getStatusForOAMResource } from "vz-console/utils/utils";
@@ -151,6 +152,28 @@ export const processOAMData = (
   });
 
   return { oamApplications, oamComponents };
+};
+
+export const processProjectsData = (projects: any[]): Project[] => {
+  const vps: Project[] = [];
+  if (projects) {
+    projects.forEach((project) => {
+      const vp = <Project>{
+        name: project.metadata?.name,
+        namespace: project.metadata?.namespace,
+        createdOn: convertDate(project.metadata.creationTimestamp),
+        data: project,
+      };
+      if (project.spec.template) {
+        vp.namespaces = project.spec.template.namespaces;
+      }
+      if (project.spec.placement) {
+        vp.clusters = project.spec.placement.clusters;
+      }
+      vps.push(vp);
+    });
+  }
+  return vps;
 };
 
 export const convertDate = (timestamps: string): string => {
