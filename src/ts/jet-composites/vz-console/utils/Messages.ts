@@ -231,3 +231,7 @@ export const ComponentConfigLabels = {
   scopes: Labels.scopes(),
   params: Labels.params(),
 };
+
+export const Actions = {
+  addProject: () => Translations.getTranslatedString("actions.addProject"),
+}

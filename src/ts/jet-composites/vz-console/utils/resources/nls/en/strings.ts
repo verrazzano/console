@@ -163,4 +163,8 @@ export = {
     // eslint-disable-next-line no-template-curly-in-string
     msgItem: "Showing ${pageTo$} of ${pageMax$} items",
   },
+
+  actions: {
+    addProject: "Add Project",
+  },
 };

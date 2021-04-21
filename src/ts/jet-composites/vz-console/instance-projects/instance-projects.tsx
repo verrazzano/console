@@ -9,8 +9,11 @@ import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
 import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
+import "ojs/ojmenu";
+import "ojs/ojoption";
 import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
+import "ojs/ojbutton";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -103,6 +106,11 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
     });
   }
 
+  @listener({ capture: true, passive: true })
+  private addProject(event: CustomEvent) {
+    console.log(event)
+  }
+
   protected render() {
     this.props.filterCallback(null);
     this.dataProvider(
@@ -117,8 +125,13 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
       <div id="applications" class="oj-flex component-margin">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
           <div class="oj-flex">
+          
             <div class="oj-sm-12 oj-flex-item res">
-              <div class="oj-flex card-border">
+            <div class="oj-flex">
+            <oj-button class="btn" onOjAction={this.addProject}><span class="btnlbl">{Messages.Actions.addProject()}</span></oj-button>
+              </div>
+           
+               <div class="oj-flex card-border">
                 <div class="oj-sm-1 oj-flex-item">
                   <oj-label for="sortBy" class="oj-label-inline sortby">
                     {Messages.Labels.sortBy()}
@@ -167,7 +180,7 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
                 <template slot="itemTemplate" data-oj-as="item">
                   <oj-list-item-layout class="oj-complete">
                     <div class="oj-flex cardmargin">
-                      <div class="oj-sm-12 oj-flex-item">
+                      <div class="oj-sm-11 oj-flex-item">
                         <div class="carditem">
                           <strong>
                             <span>{Messages.Labels.name()}:&nbsp;</span>
@@ -197,6 +210,20 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
                             <oj-bind-text value="[[item.data.createdOn]]"></oj-bind-text>
                           </span>
                         </div>
+</div>
+<div class="oj-sm-1 oj-flex-item">
+                        <oj-menu-button chroming="borderless"
+                                  display="icons"
+                                  class="menubtn"
+                                  >
+                    <span slot='startIcon' class="oj-ux-ico-overflow"></span>
+                    <span slot='endIcon'></span>
+                    <oj-menu slot="menu">
+                        <oj-option>Edit</oj-option>
+                        <oj-option>Delete</oj-option>
+                    </oj-menu>
+                    
+                  </oj-menu-button>
                       </div>
                     </div>
                   </oj-list-item-layout>

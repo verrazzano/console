@@ -660,3 +660,22 @@ pre {
 .status-badge-container svg.badge-square {
   margin-top: 2rem;
 }
+
+.btn {
+  max-height: 25px;
+  min-width: 80px;
+  margin-bottom: 0.1rem;
+  background: #30638e;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.btnlbl {
+  font-weight: normal !important;
+  color: #fff !important;
+}
+
+.menubtn {
+  margin-left: 4.5rem;
+  margin-top: 1.5rem;
+}
