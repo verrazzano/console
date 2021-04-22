@@ -80,6 +80,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
   async getData() {
     this.updateState({ loading: true });
     try {
+      const projects = await this.verrazzanoApi.listProjects();
       if (this.props.cluster) {
         const apiUrl = await this.verrazzanoApi.getAPIUrl(this.props.cluster);
         this.verrazzanoApi = new VerrazzanoApi(apiUrl, this.props.cluster);
@@ -93,6 +94,24 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
         for (const component of oamApplication.componentInstances) {
           await this.populateComponent(component);
         }
+      }
+
+      if (projects) {
+        projects.forEach((project) => {
+          if (
+            project.namespaces &&
+            project.namespaces.some(
+              (namespace) =>
+                oamApplication.namespace === namespace.metadata?.name
+            ) &&
+            project.clusters &&
+            project.clusters.some(
+              (cluster) => cluster.name === oamApplication.cluster.name
+            )
+          ) {
+            oamApplication.project = project;
+          }
+        });
       }
       this.updateState({
         loading: false,
@@ -558,6 +577,27 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
             );
             break;
         }
+        if (
+          this.state.oamApplication.cluster &&
+          this.state.oamApplication.cluster.name !== "local"
+        ) {
+          tabContents.push(
+            <ConsoleMetadataItem
+              label={Messages.Labels.cluster()}
+              value={this.state.oamApplication.cluster.name}
+            />
+          );
+        }
+        if (this.state.oamApplication.project) {
+          tabContents.push(
+            <ConsoleMetadataItem
+              label={Messages.Labels.project()}
+              value={this.state.oamApplication.project.name}
+              link={true}
+              target={`/projects/${this.state.oamApplication.project.data.metadata.uid}`}
+            />
+          );
+        }
         break;
       case "tabLbl":
         if (this.state.oamApplication.data.metadata.labels) {
@@ -628,6 +668,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
           selectedItem={this.state.selectedItem}
           selectedComponent={this.state.selectedComponent}
           toggleComponentViewCallBack={this.toggleComponentViewCallBack}
+          cluster={this.props.cluster}
         />
       </div>
     );

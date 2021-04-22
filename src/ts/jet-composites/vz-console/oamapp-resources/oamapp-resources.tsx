@@ -33,6 +33,8 @@ class Props {
       selectedComponent: string
     ) => void
   ) => {};
+
+  cluster?: string;
 }
 
 /**
@@ -63,7 +65,9 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
     history.replaceState(
       null,
       "path",
-      `oamapps/${this.props.oamApplication.data.metadata.uid}`
+      `oamapps/${this.props.oamApplication.data.metadata.uid}${
+        this.props.cluster ? "?cluster=" + this.props.cluster : ""
+      }`
     );
     window.addEventListener("popstate", (event) => {
       const pathArray = document.location.pathname.split("/");
@@ -78,6 +82,17 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
       [
         { path: "", redirect: this.props.oamApplication.data.metadata.uid },
         { path: this.props.oamApplication.data.metadata.uid },
+        {
+          path: this.props.oamApplication.data.metadata.uid,
+          redirect: `${this.props.oamApplication.data.metadata.uid}${
+            this.props.cluster ? "?cluster=" + this.props.cluster : ""
+          }`,
+        },
+        {
+          path: `${this.props.oamApplication.data.metadata.uid}${
+            this.props.cluster ? "?cluster=" + this.props.cluster : ""
+          }`,
+        },
       ],
       {
         urlAdapter: new UrlPathAdapter("/oamapps"),
@@ -89,10 +104,54 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
         this.router = new CoreRouter(
           [
             { path: "" },
-            { path: `components` },
-            { path: `traits` },
-            { path: `scopes` },
-            { path: `params` },
+            { path: "components" },
+            {
+              path: "components",
+              redirect: `components${
+                this.props.cluster ? "?cluster=" + this.props.cluster : ""
+              }`,
+            },
+            {
+              path: `components${
+                this.props.cluster ? "?cluster=" + this.props.cluster : ""
+              }`,
+            },
+            { path: "traits" },
+            {
+              path: "traits",
+              redirect: `traits${
+                this.props.cluster ? "?cluster=" + this.props.cluster : ""
+              }`,
+            },
+            {
+              path: `traits${
+                this.props.cluster ? "?cluster=" + this.props.cluster : ""
+              }`,
+            },
+            { path: "scopes" },
+            {
+              path: "scopes",
+              redirect: `scopes${
+                this.props.cluster ? "?cluster=" + this.props.cluster : ""
+              }`,
+            },
+            {
+              path: `scopes${
+                this.props.cluster ? "?cluster=" + this.props.cluster : ""
+              }`,
+            },
+            { path: "params" },
+            {
+              path: "params",
+              redirect: `params${
+                this.props.cluster ? "?cluster=" + this.props.cluster : ""
+              }`,
+            },
+            {
+              path: `params${
+                this.props.cluster ? "?cluster=" + this.props.cluster : ""
+              }`,
+            },
           ],
           {
             urlAdapter: new UrlPathAdapter(
@@ -111,14 +170,18 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
                 onclick: () => {
                   parentRouter.go().then(() => {
                     this.updateState({
-                      selectedItem: "components",
+                      selectedItem: `components`,
                       selectedComponent: "",
                       filter: null,
                     });
                     history.pushState(
                       null,
                       "path",
-                      this.props.oamApplication.data.metadata.uid
+                      `${this.props.oamApplication.data.metadata.uid}${
+                        this.props.cluster
+                          ? "?cluster=" + this.props.cluster
+                          : ""
+                      }`
                     );
                   });
                 },
@@ -131,7 +194,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
                   label: Messages.Labels.components(),
                   href: "#",
                   onclick: () => {
-                    this.router.go({ path: "components" }).then(() => {
+                    this.router.go({ path: `components` }).then(() => {
                       this.updateState({ selectedComponent: "" });
                     });
                   },
@@ -150,7 +213,11 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
                   history.replaceState(
                     null,
                     "path",
-                    `components/${this.state.selectedComponent}/${args.state.path}`
+                    `components/${this.state.selectedComponent}/${
+                      args.state.path
+                    }${
+                      this.props.cluster ? "?cluster=" + this.props.cluster : ""
+                    }`
                   );
                 }
               }

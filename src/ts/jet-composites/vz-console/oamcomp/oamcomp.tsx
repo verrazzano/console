@@ -62,6 +62,7 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
 
   async getData() {
     this.updateState({ loading: true });
+    const projects = await this.verrazzanoApi.listProjects();
     if (this.props.cluster) {
       const apiUrl = await this.verrazzanoApi.getAPIUrl(this.props.cluster);
       this.verrazzanoApi = new VerrazzanoApi(apiUrl, this.props.cluster);
@@ -72,6 +73,23 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
         this.props.cluster ? this.props.cluster : "local"
       )
       .then((oamComponent) => {
+        if (projects) {
+          projects.forEach((project) => {
+            if (
+              project.namespaces &&
+              project.namespaces.some(
+                (namespace) =>
+                  oamComponent.namespace === namespace.metadata?.name
+              ) &&
+              project.clusters &&
+              project.clusters.some(
+                (cluster) => cluster.name === oamComponent.cluster.name
+              )
+            ) {
+              oamComponent.project = project;
+            }
+          });
+        }
         this.updateState({ loading: false, oamComponent });
       })
       .catch((error) => {
@@ -113,6 +131,7 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
 
   getTabContents(): Element[] {
     let tabContents: Element[] = [];
+    let metadataItems: Element[] = [];
     const links: Element[] = [];
     switch (this.state.selectedTab) {
       case "tabInfo":
@@ -142,41 +161,65 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
             </div>
           );
         });
+        metadataItems = [
+          <ConsoleMetadataItem
+            label={Messages.Labels.name()}
+            value={this.state.oamComponent.name}
+          />,
+          <ConsoleMetadataItem
+            label={Messages.Labels.ns()}
+            value={this.state.oamComponent.namespace}
+          />,
+          <ConsoleMetadataItem
+            label={Messages.Labels.latestRevision()}
+            value={this.state.oamComponent.latestRevision}
+          />,
+          <ConsoleMetadataItem
+            label={Messages.Labels.created()}
+            value={this.state.oamComponent.createdOn}
+          />,
+          <ConsoleMetadataItem
+            label={Messages.Labels.workloadType()}
+            value={this.state.oamComponent.workloadType}
+          />,
+          <ConsoleMetadataItem
+            label={Messages.Labels.workloadSpec()}
+            value={this.state.oamComponent.name}
+            link={true}
+            onclick={() => {
+              (document.getElementById("popup") as any).open("#tabMetaInfo");
+            }}
+            id="tabMetaInfo"
+          />,
+        ];
+        if (
+          this.state.oamComponent.cluster &&
+          this.state.oamComponent.cluster.name !== "local"
+        ) {
+          metadataItems.push(
+            <ConsoleMetadataItem
+              label={Messages.Labels.cluster()}
+              value={this.state.oamComponent.cluster.name}
+            />
+          );
+        }
+
+        if (this.state.oamComponent.project) {
+          metadataItems.push(
+            <ConsoleMetadataItem
+              label={Messages.Labels.project()}
+              value={this.state.oamComponent.project.name}
+              link={true}
+              target={`/projects/${this.state.oamComponent.project.data.metadata.uid}`}
+            />
+          );
+        }
+
         tabContents = [
           <div class="oj-flex">
             <div class="oj-sm-8 oj-flex-item">
               <h3>{Messages.Labels.generalInfo()}</h3>
-              <ConsoleMetadataItem
-                label={Messages.Labels.name()}
-                value={this.state.oamComponent.name}
-              />
-              <ConsoleMetadataItem
-                label={Messages.Labels.ns()}
-                value={this.state.oamComponent.namespace}
-              />
-              <ConsoleMetadataItem
-                label={Messages.Labels.latestRevision()}
-                value={this.state.oamComponent.latestRevision}
-              />
-              <ConsoleMetadataItem
-                label={Messages.Labels.created()}
-                value={this.state.oamComponent.createdOn}
-              />
-              <ConsoleMetadataItem
-                label={Messages.Labels.workloadType()}
-                value={this.state.oamComponent.workloadType}
-              />
-              <ConsoleMetadataItem
-                label={Messages.Labels.workloadSpec()}
-                value={this.state.oamComponent.name}
-                link={true}
-                onclick={() => {
-                  (document.getElementById("popup") as any).open(
-                    "#tabMetaInfo"
-                  );
-                }}
-                id="tabMetaInfo"
-              />
+              {metadataItems}
             </div>
             <oj-popup
               id="popup"
@@ -220,6 +263,7 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
             </div>
           </div>,
         ];
+
         break;
       case "tabLbl":
         if (this.state.oamComponent.data.metadata.labels) {
@@ -341,6 +385,7 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
           oamComponent={this.state.oamComponent}
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.props.selectedItem}
+          cluster={this.props.cluster}
         />
       </div>
     );

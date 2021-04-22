@@ -11,6 +11,7 @@ import {
   VMIType,
   OAMApplication,
   OAMComponent,
+  Project,
 } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleInstanceResources } from "vz-console/instance-resources/loader";
@@ -34,6 +35,7 @@ class State {
   clusters?: Cluster[];
   oamApplications?: OAMApplication[];
   oamComponents?: OAMComponent[];
+  projects?: Project[];
 }
 
 /**
@@ -63,14 +65,56 @@ export class ConsoleInstance extends VComponent<Props, State> {
       this.verrazzanoApi.getInstance("0"),
       this.verrazzanoApi.listOAMAppsAndComponents(),
       this.verrazzanoApi.listClusters(),
+      this.verrazzanoApi.listProjects(),
     ])
-      .then(([instance, { oamApplications, oamComponents }, clusters]) => {
+      .then(([instance, { oamApplications, oamComponents }, clusters, projects]) => {
+        if (oamApplications && projects) {
+          oamApplications.forEach((application) => {
+            projects.forEach((project) => {
+              if (
+                project.namespaces &&
+                project.namespaces.some(
+                  (namespace) =>
+                    application.namespace === namespace.metadata?.name
+                ) &&
+                project.clusters &&
+                project.clusters.some(
+                  (cluster) => cluster.name === application.cluster.name
+                )
+              ) {
+                application.project = project;
+              }
+            });
+          });
+        }
+
+        if (oamComponents && projects) {
+          oamComponents.forEach((component) => {
+            projects.forEach((project) => {
+              if (
+                project.namespaces &&
+                project.namespaces.some(
+                  (namespace) =>
+                    component.namespace === namespace.metadata?.name
+                ) &&
+                project.clusters &&
+                project.clusters.some(
+                  (cluster) => cluster.name === component.cluster.name
+                )
+              ) {
+                component.project = project;
+              }
+            });
+          });
+        }
+
         this.updateState({
           loading: false,
           instance: instance,
           oamApplications,
           oamComponents,
           clusters,
+          projects,
         });
       })
       .catch((error) => {
@@ -202,6 +246,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
           oamApplications={this.state.oamApplications}
           oamComponents={this.state.oamComponents}
           clusters={this.state.clusters}
+          projects={this.state.projects}
         />
       </div>
     );

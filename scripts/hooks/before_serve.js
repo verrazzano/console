@@ -57,6 +57,9 @@ function rewriteUrls() {
       }`
     );
   });
+  app.get("/projects", (req, res, next) => {
+    res.redirect(`/?ojr=instance&selectedItem=projects`);
+  });
   app.get("/oamapps/:id", (req, res, next) => {
     res.redirect(
       `/?ojr=oamapp&oamAppId=${req.params.id}${
@@ -70,6 +73,9 @@ function rewriteUrls() {
         req.query.cluster ? "&cluster=" + req.query.cluster : ""
       }`
     );
+  });
+  app.get("/projects/:id", (req, res, next) => {
+    res.redirect(`/?ojr=project&projectId=${req.params.id}`);
   });
   app.get("/oamapps/:id/components", (req, res, next) => {
     res.redirect(
@@ -110,6 +116,16 @@ function rewriteUrls() {
     res.redirect("/?ojr=instance&selectedItem=clusters");
   });
 
+  app.get("/projects/:id/namespaces", (req, res, next) => {
+    res.redirect(
+      `/?ojr=project&projectId=${req.params.id}&selectedItem=namespaces`
+    );
+  });
+  app.get("/projects/:id/clusters", (req, res, next) => {
+    res.redirect(
+      `/?ojr=project&projectId=${req.params.id}&selectedItem=clusters`
+    );
+  });
   return app;
 }
 

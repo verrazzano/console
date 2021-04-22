@@ -8,12 +8,14 @@ import {
   OAMApplication,
   OAMComponent,
   Cluster,
+  Project,
 } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleInstanceClusters } from "vz-console/instance-clusters/loader";
 import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
 import { ConsoleInstanceComponents } from "vz-console/instance-components/loader";
+import { ConsoleInstanceProjects } from "vz-console/instance-projects/loader";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
@@ -23,6 +25,7 @@ class Props {
   oamApplications?: [OAMApplication];
   oamComponents?: [OAMComponent];
   clusters?: [Cluster];
+  projects: [Project];
 }
 
 class State {
@@ -50,6 +53,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
     clusters: Messages.Instance.clusters(),
     oamapps: Messages.Instance.oamApps(),
     oamcomps: Messages.Instance.oamCompoennts(),
+    projects: Messages.Instance.projects(),
   };
 
   state: State = {
@@ -65,6 +69,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
         { path: "oamapps" },
         { path: "oamcomps" },
         { path: "clusters" },
+        { path: "projects" },
       ],
       {
         urlAdapter: new UrlPathAdapter("/"),
@@ -134,6 +139,16 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
         Heading = <h1 class="resheader">{this.labels.clusters}</h1>;
         break;
       }
+      case "projects": {
+        ResourceList = (
+          <ConsoleInstanceProjects
+            projects={this.props.projects}
+            filterCallback={this.filterCallback}
+          />
+        );
+        Heading = <h1 class="resheader">{this.labels.projects}</h1>;
+        break;
+      }
 
       default: {
         break;
@@ -161,6 +176,9 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
               </li>
               <li id="clusters">
                 <a href="#">{this.labels.clusters}</a>
+              </li>
+              <li id="projects">
+                <a href="#">{this.labels.projects}</a>
               </li>
             </ul>
             <div id="filters">{this.state.filter}</div>

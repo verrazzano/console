@@ -35,6 +35,7 @@ export const Nav = {
   compInstances: () => Translations.getTranslatedString("nav.compInstances"),
   oamCompInstance: () =>
     Translations.getTranslatedString("nav.oamCompInstance"),
+  project: () => Translations.getTranslatedString("nav.project"),
 };
 
 export const Instance = {
@@ -47,6 +48,7 @@ export const Instance = {
   oamApps: () => Translations.getTranslatedString("instance.oamApps"),
   oamCompoennts: () =>
     Translations.getTranslatedString("instance.oamComponents"),
+  projects: () => Translations.getTranslatedString("instance.projects"),
 };
 
 export const Error = {
@@ -140,6 +142,15 @@ export const Error = {
 
   errFetchApiURLFromVMCError: (...args) =>
     Translations.getTranslatedString("error.errFetchApiURLFromVMCError", args),
+
+  errProjectsFetchError: (...args) =>
+    Translations.getTranslatedString("error.errProjectsFetchError", args),
+
+  errInvalidProjectId: (...args) =>
+    Translations.getTranslatedString("error.errInvalidProjectId", args),
+
+  errRenderProject: (...args) =>
+    Translations.getTranslatedString("error.errRenderProject", args),
 };
 
 export const Auth = {
@@ -205,6 +216,10 @@ export const Labels = {
     Translations.getTranslatedString("labels.mgdClusterProfile"),
   prodProfile: () => Translations.getTranslatedString("labels.prodProfile"),
   devProfile: () => Translations.getTranslatedString("labels.devProfile"),
+  projectInfo: () => Translations.getTranslatedString("labels.projectInfo"),
+  namespaces: () => Translations.getTranslatedString("labels.namespaces"),
+  projects: () => Translations.getTranslatedString("labels.projects"),
+  project: () => Translations.getTranslatedString("labels.project"),
 };
 
 export const Pagination = {

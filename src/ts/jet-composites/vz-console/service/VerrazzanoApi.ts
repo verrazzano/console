@@ -7,10 +7,11 @@ import {
   Instance,
   OAMApplication,
   OAMComponent,
+  Project,
   ResourceType,
   ResourceTypeType,
 } from "./types";
-import { processClusterData, processOAMData } from "./common";
+import { processOAMData, processClusterData, processProjectsData } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
 
@@ -517,6 +518,35 @@ export class VerrazzanoApi {
       });
   }
 
+  public async listProjects(): Promise<Project[]> {
+    return this.getKubernetesResource(ResourceType.VerrazzanoProject)
+      .then((projectsResponse) => {
+        return projectsResponse.json();
+      })
+      .then((projects) => {
+        if (!projects) {
+          throw new Error(Messages.Error.errOAMApplicationsFetchError());
+        }
+
+        return processProjectsData(projects.items);
+      })
+      .catch((error) => {
+        let errorMessage = error;
+        if (error && error.message) {
+          errorMessage = error.message;
+        }
+        throw new Error(errorMessage);
+      });
+  }
+
+  public async getProject(projectId: string): Promise<Project> {
+    const projects = await this.listProjects();
+    const project = projects.find(
+      (project) => project.data.metadata.uid === projectId
+    );
+    return project;
+  }
+
   public constructor(url: string = "", cluster: string = "local") {
     this.defaultUrl = `${(window as any).vzApiUrl || ""}`;
     this.cluster = cluster;
@@ -528,5 +558,7 @@ export class VerrazzanoApi {
     this.getOAMComponent = this.getOAMComponent.bind(this);
     this.getKubernetesResource = this.getKubernetesResource.bind(this);
     this.getAPIUrl = this.getAPIUrl.bind(this);
+    this.listProjects = this.listProjects.bind(this);
+    this.getProject = this.getProject.bind(this);
   }
 }

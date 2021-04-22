@@ -96,6 +96,10 @@ class RootViewModel {
         path: "instance",
         detail: { label: Messages.Nav.instance(), iconClass: "" },
       },
+      {
+        path: "project",
+        detail: { label: Messages.Nav.project(), iconClass: "" },
+      },
     ];
     // router setup
     this.router = new CoreRouter(navData, {

@@ -68,6 +68,9 @@ app.get("/oamcomps", (req, res, next) => {
     }`
   );
 });
+app.get("/projects", (req, res, next) => {
+  res.redirect(`/?ojr=instance&selectedItem=projects`);
+});
 app.get("/oamapps/:id", (req, res, next) => {
   res.redirect(
     `/?ojr=oamapp&oamAppId=${req.params.id}${
@@ -81,6 +84,9 @@ app.get("/oamcomps/:id", (req, res, next) => {
       req.query.cluster ? "&cluster=" + req.query.cluster : ""
     }`
   );
+});
+app.get("/projects/:id", (req, res, next) => {
+  res.redirect(`/?ojr=project&projectId=${req.params.id}`);
 });
 app.get("/oamapps/:id/components", (req, res, next) => {
   res.redirect(
@@ -115,6 +121,16 @@ app.get("/oamcomps/:id/:selectedItem", (req, res, next) => {
     `/?ojr=oamcomp&oamCompId=${req.params.id}&selectedItem=${
       req.params.selectedItem
     }${req.query.cluster ? "&cluster=" + req.query.cluster : ""}`
+  );
+});
+app.get("/projects/:id/namespaces", (req, res, next) => {
+  res.redirect(
+    `/?ojr=project&projectId=${req.params.id}&selectedItem=namespaces`
+  );
+});
+app.get("/projects/:id/clusters", (req, res, next) => {
+  res.redirect(
+    `/?ojr=project&projectId=${req.params.id}&selectedItem=clusters`
   );
 });
 

@@ -656,3 +656,7 @@ pre {
 .cardmargin {
   margin-left: 1rem !important;
 }
+
+.status-badge-container svg.badge-square {
+  margin-top: 2rem;
+}
