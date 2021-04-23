@@ -60,7 +60,7 @@ describe("instance panel screen tests", () => {
     sandbox
       .stub(VerrazzanoApi.prototype, <any>"listClusters")
       .returns(Promise.resolve({}));
-    sandbox  
+    sandbox
       .stub(VerrazzanoApi.prototype, <any>"listProjects")
       .returns(Promise.resolve({}));
     await setup()

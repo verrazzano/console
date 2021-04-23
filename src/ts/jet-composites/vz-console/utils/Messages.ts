@@ -220,6 +220,7 @@ export const Labels = {
   namespaces: () => Translations.getTranslatedString("labels.namespaces"),
   projects: () => Translations.getTranslatedString("labels.projects"),
   project: () => Translations.getTranslatedString("labels.project"),
+  apiUrl: () => Translations.getTranslatedString("labels.apiUrl"),
 };
 
 export const Pagination = {

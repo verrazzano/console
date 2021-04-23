@@ -41,6 +41,7 @@ export const processClusterData = (clustersData: any[]): Cluster[] => {
         name: clusterData.metadata.name,
         namespace: clusterData.metadata.namespace,
         data: clusterData,
+        apiUrl: clusterData.status ? clusterData.status.apiUrl : undefined,
         status:
           clusterData.status &&
           clusterData.status.conditions &&

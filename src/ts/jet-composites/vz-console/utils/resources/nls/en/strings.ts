@@ -157,6 +157,7 @@ export = {
     namespaces: "Namespaces",
     projects: "Projects",
     project: "Project",
+    apiUrl: "API URL",
   },
 
   pagination: {

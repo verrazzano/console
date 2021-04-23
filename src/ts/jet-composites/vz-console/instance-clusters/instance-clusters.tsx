@@ -14,6 +14,7 @@ import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 class Props {
   clusters?: [Cluster];
+  filterCallback?: (filter: Element) => {};
 }
 
 class State {
@@ -43,6 +44,10 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
       value: Messages.Labels.status().toLowerCase(),
       label: Messages.Labels.status(),
     },
+    {
+      value: Messages.Labels.apiUrl().toLowerCase(),
+      label: Messages.Labels.apiUrl(),
+    },
   ];
 
   optionsDataProvider = new ArrayDataProvider(this.options, {
@@ -67,6 +72,11 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
 
       case Messages.Labels.status().toLowerCase(): {
         result = leftCluster.status?.localeCompare(rightCluster.status);
+        break;
+      }
+
+      case Messages.Labels.apiUrl().toLowerCase(): {
+        result = leftCluster.apiUrl.localeCompare(rightCluster.apiUrl);
         break;
       }
       default: {
@@ -103,6 +113,8 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
   }
 
   protected render() {
+    this.props.filterCallback(null);
+
     this.dataProvider(
       new PagingDataProviderView(
         new CollectionDataProvider(
@@ -110,6 +122,7 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
         )
       )
     );
+
     return (
       <div id="clusters" class="oj-flex component-margin">
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
@@ -201,6 +214,15 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
                             </oj-bind-if>
                             &nbsp;
                             <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                          </span>
+                        </div>
+
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.apiUrl()}:&nbsp;</span>
+                          </strong>
+                          <span>
+                            <oj-bind-text value="[[item.data.apiUrl]]"></oj-bind-text>
                           </span>
                         </div>
 

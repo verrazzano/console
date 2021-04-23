@@ -39,7 +39,8 @@ export interface FetchApiSignature {
 export interface Cluster {
   name?: string;
   namespace?: string;
-  status: string;
+  status?: string;
+  apiUrl?: string;
 }
 
 export interface Instance {
