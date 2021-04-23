@@ -43,7 +43,6 @@ export class ConsoleOAMComponentResources extends VComponent<Props, State> {
   };
 
   protected mounted() {
-    console.log("HERE");
     getDefaultRouter().destroy();
     history.replaceState(
       null,
