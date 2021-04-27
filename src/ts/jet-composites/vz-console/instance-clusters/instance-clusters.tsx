@@ -44,10 +44,6 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
       value: Messages.Labels.status().toLowerCase(),
       label: Messages.Labels.status(),
     },
-    {
-      value: Messages.Labels.apiUrl().toLowerCase(),
-      label: Messages.Labels.apiUrl(),
-    },
   ];
 
   optionsDataProvider = new ArrayDataProvider(this.options, {
@@ -75,10 +71,6 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
         break;
       }
 
-      case Messages.Labels.apiUrl().toLowerCase(): {
-        result = leftCluster.apiUrl.localeCompare(rightCluster.apiUrl);
-        break;
-      }
       default: {
         break;
       }
