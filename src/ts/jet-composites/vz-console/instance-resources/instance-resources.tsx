@@ -7,10 +7,12 @@ import * as Messages from "vz-console/utils/Messages";
 import {
   OAMApplication,
   OAMComponent,
+  Cluster,
   Project,
 } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
+import { ConsoleInstanceClusters } from "vz-console/instance-clusters/loader";
 import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
 import { ConsoleInstanceComponents } from "vz-console/instance-components/loader";
 import { ConsoleInstanceProjects } from "vz-console/instance-projects/loader";
@@ -22,6 +24,7 @@ class Props {
   selectedItem?: string;
   oamApplications?: [OAMApplication];
   oamComponents?: [OAMComponent];
+  clusters?: [Cluster];
   projects: [Project];
 }
 
@@ -47,6 +50,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
   };
 
   labels = {
+    clusters: Messages.Instance.clusters(),
     oamapps: Messages.Instance.oamApps(),
     oamcomps: Messages.Instance.oamCompoennts(),
     projects: Messages.Instance.projects(),
@@ -64,6 +68,7 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
         { path: "" },
         { path: "oamapps" },
         { path: "oamcomps" },
+        { path: "clusters" },
         { path: "projects" },
       ],
       {
@@ -127,6 +132,16 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
         break;
       }
 
+      case "clusters": {
+        ResourceList = (
+          <ConsoleInstanceClusters
+            clusters={this.props.clusters}
+            filterCallback={this.filterCallback}
+          />
+        );
+        Heading = <h1 class="resheader">{this.labels.clusters}</h1>;
+        break;
+      }
       case "projects": {
         ResourceList = (
           <ConsoleInstanceProjects
@@ -161,6 +176,9 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
               </li>
               <li id="oamcomps">
                 <a href="#">{this.labels.oamcomps}</a>
+              </li>
+              <li id="clusters">
+                <a href="#">{this.labels.clusters}</a>
               </li>
               <li id="projects">
                 <a href="#">{this.labels.projects}</a>

@@ -58,6 +58,9 @@ describe("instance panel screen tests", () => {
       .stub(VerrazzanoApi.prototype, <any>"listOAMAppsAndComponents")
       .returns(Promise.resolve({}));
     sandbox
+      .stub(VerrazzanoApi.prototype, <any>"listClusters")
+      .returns(Promise.resolve({}));
+    sandbox
       .stub(VerrazzanoApi.prototype, <any>"listProjects")
       .returns(Promise.resolve({}));
     await setup()

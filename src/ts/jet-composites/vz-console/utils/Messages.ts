@@ -25,6 +25,7 @@ export const Footer = {
 };
 
 export const Nav = {
+  cluster: () => Translations.getTranslatedString("nav.cluster"),
   instance: () => Translations.getTranslatedString("nav.instance"),
   home: () => Translations.getTranslatedString("nav.home"),
   oamApp: () => Translations.getTranslatedString("nav.oamApp"),
@@ -43,6 +44,7 @@ export const Instance = {
     Translations.getTranslatedString("instance.instancePageLoaded"),
   instanceHeading: () =>
     Translations.getTranslatedString("instance.instanceHeading"),
+  clusters: () => Translations.getTranslatedString("instance.clusters"),
   oamApps: () => Translations.getTranslatedString("instance.oamApps"),
   oamCompoennts: () =>
     Translations.getTranslatedString("instance.oamComponents"),
@@ -218,6 +220,7 @@ export const Labels = {
   namespaces: () => Translations.getTranslatedString("labels.namespaces"),
   projects: () => Translations.getTranslatedString("labels.projects"),
   project: () => Translations.getTranslatedString("labels.project"),
+  apiUrl: () => Translations.getTranslatedString("labels.apiUrl"),
 };
 
 export const Pagination = {

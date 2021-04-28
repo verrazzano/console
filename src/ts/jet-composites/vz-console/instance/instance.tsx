@@ -5,6 +5,7 @@
 import { VComponent, customElement, h } from "ojs/ojvcomponent";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
 import {
+  Cluster,
   Instance,
   Status,
   VMIType,
@@ -31,6 +32,7 @@ class State {
   loading?: boolean;
   error?: string;
   breadcrumbs?: BreadcrumbType[];
+  clusters?: Cluster[];
   oamApplications?: OAMApplication[];
   oamComponents?: OAMComponent[];
   projects?: Project[];
@@ -61,57 +63,66 @@ export class ConsoleInstance extends VComponent<Props, State> {
     Promise.all([
       this.verrazzanoApi.getInstance("0"),
       this.verrazzanoApi.listOAMAppsAndComponents(),
+      this.verrazzanoApi.listClusters(),
       this.verrazzanoApi.listProjects(),
     ])
-      .then(([instance, { oamApplications, oamComponents }, projects]) => {
-        if (oamApplications && projects) {
-          oamApplications.forEach((application) => {
-            projects.forEach((project) => {
-              if (
-                project.namespaces &&
-                project.namespaces.some(
-                  (namespace) =>
-                    application.namespace === namespace.metadata?.name
-                ) &&
-                project.clusters &&
-                project.clusters.some(
-                  (cluster) => cluster.name === application.cluster.name
-                )
-              ) {
-                application.project = project;
-              }
-            });
-          });
-        }
-
-        if (oamComponents && projects) {
-          oamComponents.forEach((component) => {
-            projects.forEach((project) => {
-              if (
-                project.namespaces &&
-                project.namespaces.some(
-                  (namespace) =>
-                    component.namespace === namespace.metadata?.name
-                ) &&
-                project.clusters &&
-                project.clusters.some(
-                  (cluster) => cluster.name === component.cluster.name
-                )
-              ) {
-                component.project = project;
-              }
-            });
-          });
-        }
-
-        this.updateState({
-          loading: false,
-          instance: instance,
-          oamApplications,
-          oamComponents,
+      .then(
+        ([
+          instance,
+          { oamApplications, oamComponents },
+          clusters,
           projects,
-        });
-      })
+        ]) => {
+          if (oamApplications && projects) {
+            oamApplications.forEach((application) => {
+              projects.forEach((project) => {
+                if (
+                  project.namespaces &&
+                  project.namespaces.some(
+                    (namespace) =>
+                      application.namespace === namespace.metadata?.name
+                  ) &&
+                  project.clusters &&
+                  project.clusters.some(
+                    (cluster) => cluster.name === application.cluster.name
+                  )
+                ) {
+                  application.project = project;
+                }
+              });
+            });
+          }
+
+          if (oamComponents && projects) {
+            oamComponents.forEach((component) => {
+              projects.forEach((project) => {
+                if (
+                  project.namespaces &&
+                  project.namespaces.some(
+                    (namespace) =>
+                      component.namespace === namespace.metadata?.name
+                  ) &&
+                  project.clusters &&
+                  project.clusters.some(
+                    (cluster) => cluster.name === component.cluster.name
+                  )
+                ) {
+                  component.project = project;
+                }
+              });
+            });
+          }
+
+          this.updateState({
+            loading: false,
+            instance: instance,
+            oamApplications,
+            oamComponents,
+            clusters,
+            projects,
+          });
+        }
+      )
       .catch((error) => {
         let errorMessage = error;
         if (error && error.message) {
@@ -240,6 +251,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
           selectedItem={this.props.selectedItem}
           oamApplications={this.state.oamApplications}
           oamComponents={this.state.oamComponents}
+          clusters={this.state.clusters}
           projects={this.state.projects}
         />
       </div>

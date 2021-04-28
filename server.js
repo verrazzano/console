@@ -134,6 +134,10 @@ app.get("/projects/:id/clusters", (req, res, next) => {
   );
 });
 
+app.get("/clusters", (req, res, next) => {
+  res.redirect("/?ojr=instance&selectedItem=clusters");
+});
+
 app.listen(port, "0.0.0.0", function onStart(err) {
   if (err) {
     console.log(err);

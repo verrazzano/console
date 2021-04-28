@@ -15,6 +15,7 @@ export = {
     yourPrivacyRights: "Your Privacy Rights",
   },
   nav: {
+    cluster: "Clusters",
     instance: "Verrazzano",
     home: "Home",
     oamApp: "OAM Application",
@@ -26,6 +27,7 @@ export = {
     project: "Project",
   },
   instance: {
+    clusters: "Clusters",
     details: "Instance Details",
     instancePageLoaded: "Instance page loaded.",
     instanceHeading: "Verrazzano",
@@ -155,6 +157,7 @@ export = {
     namespaces: "Namespaces",
     projects: "Projects",
     project: "Project",
+    apiUrl: "API URL",
   },
 
   pagination: {

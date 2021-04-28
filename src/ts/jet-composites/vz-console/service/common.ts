@@ -2,6 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
+  Cluster,
   Instance,
   Status,
   OAMApplication,
@@ -29,6 +30,31 @@ export const extractInstances = (instances: any[]): Instance[] => {
     });
   });
   return result;
+};
+
+export const processClusterData = (clustersData: any[]): Cluster[] => {
+  const clusters = <Cluster[]>[];
+
+  clustersData.forEach((clusterData) => {
+    if (clusterData.metadata.name) {
+      const cluster = <Cluster>{
+        name: clusterData.metadata.name,
+        namespace: clusterData.metadata.namespace,
+        data: clusterData,
+        apiUrl: clusterData.status ? clusterData.status.apiUrl : undefined,
+        status:
+          clusterData.status &&
+          clusterData.status.conditions &&
+          clusterData.status.conditions.length > 0
+            ? getStatusForOAMResource(clusterData.status.conditions[0].status)
+            : Status.Pending,
+        createdOn: convertDate(clusterData.metadata.creationTimestamp),
+      };
+
+      clusters.push(cluster);
+    }
+  });
+  return clusters;
 };
 
 export const processOAMData = (

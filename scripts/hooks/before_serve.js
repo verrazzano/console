@@ -112,6 +112,10 @@ function rewriteUrls() {
       }${req.query.cluster ? "&cluster=" + req.query.cluster : ""}`
     );
   });
+  app.get("/clusters", (req, res, next) => {
+    res.redirect("/?ojr=instance&selectedItem=clusters");
+  });
+
   app.get("/projects/:id/namespaces", (req, res, next) => {
     res.redirect(
       `/?ojr=project&projectId=${req.params.id}&selectedItem=namespaces`
