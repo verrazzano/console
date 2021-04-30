@@ -424,7 +424,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
               <div class="oj-flex tablist">
                 <div class={`oj-sm-3 oj-flex-item tablistitem`}>
                   <button
-                    aria-label={Messages.Labels.oamAppInfo()}
+                    aria-label={Messages.Labels.oamCompInfo()}
                     title={Messages.Labels.oamCompInfo()}
                     class={"activebtn"}
                     id="tabComponents"
