@@ -38,7 +38,6 @@ export class ConsoleMetadataItem extends VComponent<Props> {
           <a
             onClick={this.props.onclick ? this.props.onclick : this.openLink}
             href={this.props.target ? this.props.target : this.props.value}
-            tabindex="0"
           >
             {this.props.value}
           </a>

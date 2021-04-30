@@ -104,10 +104,6 @@ describe("instance panel screen tests", () => {
     expect(
       elasticSearchLink.querySelector("* > a").getAttribute("href")
     ).to.equal(instance.elasticUrl);
-    expect(
-      elasticSearchLink.querySelector("* > a").getAttribute("tabindex")
-    ).to.equal("0");
-
     checkMetaItemLabelValue(
       kibanaLink.textContent,
       Messages.Labels.kibana(),
@@ -116,10 +112,6 @@ describe("instance panel screen tests", () => {
     expect(kibanaLink.querySelector("* > a").getAttribute("href")).to.equal(
       instance.kibanaUrl
     );
-    expect(kibanaLink.querySelector("* > a").getAttribute("tabindex")).to.equal(
-      "0"
-    );
-
     checkMetaItemLabelValue(
       grafanaLink.textContent,
       Messages.Labels.grafana(),
@@ -128,10 +120,6 @@ describe("instance panel screen tests", () => {
     expect(grafanaLink.querySelector("* > a").getAttribute("href")).to.equal(
       instance.grafanaUrl
     );
-    expect(
-      grafanaLink.querySelector("* > a").getAttribute("tabindex")
-    ).to.equal("0");
-
     checkMetaItemLabelValue(
       prometheusLink.textContent,
       Messages.Labels.prom(),
@@ -140,9 +128,6 @@ describe("instance panel screen tests", () => {
     expect(prometheusLink.querySelector("* > a").getAttribute("href")).to.equal(
       instance.prometheusUrl
     );
-    expect(
-      prometheusLink.querySelector("* > a").getAttribute("tabindex")
-    ).to.equal("0");
   });
 
   it("renders the general details and links correctly.", async () => {
