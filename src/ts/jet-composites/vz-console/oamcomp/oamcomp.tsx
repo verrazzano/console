@@ -330,8 +330,8 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
                     )}`}
                   >
                     <button
-                      aria-label={Messages.Labels.oamCompInfo()}
-                      title={Messages.Labels.oamCompInfo()}
+                      aria-label={Messages.Labels.componentInfo()}
+                      title={Messages.Labels.componentInfo()}
                       class={this.getBtnClass("tabInfo")}
                       id="tabInfo"
                       onClick={this.tabSwitch}
