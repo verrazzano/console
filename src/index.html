@@ -50,13 +50,14 @@
                 <oj-toolbar>
                   <oj-menu-button
                     id="userMenu"
-                    display="[[smScreen() ? 'icons' : 'all']]"
+                    display="icons"
                     chroming="borderless"
                   >
                     <span
                       slot="endIcon"
                       :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon demo-appheader-avatar': !smScreen()}]]"
                     ></span>
+                    User Menu
                     <oj-menu id="menu1" slot="menu">
                       <oj-option id="email" value="email"
                         ><oj-bind-text value="[[userEmail]]"></oj-bind-text
