@@ -102,7 +102,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                   <span>{Messages.Labels.oamCompRef()}:&nbsp;</span>
                 </strong>
                 <a
-                  data-bind={`attr: {href: '/oamcomps/' + item.data.oamComponent.data.metadata.uid + '?cluster=' + (item.data.cluster && item.data.cluster.name !== 'local' ? ('?cluster=' + item.data.cluster.name) : '')}`}
+                  data-bind={`attr: {href: '/oamcomps/' + item.data.oamComponent.data.metadata.uid + (item.data.oamComponent.cluster && item.data.oamComponent.cluster.name !== 'local' ? ('?cluster=' + item.data.oamComponent.cluster.name) : '')}`}
                 >
                   <oj-bind-text value="[[item.data.oamComponent.data.metadata.name]]"></oj-bind-text>
                 </a>
