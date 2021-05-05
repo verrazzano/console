@@ -93,6 +93,7 @@ export class ConsoleOamApplicationComponentScopes extends VComponent<
                 data={this.dataProvider()}
                 selectionMode="single"
                 class="oj-complete"
+                item={{ focusable: false }}
               >
                 <template slot="itemTemplate" data-oj-as="item">
                   <oj-list-item-layout>

@@ -318,10 +318,11 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
 
               <oj-list-view
                 id="listview"
-                ariaLabel="oam applications"
+                aria-label="oam applications"
                 data={this.dataProvider()}
                 selectionMode="single"
                 class="oj-complete"
+                item={{ focusable: false }}
               >
                 <template slot="itemTemplate" data-oj-as="item">
                   <oj-list-item-layout class="oj-complete">
@@ -334,6 +335,7 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
 
                           <a
                             data-bind={`attr: {href: '/oamapps/' + item.data.data.metadata.uid + (item.data.cluster && item.data.cluster.name !== 'local' ? ('?cluster=' + item.data.cluster.name) : '')}`}
+                            tabindex="0"
                           >
                             <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
                           </a>
@@ -398,6 +400,7 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
 
                             <a
                               data-bind={`attr: {href: '/projects/' + item.data.project.data.metadata.uid }`}
+                              tabindex="0"
                             >
                               <oj-bind-text value="[[item.data.project.name]]"></oj-bind-text>
                             </a>

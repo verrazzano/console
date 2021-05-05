@@ -34,6 +34,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
             ? new KeySetImpl([this.props.selectedComponent])
             : new KeySetImpl()
         }
+        item={{ focusable: false }}
       >
         <template slot="itemTemplate" data-oj-as="item">
           <oj-list-item-layout>
@@ -47,7 +48,10 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                 </span>
               </div>
               <div class="oj-sm-2 oj-flex-item">
-                <a data-bind="event: { click: () => {item.data.eventHandler('traits', item.data.id)} }">
+                <a
+                  data-bind="event: { click: () => {item.data.eventHandler('traits', item.data.id)} }"
+                  tabindex="0"
+                >
                   {Messages.ComponentConfigLabels.traits}
                 </a>
               </div>
@@ -76,7 +80,10 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                 </span>
               </div>
               <div class="oj-sm-2 oj-flex-item">
-                <a data-bind="event: { click: () => {item.data.eventHandler('scopes', item.data.id)} }">
+                <a
+                  data-bind="event: { click: () => {item.data.eventHandler('scopes', item.data.id)} }"
+                  tabindex="0"
+                >
                   {Messages.ComponentConfigLabels.scopes}
                 </a>
               </div>
@@ -91,7 +98,10 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                 </span>
               </div>
               <div class="oj-sm-2 oj-flex-item">
-                <a data-bind="event: { click: () => {item.data.eventHandler('params', item.data.id)} }">
+                <a
+                  data-bind="event: { click: () => {item.data.eventHandler('params', item.data.id)} }"
+                  tabindex="0"
+                >
                   {Messages.ComponentConfigLabels.params}
                 </a>
               </div>
@@ -102,7 +112,8 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                   <span>{Messages.Labels.oamCompRef()}:&nbsp;</span>
                 </strong>
                 <a
-                  data-bind={`attr: {href: '/oamcomps/' + item.data.oamComponent.data.metadata.uid + (item.data.oamComponent.cluster && item.data.oamComponent.cluster.name !== 'local' ? ('?cluster=' + item.data.oamComponent.cluster.name) : '')}`}
+                  data-bind={`attr: {href: '/oamcomps/' + item.data.oamComponent.data.metadata.uid + '?cluster=' + (item.data.cluster && item.data.cluster.name !== 'local' ? ('?cluster=' + item.data.cluster.name) : '')}`}
+                  tabindex="0"
                 >
                   <oj-bind-text value="[[item.data.oamComponent.data.metadata.name]]"></oj-bind-text>
                 </a>
@@ -113,7 +124,10 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                 <strong>
                   <span>{Messages.Labels.workload()}:&nbsp;</span>
                 </strong>
-                <a data-bind="event: { click: () => {item.data.workloadOpenEventHandler()} }, attr: {id: 'workload_' + item.data.id}">
+                <a
+                  data-bind="event: { click: () => {item.data.workloadOpenEventHandler()} }, attr: {id: 'workload_' + item.data.id}"
+                  tabindex="0"
+                >
                   <oj-bind-text value="[[item.data.oamComponent.workloadType]]"></oj-bind-text>
                 </a>
                 <oj-popup
@@ -132,6 +146,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
                       <a
                         data-bind="event: { click: () => {item.data.workloadCloseEventHandler()} }"
                         class="closelink"
+                        tabindex="0"
                       >
                         Close
                       </a>
