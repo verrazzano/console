@@ -165,6 +165,7 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
                 data={this.dataProvider()}
                 selectionMode="single"
                 class="oj-complete"
+                item={{ focusable: false }}
               >
                 <template slot="itemTemplate" data-oj-as="item">
                   <oj-list-item-layout class="oj-complete">
