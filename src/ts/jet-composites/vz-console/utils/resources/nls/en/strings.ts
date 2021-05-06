@@ -7,7 +7,7 @@ export = {
     appNav: "Application Navigation",
   },
   footer: {
-    copyRight: "© 2020 Oracle",
+    copyRight: "© 2021 Oracle",
     aboutOracle: "About Oracle",
     contactUs: "Contact Us",
     legalNotices: "Legal Notices",
