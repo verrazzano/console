@@ -12,9 +12,9 @@ import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
+import { cleanupPagingControl } from "vz-console/utils/utils";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
-import { cleanupPagingControl } from "vz-console/utils/utils";
 
 class Props {
   scopes: [OAMScope];
