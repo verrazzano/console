@@ -11,6 +11,7 @@ import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
 import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
+import { cleanupPagingControl } from "vz-console/utils/utils";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -93,6 +94,8 @@ export class ConsoleInstanceProjects extends VComponent<Props, State> {
       projects: new Model.Collection(models),
       originalProjects: new Model.Collection(models),
     });
+
+    cleanupPagingControl();
   }
 
   @listener({ capture: true, passive: true })

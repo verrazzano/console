@@ -4,6 +4,7 @@
 import * as ko from "knockout";
 import { Status } from "vz-console/service/types";
 import CoreRouter = require("ojs/ojcorerouter");
+import Context = require("ojs/ojcontext");
 
 export const getQueryParam = (paramName: string): string => {
   let paramValue = "";
@@ -37,4 +38,29 @@ export const getStatusForOAMResource = (resourceStatus: string): string => {
       break;
   }
   return status;
+};
+
+/*
+ * JET 9 does not set the aria-labelledby attribute on oj-paging-control properly.
+ * Instead of "navigation_mypagingcontrolid_oj_pgCtrl_acc_label" it should be
+ * "mypagingcontrolid_oj_pgCtrl_acc_label".
+ *
+ * As a workaround, iterate through oj-paging-controls and strip the leading
+ * "navigation_" from the aria-labelledby attribute.
+ */
+export const cleanupPagingControl = () => {
+  const pagingNodes = document.getElementsByTagName("oj-paging-control");
+  [].forEach.call(pagingNodes, function (pagingNode) {
+    console.log(pagingNode);
+    const ARIA_LABELLEDBY = "aria-labelledby";
+
+    var busyContext = Context.getContext(pagingNode).getBusyContext();
+
+    busyContext.whenReady().then(function () {
+      var node = pagingNode.querySelector("div.oj-pagingcontrol-content");
+      var labelledBy = node.getAttribute(ARIA_LABELLEDBY);
+      labelledBy = labelledBy.replace("navigation_", "");
+      node.setAttribute(ARIA_LABELLEDBY, labelledBy);
+    });
+  });
 };

@@ -11,6 +11,7 @@ import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
+import { cleanupPagingControl } from "vz-console/utils/utils";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -39,6 +40,8 @@ export class ConsoleProjectNamespaces extends VComponent<Props, State> {
     this.updateState({
       namespaces: new Model.Collection(models),
     });
+
+    cleanupPagingControl();
   }
 
   protected render() {

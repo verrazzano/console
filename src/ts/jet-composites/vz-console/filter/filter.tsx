@@ -37,7 +37,7 @@ export class ConsoleFilter extends VComponent<Props> {
           <div class="oj-navigationlist-category-divider"></div>
           <h4 class="reslabel">{this.props.label}</h4>
           <oj-checkboxset
-            labelledBy={this.props.label}
+            aria-label={this.props.label}
             class="oj-sm-padding-4x-bottom oj-complete"
             onValueChanged={this.handleValueChanged}
             options={this.data()}

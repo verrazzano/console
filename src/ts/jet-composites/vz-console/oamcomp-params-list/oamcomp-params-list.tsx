@@ -9,6 +9,7 @@ import "ojs/ojtable";
 import * as Messages from "vz-console/utils/Messages";
 import * as ko from "knockout";
 import "ojs/ojpagingcontrol";
+import { cleanupPagingControl } from "vz-console/utils/utils";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 
 class Props {
@@ -39,6 +40,10 @@ export class ConsoleOAMCompParamsList extends VComponent<Props> {
   ];
 
   dataProvider: ko.Observable = ko.observable();
+
+  protected mounted() {
+    cleanupPagingControl();
+  }
 
   protected render() {
     this.dataProvider(

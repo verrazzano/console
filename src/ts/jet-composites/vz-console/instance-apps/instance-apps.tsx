@@ -12,6 +12,7 @@ import "ojs/ojpagingcontrol";
 import * as ko from "knockout";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages";
+import { cleanupPagingControl } from "vz-console/utils/loader";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -162,6 +163,8 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
       applications: new Model.Collection(models),
       originalApplications: new Model.Collection(models),
     });
+
+    cleanupPagingControl();
   }
 
   @listener({ capture: true, passive: true })
@@ -299,6 +302,7 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
                     <div class="oj-sm-1 oj-flex-item"></div>
                     <div class="oj-sm-11 oj-flex-item">
                       <oj-paging-control
+                        id="paging1"
                         data={this.dataProvider()}
                         pageSize={10}
                         class="oj-complete pagination"
@@ -419,6 +423,7 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
                     <div class="oj-sm-1 oj-flex-item"></div>
                     <div class="oj-sm-11 oj-flex-item">
                       <oj-paging-control
+                        id="paging2"
                         data={this.dataProvider()}
                         pageSize={10}
                         class="oj-complete pagination"

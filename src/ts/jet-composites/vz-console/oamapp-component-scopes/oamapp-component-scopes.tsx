@@ -14,6 +14,7 @@ import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
+import { cleanupPagingControl } from "vz-console/utils/utils";
 
 class Props {
   scopes: [OAMScope];
@@ -47,6 +48,8 @@ export class ConsoleOamApplicationComponentScopes extends VComponent<
     this.updateState({
       scopes: new Model.Collection(models),
     });
+
+    cleanupPagingControl();
   }
 
   protected render() {

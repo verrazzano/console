@@ -10,6 +10,7 @@ import "ojs/ojtable";
 import * as Messages from "vz-console/utils/Messages";
 import * as ko from "knockout";
 import "ojs/ojpagingcontrol";
+import { cleanupPagingControl } from "vz-console/utils/utils";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 class Props {
@@ -102,6 +103,8 @@ export class ConsoleInstanceClusters extends VComponent<Props, State> {
     this.updateState({
       clusters: new Model.Collection(models),
     });
+
+    cleanupPagingControl();
   }
 
   protected render() {

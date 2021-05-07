@@ -12,6 +12,7 @@ import "ojs/ojpagingcontrol";
 import * as ko from "knockout";
 import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages";
+import { cleanupPagingControl } from "vz-console/utils/utils";
 import { ConsoleOAMAppComponentView } from "vz-console/oamapp-component-view/loader";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
@@ -121,6 +122,7 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
       components: new Model.Collection(models),
       originalComponents: new Model.Collection(models),
     });
+    cleanupPagingControl();
   }
 
   @listener({ capture: true, passive: true })
