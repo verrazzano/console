@@ -47,7 +47,7 @@ module.exports = function (config) {
       },
 
       {
-        pattern: "web/css/redwood/9.0.4/web/redwood.css",
+        pattern: "web/css/redwood/10.0.0/web/redwood.css",
         included: true,
         watched: false,
       },

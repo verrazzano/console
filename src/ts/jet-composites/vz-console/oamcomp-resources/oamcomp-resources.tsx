@@ -2,7 +2,12 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  listener,
+  h,
+} from "ojs/ojvcomponent-element";
 import { ConsoleOAMCompParamsList } from "vz-console/oamcomp-params-list/loader";
 import * as Messages from "vz-console/utils/Messages";
 import { OAMComponent, OAMComponentParam } from "vz-console/service/types";
@@ -17,7 +22,7 @@ class State {
 
 class Props {
   oamComponent: OAMComponent;
-  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
+  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => void;
   selectedItem?: string;
   cluster?: string;
 }
@@ -26,7 +31,10 @@ class Props {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamcomp-resources")
-export class ConsoleOAMComponentResources extends VComponent<Props, State> {
+export class ConsoleOAMComponentResources extends ElementVComponent<
+  Props,
+  State
+> {
   router: CoreRouter;
 
   baseBreadcrumbs: BreadcrumbType[] = [

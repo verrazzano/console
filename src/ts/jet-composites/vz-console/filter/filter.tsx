@@ -2,14 +2,19 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  listener,
+  h,
+} from "ojs/ojvcomponent-element";
 import "ojs/ojcheckboxset";
 import * as ko from "knockout";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 
 class Props {
   label: string;
-  options: [{ label: string; value: string }];
+  options: Array<{ label: string; value: string }>;
   onValueChanged: (event: CustomEvent) => void;
 }
 
@@ -17,7 +22,7 @@ class Props {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-filter")
-export class ConsoleFilter extends VComponent<Props> {
+export class ConsoleFilter extends ElementVComponent<Props> {
   data = ko.observable(new ArrayDataProvider([{}]));
 
   @listener({ capture: true, passive: true })

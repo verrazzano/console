@@ -2,7 +2,12 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  h,
+  listener,
+} from "ojs/ojvcomponent-element";
 import { Project } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
@@ -15,8 +20,8 @@ import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
-  projects: [Project];
-  filterCallback?: (filter: Element) => {};
+  projects: Array<Project>;
+  filterCallback?: (filter: Element) => void;
   selectedItem?: string;
 }
 
@@ -29,7 +34,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-instance-projects")
-export class ConsoleInstanceProjects extends VComponent<Props, State> {
+export class ConsoleInstanceProjects extends ElementVComponent<Props, State> {
   state: State = {};
   options = [
     {

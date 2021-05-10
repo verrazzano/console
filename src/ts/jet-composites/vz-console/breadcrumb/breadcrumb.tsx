@@ -2,7 +2,12 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  listener,
+  h,
+} from "ojs/ojvcomponent-element";
 
 export type BreadcrumbType = {
   label: string;
@@ -18,7 +23,7 @@ class Props {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-breadcrumb")
-export class ConsoleBreadcrumb extends VComponent<Props> {
+export class ConsoleBreadcrumb extends ElementVComponent<Props> {
   @listener({ capture: true, passive: true })
   protected openLink(event: CustomEvent) {
     window.open((event.target as Element).getAttribute("href"), "_self");

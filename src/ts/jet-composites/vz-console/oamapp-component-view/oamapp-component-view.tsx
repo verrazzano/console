@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { ElementVComponent, customElement, h } from "ojs/ojvcomponent-element";
 
 import * as Messages from "vz-console/utils/Messages";
 import { KeySetImpl } from "ojs/ojkeyset";
@@ -20,7 +20,7 @@ class Props {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamapp-component-view")
-export class ConsoleOAMAppComponentView extends VComponent<Props> {
+export class ConsoleOAMAppComponentView extends ElementVComponent<Props> {
   protected render() {
     return (
       <oj-list-view

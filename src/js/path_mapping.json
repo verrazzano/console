@@ -4,11 +4,11 @@
 
   "cdns": {
     "jet": {
-      "prefix": "https://static.oracle.com/cdn/jet/9.0.0/default/js",
-      "css": "https://static.oracle.com/cdn/jet/9.0.0/default/css",
+      "prefix": "https://static.oracle.com/cdn/jet/10.0.0/default/js",
+      "css": "https://static.oracle.com/cdn/jet/10.0.0/default/css",
       "config": "bundles-config.js"
     },
-    "3rdparty": "https://static.oracle.com/cdn/jet/9.0.0/3rdparty"
+    "3rdparty": "https://static.oracle.com/cdn/jet/10.0.0/3rdparty"
   },
 
   "libs": {

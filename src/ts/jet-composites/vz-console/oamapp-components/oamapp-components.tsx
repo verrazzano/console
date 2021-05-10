@@ -2,7 +2,12 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  h,
+  listener,
+} from "ojs/ojvcomponent-element";
 import { OAMComponentInstance, Status } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
@@ -17,13 +22,13 @@ import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
-  components: [OAMComponentInstance];
-  filterCallback?: (filter: Element) => {};
+  components: Array<OAMComponentInstance>;
+  filterCallback?: (filter: Element) => void;
   selectedComponent?: string;
   linkSelectionCallback?: (
     selectedItem: string,
     selectedComponent: string
-  ) => {};
+  ) => void;
 }
 
 class State {
@@ -35,7 +40,10 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamapp-components")
-export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
+export class ConsoleOamApplicationComponents extends ElementVComponent<
+  Props,
+  State
+> {
   state: State = {};
   options = [
     { value: "name", label: "Name" },
