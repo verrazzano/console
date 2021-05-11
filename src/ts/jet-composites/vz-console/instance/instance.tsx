@@ -51,6 +51,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
 
   constructor() {
     super(new Props());
+
     this.verrazzanoApi = new VerrazzanoApi();
   }
 
