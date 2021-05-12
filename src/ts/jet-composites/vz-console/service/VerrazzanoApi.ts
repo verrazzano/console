@@ -18,6 +18,7 @@ import {
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
+import { VzError } from "vz-console/utils/error";
 
 export const ServicePrefix = "instances";
 
@@ -44,11 +45,7 @@ export class VerrazzanoApi {
         return this.populateInstance(vzArray[0], instanceId);
       })
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 
@@ -298,11 +295,7 @@ export class VerrazzanoApi {
         }
       )
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 
@@ -323,6 +316,9 @@ export class VerrazzanoApi {
       mcAppsByNamespace,
     ] of mcApplicationsByClusterAndNamespace) {
       const apiUrl = await this.getAPIUrl(cluster);
+      if(!apiUrl) {
+        continue;
+      }
       for (const [namespace, mcApps] of mcAppsByNamespace) {
         for (const [name] of mcApps) {
           const resource = await new VerrazzanoApi(
@@ -370,12 +366,7 @@ export class VerrazzanoApi {
         return processClusterData(clustersResponse.items);
       })
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 
@@ -435,21 +426,14 @@ export class VerrazzanoApi {
     )
       .then((response) => {
         if (!response || !response.status || response.status >= 400) {
-          throw Messages.Error.errFetchingKubernetesResource(
+          throw new VzError(Messages.Error.errFetchingKubernetesResource(
             `${type.ApiVersion}/${type.Kind}`,
             namespace,
             name
-          );
+          ), response.status);
         }
         return response;
       })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
-      });
   }
 
   populateInstance(vzInstance, instanceId): Instance {
@@ -514,11 +498,10 @@ export class VerrazzanoApi {
         return vmc.status.apiUrl;
       })
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
+        if( error instanceof VzError && (error as VzError).getCode() === VzError.HTTPNotFoundCode) {
+          return ""
         }
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 
@@ -535,11 +518,7 @@ export class VerrazzanoApi {
         return processProjectsData(projects.items);
       })
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 
@@ -550,6 +529,8 @@ export class VerrazzanoApi {
     );
     return project;
   }
+
+
 
   public constructor(url: string = "", cluster: string = "local") {
     this.defaultUrl = `${(window as any).vzApiUrl || ""}`;
