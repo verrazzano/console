@@ -34,7 +34,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
             ? new KeySetImpl([this.props.selectedComponent])
             : new KeySetImpl()
         }
-        item={{ focusable: false }}
+        item={{ selectable: true }}
       >
         <template slot="itemTemplate" data-oj-as="item">
           <oj-list-item-layout>
@@ -49,7 +49,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
               </div>
               <div class="oj-sm-2 oj-flex-item">
                 <a
-                  data-bind="event: { click: () => {item.data.eventHandler('traits', item.data.id)} }"
+                  data-bind="event: { click: () => {item.data.eventHandler('traits', item.data.id)}, keypress: () => {item.data.eventHandler('traits', item.data.id)} }"
                   tabindex="0"
                 >
                   {Messages.ComponentConfigLabels.traits}
@@ -81,7 +81,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
               </div>
               <div class="oj-sm-2 oj-flex-item">
                 <a
-                  data-bind="event: { click: () => {item.data.eventHandler('scopes', item.data.id)} }"
+                  data-bind="event: { click: () => {item.data.eventHandler('scopes', item.data.id)}, keypress: () => {item.data.eventHandler('scopes', item.data.id)} }"
                   tabindex="0"
                 >
                   {Messages.ComponentConfigLabels.scopes}
@@ -99,7 +99,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
               </div>
               <div class="oj-sm-2 oj-flex-item">
                 <a
-                  data-bind="event: { click: () => {item.data.eventHandler('params', item.data.id)} }"
+                  data-bind="event: { click: () => {item.data.eventHandler('params', item.data.id)}, keypress: () => {item.data.eventHandler('params', item.data.id)} }"
                   tabindex="0"
                 >
                   {Messages.ComponentConfigLabels.params}
