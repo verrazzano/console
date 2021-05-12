@@ -380,7 +380,7 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
             selection={this.state.selectedItem}
             onSelectionChanged={this.selectionChange}
             aria-labelledby="resources"
-            item={{ focusable: false }}
+            item={{ selectable: true }}
           >
             <ul>
               <li id="components">

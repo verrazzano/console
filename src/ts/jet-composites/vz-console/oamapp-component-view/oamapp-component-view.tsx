@@ -34,7 +34,7 @@ export class ConsoleOAMAppComponentView extends VComponent<Props> {
             ? new KeySetImpl([this.props.selectedComponent])
             : new KeySetImpl()
         }
-        item={{ focusable: false }}
+        item={{ selectable: true }}
       >
         <template slot="itemTemplate" data-oj-as="item">
           <oj-list-item-layout>
