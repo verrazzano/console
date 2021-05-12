@@ -44,6 +44,7 @@ async function setup(selectedItem?: string) {
     instanceElement.parentElement
   );
 }
+
 describe("instance panel screen tests", () => {
   before(async () => {
     sandbox
