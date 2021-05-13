@@ -138,8 +138,10 @@ export class ConsoleOamApplicationComponents extends VComponent<Props, State> {
 
   @listener({ capture: true, passive: true })
   private handleSortCriteriaChanged(event: CustomEvent) {
-    this.currentSort(event.detail.value.toLowerCase());
-    this.updateState({ components: this.executeSort(this.state.components) });
+    if (event.detail.value) {
+      this.currentSort(event.detail.value.toLowerCase());
+      this.updateState({ components: this.executeSort(this.state.components) });
+    }
   }
 
   protected render() {
