@@ -154,7 +154,6 @@ export const Error = {
 
   errVmcNotExists: (...args) =>
     Translations.getTranslatedString("error.errVmcNotExists", args),
-
 };
 
 export const Auth = {

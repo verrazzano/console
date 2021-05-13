@@ -96,7 +96,8 @@ export = {
     errProjectsFetchError: "Error fetching Projects.",
     errInvalidProjectId: "Invalid Project Id.",
     errRenderProject: "Error displaying Project {0}.",
-    errVmcNotExists: "VerrazzanoManagedCluster {0} does not exist/is not registered yet."
+    errVmcNotExists:
+      "VerrazzanoManagedCluster {0} does not exist/is not registered yet.",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",

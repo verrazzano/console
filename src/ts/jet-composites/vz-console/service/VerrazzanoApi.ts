@@ -316,7 +316,7 @@ export class VerrazzanoApi {
       mcAppsByNamespace,
     ] of mcApplicationsByClusterAndNamespace) {
       const apiUrl = await this.getAPIUrl(cluster);
-      if(!apiUrl) {
+      if (!apiUrl) {
         continue;
       }
       for (const [namespace, mcApps] of mcAppsByNamespace) {
@@ -423,17 +423,19 @@ export class VerrazzanoApi {
               }`
         }${name ? `/${name}` : ""}`
       )
-    )
-      .then((response) => {
-        if (!response || !response.status || response.status >= 400) {
-          throw new VzError(Messages.Error.errFetchingKubernetesResource(
+    ).then((response) => {
+      if (!response || !response.status || response.status >= 400) {
+        throw new VzError(
+          Messages.Error.errFetchingKubernetesResource(
             `${type.ApiVersion}/${type.Kind}`,
             namespace,
             name
-          ), response.status);
-        }
-        return response;
-      })
+          ),
+          response.status
+        );
+      }
+      return response;
+    });
   }
 
   populateInstance(vzInstance, instanceId): Instance {
@@ -498,8 +500,11 @@ export class VerrazzanoApi {
         return vmc.status.apiUrl;
       })
       .catch((error) => {
-        if( error instanceof VzError && (error as VzError).getCode() === VzError.HTTPNotFoundCode) {
-          return ""
+        if (
+          error instanceof VzError &&
+          (error as VzError).getCode() === VzError.HTTPNotFoundCode
+        ) {
+          return "";
         }
         throw new VzError(error);
       });
@@ -529,8 +534,6 @@ export class VerrazzanoApi {
     );
     return project;
   }
-
-
 
   public constructor(url: string = "", cluster: string = "local") {
     this.defaultUrl = `${(window as any).vzApiUrl || ""}`;
