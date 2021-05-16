@@ -26,7 +26,7 @@ const ERROR_PAGE = "verrazzano/error";
 // VZ_AUTH: false disables OAUTH2 with Keycloak
 // VZ_UI_URL: the UI URL homepage:  E.G http://localhost:8183
 // VZ_KEYCLOAK_URL: the keycloak url:  E.G. https://keycloak.myvz.v8o.oracledx.com:443
-// VZ_CLIENT_ID: the client ID for for dev :  E.G dev-webui
+// VZ_CLIENT_ID: the client ID to use (for development):  E.G my-dev-pkce-client
 //
 // You can disable OAUTH by defining VZ_AUTH=false, OAUTH2 is enabled by default.
 // If you do not disable OAUTH2 then you must provide the keycloak URL, there is no default.
@@ -41,7 +41,7 @@ export class KeycloakUrls {
     window.location.protocol + "//" + window.location.host;
 
   // Client ID. let env override for dev
-  private clientId: string = "webui";
+  private clientId: string = "verrazzano-pkce";
 
   // The singleton instance
   private static _instance: KeycloakUrls;
@@ -105,7 +105,7 @@ export class KeycloakUrls {
     return this.uiUrl + "/" + ERROR_PAGE + "?" + errorMsg;
   }
 
-  // Build the UI callback URL.  This has to match the callback configured in the webui keycloak client.
+  // Build the UI callback URL.  This URL must be configured as a redirect URL on the keycloak client.
   // "http://localhost:8183/verrazzano/authcallback"
   public getCallbackUrl(): string {
     const url = this.uiUrl + "/";
