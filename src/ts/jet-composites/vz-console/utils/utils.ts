@@ -4,7 +4,6 @@
 import * as ko from "knockout";
 import { Status } from "vz-console/service/types";
 import CoreRouter = require("ojs/ojcorerouter");
-import { ComponentConfigLabels } from "./Messages";
 
 export const getQueryParam = (paramName: string): string => {
   let paramValue = "";
