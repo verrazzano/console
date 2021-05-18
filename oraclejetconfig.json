@@ -20,5 +20,5 @@
   "sassVer": "4.13.0",
   "defaultTheme": "redwood",
   "defaultCssvars": "disabled",
-  "generatorVersion": "10.0.0"
+  "generatorVersion": "10.1.0"
 }
