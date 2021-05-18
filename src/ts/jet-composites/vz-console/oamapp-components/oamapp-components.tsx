@@ -163,7 +163,7 @@ export class ConsoleOamApplicationComponents extends ElementVComponent<
 
     if (this.props.filterCallback) {
       this.props.filterCallback(
-        <div>
+        <div key="oamappcompfilter">
           <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
           <ConsoleFilter
             label={Messages.Labels.state()}

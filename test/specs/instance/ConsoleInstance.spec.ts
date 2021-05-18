@@ -43,8 +43,14 @@ async function setup(selectedItem?: string) {
     },
     instanceElement.parentElement
   );
-}
 
+  await Context.getContext(instanceElement)
+    .getBusyContext()
+    .whenReady(30000)
+    .catch((err) => {
+      chai.assert.fail(err);
+    });
+}
 describe("instance panel screen tests", () => {
   before(async () => {
     sandbox

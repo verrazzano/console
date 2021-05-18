@@ -4,6 +4,7 @@
 import * as ko from "knockout";
 import { Status } from "vz-console/service/types";
 import CoreRouter = require("ojs/ojcorerouter");
+import { ComponentConfigLabels } from "./Messages";
 
 export const getQueryParam = (paramName: string): string => {
   let paramValue = "";
@@ -37,4 +38,23 @@ export const getStatusForOAMResource = (resourceStatus: string): string => {
       break;
   }
   return status;
+};
+
+export const filtersEqual = (
+  leftFilter: Element,
+  rightFilter: Element
+): boolean => {
+  interface KeyedElement<T = any> {
+    [key: string]: T;
+  }
+
+  if (leftFilter && rightFilter) {
+    var leftKey = leftFilter !== null ? (leftFilter as KeyedElement).key : null;
+    var rightKey =
+      rightFilter !== null ? (rightFilter as KeyedElement).key : null;
+
+    return leftKey === rightKey;
+  }
+
+  return false;
 };

@@ -253,7 +253,7 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
         });
       }
       this.props.filterCallback(
-        <div>
+        <div key="appfilter">
           <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
           <ConsoleFilter
             label={Messages.Labels.state()}

@@ -16,7 +16,7 @@ import {
   Project,
 } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
-import { getDefaultRouter } from "vz-console/utils/utils";
+import { filtersEqual, getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleInstanceClusters } from "vz-console/instance-clusters/loader";
 import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
 import { ConsoleInstanceComponents } from "vz-console/instance-components/loader";
@@ -108,7 +108,10 @@ export class ConsoleInstanceResources extends ElementVComponent<Props, State> {
   }
 
   filterCallback = (filter: Element): void => {
-    this.updateState({ filter: filter });
+    // check that the filter has changed, short circuit if it has not to prevent render loop
+    if (!filtersEqual(this.state.filter, filter)) {
+      this.updateState({ filter: filter });
+    }
   };
 
   protected render() {

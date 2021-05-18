@@ -236,7 +236,7 @@ export class ConsoleInstanceComponents extends ElementVComponent<Props, State> {
         });
       }
       this.props.filterCallback(
-        <div>
+        <div key="compfilter">
           <h4 class="reslabel">{Messages.Labels.refineBy()}</h4>
           <ConsoleFilter
             label={Messages.Labels.clusters()}

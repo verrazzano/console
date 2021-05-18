@@ -12,7 +12,7 @@ import { ConsoleOamApplicationComponents } from "vz-console/oamapp-components/lo
 import * as Messages from "vz-console/utils/Messages";
 import { OAMApplication } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
-import { getDefaultRouter } from "vz-console/utils/utils";
+import { filtersEqual, getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleOamApplicationComponentTraits } from "vz-console/oamapp-component-traits/loader";
 import { ConsoleOamApplicationComponentScopes } from "vz-console/oamapp-component-scopes/loader";
 import { ConsoleOamApplicationComponentParams } from "vz-console/oamapp-component-params/loader";
@@ -271,7 +271,9 @@ export class ConsoleOAMApplicationResources extends ElementVComponent<
   }
 
   filterCallback = (filter: Element): void => {
-    this.updateState({ filter: filter });
+    if (!filtersEqual(this.state.filter, filter)) {
+      this.updateState({ filter: filter });
+    }
   };
 
   linkSelectionCallback = (
