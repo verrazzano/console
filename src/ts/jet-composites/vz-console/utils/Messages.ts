@@ -151,6 +151,9 @@ export const Error = {
 
   errRenderProject: (...args) =>
     Translations.getTranslatedString("error.errRenderProject", args),
+
+  errVmcNotExists: (...args) =>
+    Translations.getTranslatedString("error.errVmcNotExists", args),
 };
 
 export const Auth = {

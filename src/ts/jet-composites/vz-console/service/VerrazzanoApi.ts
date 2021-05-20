@@ -18,6 +18,7 @@ import {
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
+import { VzError } from "vz-console/utils/error";
 
 export const ServicePrefix = "instances";
 
@@ -44,11 +45,7 @@ export class VerrazzanoApi {
         return this.populateInstance(vzArray[0], instanceId);
       })
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 
@@ -128,35 +125,37 @@ export class VerrazzanoApi {
             mcApp.spec.placement.clusters &&
             mcApp.spec.placement.clusters.length > 0
           ) {
-            mcApp.spec.placement.clusters.forEach((cluster) => {
-              let mcAppsInCluster = mcApplicationsByClusterAndNamespace.get(
-                cluster.name
-              );
-              if (!mcAppsInCluster) {
-                mcAppsInCluster = new Map<string, Map<string, any>>();
-                mcApplicationsByClusterAndNamespace.set(
-                  cluster.name,
-                  mcAppsInCluster
+            mcApp.spec.placement.clusters
+              .filter((cluster) => cluster.name !== "local")
+              .forEach((cluster) => {
+                let mcAppsInCluster = mcApplicationsByClusterAndNamespace.get(
+                  cluster.name
                 );
-              }
-              if (
-                mcApp.metadata &&
-                mcApp.metadata.name &&
-                mcApp.metadata.namespace
-              ) {
-                let mcAppsInNamespace = mcAppsInCluster.get(
-                  mcApp.metadata.namespace
-                );
-                if (!mcAppsInNamespace) {
-                  mcAppsInNamespace = new Map<string, any>();
-                  mcAppsInCluster.set(
-                    mcApp.metadata.namespace,
-                    mcAppsInNamespace
+                if (!mcAppsInCluster) {
+                  mcAppsInCluster = new Map<string, Map<string, any>>();
+                  mcApplicationsByClusterAndNamespace.set(
+                    cluster.name,
+                    mcAppsInCluster
                   );
                 }
-                mcAppsInNamespace.set(mcApp.metadata.name, {});
-              }
-            });
+                if (
+                  mcApp.metadata &&
+                  mcApp.metadata.name &&
+                  mcApp.metadata.namespace
+                ) {
+                  let mcAppsInNamespace = mcAppsInCluster.get(
+                    mcApp.metadata.namespace
+                  );
+                  if (!mcAppsInNamespace) {
+                    mcAppsInNamespace = new Map<string, any>();
+                    mcAppsInCluster.set(
+                      mcApp.metadata.namespace,
+                      mcAppsInNamespace
+                    );
+                  }
+                  mcAppsInNamespace.set(mcApp.metadata.name, {});
+                }
+              });
           }
         });
         mcComponents.forEach((mcComponent) => {
@@ -167,35 +166,37 @@ export class VerrazzanoApi {
             mcComponent.spec.placement.clusters &&
             mcComponent.spec.placement.clusters.length > 0
           ) {
-            mcComponent.spec.placement.clusters.forEach((cluster) => {
-              let mcComponentsInCluster = mcComponentsByClusterAndNamespace.get(
-                cluster.name
-              );
-              if (!mcComponentsInCluster) {
-                mcComponentsInCluster = new Map<string, Map<string, any>>();
-                mcComponentsByClusterAndNamespace.set(
-                  cluster.name,
-                  mcComponentsInCluster
+            mcComponent.spec.placement.clusters
+              .filter((cluster) => cluster.name !== "local")
+              .forEach((cluster) => {
+                let mcComponentsInCluster = mcComponentsByClusterAndNamespace.get(
+                  cluster.name
                 );
-              }
-              if (
-                mcComponent.metadata &&
-                mcComponent.metadata.name &&
-                mcComponent.metadata.namespace
-              ) {
-                let mcComponentsInNamespace = mcComponentsInCluster.get(
-                  mcComponent.metadata.namespace
-                );
-                if (!mcComponentsInNamespace) {
-                  mcComponentsInNamespace = new Map<string, any>();
-                  mcComponentsInCluster.set(
-                    mcComponent.metadata.namespace,
-                    mcComponentsInNamespace
+                if (!mcComponentsInCluster) {
+                  mcComponentsInCluster = new Map<string, Map<string, any>>();
+                  mcComponentsByClusterAndNamespace.set(
+                    cluster.name,
+                    mcComponentsInCluster
                   );
                 }
-                mcComponentsInNamespace.set(mcComponent.metadata.name, {});
-              }
-            });
+                if (
+                  mcComponent.metadata &&
+                  mcComponent.metadata.name &&
+                  mcComponent.metadata.namespace
+                ) {
+                  let mcComponentsInNamespace = mcComponentsInCluster.get(
+                    mcComponent.metadata.namespace
+                  );
+                  if (!mcComponentsInNamespace) {
+                    mcComponentsInNamespace = new Map<string, any>();
+                    mcComponentsInCluster.set(
+                      mcComponent.metadata.namespace,
+                      mcComponentsInNamespace
+                    );
+                  }
+                  mcComponentsInNamespace.set(mcComponent.metadata.name, {});
+                }
+              });
           }
         });
         return {
@@ -298,11 +299,7 @@ export class VerrazzanoApi {
         }
       )
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 
@@ -323,6 +320,9 @@ export class VerrazzanoApi {
       mcAppsByNamespace,
     ] of mcApplicationsByClusterAndNamespace) {
       const apiUrl = await this.getAPIUrl(cluster);
+      if (!apiUrl) {
+        continue;
+      }
       for (const [namespace, mcApps] of mcAppsByNamespace) {
         for (const [name] of mcApps) {
           const resource = await new VerrazzanoApi(
@@ -370,12 +370,7 @@ export class VerrazzanoApi {
         return processClusterData(clustersResponse.items);
       })
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 
@@ -432,24 +427,19 @@ export class VerrazzanoApi {
               }`
         }${name ? `/${name}` : ""}`
       )
-    )
-      .then((response) => {
-        if (!response || !response.status || response.status >= 400) {
-          throw Messages.Error.errFetchingKubernetesResource(
+    ).then((response) => {
+      if (!response || !response.status || response.status >= 400) {
+        throw new VzError(
+          Messages.Error.errFetchingKubernetesResource(
             `${type.ApiVersion}/${type.Kind}`,
             namespace,
             name
-          );
-        }
-        return response;
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
-      });
+          ),
+          response.status
+        );
+      }
+      return response;
+    });
   }
 
   populateInstance(vzInstance, instanceId): Instance {
@@ -514,11 +504,13 @@ export class VerrazzanoApi {
         return vmc.status.apiUrl;
       })
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
+        if (
+          error instanceof VzError &&
+          (error as VzError).getCode() === VzError.HTTPNotFoundCode
+        ) {
+          return "";
         }
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 
@@ -535,11 +527,7 @@ export class VerrazzanoApi {
         return processProjectsData(projects.items);
       })
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        throw new Error(errorMessage);
+        throw new VzError(error);
       });
   }
 

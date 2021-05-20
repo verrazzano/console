@@ -205,10 +205,12 @@ export class ConsoleInstanceApps extends VComponent<Props, State> {
 
   @listener({ capture: true, passive: true })
   private handleSortCriteriaChanged(event: CustomEvent) {
-    this.currentSort(event.detail.value.toLowerCase());
-    this.updateState({
-      applications: this.executeSort(this.state.applications),
-    });
+    if (event.detail.value) {
+      this.currentSort(event.detail.value.toLowerCase());
+      this.updateState({
+        applications: this.executeSort(this.state.applications),
+      });
+    }
   }
 
   protected render() {
