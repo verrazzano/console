@@ -147,4 +147,9 @@ export class KeycloakUrls {
       "/protocol/openid-connect/"
     );
   }
+
+  // The Origin header for the fetch requests
+  public getUIOrigin(): string {
+    return this.uiUrl;
+  }
 }
