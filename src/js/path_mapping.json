@@ -1,5 +1,5 @@
 {
-  "baseUrl": "/js",
+  "baseUrl": "js",
   "use": "local",
 
   "cdns": {
@@ -119,7 +119,7 @@
         "src": ["debug*/**"],
         "path": "libs/oj/v#{version}",
         "pathSuffix": "/debug' + (_ojNeedsES5 ? '_es5' : '')",
-        "cdnPath": "debug"
+        "cdnPath": ""
       },
       "release": {
         "src": ["min*/**"],
@@ -302,6 +302,28 @@
       }
     },
 
+    "ojcss": {
+      "cdn": "jet",
+      "cwd": "node_modules/@oracle/oraclejet/dist/js/libs/oj",
+      "debug": {
+        "src": ["debug/ojcss.js"],
+        "path": "libs/oj/v#{version}",
+        "pathSuffix": "/debug' + (_ojNeedsES5 ? '_es5/ojcss.js' : '/ojcss.js')",
+        "cdnPath": "ojcss"
+      },
+      "release": {
+        "src": ["min/ojcss.js"],
+        "path": "libs/oj/v#{version}",
+        "pathSuffix": "/min/ojcss'",
+        "cdnPath": "ojcss"
+      },
+      "release_es5": {
+        "cwd": "min_es5",
+        "src": ["ojcss.js"],
+        "path": "libs/oj/v#{version}/min_es5/ojcss.js",
+        "cdnPath": "ojcss"
+      }
+    },
     "jwt_decode": {
       "cdn": "3rdparty",
       "cwd": "node_modules/jwt-decode/build",
@@ -314,7 +336,6 @@
         "path": "libs/jwt_decode/jwt-decode.min.js"
       }
     },
-
     "js-yaml": {
       "cdn": "3rdparty",
       "cwd": "node_modules/js-yaml/dist",

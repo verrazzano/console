@@ -4,6 +4,7 @@
 "use strict";
 
 // The UserAgent is used to detect IE11. Only IE11 requires ES5.
+// prettier-ignore
 (function () {
   function _ojIsIE11() {
     var nAgt = navigator.userAgent;
@@ -52,7 +53,7 @@
     },
     // endinjector
   });
-})();
+}());
 
 require(["ojs/ojbootstrap", "jwt_decode", "js-yaml", "root"], function (
   Bootstrap,
