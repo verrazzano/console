@@ -3,3 +3,4 @@
 
 export * from "./logUtils";
 export * from "./utils";
+export * from "./error";

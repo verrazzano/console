@@ -88,6 +88,12 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
       const projects = await this.verrazzanoApi.listProjects();
       if (this.props.cluster) {
         const apiUrl = await this.verrazzanoApi.getAPIUrl(this.props.cluster);
+        if (!apiUrl) {
+          this.updateState({
+            error: Messages.Error.errVmcNotExists(this.props.cluster),
+          });
+        }
+
         this.verrazzanoApi = new VerrazzanoApi(apiUrl, this.props.cluster);
       }
 

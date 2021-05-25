@@ -93,10 +93,12 @@ export class ConsoleInstanceClusters extends ElementVComponent<Props, State> {
 
   @listener({ capture: true, passive: true })
   private handleSortCriteriaChanged(event: CustomEvent) {
-    this.currentSort(event.detail.value.toLowerCase());
-    this.updateState({
-      clusters: this.executeSort(this.state.clusters),
-    });
+    if (event.detail.value) {
+      this.currentSort(event.detail.value.toLowerCase());
+      this.updateState({
+        clusters: this.executeSort(this.state.clusters),
+      });
+    }
   }
 
   protected mounted() {

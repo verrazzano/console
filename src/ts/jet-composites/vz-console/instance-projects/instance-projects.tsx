@@ -102,10 +102,12 @@ export class ConsoleInstanceProjects extends ElementVComponent<Props, State> {
 
   @listener({ capture: true, passive: true })
   private handleSortCriteriaChanged(event: CustomEvent) {
-    this.currentSort(event.detail.value.toLowerCase());
-    this.updateState({
-      projects: this.executeSort(this.state.projects),
-    });
+    if (event.detail.value) {
+      this.currentSort(event.detail.value.toLowerCase());
+      this.updateState({
+        projects: this.executeSort(this.state.projects),
+      });
+    }
   }
 
   protected render() {
