@@ -10,8 +10,8 @@ import {
 } from "ojs/ojvcomponent-element";
 
 class Props {
-  label?: any;
-  value?: any;
+  label?: string;
+  value?: string;
   link?: boolean;
   replace?: boolean;
   target?: string;

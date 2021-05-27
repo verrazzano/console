@@ -615,7 +615,9 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.oamApplication.data.metadata.labels
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;
@@ -624,7 +626,9 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.oamApplication.data.metadata.annotations
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;

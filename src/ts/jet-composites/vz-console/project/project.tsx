@@ -136,7 +136,9 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.project.data.metadata.labels
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;
@@ -145,7 +147,9 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.project.data.metadata.annotations
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;

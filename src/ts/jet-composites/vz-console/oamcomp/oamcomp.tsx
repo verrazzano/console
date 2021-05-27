@@ -281,7 +281,9 @@ export class ConsoleOAMComponent extends ElementVComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.oamComponent.data.metadata.labels
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;
@@ -290,7 +292,9 @@ export class ConsoleOAMComponent extends ElementVComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.oamComponent.data.metadata.annotations
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;
