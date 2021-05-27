@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An Oracle JavaScript Extension Toolkit(JET) web app",
   "dependencies": {
-    "@oracle/oraclejet": "10.1.0",
+    "@oracle/oraclejet": "10.0.0",
     "express": "4.17.1",
     "express-http-proxy": "1.6.2",
     "js-yaml": "3.14.0",
@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@kubernetes/client-node": "^0.12.2",
-    "@oracle/oraclejet-tooling": "10.1.0",
+    "@oracle/oraclejet-tooling": "10.0.0",
     "@types/chai": "^4.2.3",
     "@types/js-yaml": "^3.12.5",
     "@types/jwt-decode": "^2.2.0",
