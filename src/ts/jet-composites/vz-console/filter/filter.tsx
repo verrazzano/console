@@ -41,7 +41,7 @@ export class ConsoleFilter extends ElementVComponent<Props> {
         <div class="oj-lg-12 oj-md-12 oj-sm-only-hide oj-flex-item">
           <div class="oj-navigationlist-category-divider"></div>
           <h4 class="reslabel">{this.props.label}</h4>
-          <oj-checkboxset 
+          <oj-checkboxset
             ariaLabel={this.props.label}
             class="oj-sm-padding-4x-bottom oj-complete"
             onValueChanged={this.handleValueChanged}
