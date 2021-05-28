@@ -124,41 +124,45 @@ export class ConsoleProject extends VComponent<Props, State> {
                 value={this.state.project.createdOn}
               />
               <ConsoleMetadataItem
-                  label={Messages.Labels.projectSpec()}
-                  value={this.state.project.name}
-                  link={true}
-                  onclick={() => {
-                    (document.getElementById("projYamlPopup") as any).open("#tabMetaInfo");
-                  }}
-                  id="tabMetaInfo"
+                label={Messages.Labels.projectSpec()}
+                value={this.state.project.name}
+                link={true}
+                onclick={() => {
+                  (document.getElementById("projYamlPopup") as any).open(
+                    "#tabMetaInfo"
+                  );
+                }}
+                id="tabMetaInfo"
               />
               <oj-popup
-                  id="projYamlPopup"
-                  tail="none"
-                  modality="modal"
-                  {...{"position.my.horizontal": "center"}}
-                  {...{"position.my.vertical": "bottom"}}
-                  {...{"position.at.horizontal": "center"}}
-                  {...{"position.at.vertical": "bottom"}}
-                  {...{"position.offset.y": "-10px"}}
-                  className="popup"
+                id="projYamlPopup"
+                tail="none"
+                modality="modal"
+                {...{ "position.my.horizontal": "center" }}
+                {...{ "position.my.vertical": "bottom" }}
+                {...{ "position.at.horizontal": "center" }}
+                {...{ "position.at.vertical": "bottom" }}
+                {...{ "position.offset.y": "-10px" }}
+                className="popup"
               >
                 <div class="popupbody">
                   <div>
                     <a
-                        onClick={() => {
-                          (document.getElementById("projYamlPopup") as any).close();
-                        }}
-                        class="closelink"
+                      onClick={() => {
+                        (document.getElementById(
+                          "projYamlPopup"
+                        ) as any).close();
+                      }}
+                      class="closelink"
                     >
                       Close
                     </a>
                   </div>
                   <pre class="popupcontent">
-                  {yaml.dump(
+                    {yaml.dump(
                       yaml.load(JSON.stringify(this.state.project.data))
-                  )}
-                </pre>
+                    )}
+                  </pre>
                 </div>
               </oj-popup>
             </div>
