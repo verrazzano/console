@@ -38,3 +38,22 @@ export const getStatusForOAMResource = (resourceStatus: string): string => {
   }
   return status;
 };
+
+export const filtersEqual = (
+  leftFilter: Element,
+  rightFilter: Element
+): boolean => {
+  interface KeyedElement<T = any> {
+    [key: string]: T;
+  }
+
+  if (leftFilter && rightFilter) {
+    var leftKey = leftFilter !== null ? (leftFilter as KeyedElement).key : null;
+    var rightKey =
+      rightFilter !== null ? (rightFilter as KeyedElement).key : null;
+
+    return leftKey === rightKey;
+  }
+
+  return false;
+};

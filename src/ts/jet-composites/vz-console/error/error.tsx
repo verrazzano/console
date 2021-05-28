@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { ElementVComponent, customElement, h } from "ojs/ojvcomponent-element";
 import { ojMessage } from "ojs/ojmessage";
 // eslint-disable-next-line import/no-duplicates
 import { ojMessages } from "ojs/ojmessages";
@@ -20,7 +20,7 @@ class Props {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-error")
-export class ConsoleError extends VComponent<Props> {
+export class ConsoleError extends ElementVComponent<Props> {
   props: Props = {};
 
   categoryOption = ko.computed<ojMessages["displayOptions"]>(() => {

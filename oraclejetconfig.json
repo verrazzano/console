@@ -9,12 +9,16 @@
       "styles": "/css",
       "themes": "themes"
     },
-    "staging": { "web": "web", "hybrid": "hybrid", "themes": "staged-themes" },
+    "staging": {
+      "web": "web",
+      "hybrid": "hybrid",
+      "themes": "staged-themes"
+    },
     "composites": "jet-composites"
   },
   "defaultBrowser": "chrome",
   "sassVer": "4.13.0",
   "defaultTheme": "redwood",
   "defaultCssvars": "disabled",
-  "generatorVersion": "9.0.0"
+  "generatorVersion": "10.1.0"
 }

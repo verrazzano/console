@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { ElementVComponent, customElement, h } from "ojs/ojvcomponent-element";
 import { Status } from "vz-console/service/types";
 
 class Props {
@@ -16,7 +16,7 @@ class Props {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-status-badge")
-export class ConsoleStatusBadge extends VComponent<Props> {
+export class ConsoleStatusBadge extends ElementVComponent<Props> {
   protected render() {
     let statusElement: Element;
 

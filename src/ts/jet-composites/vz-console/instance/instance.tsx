@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { ElementVComponent, customElement, h } from "ojs/ojvcomponent-element";
 import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
 import {
   Cluster,
@@ -42,7 +42,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-instance")
-export class ConsoleInstance extends VComponent<Props, State> {
+export class ConsoleInstance extends ElementVComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
@@ -51,6 +51,7 @@ export class ConsoleInstance extends VComponent<Props, State> {
 
   constructor() {
     super(new Props());
+
     this.verrazzanoApi = new VerrazzanoApi();
   }
 

@@ -1,8 +1,13 @@
 // Copyright (c) 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-// eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  // eslint-disable-next-line no-unused-vars
+  h,
+  listener,
+} from "ojs/ojvcomponent-element";
 import { VerrazzanoApi, Status, OAMComponent } from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleError } from "vz-console/error/loader";
@@ -34,7 +39,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamcomp")
-export class ConsoleOAMComponent extends VComponent<Props, State> {
+export class ConsoleOAMComponent extends ElementVComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
@@ -276,7 +281,9 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.oamComponent.data.metadata.labels
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;
@@ -285,7 +292,9 @@ export class ConsoleOAMComponent extends VComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.oamComponent.data.metadata.annotations
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;

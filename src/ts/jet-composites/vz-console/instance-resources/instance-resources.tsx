@@ -1,8 +1,13 @@
 // Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-// eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  listener,
+  // eslint-disable-next-line no-unused-vars
+  h,
+} from "ojs/ojvcomponent-element";
 import * as Messages from "vz-console/utils/Messages";
 import {
   OAMApplication,
@@ -11,7 +16,7 @@ import {
   Project,
 } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
-import { getDefaultRouter } from "vz-console/utils/utils";
+import { filtersEqual, getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleInstanceClusters } from "vz-console/instance-clusters/loader";
 import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
 import { ConsoleInstanceComponents } from "vz-console/instance-components/loader";
@@ -20,12 +25,12 @@ import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
 class Props {
-  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
+  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => void;
   selectedItem?: string;
-  oamApplications?: [OAMApplication];
-  oamComponents?: [OAMComponent];
-  clusters?: [Cluster];
-  projects: [Project];
+  oamApplications?: Array<OAMApplication>;
+  oamComponents?: Array<OAMComponent>;
+  clusters?: Array<Cluster>;
+  projects: Array<Project>;
 }
 
 class State {
@@ -37,7 +42,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-instance-resources")
-export class ConsoleInstanceResources extends VComponent<Props, State> {
+export class ConsoleInstanceResources extends ElementVComponent<Props, State> {
   router: CoreRouter;
   baseBreadcrumb: BreadcrumbType = {
     label: Messages.Nav.home(),
@@ -103,7 +108,10 @@ export class ConsoleInstanceResources extends VComponent<Props, State> {
   }
 
   filterCallback = (filter: Element): void => {
-    this.updateState({ filter: filter });
+    // check that the filter has changed, short circuit if it has not to prevent render loop
+    if (!filtersEqual(this.state.filter, filter)) {
+      this.updateState({ filter: filter });
+    }
   };
 
   protected render() {

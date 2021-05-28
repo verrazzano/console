@@ -4,9 +4,9 @@ You can use the Verrazzano Console to access and manage Verrazzano components an
 
 The Verrazzano Console repository includes:
 
-- [hooks](scripts/hooks): The [Oracle JavaScript Extension Toolkit (JET) hooks](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/customize-web-application-tooling-workflow.html#GUID-D19EC0A2-DFEF-4928-943A-F8CC08961453) used for building and running the Console application.
-- [jet-composites](src/ts/jet-composites): The [Oracle JET Custom Components](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/design-custom-web-components.html) which are basic building blocks for the Console.
-- [views](src/ts/views) and [viewModels](src/ts/viewModels): The Oracle JET Views and ViewModels used in the Console. See [Oracle JET Architecture](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/oracle-jet-architecture.html#GUID-293CB342-196F-4FC3-AE69-D1226A025FBB) for more details.
+- [hooks](scripts/hooks): The [Oracle JavaScript Extension Toolkit (JET) hooks](https://docs.oracle.com/en/middleware/developer-tools/jet/10.1/develop/customize-web-application-tooling-workflow.html#GUID-D19EC0A2-DFEF-4928-943A-F8CC08961453) used for building and running the Console application.
+- [jet-composites](src/ts/jet-composites): The [Oracle JET Custom Components](https://docs.oracle.com/en/middleware/developer-tools/jet/10.1/develop/design-custom-web-components.html) which are basic building blocks for the Console.
+- [views](src/ts/views) and [viewModels](src/ts/viewModels): The Oracle JET Views and ViewModels used in the Console. See [Oracle JET Architecture](https://docs.oracle.com/en/middleware/developer-tools/jet/10.1/develop/oracle-jet-architecture.html#GUID-293CB342-196F-4FC3-AE69-D1226A025FBB) for more details.
 - [test](test): The tests and test-related configuration for the Console.
 
 ## Prerequisites
@@ -22,12 +22,12 @@ The Verrazzano Console repository includes:
     nvm install 14.15
   ```
 
-- [Oracle JET CLI](https://github.com/oracle/ojet-cli) 9.1.x+
+- [Oracle JET CLI](https://github.com/oracle/ojet-cli) 10.1.x+
 
   The Verrazzano Console uses the [Oracle JET](https://www.oracle.com/webfolder/technetwork/jet/index.html) framework. The Oracle JET command-line interface (`ojet-cli`) is required to run Oracle JET Tooling commands, which you can install with `npm`.
 
   ```bash
-    npm install -g @oracle/ojet-cli@9.1.0
+    npm install -g @oracle/ojet-cli@10.1.0
   ```
 
   For more information, see [Getting Started with Oracle JavaScript Extension Toolkit (JET)](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/getting-started-oracle-javascript-extension-toolkit-jet.html).

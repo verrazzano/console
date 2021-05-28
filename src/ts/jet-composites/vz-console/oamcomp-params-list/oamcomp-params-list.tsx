@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { ElementVComponent, customElement, h } from "ojs/ojvcomponent-element";
 import { OAMComponentParam } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import "ojs/ojtable";
@@ -12,14 +12,14 @@ import "ojs/ojpagingcontrol";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 
 class Props {
-  params?: [OAMComponentParam];
+  params?: Array<OAMComponentParam>;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamcomp-params-list")
-export class ConsoleOAMCompParamsList extends VComponent<Props> {
+export class ConsoleOAMCompParamsList extends ElementVComponent<Props> {
   columnArray = [
     {
       headerText: Messages.Labels.name(),

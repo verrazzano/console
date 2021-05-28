@@ -1,8 +1,13 @@
 // Copyright (c) 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-// eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h, listener } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  // eslint-disable-next-line no-unused-vars
+  h,
+  listener,
+} from "ojs/ojvcomponent-element";
 import {
   VerrazzanoApi,
   Status,
@@ -44,14 +49,14 @@ class State {
   linkSelectionCallback?: (
     selectedItem: string,
     selectedComponent: string
-  ) => {};
+  ) => void;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamapp")
-export class ConsoleOAMApplication extends VComponent<Props, State> {
+export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
   verrazzanoApi: VerrazzanoApi;
   state: State = {
     loading: true,
@@ -144,7 +149,7 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
     linkSelectionCallback: (
       selectedItem: string,
       selectedComponent: string
-    ) => {}
+    ) => void
   ): void => {
     this.updateState({
       selectedItem,
@@ -610,7 +615,9 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.oamApplication.data.metadata.labels
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;
@@ -619,7 +626,9 @@ export class ConsoleOAMApplication extends VComponent<Props, State> {
           for (const [key, value] of Object.entries(
             this.state.oamApplication.data.metadata.annotations
           )) {
-            tabContents.push(<ConsoleMetadataItem label={key} value={value} />);
+            tabContents.push(
+              <ConsoleMetadataItem label={key} value={String(value)} />
+            );
           }
         }
         break;

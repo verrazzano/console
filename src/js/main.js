@@ -4,6 +4,7 @@
 "use strict";
 
 // The UserAgent is used to detect IE11. Only IE11 requires ES5.
+// prettier-ignore
 (function () {
   function _ojIsIE11() {
     var nAgt = navigator.userAgent;
@@ -27,9 +28,9 @@
         "jqueryui-amd": "libs/jquery/jqueryui-amd-1.12.1",
         hammerjs: "libs/hammer/hammer-2.0.8",
         ojdnd: "libs/dnd-polyfill/dnd-polyfill-1.0.2",
-        ojs: "libs/oj/v9.0.0/debug" + (_ojNeedsES5 ? "_es5" : ""),
-        ojL10n: "libs/oj/v9.0.0/ojL10n",
-        ojtranslations: "libs/oj/v9.0.0/resources",
+        ojs: "libs/oj/v10.1.0/debug" + (_ojNeedsES5 ? "_es5" : ""),
+        ojL10n: "libs/oj/v10.1.0/ojL10n",
+        ojtranslations: "libs/oj/v10.1.0/resources",
         text: "libs/require/text",
         signals: "libs/js-signals/signals",
         customElements: "libs/webcomponents/custom-elements.min",
@@ -52,7 +53,7 @@
     },
     // endinjector
   });
-})();
+}());
 
 require(["ojs/ojbootstrap", "jwt_decode", "js-yaml", "root"], function (
   Bootstrap,

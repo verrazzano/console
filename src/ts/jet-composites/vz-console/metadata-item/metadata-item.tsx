@@ -1,8 +1,13 @@
 // Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-// eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  listener,
+  // eslint-disable-next-line no-unused-vars
+  h,
+} from "ojs/ojvcomponent-element";
 
 class Props {
   label?: string;
@@ -10,14 +15,14 @@ class Props {
   link?: boolean;
   replace?: boolean;
   target?: string;
-  onclick?: () => {};
+  onclick?: () => void;
 }
 
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-metadata-item")
-export class ConsoleMetadataItem extends VComponent<Props> {
+export class ConsoleMetadataItem extends ElementVComponent<Props> {
   props: Props;
 
   @listener({ capture: true, passive: true })

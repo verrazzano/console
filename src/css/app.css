@@ -323,12 +323,8 @@ html:not([dir="rtl"]) #components > * > .oj-pagingcontrol-nav-arrow-section {
   font-weight: bold !important;
 }
 
-.pagination {
-  margin-top: -1rem;
-}
-
 .sortselect {
-  padding-top: 4%;
+  padding-top: 1.5%;
 }
 
 .card-border,
@@ -471,7 +467,6 @@ oj-table > table > tbody > tr {
   overflow: hidden !important;
   text-overflow: clip !important;
   display: inline !important;
-  line-height: 1em !important;
   max-height: 2em !important;
   white-space: nowrap;
 }

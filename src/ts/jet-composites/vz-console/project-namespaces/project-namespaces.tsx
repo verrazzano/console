@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, h } from "ojs/ojvcomponent";
+import { ElementVComponent, customElement, h } from "ojs/ojvcomponent-element";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
 import "ojs/ojlistview";
@@ -15,7 +15,7 @@ import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
-  namespaces: [{ name: string }];
+  namespaces: Array<{ name: string }>;
 }
 
 class State {
@@ -26,7 +26,7 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-project-namespaces")
-export class ConsoleProjectNamespaces extends VComponent<Props, State> {
+export class ConsoleProjectNamespaces extends ElementVComponent<Props, State> {
   state: State = {};
   dataProvider: ko.Observable = ko.observable();
 

@@ -1219,7 +1219,7 @@ html[dir="rtl"] .demo-cook-search-button {
 .categorylist.fixed {
   position: fixed;
   z-index: 1;
-  background-image: url("../../../libs/oj/v9.0.0/alta/images/texture.png");
+  background-image: url("../../../libs/oj/v10.0.0/alta/images/texture.png");
   background-repeat: repeat;
   margin: 0;
   padding: 20px;
@@ -1227,7 +1227,7 @@ html[dir="rtl"] .demo-cook-search-button {
 #filterMenuButtonBar.fixed {
   position: fixed;
   z-index: 1;
-  background-image: url("../../../libs/oj/v9.0.0/alta/images/texture.png");
+  background-image: url("../../../libs/oj/v10.0.0/alta/images/texture.png");
   background-repeat: repeat;
 }
 .categoryitem {

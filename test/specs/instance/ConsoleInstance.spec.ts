@@ -34,6 +34,7 @@ async function setup(selectedItem?: string) {
     `<div id ="globalBody"><vz-console-instance id="instance" selected-item="[[selectedItem]]"/></div>`
   );
   instanceElement = document.querySelector("#instance") as HTMLElement;
+
   expect(instanceElement).not.to.be.null;
   ko.applyBindings(
     {
@@ -42,6 +43,7 @@ async function setup(selectedItem?: string) {
     },
     instanceElement.parentElement
   );
+
   await Context.getContext(instanceElement)
     .getBusyContext()
     .whenReady(30000)

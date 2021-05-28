@@ -1,13 +1,18 @@
 // Copyright (c) 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-// eslint-disable-next-line no-unused-vars
-import { VComponent, customElement, listener, h } from "ojs/ojvcomponent";
+import {
+  ElementVComponent,
+  customElement,
+  listener,
+  // eslint-disable-next-line no-unused-vars
+  h,
+} from "ojs/ojvcomponent-element";
 import { ConsoleOamApplicationComponents } from "vz-console/oamapp-components/loader";
 import * as Messages from "vz-console/utils/Messages";
 import { OAMApplication } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
-import { getDefaultRouter } from "vz-console/utils/utils";
+import { filtersEqual, getDefaultRouter } from "vz-console/utils/utils";
 import { ConsoleOamApplicationComponentTraits } from "vz-console/oamapp-component-traits/loader";
 import { ConsoleOamApplicationComponentScopes } from "vz-console/oamapp-component-scopes/loader";
 import { ConsoleOamApplicationComponentParams } from "vz-console/oamapp-component-params/loader";
@@ -22,7 +27,7 @@ class State {
 
 class Props {
   oamApplication: OAMApplication;
-  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => {};
+  breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => void;
   selectedItem?: string;
   selectedComponent?: string;
   toggleComponentViewCallBack?: (
@@ -32,7 +37,7 @@ class Props {
       selectedItem: string,
       selectedComponent: string
     ) => void
-  ) => {};
+  ) => void;
 
   cluster?: string;
 }
@@ -41,7 +46,10 @@ class Props {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-oamapp-resources")
-export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
+export class ConsoleOAMApplicationResources extends ElementVComponent<
+  Props,
+  State
+> {
   router: CoreRouter;
 
   baseBreadcrumbs: BreadcrumbType[] = [
@@ -263,7 +271,9 @@ export class ConsoleOAMApplicationResources extends VComponent<Props, State> {
   }
 
   filterCallback = (filter: Element): void => {
-    this.updateState({ filter: filter });
+    if (!filtersEqual(this.state.filter, filter)) {
+      this.updateState({ filter: filter });
+    }
   };
 
   linkSelectionCallback = (
