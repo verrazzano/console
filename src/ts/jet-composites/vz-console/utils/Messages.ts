@@ -223,6 +223,7 @@ export const Labels = {
   namespaces: () => Translations.getTranslatedString("labels.namespaces"),
   projects: () => Translations.getTranslatedString("labels.projects"),
   project: () => Translations.getTranslatedString("labels.project"),
+  projectSpec: () => Translations.getTranslatedString("labels.projectSpec"),
   apiUrl: () => Translations.getTranslatedString("labels.apiUrl"),
 };
 

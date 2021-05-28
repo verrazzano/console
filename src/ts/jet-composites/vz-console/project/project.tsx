@@ -14,6 +14,7 @@ import {
 import { ConsoleStatusBadge } from "vz-console/status-badge/loader";
 import { ConsoleProjectResources } from "vz-console/project-resources/loader";
 import "ojs/ojconveyorbelt";
+import * as yaml from "js-yaml";
 
 class Props {
   projectId?: string;
@@ -122,6 +123,44 @@ export class ConsoleProject extends VComponent<Props, State> {
                 label={Messages.Labels.created()}
                 value={this.state.project.createdOn}
               />
+              <ConsoleMetadataItem
+                  label={Messages.Labels.projectSpec()}
+                  value={this.state.project.name}
+                  link={true}
+                  onclick={() => {
+                    (document.getElementById("projYamlPopup") as any).open("#tabMetaInfo");
+                  }}
+                  id="tabMetaInfo"
+              />
+              <oj-popup
+                  id="projYamlPopup"
+                  tail="none"
+                  modality="modal"
+                  {...{"position.my.horizontal": "center"}}
+                  {...{"position.my.vertical": "bottom"}}
+                  {...{"position.at.horizontal": "center"}}
+                  {...{"position.at.vertical": "bottom"}}
+                  {...{"position.offset.y": "-10px"}}
+                  className="popup"
+              >
+                <div class="popupbody">
+                  <div>
+                    <a
+                        onClick={() => {
+                          (document.getElementById("projYamlPopup") as any).close();
+                        }}
+                        class="closelink"
+                    >
+                      Close
+                    </a>
+                  </div>
+                  <pre class="popupcontent">
+                  {yaml.dump(
+                      yaml.load(JSON.stringify(this.state.project.data))
+                  )}
+                </pre>
+                </div>
+              </oj-popup>
             </div>
           </div>,
         ];
