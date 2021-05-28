@@ -160,6 +160,9 @@ export = {
     projects: "Projects",
     project: "Project",
     projectSpec: "Project Spec",
+    projectAdmins: "Project Admins",
+    projectMonitors: "Project Monitors",
+    securityInfo: "Security Information",
     apiUrl: "API URL",
   },
 

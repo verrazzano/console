@@ -224,6 +224,10 @@ export const Labels = {
   projects: () => Translations.getTranslatedString("labels.projects"),
   project: () => Translations.getTranslatedString("labels.project"),
   projectSpec: () => Translations.getTranslatedString("labels.projectSpec"),
+  projectAdmins: () => Translations.getTranslatedString("labels.projectAdmins"),
+  projectMonitors: () =>
+    Translations.getTranslatedString("labels.projectMonitors"),
+  securityInfo: () => Translations.getTranslatedString("labels.securityInfo"),
   apiUrl: () => Translations.getTranslatedString("labels.apiUrl"),
 };
 

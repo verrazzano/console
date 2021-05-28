@@ -114,7 +114,7 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
       case "tabInfo":
         tabContents = [
           <div class="oj-flex">
-            <div class="oj-sm-12 oj-flex-item">
+            <div class="oj-sm-8 oj-flex-item">
               <h3>{Messages.Labels.generalInfo()}</h3>
               <ConsoleMetadataItem
                 label={Messages.Labels.name()}
@@ -139,37 +139,46 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
                 }}
                 id="tabMetaInfo"
               />
-              <oj-popup
-                id="projYamlPopup"
-                tail="none"
-                modality="modal"
-                {...{ "position.my.horizontal": "center" }}
-                {...{ "position.my.vertical": "bottom" }}
-                {...{ "position.at.horizontal": "center" }}
-                {...{ "position.at.vertical": "bottom" }}
-                {...{ "position.offset.y": "-10px" }}
-                className="popup"
-              >
-                <div class="popupbody">
-                  <div>
-                    <a
-                      onClick={() => {
-                        (document.getElementById(
-                          "projYamlPopup"
-                        ) as any).close();
-                      }}
-                      class="closelink"
-                    >
-                      Close
-                    </a>
-                  </div>
-                  <pre class="popupcontent">
-                    {yaml.dump(
-                      yaml.load(JSON.stringify(this.state.project.data))
-                    )}
-                  </pre>
+            </div>
+            <oj-popup
+              id="projYamlPopup"
+              tail="none"
+              modality="modal"
+              {...{ "position.my.horizontal": "center" }}
+              {...{ "position.my.vertical": "bottom" }}
+              {...{ "position.at.horizontal": "center" }}
+              {...{ "position.at.vertical": "bottom" }}
+              {...{ "position.offset.y": "-10px" }}
+              className="popup"
+            >
+              <div class="popupbody">
+                <div>
+                  <a
+                    onClick={() => {
+                      (document.getElementById("projYamlPopup") as any).close();
+                    }}
+                    class="closelink"
+                  >
+                    Close
+                  </a>
                 </div>
-              </oj-popup>
+                <pre class="popupcontent">
+                  {yaml.dump(
+                    yaml.load(JSON.stringify(this.state.project.data))
+                  )}
+                </pre>
+              </div>
+            </oj-popup>
+            <div class="oj-sm-4 oj-flex-item">
+              <h3>{Messages.Labels.securityInfo()}</h3>
+              <ConsoleMetadataItem
+                label={Messages.Labels.projectAdmins()}
+                value={this.getProjectAdminSubjects()}
+              />
+              <ConsoleMetadataItem
+                label={Messages.Labels.projectMonitors()}
+                value={this.getProjectMonitorSubjects()}
+              />
             </div>
           </div>,
         ];
@@ -203,6 +212,35 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
   @listener({ capture: true, passive: true })
   protected tabSwitch(event: CustomEvent) {
     this.updateState({ selectedTab: (event.target as Element).id });
+  }
+
+  getProjectAdminSubjects() {
+    let subjects = "none provided";
+    const security = this.state.project.data.security;
+    if (security && security.projectAdminSubjects) {
+      for (const [kind, name] of Object.entries(
+        this.state.project.data.security.projectAdminSubjects
+      )) {
+        subjects += ` ${name} (${kind}),`;
+      }
+    }
+    if (subjects.endsWith(",")) {
+      subjects = subjects.substr(0, subjects.length - 2);
+    }
+    return subjects;
+  }
+
+  getProjectMonitorSubjects() {
+    let subjects = "none provided";
+    const security = this.state.project.data.security;
+    if (security && security.projectMonitorSubjects) {
+      for (const [kind, name] of Object.entries(
+        this.state.project.data.security.projectAdminSubjects
+      )) {
+        subjects += `${name} (${kind})`;
+      }
+    }
+    return subjects;
   }
 
   protected render() {
