@@ -27,7 +27,7 @@ The Verrazzano Console repository includes:
   The Verrazzano Console uses the [Oracle JET](https://www.oracle.com/webfolder/technetwork/jet/index.html) framework. The Oracle JET command-line interface (`ojet-cli`) is required to run Oracle JET Tooling commands, which you can install with `npm`.
 
   ```bash
-    npm install -g @oracle/ojet-cli
+    npm install -g @oracle/ojet-cli@9.1.0
   ```
 
   For more information, see [Getting Started with Oracle JavaScript Extension Toolkit (JET)](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/getting-started-oracle-javascript-extension-toolkit-jet.html).

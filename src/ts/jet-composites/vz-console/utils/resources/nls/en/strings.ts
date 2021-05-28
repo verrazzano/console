@@ -126,7 +126,7 @@ export = {
     es: "Elasticsearch",
     version: "Version",
     profile: "Install Profile",
-    mgmtCluster: "Management Cluster",
+    mgmtCluster: "Admin Cluster",
     rancher: "Rancher",
     keycloak: "Keycloak",
     created: "Created",
@@ -159,6 +159,7 @@ export = {
     namespaces: "Namespaces",
     projects: "Projects",
     project: "Project",
+    projectSpec: "Project Spec",
     apiUrl: "API URL",
   },
 
