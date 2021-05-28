@@ -41,7 +41,14 @@ export class ConsoleMetadataItem extends ElementVComponent<Props> {
         <strong>{this.props.label}:&nbsp;</strong>
         {this.props.link ? (
           <a
-            onClick={this.props.onclick ? ((evt) => { evt.preventDefault(); return this.props.onclick() }) : this.openLink}
+            onClick={
+              this.props.onclick
+                ? (evt) => {
+                    evt.preventDefault();
+                    return this.props.onclick();
+                  }
+                : this.openLink
+            }
             href={this.props.target ? this.props.target : this.props.value}
             tabindex="0"
           >
