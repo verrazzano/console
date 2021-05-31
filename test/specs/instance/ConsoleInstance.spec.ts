@@ -49,6 +49,12 @@ async function setup(selectedItem?: string) {
     instanceElement.parentElement
   );
 
+  await Context.getPageContext()
+    .getBusyContext()
+    .whenReady(30000)
+    .catch((err) => {
+      chai.assert.fail(err);
+    });
   await Context.getContext(instanceElement)
     .getBusyContext()
     .whenReady(30000)
