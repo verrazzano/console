@@ -319,14 +319,13 @@ export class VerrazzanoApi {
       cluster,
       mcAppsByNamespace,
     ] of mcApplicationsByClusterAndNamespace) {
-      const apiUrl = await this.getAPIUrl(cluster);
-      if (!apiUrl) {
+      const vmc = await this.getVMC(cluster);
+      if (!vmc) {
         continue;
       }
       for (const [namespace, mcApps] of mcAppsByNamespace) {
         for (const [name] of mcApps) {
           const resource = await new VerrazzanoApi(
-            apiUrl,
             cluster
           ).getKubernetesResource(
             ResourceType.ApplicationConfiguration,
@@ -344,7 +343,6 @@ export class VerrazzanoApi {
       ] of mcComponentsByClusterAndNamespace.get(cluster)) {
         for (const [name] of mcComponents) {
           const resource = await new VerrazzanoApi(
-            apiUrl,
             cluster
           ).getKubernetesResource(ResourceType.Component, namespace, name);
           const component = await resource.json();
@@ -425,7 +423,11 @@ export class VerrazzanoApi {
             : `${type.Kind.toLowerCase()}${
                 type.Kind.endsWith("s") ? "es" : "s"
               }`
-        }${name ? `/${name}` : ""}`
+        }${name ? `/${name}` : ""}${
+          this.cluster && this.cluster !== "local"
+            ? `?cluster=${this.cluster}`
+            : ""
+        }`
       )
     ).then((response) => {
       if (!response || !response.status || response.status >= 400) {
@@ -481,7 +483,7 @@ export class VerrazzanoApi {
     return profileString;
   }
 
-  public async getAPIUrl(clusterName: string): Promise<string> {
+  public async getVMC(clusterName: string): Promise<string> {
     return this.getKubernetesResource(
       ResourceType.VerrazzanoManagedCluster,
       "verrazzano-mc",
@@ -501,7 +503,7 @@ export class VerrazzanoApi {
           );
         }
 
-        return vmc.status.apiUrl;
+        return vmc.metadata.name;
       })
       .catch((error) => {
         if (
@@ -539,17 +541,17 @@ export class VerrazzanoApi {
     return project;
   }
 
-  public constructor(url: string = "", cluster: string = "local") {
+  public constructor(cluster: string = "local") {
     this.defaultUrl = `${(window as any).vzApiUrl || ""}`;
     this.cluster = cluster;
-    this.url = `${url || this.defaultUrl}/${this.apiVersion}`;
+    this.url = `${this.defaultUrl}/${this.apiVersion}`;
     this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
     this.getInstance = this.getInstance.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
     this.getOAMApplication = this.getOAMApplication.bind(this);
     this.getOAMComponent = this.getOAMComponent.bind(this);
     this.getKubernetesResource = this.getKubernetesResource.bind(this);
-    this.getAPIUrl = this.getAPIUrl.bind(this);
+    this.getVMC = this.getVMC.bind(this);
     this.listProjects = this.listProjects.bind(this);
     this.getProject = this.getProject.bind(this);
   }

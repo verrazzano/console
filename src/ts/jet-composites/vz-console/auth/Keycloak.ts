@@ -295,6 +295,7 @@ export class Keycloak {
       return req;
     }
     req.headers.set("Authorization", "Bearer " + token);
+    req.headers.set("Origin", KeycloakUrls.getInstance().getUIOrigin());
     return req;
   }
 
