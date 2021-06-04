@@ -1,7 +1,12 @@
 // Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { Instance, VerrazzanoApi, VMIType } from "vz-console/service/loader";
+import {
+  Instance,
+  VerrazzanoApi,
+  VMIType,
+  ResourceType,
+} from "vz-console/service/loader";
 import "vz-console/instance/loader";
 import * as Context from "ojs/ojcontext";
 import * as ko from "knockout";
@@ -225,5 +230,266 @@ describe("instance panel screen tests", () => {
     );
     expect(badgeLabel).not.to.be.null;
     expect(badgeLabel.textContent).to.equal(Messages.Nav.instance());
+  });
+});
+
+describe("Multi cluster apps and component list test", () => {
+  const localClusterAppName = "springboot-appconf";
+  before(async () => {
+    const components = `
+    {
+      "apiVersion": "v1",
+      "items": [
+        {
+          "apiVersion": "core.oam.dev/v1alpha2",
+          "kind": "Component",
+          "metadata": {
+            "name": "springboot-component",
+            "namespace": "springboot"
+          },
+          "spec": {
+            "workload": {
+              "apiVersion": "core.oam.dev/v1alpha2",
+              "kind": "ContainerizedWorkload",
+              "metadata": {
+                "labels": {
+                  "app": "springboot"
+                },
+                "name": "springboot-workload",
+                "namespace": "springboot"
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "image": "ghcr.io/verrazzano/example-springboot:0.9.0",
+                    "name": "springboot-container",
+                    "ports": [
+                      {
+                        "containerPort": 8080,
+                        "name": "springboot"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "status": {
+            "latestRevision": {
+              "name": "springboot-component-v1",
+              "revision": 1
+            },
+            "observedGeneration": 1
+          }
+        }
+      ],
+      "kind": "List",
+      "metadata": {
+        "resourceVersion": "",
+        "selfLink": ""
+      }
+    }`;
+
+    const mcComponents = `{
+      "apiVersion": "v1",
+      "items": [
+        {
+          "apiVersion": "clusters.verrazzano.io/v1alpha1",
+          "kind": "MultiClusterComponent",
+          "metadata": {
+            "name": "hello-helidon-component",
+            "namespace": "hello-helidon"
+          },
+          "spec": {
+            "placement": {
+              "clusters": [
+                {
+                  "name": "managed1"
+                }
+              ]
+            },
+            "template": {
+              "spec": {
+                "workload": {
+                  "apiVersion": "oam.verrazzano.io/v1alpha1",
+                  "kind": "VerrazzanoHelidonWorkload",
+                  "metadata": {
+                    "labels": {
+                      "app": "hello-helidon"
+                    },
+                    "name": "hello-helidon-workload",
+                    "namespace": "hello-helidon"
+                  },
+                  "spec": {
+                    "deploymentTemplate": {
+                      "metadata": {
+                        "name": "hello-helidon-deployment"
+                      },
+                      "podSpec": {
+                        "containers": [
+                          {
+                            "image": "ghcr.io/verrazzano/example-helidon-greet-app-v1:0.1.10-3-20201016220428-56fb4d4",
+                            "name": "hello-helidon-container",
+                            "ports": [
+                              {
+                                "containerPort": 8080,
+                                "name": "http"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "kind": "List",
+      "metadata": {
+        "resourceVersion": "",
+        "selfLink": ""
+      }
+    }
+`;
+
+    const mcApps = `
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "clusters.verrazzano.io/v1alpha1",
+      "kind": "MultiClusterApplicationConfiguration",
+      "metadata": {
+        "name": "hello-helidon-appconf",
+        "namespace": "hello-helidon",
+        "uid": "b8c77a58-a09d-4c43-986a-315a8040ab97"
+      },
+      "spec": {
+        "placement": {
+          "clusters": [
+            {
+              "name": "managed1"
+            }
+          ]
+        },
+        "template": {
+          "metadata": {
+            
+          },
+          "spec": {
+            "components": [
+              {
+                "componentName": "hello-helidon-component"
+                
+              }
+            ]
+          }
+        }
+      },
+      "status": {
+        
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": ""
+  }
+}
+ `;
+    const apps = `
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "core.oam.dev/v1alpha2",
+      "kind": "ApplicationConfiguration",
+      "metadata": {
+        "name": "${localClusterAppName}",
+        "namespace": "springboot",
+        "uid": "d69b84be-8673-46d0-a7dc-bc15915c594f"
+      },
+      "spec": {
+        "components": [
+          {
+            "componentName": "springboot-component"
+            
+          }
+        ]
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": ""
+  }
+}
+ `;
+    const vmcs = `{
+  "apiVersion": "v1",
+  "items": [
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": ""
+  }
+}`;
+
+    const projects = `{
+  "apiVersion": "v1",
+  "items": [
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": ""
+  }
+}`;
+
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"getInstance")
+      .returns(Promise.resolve(instance));
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"getKubernetesResource")
+      .withArgs(ResourceType.ApplicationConfiguration)
+      .returns(Promise.resolve(new Response(apps)))
+      .withArgs(ResourceType.Component)
+      .returns(Promise.resolve(new Response(components)))
+      .withArgs(ResourceType.MultiClusterApplicationConfiguration)
+      .returns(Promise.resolve(new Response(mcApps)))
+      .withArgs(ResourceType.MultiClusterComponent)
+      .returns(Promise.resolve(new Response(mcComponents)))
+      .withArgs(ResourceType.VerrazzanoManagedCluster)
+      .returns(Promise.resolve(new Response(vmcs)))
+      .withArgs(ResourceType.VerrazzanoProject)
+      .returns(Promise.resolve(new Response(projects)));
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"getVMC")
+      .returns(Promise.resolve(""));
+    await setup()
+      .then(() => console.log("Instance view rendered"))
+      .catch((err) => {
+        chai.assert.fail(err);
+      });
+  });
+
+  after(() => {
+    fixture.cleanup();
+    sandbox.restore();
+  });
+
+  it("renders the app deployed in local cluster correctly even when vmc corresponding to multicluster resources does not exists.", async () => {
+    expect(
+      instanceElement
+        .querySelector("#applications")
+        .querySelector("#listview")
+        .querySelector(" * > a").textContent
+    ).equal(localClusterAppName);
   });
 });

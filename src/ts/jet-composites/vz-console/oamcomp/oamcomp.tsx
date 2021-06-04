@@ -69,14 +69,14 @@ export class ConsoleOAMComponent extends ElementVComponent<Props, State> {
     this.updateState({ loading: true });
     const projects = await this.verrazzanoApi.listProjects();
     if (this.props.cluster) {
-      const apiUrl = await this.verrazzanoApi.getAPIUrl(this.props.cluster);
-      if (!apiUrl) {
+      const vmc = await this.verrazzanoApi.getVMC(this.props.cluster);
+      if (!vmc) {
         this.updateState({
           error: Messages.Error.errVmcNotExists(this.props.cluster),
         });
       }
 
-      this.verrazzanoApi = new VerrazzanoApi(apiUrl, this.props.cluster);
+      this.verrazzanoApi = new VerrazzanoApi(this.props.cluster);
     }
     this.verrazzanoApi
       .getOAMComponent(
