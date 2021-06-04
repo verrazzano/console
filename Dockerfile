@@ -3,7 +3,7 @@
 
 FROM container-registry.oracle.com/os/oraclelinux:7-slim@sha256:fcc6f54bb01fc83319990bf5fa1b79f1dec93cbb87db3c5a8884a5a44148e7bb
 
-RUN yum update -y python curl openssl-libs glibc openldap nss nss-sysinit nss-tools \
+RUN yum update -y python curl openssl-libs glibc openldap nss nss-sysinit nss-tools glib2 \
     && yum install -y oracle-nodejs-release-el7 \
     && yum install -y nodejs \
     && mkdir /verrazzano \

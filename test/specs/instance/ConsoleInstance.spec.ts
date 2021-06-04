@@ -476,8 +476,7 @@ describe("Multi cluster apps and component list test", () => {
       .withArgs(ResourceType.VerrazzanoProject)
       .returns(Promise.resolve(new Response(projects)));
     sandbox
-      .stub(VerrazzanoApi.prototype, <any>"getAPIUrl")
-      .withArgs(ResourceType.VerrazzanoManagedCluster)
+      .stub(VerrazzanoApi.prototype, <any>"getVMC")
       .returns(Promise.resolve(""));
     await setup()
       .then(() => console.log("Instance view rendered"))
