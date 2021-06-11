@@ -225,6 +225,7 @@ export const Labels = {
   devProfile: () => Translations.getTranslatedString("labels.devProfile"),
   projectInfo: () => Translations.getTranslatedString("labels.projectInfo"),
   namespaces: () => Translations.getTranslatedString("labels.namespaces"),
+  networkPolicies: () => Translations.getTranslatedString("labels.networkPolicies"),
   projects: () => Translations.getTranslatedString("labels.projects"),
   project: () => Translations.getTranslatedString("labels.project"),
   projectSpec: () => Translations.getTranslatedString("labels.projectSpec"),

@@ -158,6 +158,7 @@ export = {
     devProfile: "Development",
     projectInfo: "Project Details",
     namespaces: "Namespaces",
+    networkPolicies: "Network Policies",
     projects: "Projects",
     project: "Project",
     projectSpec: "Project Spec",

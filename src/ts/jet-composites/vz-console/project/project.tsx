@@ -148,35 +148,7 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
                 id="tabMetaInfo"
               />
             </div>
-            <oj-popup
-              id="projYamlPopup"
-              tail="none"
-              modality="modal"
-              {...{ "position.my.horizontal": "center" }}
-              {...{ "position.my.vertical": "bottom" }}
-              {...{ "position.at.horizontal": "center" }}
-              {...{ "position.at.vertical": "bottom" }}
-              {...{ "position.offset.y": "-10px" }}
-              className="popup"
-            >
-              <div class="popupbody">
-                <div>
-                  <a
-                    onClick={() => {
-                      (document.getElementById("projYamlPopup") as any).close();
-                    }}
-                    class="closelink"
-                  >
-                    Close
-                  </a>
-                </div>
-                <pre class="popupcontent">
-                  {yaml.dump(
-                    yaml.load(JSON.stringify(this.state.project.data))
-                  )}
-                </pre>
-              </div>
-            </oj-popup>
+            {this.renderPopup("projYamlPopup", this.state.project.data)}
             <div class="oj-sm-4 oj-flex-item">
               <h3>{Messages.Labels.securityInfo()}</h3>
               <ConsoleMetadataItem
@@ -188,6 +160,8 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
                 value={this.getProjectMonitorSubjects()}
               />
             </div>
+            {this.renderNetworkPolicies("netpolYamlPopup")}
+            {this.renderPopup("netpolYamlPopup", this.state.project.data.spec.template.networkPolicies)}
           </div>,
         ];
         break;
@@ -215,6 +189,27 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
         break;
     }
     return tabContents;
+  }
+
+  renderNetworkPolicies(popupId: string) {
+    const networkPolicies = this.state.project.data.spec.template.networkPolicies;
+    let netPolValue = "None Provided";
+    let showLink = false;
+    if (networkPolicies && networkPolicies.length > 0) {
+      netPolValue = "View";
+      showLink = true;
+    }
+    return (<ConsoleMetadataItem
+        label={Messages.Labels.networkPolicies()}
+        value={netPolValue}
+        link={showLink}
+        onclick={() => {
+          (document.getElementById(popupId) as any).open(
+              "#tabMetaInfo"
+          );
+        }}
+        id="tabMetaInfo"
+    />);
   }
 
   @listener({ capture: true, passive: true })
@@ -258,6 +253,40 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
       return this.subjectListAsString(rbSubjectList)
     }
     return "none";
+  }
+
+  private renderPopup(popupId: string, popupContent: any) {
+    return (
+        <oj-popup
+            id={popupId}
+            tail="none"
+            modality="modal"
+            {...{ "position.my.horizontal": "center" }}
+            {...{ "position.my.vertical": "bottom" }}
+            {...{ "position.at.horizontal": "center" }}
+            {...{ "position.at.vertical": "bottom" }}
+            {...{ "position.offset.y": "-10px" }}
+            className="popup"
+        >
+          <div class="popupbody">
+            <div>
+              <a
+                  onClick={() => {
+                    (document.getElementById(popupId) as any).close();
+                  }}
+                  class="closelink"
+              >
+                Close
+              </a>
+            </div>
+            <pre class="popupcontent">
+                  {yaml.dump(
+                      yaml.load(JSON.stringify(popupContent))
+                  )}
+                </pre>
+          </div>
+        </oj-popup>
+    );
   }
 
   protected render() {
