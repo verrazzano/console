@@ -34,7 +34,7 @@ describe("VerrazzanoApi tests", () => {
         const testNs = "listRoleBindingsNs";
         const mockRoleBindings = makeMockRoleBindings(testNs);
         const fakeFetch = sinon.fake.returns(makeMockResponse(mockRoleBindings));
-        const vzApi = new VerrazzanoApi("fakeUrl", "local", fakeFetch);
+        const vzApi = new VerrazzanoApi("local", fakeFetch);
         let roleBindings = await vzApi.listRoleBindings(testNs);
         expect(fakeFetch.callCount).to.eq(1);
         expect(fakeFetch.calledWith(sinon.match(`namespaces/${testNs}/${ResourceType.RoleBinding.Kind.toLowerCase()}s`))).to.be.true;
@@ -71,7 +71,7 @@ describe("VerrazzanoApi tests", () => {
             ]
         }
         const fakeFetch = sinon.fake.returns(makeMockResponse(mockClusters));
-        const vzApi = new VerrazzanoApi("fakeUrl", "local", fakeFetch);
+        const vzApi = new VerrazzanoApi("local", fakeFetch);
         let clusters = await vzApi.listClusters();
         expect(fakeFetch.callCount).to.eq(1);
         expect(fakeFetch.calledWith(sinon.match(`/${ResourceType.VerrazzanoManagedCluster.Kind.toLowerCase()}s`))).to.be.true;
