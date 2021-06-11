@@ -154,6 +154,10 @@ export const Error = {
 
   errVmcNotExists: (...args) =>
     Translations.getTranslatedString("error.errVmcNotExists", args),
+
+  errRoleBindingsFetchError: (...args) =>
+      Translations.getTranslatedString("error.errRoleBindingsFetchError", args),
+
 };
 
 export const Auth = {

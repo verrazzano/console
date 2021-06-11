@@ -61,7 +61,7 @@ export class KeycloakJet {
    * Get an authentication-enabled version of the fetch API, for use with Verrazzano API
    */
   public getAuthenticatedFetchApi(): FetchApiSignature {
-    if (KeycloakUrls.getInstance().isAuthEnabled) {
+    if (KeycloakUrls.getInstance().isAuthEnabled()) {
       return this.authenticatedFetch.bind(this);
     } else {
       return window.fetch.bind(window);

@@ -8,7 +8,7 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import { VerrazzanoApi, Project, Status } from "vz-console/service/loader";
+import {VerrazzanoApi, Project, Status, RoleBinding} from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages";
@@ -28,6 +28,8 @@ class Props {
 
 class State {
   project?: Project;
+  projectAdminRoleBindings?: RoleBinding[]
+  projectMonitorRoleBindings?: RoleBinding[];
   loading?: boolean;
   error?: string;
   breadcrumbs?: BreadcrumbType[];
@@ -66,18 +68,24 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
 
   async getData() {
     this.updateState({ loading: true });
-    this.verrazzanoApi
-      .getProject(this.props.projectId)
-      .then((project) => {
-        this.updateState({ loading: false, project });
-      })
-      .catch((error) => {
+    try {
+      const project = await this.verrazzanoApi.getProject(this.props.projectId);
+      const projNamespaces = project.data.spec.template.namespaces;
+      let projectAdminRoleBindings = [];
+      let projectMonitorRoleBindings = [];
+      if (projNamespaces && projNamespaces.length > 0) {
+        const nsRoleBindings = await this.verrazzanoApi.listRoleBindings(projNamespaces[0].metadata?.name);
+        projectAdminRoleBindings = nsRoleBindings.filter((rb) => rb.clusterRole === 'verrazzano-project-admin');
+        projectMonitorRoleBindings = nsRoleBindings.filter((rb) => rb.clusterRole === 'verrazzano-project-admin');
+      }
+      this.updateState({loading: false, project, projectAdminRoleBindings, projectMonitorRoleBindings});
+    } catch(error) {
         let errorMessage = error;
         if (error && error.message) {
           errorMessage = error.message;
         }
         this.updateState({ error: errorMessage });
-      });
+    }
   }
 
   breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
@@ -214,33 +222,42 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
     this.updateState({ selectedTab: (event.target as Element).id });
   }
 
-  getProjectAdminSubjects() {
-    let subjects = "none provided";
-    const security = this.state.project.data.security;
-    if (security && security.projectAdminSubjects) {
-      for (const [kind, name] of Object.entries(
-        this.state.project.data.security.projectAdminSubjects
-      )) {
-        subjects += ` ${name} (${kind}),`;
-      }
+  subjectListAsString(subjectsList: any) {
+    let subjects = "";
+    for (const subj of subjectsList) {
+      subjects += ` ${subj.name} (${subj.kind}),`;
     }
     if (subjects.endsWith(",")) {
-      subjects = subjects.substr(0, subjects.length - 2);
+      subjects = subjects.substr(0, subjects.length - 1);
     }
     return subjects;
   }
 
-  getProjectMonitorSubjects() {
-    let subjects = "none provided";
-    const security = this.state.project.data.security;
-    if (security && security.projectMonitorSubjects) {
-      for (const [kind, name] of Object.entries(
-        this.state.project.data.security.projectAdminSubjects
-      )) {
-        subjects += `${name} (${kind})`;
-      }
+  getProjectAdminSubjects() {
+    const security = this.state.project.data.spec.template.security;
+    let subjects = "";
+    if (security && security.projectAdminSubjects) {
+      subjects = this.subjectListAsString(security.projectAdminSubjects);
     }
-    return subjects;
+    return subjects || this.roleBindingsToSubjects(this.state.projectAdminRoleBindings);
+  }
+
+  getProjectMonitorSubjects() {
+    const security = this.state.project.data.spec.template.security;
+    let subjects = "";
+    if (security && security.projectMonitorSubjects) {
+      subjects = this.subjectListAsString(security.projectMonitorSubjects);
+    }
+    return subjects || this.roleBindingsToSubjects(this.state.projectMonitorRoleBindings);
+  }
+
+  private roleBindingsToSubjects(roleBindings: RoleBinding[]) {
+    if (roleBindings) {
+      const rbSubjectList = this.state.projectAdminRoleBindings.map(rb => rb.subjects)
+          .reduce((existing, curVal) => existing.concat(curVal), []);
+      return this.subjectListAsString(rbSubjectList)
+    }
+    return "none";
   }
 
   protected render() {

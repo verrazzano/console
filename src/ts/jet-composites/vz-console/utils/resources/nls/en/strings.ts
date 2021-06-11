@@ -94,6 +94,7 @@ export = {
     errFetchApiURLFromVMCError: "Unable to read apiUrl from status of VMC {0}.",
 
     errProjectsFetchError: "Error fetching Projects.",
+    errRoleBindingsFetchError: "Error fetching RoleBindings in namespace {0}.",
     errInvalidProjectId: "Invalid Project Id.",
     errRenderProject: "Error displaying Project {0}.",
     errVmcNotExists:
