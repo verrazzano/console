@@ -8,7 +8,8 @@ import {
   OAMApplication,
   OAMComponent,
   OAMComponentInstance,
-  Project, RoleBinding,
+  Project,
+  RoleBinding,
 } from "../service/types";
 import * as DateTimeConverter from "ojs/ojconverter-datetime";
 import { getStatusForOAMResource } from "vz-console/utils/utils";
@@ -209,15 +210,16 @@ export const processRoleBindingsData = (rbs: any[]): RoleBinding[] => {
       const roleBinding = <RoleBinding>{
         name: rb.metadata?.name,
         namespace: rb.metadata?.namespace,
-        clusterRole: rb.roleRef?.kind === 'ClusterRole' ? rb.roleRef?.name : null,
+        clusterRole:
+          rb.roleRef?.kind === "ClusterRole" ? rb.roleRef?.name : null,
         subjects: rb.subjects,
         createdOn: convertDate(rb.metadata.creationTimestamp),
-      }
-      roleBindings.push(roleBinding)
-    })
+      };
+      roleBindings.push(roleBinding);
+    });
   }
-  return roleBindings
-}
+  return roleBindings;
+};
 
 export const convertDate = (timestamps: string): string => {
   return new DateTimeConverter.IntlDateTimeConverter({

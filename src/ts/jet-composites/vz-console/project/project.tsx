@@ -8,7 +8,12 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import {VerrazzanoApi, Project, Status, RoleBinding} from "vz-console/service/loader";
+import {
+  VerrazzanoApi,
+  Project,
+  Status,
+  RoleBinding,
+} from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages";
@@ -28,7 +33,7 @@ class Props {
 
 class State {
   project?: Project;
-  projectAdminRoleBindings?: RoleBinding[]
+  projectAdminRoleBindings?: RoleBinding[];
   projectMonitorRoleBindings?: RoleBinding[];
   loading?: boolean;
   error?: string;
@@ -74,17 +79,28 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
       let projectAdminRoleBindings = [];
       let projectMonitorRoleBindings = [];
       if (projNamespaces && projNamespaces.length > 0) {
-        const nsRoleBindings = await this.verrazzanoApi.listRoleBindings(projNamespaces[0].metadata?.name);
-        projectAdminRoleBindings = nsRoleBindings.filter((rb) => rb.clusterRole === 'verrazzano-project-admin');
-        projectMonitorRoleBindings = nsRoleBindings.filter((rb) => rb.clusterRole === 'verrazzano-project-admin');
+        const nsRoleBindings = await this.verrazzanoApi.listRoleBindings(
+          projNamespaces[0].metadata?.name
+        );
+        projectAdminRoleBindings = nsRoleBindings.filter(
+          (rb) => rb.clusterRole === "verrazzano-project-admin"
+        );
+        projectMonitorRoleBindings = nsRoleBindings.filter(
+          (rb) => rb.clusterRole === "verrazzano-project-admin"
+        );
       }
-      this.updateState({loading: false, project, projectAdminRoleBindings, projectMonitorRoleBindings});
-    } catch(error) {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
+      this.updateState({
+        loading: false,
+        project,
+        projectAdminRoleBindings,
+        projectMonitorRoleBindings,
+      });
+    } catch (error) {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      this.updateState({ error: errorMessage });
     }
   }
 
@@ -161,7 +177,10 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
               />
             </div>
             {this.renderNetworkPolicies("netpolYamlPopup")}
-            {this.renderPopup("netpolYamlPopup", this.state.project.data.spec.template.networkPolicies)}
+            {this.renderPopup(
+              "netpolYamlPopup",
+              this.state.project.data.spec.template.networkPolicies
+            )}
           </div>,
         ];
         break;
@@ -192,24 +211,25 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
   }
 
   renderNetworkPolicies(popupId: string) {
-    const networkPolicies = this.state.project.data.spec.template.networkPolicies;
+    const networkPolicies = this.state.project.data.spec.template
+      .networkPolicies;
     let netPolValue = "None Provided";
     let showLink = false;
     if (networkPolicies && networkPolicies.length > 0) {
       netPolValue = "View";
       showLink = true;
     }
-    return (<ConsoleMetadataItem
+    return (
+      <ConsoleMetadataItem
         label={Messages.Labels.networkPolicies()}
         value={netPolValue}
         link={showLink}
         onclick={() => {
-          (document.getElementById(popupId) as any).open(
-              "#tabMetaInfo"
-          );
+          (document.getElementById(popupId) as any).open("#tabMetaInfo");
         }}
         id="tabMetaInfo"
-    />);
+      />
+    );
   }
 
   @listener({ capture: true, passive: true })
@@ -234,7 +254,10 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
     if (security && security.projectAdminSubjects) {
       subjects = this.subjectListAsString(security.projectAdminSubjects);
     }
-    return subjects || this.roleBindingsToSubjects(this.state.projectAdminRoleBindings);
+    return (
+      subjects ||
+      this.roleBindingsToSubjects(this.state.projectAdminRoleBindings)
+    );
   }
 
   getProjectMonitorSubjects() {
@@ -243,49 +266,51 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
     if (security && security.projectMonitorSubjects) {
       subjects = this.subjectListAsString(security.projectMonitorSubjects);
     }
-    return subjects || this.roleBindingsToSubjects(this.state.projectMonitorRoleBindings);
+    return (
+      subjects ||
+      this.roleBindingsToSubjects(this.state.projectMonitorRoleBindings)
+    );
   }
 
   private roleBindingsToSubjects(roleBindings: RoleBinding[]) {
     if (roleBindings) {
-      const rbSubjectList = this.state.projectAdminRoleBindings.map(rb => rb.subjects)
-          .reduce((existing, curVal) => existing.concat(curVal), []);
-      return this.subjectListAsString(rbSubjectList)
+      const rbSubjectList = this.state.projectAdminRoleBindings
+        .map((rb) => rb.subjects)
+        .reduce((existing, curVal) => existing.concat(curVal), []);
+      return this.subjectListAsString(rbSubjectList);
     }
     return "none";
   }
 
   private renderPopup(popupId: string, popupContent: any) {
     return (
-        <oj-popup
-            id={popupId}
-            tail="none"
-            modality="modal"
-            {...{ "position.my.horizontal": "center" }}
-            {...{ "position.my.vertical": "bottom" }}
-            {...{ "position.at.horizontal": "center" }}
-            {...{ "position.at.vertical": "bottom" }}
-            {...{ "position.offset.y": "-10px" }}
-            className="popup"
-        >
-          <div class="popupbody">
-            <div>
-              <a
-                  onClick={() => {
-                    (document.getElementById(popupId) as any).close();
-                  }}
-                  class="closelink"
-              >
-                Close
-              </a>
-            </div>
-            <pre class="popupcontent">
-                  {yaml.dump(
-                      yaml.load(JSON.stringify(popupContent))
-                  )}
-                </pre>
+      <oj-popup
+        id={popupId}
+        tail="none"
+        modality="modal"
+        {...{ "position.my.horizontal": "center" }}
+        {...{ "position.my.vertical": "bottom" }}
+        {...{ "position.at.horizontal": "center" }}
+        {...{ "position.at.vertical": "bottom" }}
+        {...{ "position.offset.y": "-10px" }}
+        className="popup"
+      >
+        <div class="popupbody">
+          <div>
+            <a
+              onClick={() => {
+                (document.getElementById(popupId) as any).close();
+              }}
+              class="closelink"
+            >
+              Close
+            </a>
           </div>
-        </oj-popup>
+          <pre class="popupcontent">
+            {yaml.dump(yaml.load(JSON.stringify(popupContent)))}
+          </pre>
+        </div>
+      </oj-popup>
     );
   }
 

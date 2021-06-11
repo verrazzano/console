@@ -10,13 +10,13 @@ import {
   Project,
   ResourceType,
   ResourceTypeType,
-  RoleBinding
+  RoleBinding,
 } from "./types";
 import {
   processOAMData,
   processClusterData,
   processProjectsData,
-  processRoleBindingsData
+  processRoleBindingsData,
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
@@ -415,7 +415,7 @@ export class VerrazzanoApi {
     namespace?: string,
     name?: string
   ): Promise<Response> {
-    console.log("Fetch api is: " + this.fetchApi as any);
+    console.log(("Fetch api is: " + this.fetchApi) as any);
     return Promise.resolve(
       this.fetchApi(
         `${this.url}/${type.ApiVersion}/${
@@ -538,19 +538,19 @@ export class VerrazzanoApi {
 
   public async listRoleBindings(namespace: string): Promise<RoleBinding[]> {
     return this.getKubernetesResource(ResourceType.RoleBinding, namespace)
-        .then((rbResponse) => {
-          return rbResponse.json();
-        })
-        .then((roleBindings) => {
-          if (!roleBindings) {
-            throw new Error(Messages.Error.errRoleBindingsFetchError(namespace));
-          }
+      .then((rbResponse) => {
+        return rbResponse.json();
+      })
+      .then((roleBindings) => {
+        if (!roleBindings) {
+          throw new Error(Messages.Error.errRoleBindingsFetchError(namespace));
+        }
 
-          return processRoleBindingsData(roleBindings.items);
-        })
-        .catch((error) => {
-          throw new VzError(error);
-        });
+        return processRoleBindingsData(roleBindings.items);
+      })
+      .catch((error) => {
+        throw new VzError(error);
+      });
   }
 
   public async getProject(projectId: string): Promise<Project> {
@@ -561,11 +561,15 @@ export class VerrazzanoApi {
     return project;
   }
 
-  public constructor(cluster: string = "local", fetchApi: FetchApiSignature = null) {
+  public constructor(
+    cluster: string = "local",
+    fetchApi: FetchApiSignature = null
+  ) {
     this.defaultUrl = `${(window as any).vzApiUrl || ""}`;
     this.cluster = cluster;
     this.url = `${this.defaultUrl}/${this.apiVersion}`;
-    this.fetchApi = fetchApi || KeycloakJet.getInstance().getAuthenticatedFetchApi();
+    this.fetchApi =
+      fetchApi || KeycloakJet.getInstance().getAuthenticatedFetchApi();
     this.getInstance = this.getInstance.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
     this.getOAMApplication = this.getOAMApplication.bind(this);
