@@ -9,12 +9,14 @@ import {
   OAMComponent,
   Project,
   ResourceType,
-  ResourceTypeType, RoleBinding,
+  ResourceTypeType,
+  RoleBinding
 } from "./types";
 import {
   processOAMData,
   processClusterData,
-  processProjectsData, processRoleBindingsData,
+  processProjectsData,
+  processRoleBindingsData
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
@@ -413,6 +415,7 @@ export class VerrazzanoApi {
     namespace?: string,
     name?: string
   ): Promise<Response> {
+    console.log("Fetch api is: " + this.fetchApi as any);
     return Promise.resolve(
       this.fetchApi(
         `${this.url}/${type.ApiVersion}/${
@@ -437,7 +440,7 @@ export class VerrazzanoApi {
             namespace,
             name
           ),
-          response.status
+          response ? response.status : -1
         );
       }
       return response;
@@ -563,7 +566,6 @@ export class VerrazzanoApi {
     this.cluster = cluster;
     this.url = `${this.defaultUrl}/${this.apiVersion}`;
     this.fetchApi = fetchApi || KeycloakJet.getInstance().getAuthenticatedFetchApi();
-    this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
     this.getInstance = this.getInstance.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
     this.getOAMApplication = this.getOAMApplication.bind(this);
