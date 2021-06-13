@@ -7,6 +7,7 @@ RUN yum install -y krb5-libs \
     && yum update -y python curl openssl-libs glibc openldap nss nss-sysinit nss-tools glib2 \
     && yum install -y oracle-nodejs-release-el7 \
     && yum install -y nodejs \
+    && yum install -y krb5-libs-1.15.1-50.0.1.el7.x86_64.rpm \
     && mkdir /verrazzano \
     && mkdir /license \
     && yum clean all \
