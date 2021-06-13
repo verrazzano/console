@@ -78,7 +78,7 @@ push: build
 	fi
 
 .PHONY: run-ui-tests
-run-ui-tests:
+run-ui-tests: npm-install
 	./integtest/scripts/edit_integ_test_config.sh ${VZ_UITEST_CONFIG_TEMPLATE} > tmp.uitestconfig.json
 	export VZ_UITEST_CONFIG=tmp.uitestconfig.json && \
 	npm run integtest
