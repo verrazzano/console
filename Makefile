@@ -77,50 +77,8 @@ push: build
 		docker push ${DOCKER_IMAGE_FULLNAME}:latest; \
 	fi
 
-.PHONY: setup-integ-test
-setup-integ-test: build create-cluster
-ifdef JENKINS_URL
-	# install the yq 3.4.1 binary using go get - yum install gets an older version that does not have multi-doc yaml capability
-	GO111MODULE=on go get github.com/mikefarah/yq/v3
-	$${HOME}/go/bin/yq --version
-endif
-	echo "Running integ tests against image ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-	CONSOLE_DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} \
-	VERRAZZANO_REPO_PATH=${VERRAZZANO_REPO_PATH} \
-	CLUSTER_NAME=${CLUSTER_NAME} \
-	PATH=$${HOME}/go/bin:$${PATH} \
-	./integtest/scripts/setup_integ_test.sh
-
-.PHONY: integ-test
-integ-test: setup-integ-test
-ifdef JENKINS_URL
-	google-chrome --version || (curl -o google-chrome.rpm "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-${GOOGLE_CHROME_VERSION}.x86_64.rpm"; sudo yum install -y ./google-chrome.rpm)
-
-	curl -o chromedriver.zip "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
-	unzip chromedriver.zip
-	sudo cp chromedriver /usr/local/bin/	
-endif
-	# create integ test config file with correct console url from KinD cluster
-	./integtest/scripts/edit_integ_test_config.sh ${CLUSTER_NAME} ${VZ_UITEST_CONFIG_TEMPLATE} > tmp.uitestconfig.json
-	export VERRAZZANO_REPO_PATH=${VERRAZZANO_REPO_PATH} && \
+.PHONY: run-ui-tests
+run-ui-tests:
+	./integtest/scripts/edit_integ_test_config.sh ${VZ_UITEST_CONFIG_TEMPLATE} > tmp.uitestconfig.json
 	export VZ_UITEST_CONFIG=tmp.uitestconfig.json && \
-	export CONSOLE_DOCKER_IMAGE=${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} && \
 	npm run integtest
-
-.PHONY: create-cluster
-create-cluster: delete-cluster
-	echo 'Create cluster...'
-	KIND_KUBECONFIG=${KIND_KUBECONFIG} \
-	HTTP_PROXY="" HTTPS_PROXY="" http_proxy="" https_proxy="" \
-	./integtest/scripts/create_cluster.sh ${CLUSTER_NAME}
-	kubectl --kubeconfig ${KIND_KUBECONFIG} config set-context kind-${CLUSTER_NAME}
-ifdef JENKINS_URL
-	# Get the ip address of the container running the kube apiserver
-	# and update the kubeconfig file to point to that address, instead of localhost
-	sed -i -e "s|127.0.0.1.*|`docker inspect ${CLUSTER_NAME}-control-plane | jq '.[].NetworkSettings.IPAddress' | sed 's/"//g'`:6443|g" ${KIND_KUBECONFIG}
-	cat ${KIND_KUBECONFIG} | grep server
-endif
-
-.PHONY: delete-cluster
-delete-cluster:
-	./integtest/scripts/delete_cluster.sh ${CLUSTER_NAME}
