@@ -38,7 +38,7 @@ export class ConsoleMetadataItem extends ElementVComponent<Props> {
   protected render() {
     return (
       <div class="oj-flex-item oj-sm-12 metadata-item">
-        <strong>{this.props.label ? `${this.props.label}: ` : ''}</strong>
+        <strong>{this.props.label ? `${this.props.label}: ` : ""}</strong>
         {this.props.link ? (
           <a
             onClick={

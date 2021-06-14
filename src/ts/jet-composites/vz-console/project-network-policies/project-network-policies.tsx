@@ -38,30 +38,40 @@ class NetworkPolicyModel {
   egressRules: ArrayDataProvider<string, string>;
   constructor(netPol: V1NetworkPolicy) {
     this.name = netPol.metadata.name;
-    this.policyTypes = new ArrayDataProvider<string, string>(netPol.spec.policyTypes || []);
+    this.policyTypes = new ArrayDataProvider<string, string>(
+      netPol.spec.policyTypes || []
+    );
     const matchLabels = netPol.spec?.podSelector?.matchLabels;
     const matchLabelsArray = ko.observableArray([]);
     if (matchLabels) {
       for (const matchLabelsKey in netPol.spec.podSelector.matchLabels) {
-        matchLabelsArray.push(`${matchLabelsKey}: ${matchLabels[matchLabelsKey]}`);
+        matchLabelsArray.push(
+          `${matchLabelsKey}: ${matchLabels[matchLabelsKey]}`
+        );
       }
     }
     this.matchLabels = new ArrayDataProvider<string, string>(matchLabelsArray);
 
     const matchExpressions = netPol.spec?.podSelector?.matchExpressions;
     const matchExpressionsArray = ko.observableArray(matchExpressions || []);
-    this.matchExpressions = new ArrayDataProvider<string, V1LabelSelectorRequirement>(matchExpressionsArray);
+    this.matchExpressions = new ArrayDataProvider<
+      string,
+      V1LabelSelectorRequirement
+    >(matchExpressionsArray);
 
     const ingressRules = netPol.spec?.ingress;
     const ingressRulesStrArray = [];
     for (const idx in ingressRules) {
       const irule = ingressRules[idx];
-      const portsStr = irule.ports?.map((p) => `${p.protocol} ${p.port}`).join(', ') || '';
-      let fromInfo = '';
+      const portsStr =
+        irule.ports?.map((p) => `${p.protocol} ${p.port}`).join(", ") || "";
+      let fromInfo = "";
       if (irule.from) {
         fromInfo = Messages.Project.netPolFromInfo();
       }
-      ingressRulesStrArray.push(`${Messages.Project.netPolPorts()} [${portsStr}] ${fromInfo}`);
+      ingressRulesStrArray.push(
+        `${Messages.Project.netPolPorts()} [${portsStr}] ${fromInfo}`
+      );
     }
     const ingressArray = ko.observableArray(ingressRulesStrArray);
     this.ingressRules = new ArrayDataProvider<string, string>(ingressArray);
@@ -70,12 +80,15 @@ class NetworkPolicyModel {
     const egressRulesStrArray = [];
     for (const idx in egressRules) {
       const erule = egressRules[idx];
-      const portsStr = erule.ports?.map((p) => `${p.protocol} ${p.port}`).join(', ') || '';
-      let toInfo = '';
+      const portsStr =
+        erule.ports?.map((p) => `${p.protocol} ${p.port}`).join(", ") || "";
+      let toInfo = "";
       if (erule.to) {
         toInfo = Messages.Project.netPolToInfo();
       }
-      egressRulesStrArray.push(`${Messages.Project.netPolPorts()} [${portsStr}] ${toInfo}`);
+      egressRulesStrArray.push(
+        `${Messages.Project.netPolPorts()} [${portsStr}] ${toInfo}`
+      );
     }
     const egressArray = ko.observableArray(egressRulesStrArray);
     this.egressRules = new ArrayDataProvider<string, string>(egressArray);
@@ -85,19 +98,20 @@ class NetworkPolicyModel {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-project-network-policies")
-export class ConsoleProjectNetworkPolicies extends ElementVComponent<Props, State> {
+export class ConsoleProjectNetworkPolicies extends ElementVComponent<
+  Props,
+  State
+> {
   state: State = {};
   dataProvider: ko.Observable = ko.observable();
 
   protected mounted() {
     const models: Model.Model[] = [];
     this.props.networkPolicies.forEach((netPol) => {
-      models.push(
-        new Model.Model(new NetworkPolicyModel(netPol))
-      );
+      models.push(new Model.Model(new NetworkPolicyModel(netPol)));
     });
     this.updateState({
-      networkPolicies: new Model.Collection(models)
+      networkPolicies: new Model.Collection(models),
     });
   }
 
@@ -105,7 +119,9 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<Props, Stat
     this.dataProvider(
       new PagingDataProviderView(
         new CollectionDataProvider(
-          this.state.networkPolicies ? this.state.networkPolicies : new Model.Collection([])
+          this.state.networkPolicies
+            ? this.state.networkPolicies
+            : new Model.Collection([])
         )
       )
     );
@@ -113,9 +129,7 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<Props, Stat
     return (
       <div id="components" class="oj-flex component-margin">
         <div class="oj-flex">
-          <div class="oj-sm-12 oj-flex-item">
-            {this.renderLinkToYaml()}
-          </div>
+          <div class="oj-sm-12 oj-flex-item">{this.renderLinkToYaml()}</div>
         </div>
         {this.renderPopup("netPolYaml", this.props.networkPolicies)}
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
@@ -168,23 +182,27 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<Props, Stat
                     <div class="oj-flex">
                       <div class="oj-sm-12 oj-flex-item">
                         <strong>
-                          <span>{Messages.Project.netPolLabelSelector()}:&nbsp;</span>
+                          <span>
+                            {Messages.Project.netPolLabelSelector()}:&nbsp;
+                          </span>
                         </strong>
                         <ul>
-                        <oj-bind-for-each data="[[item.data.matchLabels]]">
-                          <template>
-                            <li>
-                              <oj-bind-text value="[[$current.data]]"></oj-bind-text>
-                            </li>
-                          </template>
-                        </oj-bind-for-each>
+                          <oj-bind-for-each data="[[item.data.matchLabels]]">
+                            <template>
+                              <li>
+                                <oj-bind-text value="[[$current.data]]"></oj-bind-text>
+                              </li>
+                            </template>
+                          </oj-bind-for-each>
                         </ul>
                       </div>
                     </div>
                     <div class="oj-flex">
                       <div class="oj-sm-12 oj-flex-item">
                         <strong>
-                          <span>{Messages.Project.netPolExpressionSelector()}:&nbsp;</span>
+                          <span>
+                            {Messages.Project.netPolExpressionSelector()}:&nbsp;
+                          </span>
                         </strong>
                         <ul>
                           <oj-bind-for-each data="[[item.data.matchExpressions]]">
@@ -202,7 +220,9 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<Props, Stat
                     <div class="oj-flex">
                       <div class="oj-sm-12 oj-flex-item">
                         <strong>
-                          <span>{Messages.Project.netPolPolicyTypes()}:&nbsp;</span>
+                          <span>
+                            {Messages.Project.netPolPolicyTypes()}:&nbsp;
+                          </span>
                         </strong>
                         <ul>
                           <oj-bind-for-each data="[[item.data.policyTypes]]">
@@ -218,7 +238,9 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<Props, Stat
                     <div class="oj-flex">
                       <div class="oj-sm-12 oj-flex-item">
                         <strong>
-                          <span>{Messages.Project.netPolIngressRules()}:&nbsp;</span>
+                          <span>
+                            {Messages.Project.netPolIngressRules()}:&nbsp;
+                          </span>
                         </strong>
                         <ul>
                           <oj-bind-for-each data="[[item.data.ingressRules]]">
@@ -234,7 +256,9 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<Props, Stat
                     <div class="oj-flex">
                       <div class="oj-sm-12 oj-flex-item">
                         <strong>
-                          <span>{Messages.Project.netPolEgressRules()}:&nbsp;</span>
+                          <span>
+                            {Messages.Project.netPolEgressRules()}:&nbsp;
+                          </span>
                         </strong>
                         <ul>
                           <oj-bind-for-each data="[[item.data.egressRules]]">
@@ -282,52 +306,50 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<Props, Stat
 
   private renderPopup(popupId: string, popupContent: any) {
     return (
-        <oj-popup
-            id={popupId}
-            tail="none"
-            modality="modal"
-            {...{ "position.my.horizontal": "center" }}
-            {...{ "position.my.vertical": "bottom" }}
-            {...{ "position.at.horizontal": "center" }}
-            {...{ "position.at.vertical": "bottom" }}
-            {...{ "position.offset.y": "-10px" }}
-            className="popup"
-        >
-          <div class="popupbody">
-            <div>
-              <a
-                  onClick={() => {
-                    (document.getElementById(popupId) as any).close();
-                  }}
-                  class="closelink"
-              >
-                Close
-              </a>
-            </div>
-            <pre class="popupcontent">
+      <oj-popup
+        id={popupId}
+        tail="none"
+        modality="modal"
+        {...{ "position.my.horizontal": "center" }}
+        {...{ "position.my.vertical": "bottom" }}
+        {...{ "position.at.horizontal": "center" }}
+        {...{ "position.at.vertical": "bottom" }}
+        {...{ "position.offset.y": "-10px" }}
+        className="popup"
+      >
+        <div class="popupbody">
+          <div>
+            <a
+              onClick={() => {
+                (document.getElementById(popupId) as any).close();
+              }}
+              class="closelink"
+            >
+              Close
+            </a>
+          </div>
+          <pre class="popupcontent">
             {yaml.dump(yaml.load(JSON.stringify(popupContent)))}
           </pre>
-          </div>
-        </oj-popup>
+        </div>
+      </oj-popup>
     );
   }
 
   private renderLinkToYaml() {
     if (this.props.networkPolicies && this.props.networkPolicies.length > 0) {
       return (
-          <ConsoleMetadataItem
-              label=""
-              value={Messages.Project.netPolViewYaml()}
-              link={true}
-              onclick={() => {
-                (document.getElementById("netPolYaml") as any).open(
-                    "#viewNetPol"
-                );
-              }}
-              id="viewNetPol"
-          />
+        <ConsoleMetadataItem
+          label=""
+          value={Messages.Project.netPolViewYaml()}
+          link={true}
+          onclick={() => {
+            (document.getElementById("netPolYaml") as any).open("#viewNetPol");
+          }}
+          id="viewNetPol"
+        />
       );
     }
-    return '';
+    return "";
   }
 }

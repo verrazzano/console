@@ -17,7 +17,7 @@ import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
-import {ConsoleProjectNetworkPolicies} from "vz-console/project-network-policies/loader";
+import { ConsoleProjectNetworkPolicies } from "vz-console/project-network-policies/loader";
 
 class State {
   selectedItem: string;
@@ -47,7 +47,7 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
     namespaces: Messages.Labels.namespaces(),
     clusters: Messages.Labels.clusters(),
     security: Messages.Labels.security(),
-    networkPolicies: Messages.Labels.networkPolicies()
+    networkPolicies: Messages.Labels.networkPolicies(),
   };
 
   state: State = {
@@ -230,11 +230,10 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
         break;
       }
       case "networkPolicies": {
-        const networkPolicies = this.props.project?.data?.spec?.template?.networkPolicies;
+        const networkPolicies = this.props.project?.data?.spec?.template
+          ?.networkPolicies;
         ResourceList = (
-            <ConsoleProjectNetworkPolicies
-                networkPolicies={networkPolicies}
-            />
+          <ConsoleProjectNetworkPolicies networkPolicies={networkPolicies} />
         );
         Heading = <h1 class="resheader">{this.labels.networkPolicies}</h1>;
         break;
