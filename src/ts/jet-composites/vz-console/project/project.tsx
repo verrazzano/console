@@ -165,11 +165,6 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
               />
             </div>
             {this.renderPopup("projYamlPopup", this.state.project.data)}
-            {this.renderNetworkPolicies("netpolYamlPopup")}
-            {this.renderPopup(
-              "netpolYamlPopup",
-              this.state.project.data?.spec?.template?.networkPolicies
-            )}
           </div>,
         ];
         break;
@@ -197,28 +192,6 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
         break;
     }
     return tabContents;
-  }
-
-  renderNetworkPolicies(popupId: string) {
-    const networkPolicies = this.state?.project?.data?.spec?.template
-      ?.networkPolicies;
-    let netPolValue = "None Provided";
-    let showLink = false;
-    if (networkPolicies && networkPolicies.length > 0) {
-      netPolValue = "View";
-      showLink = true;
-    }
-    return (
-      <ConsoleMetadataItem
-        label={Messages.Labels.networkPolicies()}
-        value={netPolValue}
-        link={showLink}
-        onclick={() => {
-          (document.getElementById(popupId) as any).open("#tabMetaInfo");
-        }}
-        id="tabMetaInfo"
-      />
-    );
   }
 
   @listener({ capture: true, passive: true })

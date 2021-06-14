@@ -17,6 +17,7 @@ import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
+import {ConsoleProjectNetworkPolicies} from "vz-console/project-network-policies/loader";
 
 class State {
   selectedItem: string;
@@ -46,6 +47,7 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
     namespaces: Messages.Labels.namespaces(),
     clusters: Messages.Labels.clusters(),
     security: Messages.Labels.security(),
+    networkPolicies: Messages.Labels.networkPolicies()
   };
 
   state: State = {
@@ -79,6 +81,7 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
             { path: `clusters` },
             { path: `namespaces` },
             { path: `security` },
+            { path: `networkPolicies` },
           ],
           {
             urlAdapter: new UrlPathAdapter(
@@ -215,7 +218,7 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
         break;
       }
       case "security": {
-        if (this.props.project && this.props.project.namespaces) {
+        if (this.props.project) {
           ResourceList = (
             <ConsoleProjectSecurity
               adminSubjects={this.getProjectAdminSubjects()}
@@ -224,6 +227,16 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
           );
           Heading = <h1 class="resheader">{this.labels.security}</h1>;
         }
+        break;
+      }
+      case "networkPolicies": {
+        const networkPolicies = this.props.project?.data?.spec?.template?.networkPolicies;
+        ResourceList = (
+            <ConsoleProjectNetworkPolicies
+                networkPolicies={networkPolicies}
+            />
+        );
+        Heading = <h1 class="resheader">{this.labels.networkPolicies}</h1>;
         break;
       }
       default: {
@@ -251,6 +264,9 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
               </li>
               <li id="security">
                 <a href="#">{this.labels.security}</a>
+              </li>
+              <li id="networkPolicies">
+                <a href="#">{this.labels.networkPolicies}</a>
               </li>
             </ul>
           </oj-navigation-list>

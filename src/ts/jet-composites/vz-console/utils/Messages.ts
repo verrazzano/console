@@ -251,4 +251,13 @@ export const Project = {
     Translations.getTranslatedString("labels.projectMonitor"),
   subjectKind: () => Translations.getTranslatedString("labels.subjectKind"),
   subjectAccess: () => Translations.getTranslatedString("labels.subjectAccess"),
+  netPolLabelSelector: () => Translations.getTranslatedString("labels.matchLabelsSelector"),
+  netPolExpressionSelector: () => Translations.getTranslatedString("labels.matchExpressionsSelector"),
+  netPolIngressRules: () => Translations.getTranslatedString("labels.netPolIngressRules"),
+  netPolEgressRules: () => Translations.getTranslatedString("labels.netPolEgressRules"),
+  netPolPolicyTypes: () => Translations.getTranslatedString("labels.netPolPolicyTypes"),
+  netPolPorts: () => Translations.getTranslatedString("labels.netPolPorts"),
+  netPolViewYaml: () => Translations.getTranslatedString("labels.netPolViewYaml"),
+  netPolToInfo: () => Translations.getTranslatedString("labels.netPolToInfo"),
+  netPolFromInfo: () => Translations.getTranslatedString("labels.netPolFromInfo")
 };
