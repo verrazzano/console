@@ -165,17 +165,6 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
               />
             </div>
             {this.renderPopup("projYamlPopup", this.state.project.data)}
-            <div class="oj-sm-4 oj-flex-item">
-              <h3>{Messages.Labels.securityInfo()}</h3>
-              <ConsoleMetadataItem
-                label={Messages.Labels.projectAdmins()}
-                value={this.getProjectAdminSubjects()}
-              />
-              <ConsoleMetadataItem
-                label={Messages.Labels.projectMonitors()}
-                value={this.getProjectMonitorSubjects()}
-              />
-            </div>
             {this.renderNetworkPolicies("netpolYamlPopup")}
             {this.renderPopup(
               "netpolYamlPopup",
@@ -235,51 +224,6 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
   @listener({ capture: true, passive: true })
   protected tabSwitch(event: CustomEvent) {
     this.updateState({ selectedTab: (event.target as Element).id });
-  }
-
-  subjectListAsString(subjectsList: any) {
-    let subjects = "";
-    for (const subj of subjectsList) {
-      subjects += ` ${subj.name} (${subj.kind}),`;
-    }
-    if (subjects.endsWith(",")) {
-      subjects = subjects.substr(0, subjects.length - 1);
-    }
-    return subjects;
-  }
-
-  getProjectAdminSubjects() {
-    const security = this.state.project.data.spec.template.security;
-    let subjects = "";
-    if (security && security.projectAdminSubjects) {
-      subjects = this.subjectListAsString(security.projectAdminSubjects);
-    }
-    return (
-      subjects ||
-      this.roleBindingsToSubjects(this.state.projectAdminRoleBindings)
-    );
-  }
-
-  getProjectMonitorSubjects() {
-    const security = this.state.project.data.spec.template.security;
-    let subjects = "";
-    if (security && security.projectMonitorSubjects) {
-      subjects = this.subjectListAsString(security.projectMonitorSubjects);
-    }
-    return (
-      subjects ||
-      this.roleBindingsToSubjects(this.state.projectMonitorRoleBindings)
-    );
-  }
-
-  private roleBindingsToSubjects(roleBindings: RoleBinding[]) {
-    if (roleBindings) {
-      const rbSubjectList = this.state.projectAdminRoleBindings
-        .map((rb) => rb.subjects)
-        .reduce((existing, curVal) => existing.concat(curVal), []);
-      return this.subjectListAsString(rbSubjectList);
-    }
-    return "none";
   }
 
   private renderPopup(popupId: string, popupContent: any) {
@@ -405,6 +349,8 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
         </div>
         <ConsoleProjectResources
           project={this.state.project}
+          adminRoleBindings={this.state.projectAdminRoleBindings}
+          monitorRoleBindings={this.state.projectMonitorRoleBindings}
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.props.selectedItem}
         />

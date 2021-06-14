@@ -229,10 +229,7 @@ export const Labels = {
   projects: () => Translations.getTranslatedString("labels.projects"),
   project: () => Translations.getTranslatedString("labels.project"),
   projectSpec: () => Translations.getTranslatedString("labels.projectSpec"),
-  projectAdmins: () => Translations.getTranslatedString("labels.projectAdmins"),
-  projectMonitors: () =>
-    Translations.getTranslatedString("labels.projectMonitors"),
-  securityInfo: () => Translations.getTranslatedString("labels.securityInfo"),
+  security: () => Translations.getTranslatedString("labels.security"),
   apiUrl: () => Translations.getTranslatedString("labels.apiUrl"),
 };
 
@@ -247,3 +244,10 @@ export const ComponentConfigLabels = {
   scopes: Labels.scopes(),
   params: Labels.params(),
 };
+
+export const Project = {
+  projectAdmin: () => Translations.getTranslatedString("labels.projectAdmin"),
+  projectMonitor: () => Translations.getTranslatedString("labels.projectMonitor"),
+  subjectKind: () => Translations.getTranslatedString("labels.subjectKind"),
+  subjectAccess: () => Translations.getTranslatedString("labels.subjectAccess")
+}
