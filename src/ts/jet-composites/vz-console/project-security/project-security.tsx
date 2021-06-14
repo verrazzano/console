@@ -11,7 +11,7 @@ import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
-import {Subject} from "vz-console/service/types";
+import { Subject } from "vz-console/service/types";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
@@ -47,14 +47,30 @@ export class ConsoleProjectSecurity extends ElementVComponent<Props, State> {
   protected mounted() {
     const models: Model.Model[] = [];
     this.props.adminSubjects.forEach((admSubj) => {
-      models.push(new Model.Model(new SubjectModel(Messages.Project.projectAdmin(), admSubj.name, admSubj.kind)));
+      models.push(
+        new Model.Model(
+          new SubjectModel(
+            Messages.Project.projectAdmin(),
+            admSubj.name,
+            admSubj.kind
+          )
+        )
+      );
     });
 
     this.props.monitorSubjects.forEach((monSubj) => {
-      models.push(new Model.Model(new SubjectModel(Messages.Project.projectMonitor(), monSubj.name, monSubj.kind)));
+      models.push(
+        new Model.Model(
+          new SubjectModel(
+            Messages.Project.projectMonitor(),
+            monSubj.name,
+            monSubj.kind
+          )
+        )
+      );
     });
     this.updateState({
-      subjects: new Model.Collection(models)
+      subjects: new Model.Collection(models),
     });
   }
 

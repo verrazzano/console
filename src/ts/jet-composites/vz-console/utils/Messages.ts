@@ -247,7 +247,8 @@ export const ComponentConfigLabels = {
 
 export const Project = {
   projectAdmin: () => Translations.getTranslatedString("labels.projectAdmin"),
-  projectMonitor: () => Translations.getTranslatedString("labels.projectMonitor"),
+  projectMonitor: () =>
+    Translations.getTranslatedString("labels.projectMonitor"),
   subjectKind: () => Translations.getTranslatedString("labels.subjectKind"),
-  subjectAccess: () => Translations.getTranslatedString("labels.subjectAccess")
-}
+  subjectAccess: () => Translations.getTranslatedString("labels.subjectAccess"),
+};

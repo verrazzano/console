@@ -12,7 +12,7 @@ import { ConsoleProjectClusters } from "vz-console/project-clusters/loader";
 import { ConsoleProjectNamespaces } from "vz-console/project-namespaces/loader";
 import { ConsoleProjectSecurity } from "vz-console/project-security/loader";
 import * as Messages from "vz-console/utils/Messages";
-import {Project, RoleBinding} from "vz-console/service/types";
+import { Project, RoleBinding } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import CoreRouter = require("ojs/ojcorerouter");
@@ -45,7 +45,7 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
   labels = {
     namespaces: Messages.Labels.namespaces(),
     clusters: Messages.Labels.clusters(),
-    security: Messages.Labels.security()
+    security: Messages.Labels.security(),
   };
 
   state: State = {
@@ -74,7 +74,12 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
       .sync()
       .then(() => {
         this.router = new CoreRouter(
-          [{ path: "" }, { path: `clusters` }, { path: `namespaces` }, { path: `security` }],
+          [
+            { path: "" },
+            { path: `clusters` },
+            { path: `namespaces` },
+            { path: `security` },
+          ],
           {
             urlAdapter: new UrlPathAdapter(
               `/projects/${this.props.project.data.metadata.uid}`
@@ -170,8 +175,8 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
   private roleBindingsToSubjects(roleBindings: RoleBinding[]) {
     if (roleBindings) {
       const rbSubjectList = roleBindings
-          .map((rb) => rb.subjects)
-          .reduce((existing, curVal) => existing.concat(curVal), []);
+        .map((rb) => rb.subjects)
+        .reduce((existing, curVal) => existing.concat(curVal), []);
       return rbSubjectList;
     }
     return [];
@@ -211,7 +216,12 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
       }
       case "security": {
         if (this.props.project && this.props.project.namespaces) {
-          ResourceList = <ConsoleProjectSecurity adminSubjects={this.getProjectAdminSubjects()} monitorSubjects={this.getProjectMonitorSubjects()}/>;
+          ResourceList = (
+            <ConsoleProjectSecurity
+              adminSubjects={this.getProjectAdminSubjects()}
+              monitorSubjects={this.getProjectMonitorSubjects()}
+            />
+          );
           Heading = <h1 class="resheader">{this.labels.security}</h1>;
         }
         break;
