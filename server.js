@@ -135,12 +135,12 @@ app.get("/projects/:id/clusters", (req, res, next) => {
 });
 app.get("/projects/:id/security", (req, res, next) => {
   res.redirect(
-      `/?ojr=project&projectId=${req.params.id}&selectedItem=security`
+    `/?ojr=project&projectId=${req.params.id}&selectedItem=security`
   );
 });
 app.get("/projects/:id/networkPolicies", (req, res, next) => {
   res.redirect(
-      `/?ojr=project&projectId=${req.params.id}&selectedItem=networkPolicies`
+    `/?ojr=project&projectId=${req.params.id}&selectedItem=networkPolicies`
   );
 });
 

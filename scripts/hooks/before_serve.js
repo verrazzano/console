@@ -128,12 +128,12 @@ function rewriteUrls() {
   });
   app.get("/projects/:id/security", (req, res, next) => {
     res.redirect(
-        `/?ojr=project&projectId=${req.params.id}&selectedItem=security`
+      `/?ojr=project&projectId=${req.params.id}&selectedItem=security`
     );
   });
   app.get("/projects/:id/networkPolicies", (req, res, next) => {
     res.redirect(
-        `/?ojr=project&projectId=${req.params.id}&selectedItem=networkPolicies`
+      `/?ojr=project&projectId=${req.params.id}&selectedItem=networkPolicies`
     );
   });
   return app;
