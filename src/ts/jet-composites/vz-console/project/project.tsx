@@ -211,7 +211,8 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
   }
 
   renderNetworkPolicies(popupId: string) {
-    const networkPolicies = this.state?.project?.data?.spec?.template?.networkPolicies;
+    const networkPolicies = this.state?.project?.data?.spec?.template
+      ?.networkPolicies;
     let netPolValue = "None Provided";
     let showLink = false;
     if (networkPolicies && networkPolicies.length > 0) {
