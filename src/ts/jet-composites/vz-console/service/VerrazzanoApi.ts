@@ -415,7 +415,6 @@ export class VerrazzanoApi {
     namespace?: string,
     name?: string
   ): Promise<Response> {
-    console.log(("Fetch api is: " + this.fetchApi) as any);
     return Promise.resolve(
       this.fetchApi(
         `${this.url}/${type.ApiVersion}/${
@@ -440,7 +439,7 @@ export class VerrazzanoApi {
             namespace,
             name
           ),
-          response ? response.status : -1
+          response?.status
         );
       }
       return response;

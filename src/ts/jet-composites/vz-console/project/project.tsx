@@ -75,7 +75,7 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
     this.updateState({ loading: true });
     try {
       const project = await this.verrazzanoApi.getProject(this.props.projectId);
-      const projNamespaces = project.data.spec.template.namespaces;
+      const projNamespaces = project.data?.spec?.template?.namespaces;
       let projectAdminRoleBindings = [];
       let projectMonitorRoleBindings = [];
       if (projNamespaces && projNamespaces.length > 0) {
@@ -86,7 +86,7 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
           (rb) => rb.clusterRole === "verrazzano-project-admin"
         );
         projectMonitorRoleBindings = nsRoleBindings.filter(
-          (rb) => rb.clusterRole === "verrazzano-project-admin"
+          (rb) => rb.clusterRole === "verrazzano-project-monitor"
         );
       }
       this.updateState({
