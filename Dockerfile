@@ -3,10 +3,10 @@
 
 FROM ghcr.io/oracle/oraclelinux:7-slim
 
-RUN yum update -y python curl openssl-libs glibc openldap nss nss-sysinit nss-tools glib2 \
+RUN yum install -y krb5-libs \
+    && yum update -y python curl openssl-libs glibc openldap nss nss-sysinit nss-tools glib2 \
     && yum install -y oracle-nodejs-release-el7 \
     && yum install -y nodejs \
-    && yum install -y krb5-libs \
     && mkdir /verrazzano \
     && mkdir /license \
     && yum clean all \
