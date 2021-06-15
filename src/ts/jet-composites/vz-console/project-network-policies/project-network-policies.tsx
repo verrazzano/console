@@ -13,16 +13,14 @@ import * as yaml from "js-yaml";
 import * as ko from "knockout";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/metadata-item";
 import * as Messages from "vz-console/utils/Messages";
-import {
-  V1LabelSelectorRequirement,
-  V1NetworkPolicy,
-} from "@kubernetes/client-node";
+import {LabelSelectorRequirement, NetworkPolicy} from "vz-console/service/types";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
+import {match} from "assert";
 
 class Props {
-  networkPolicies?: V1NetworkPolicy[];
+  networkPolicies?: NetworkPolicy[];
 }
 
 class State {
@@ -33,18 +31,18 @@ class NetworkPolicyModel {
   name: string;
   policyTypes: ArrayDataProvider<string, string>;
   matchLabels: ArrayDataProvider<string, string>;
-  matchExpressions: ArrayDataProvider<string, V1LabelSelectorRequirement>;
+  matchExpressions: ArrayDataProvider<string, LabelSelectorRequirement>;
   ingressRules: ArrayDataProvider<string, string>;
   egressRules: ArrayDataProvider<string, string>;
-  constructor(netPol: V1NetworkPolicy) {
-    this.name = netPol.metadata.name;
+  constructor(netPol: NetworkPolicy) {
+    this.name = netPol.name;
     this.policyTypes = new ArrayDataProvider<string, string>(
-      netPol.spec.policyTypes || []
+      netPol.policyTypes || []
     );
-    const matchLabels = netPol.spec?.podSelector?.matchLabels;
+    const matchLabels = netPol?.labelPodSelectors;
     const matchLabelsArray = ko.observableArray([]);
     if (matchLabels) {
-      for (const matchLabelsKey in netPol.spec.podSelector.matchLabels) {
+      for (const matchLabelsKey in matchLabels) {
         matchLabelsArray.push(
           `${matchLabelsKey}: ${matchLabels[matchLabelsKey]}`
         );
@@ -52,21 +50,20 @@ class NetworkPolicyModel {
     }
     this.matchLabels = new ArrayDataProvider<string, string>(matchLabelsArray);
 
-    const matchExpressions = netPol.spec?.podSelector?.matchExpressions;
+    const matchExpressions = netPol.expressionPodSelectors;
     const matchExpressionsArray = ko.observableArray(matchExpressions || []);
     this.matchExpressions = new ArrayDataProvider<
       string,
-      V1LabelSelectorRequirement
+      LabelSelectorRequirement
     >(matchExpressionsArray);
 
-    const ingressRules = netPol.spec?.ingress;
+    const ingressRules = netPol.ingressRules;
     const ingressRulesStrArray = [];
     for (const idx in ingressRules) {
       const irule = ingressRules[idx];
-      const portsStr =
-        irule.ports?.map((p) => `${p.protocol} ${p.port}`).join(", ") || "";
+      const portsStr = irule.ports?.join(", ") || "";
       let fromInfo = "";
-      if (irule.from) {
+      if (irule.hasFrom) {
         fromInfo = Messages.Project.netPolFromInfo();
       }
       ingressRulesStrArray.push(
@@ -76,14 +73,14 @@ class NetworkPolicyModel {
     const ingressArray = ko.observableArray(ingressRulesStrArray);
     this.ingressRules = new ArrayDataProvider<string, string>(ingressArray);
 
-    const egressRules = netPol.spec?.egress;
+    const egressRules = netPol.egressRules;
     const egressRulesStrArray = [];
     for (const idx in egressRules) {
       const erule = egressRules[idx];
       const portsStr =
-        erule.ports?.map((p) => `${p.protocol} ${p.port}`).join(", ") || "";
+        erule.ports?.join(", ") || "";
       let toInfo = "";
-      if (erule.to) {
+      if (erule.hasTo) {
         toInfo = Messages.Project.netPolToInfo();
       }
       egressRulesStrArray.push(

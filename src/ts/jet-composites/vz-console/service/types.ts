@@ -67,12 +67,38 @@ export interface VMI {
   url?: string;
 }
 
+export interface LabelSelectorRequirement {
+  key: string;
+  operator: string;
+  values?: Array<string>;
+}
+
+export interface IngressRule {
+  hasFrom: boolean;
+  ports?: Array<string>;
+}
+
+export interface EgressRule {
+  hasTo: boolean;
+  ports?: Array<string>;
+}
+
+export interface NetworkPolicy {
+  name: string;
+  policyTypes?: Array<string>;
+  labelPodSelectors?: {[key: string]: string;};
+  expressionPodSelectors?: Array<LabelSelectorRequirement>;
+  ingressRules?: Array<IngressRule>;
+  egressRules?: Array<EgressRule>;
+}
+
 export interface Project {
   name?: string;
   namespace?: string;
   namespaces?: any[];
   clusters?: any[];
   data?: any;
+  networkPolicies?: NetworkPolicy[];
   createdOn?: string;
 }
 

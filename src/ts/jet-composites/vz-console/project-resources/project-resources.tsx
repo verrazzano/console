@@ -230,8 +230,7 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
         break;
       }
       case "networkPolicies": {
-        const networkPolicies = this.props.project?.data?.spec?.template
-          ?.networkPolicies;
+        const networkPolicies = this.props.project?.networkPolicies;
         ResourceList = (
           <ConsoleProjectNetworkPolicies networkPolicies={networkPolicies} />
         );
