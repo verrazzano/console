@@ -20,7 +20,6 @@ import {
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
-import { match } from "assert";
 
 class Props {
   networkPolicies?: NetworkPolicy[];
