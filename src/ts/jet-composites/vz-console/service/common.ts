@@ -9,7 +9,11 @@ import {
   OAMComponent,
   OAMComponentInstance,
   Project,
-  RoleBinding, NetworkPolicy, LabelSelectorRequirement, IngressRule, EgressRule,
+  RoleBinding,
+  NetworkPolicy,
+  LabelSelectorRequirement,
+  IngressRule,
+  EgressRule,
 } from "../service/types";
 import * as DateTimeConverter from "ojs/ojconverter-datetime";
 import { getStatusForOAMResource } from "vz-console/utils/utils";
@@ -187,30 +191,37 @@ const processProjectNetworkPolicies = (project: any): NetworkPolicy[] => {
   if (!netPols) {
     return networkPolicies;
   }
-  netPols.forEach(netPol => {
-    const matchExps = netPol.spec?.podSelector?.matchExpressions?.map(exp =>
-        <LabelSelectorRequirement>{key: exp.key, operator: exp.operator, values: exp.values}
+  netPols.forEach((netPol) => {
+    const matchExps = netPol.spec?.podSelector?.matchExpressions?.map(
+      (exp) =>
+        <LabelSelectorRequirement>{
+          key: exp.key,
+          operator: exp.operator,
+          values: exp.values,
+        }
     );
-    const ingRules = netPol?.spec?.ingress?.map(ing =>
-        <IngressRule>{hasFrom: !!ing.from, ports: ing.ports.map(p => p.port)}
+    const ingRules = netPol?.spec?.ingress?.map(
+      (ing) =>
+        <IngressRule>{
+          hasFrom: !!ing.from,
+          ports: ing.ports.map((p) => p.port),
+        }
     );
-    const egRules = netPol?.spec?.egress?.map(eg =>
-        <EgressRule>{hasTo: !!eg.to, ports: eg.ports.map(p => p.port)}
+    const egRules = netPol?.spec?.egress?.map(
+      (eg) => <EgressRule>{ hasTo: !!eg.to, ports: eg.ports.map((p) => p.port) }
     );
 
-    networkPolicies.push(
-        <NetworkPolicy>{
-          name: netPol.metadata.name,
-          policyTypes: netPol.spec?.policyTypes,
-          labelPodSelectors: netPol.spec?.podSelector?.matchLabels,
-          expressionPodSelectors: matchExps,
-          ingressRules: ingRules,
-          egressRules: egRules
-        }
-    )
+    networkPolicies.push(<NetworkPolicy>{
+      name: netPol.metadata.name,
+      policyTypes: netPol.spec?.policyTypes,
+      labelPodSelectors: netPol.spec?.podSelector?.matchLabels,
+      expressionPodSelectors: matchExps,
+      ingressRules: ingRules,
+      egressRules: egRules,
+    });
   });
   return networkPolicies;
-}
+};
 
 export const processProjectsData = (projects: any[]): Project[] => {
   const vps: Project[] = [];

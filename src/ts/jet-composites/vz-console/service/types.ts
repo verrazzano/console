@@ -86,7 +86,7 @@ export interface EgressRule {
 export interface NetworkPolicy {
   name: string;
   policyTypes?: Array<string>;
-  labelPodSelectors?: {[key: string]: string;};
+  labelPodSelectors?: { [key: string]: string };
   expressionPodSelectors?: Array<LabelSelectorRequirement>;
   ingressRules?: Array<IngressRule>;
   egressRules?: Array<EgressRule>;

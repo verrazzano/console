@@ -13,11 +13,14 @@ import * as yaml from "js-yaml";
 import * as ko from "knockout";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/metadata-item";
 import * as Messages from "vz-console/utils/Messages";
-import {LabelSelectorRequirement, NetworkPolicy} from "vz-console/service/types";
+import {
+  LabelSelectorRequirement,
+  NetworkPolicy,
+} from "vz-console/service/types";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
-import {match} from "assert";
+import { match } from "assert";
 
 class Props {
   networkPolicies?: NetworkPolicy[];
@@ -77,8 +80,7 @@ class NetworkPolicyModel {
     const egressRulesStrArray = [];
     for (const idx in egressRules) {
       const erule = egressRules[idx];
-      const portsStr =
-        erule.ports?.join(", ") || "";
+      const portsStr = erule.ports?.join(", ") || "";
       let toInfo = "";
       if (erule.hasTo) {
         toInfo = Messages.Project.netPolToInfo();
@@ -173,14 +175,14 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
                             <span>{Messages.Labels.name()}:&nbsp;</span>
                           </strong>
                           <span>
-                          <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                        </span>
+                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                          </span>
                         </div>
                         <div class="oj-sm-12">
                           <strong>
-                          <span>
-                            {Messages.Project.netPolLabelSelector()}:&nbsp;
-                          </span>
+                            <span>
+                              {Messages.Project.netPolLabelSelector()}:&nbsp;
+                            </span>
                           </strong>
                           <ul>
                             <oj-bind-for-each data="[[item.data.matchLabels]]">
@@ -194,9 +196,10 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
                         </div>
                         <div class="oj-sm-12">
                           <strong>
-                          <span>
-                            {Messages.Project.netPolExpressionSelector()}:&nbsp;
-                          </span>
+                            <span>
+                              {Messages.Project.netPolExpressionSelector()}
+                              :&nbsp;
+                            </span>
                           </strong>
                           <ul>
                             <oj-bind-for-each data="[[item.data.matchExpressions]]">
@@ -212,9 +215,9 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
                         </div>
                         <div class="oj-sm-12">
                           <strong>
-                          <span>
-                            {Messages.Project.netPolPolicyTypes()}:&nbsp;
-                          </span>
+                            <span>
+                              {Messages.Project.netPolPolicyTypes()}:&nbsp;
+                            </span>
                           </strong>
                           <ul>
                             <oj-bind-for-each data="[[item.data.policyTypes]]">
@@ -230,9 +233,9 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
                       <div class="oj-sm-6 oj-flex-item">
                         <div class="oj-sm-12">
                           <strong>
-                          <span>
-                            {Messages.Project.netPolIngressRules()}:&nbsp;
-                          </span>
+                            <span>
+                              {Messages.Project.netPolIngressRules()}:&nbsp;
+                            </span>
                           </strong>
                           <ul>
                             <oj-bind-for-each data="[[item.data.ingressRules]]">
@@ -246,9 +249,9 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
                         </div>
                         <div class="oj-sm-12">
                           <strong>
-                          <span>
-                            {Messages.Project.netPolEgressRules()}:&nbsp;
-                          </span>
+                            <span>
+                              {Messages.Project.netPolEgressRules()}:&nbsp;
+                            </span>
                           </strong>
                           <ul>
                             <oj-bind-for-each data="[[item.data.egressRules]]">
