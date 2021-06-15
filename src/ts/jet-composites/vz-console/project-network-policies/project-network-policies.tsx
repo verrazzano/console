@@ -169,106 +169,100 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
               >
                 <template slot="itemTemplate" data-oj-as="item">
                   <oj-list-item-layout>
-                    <div class="oj-flex">
-                      <div class="oj-sm-12 oj-flex-item">
-                        <strong>
-                          <span>{Messages.Labels.name()}:&nbsp;</span>
-                        </strong>
-                        <span>
+                    <div class="oj-flex oj-sm-12">
+                      <div class="oj-sm-6 oj-flex-item">
+                        <div class="oj-flex-item">
+                          <strong>
+                            <span>{Messages.Labels.name()}:&nbsp;</span>
+                          </strong>
+                          <span>
                           <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
                         </span>
-                      </div>
-                    </div>
-                    <div class="oj-flex">
-                      <div class="oj-sm-12 oj-flex-item">
-                        <strong>
+                        </div>
+                        <div class="oj-sm-12">
+                          <strong>
                           <span>
                             {Messages.Project.netPolLabelSelector()}:&nbsp;
                           </span>
-                        </strong>
-                        <ul>
-                          <oj-bind-for-each data="[[item.data.matchLabels]]">
-                            <template>
-                              <li>
-                                <oj-bind-text value="[[$current.data]]"></oj-bind-text>
-                              </li>
-                            </template>
-                          </oj-bind-for-each>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="oj-flex">
-                      <div class="oj-sm-12 oj-flex-item">
-                        <strong>
+                          </strong>
+                          <ul>
+                            <oj-bind-for-each data="[[item.data.matchLabels]]">
+                              <template>
+                                <li>
+                                  <oj-bind-text value="[[$current.data]]"></oj-bind-text>
+                                </li>
+                              </template>
+                            </oj-bind-for-each>
+                          </ul>
+                        </div>
+                        <div class="oj-sm-12">
+                          <strong>
                           <span>
                             {Messages.Project.netPolExpressionSelector()}:&nbsp;
                           </span>
-                        </strong>
-                        <ul>
-                          <oj-bind-for-each data="[[item.data.matchExpressions]]">
-                            <template>
-                              <li>
-                                <oj-bind-text value="[[$current.data.key]]"></oj-bind-text>
-                                <oj-bind-text value="[[$current.data.operator]]"></oj-bind-text>
-                                <oj-bind-text value="[[$current.data.values]]"></oj-bind-text>
-                              </li>
-                            </template>
-                          </oj-bind-for-each>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="oj-flex">
-                      <div class="oj-sm-12 oj-flex-item">
-                        <strong>
+                          </strong>
+                          <ul>
+                            <oj-bind-for-each data="[[item.data.matchExpressions]]">
+                              <template>
+                                <li>
+                                  <oj-bind-text value="[[$current.data.key]]"></oj-bind-text>
+                                  <oj-bind-text value="[[$current.data.operator]]"></oj-bind-text>
+                                  <oj-bind-text value="[[$current.data.values]]"></oj-bind-text>
+                                </li>
+                              </template>
+                            </oj-bind-for-each>
+                          </ul>
+                        </div>
+                        <div class="oj-sm-12">
+                          <strong>
                           <span>
                             {Messages.Project.netPolPolicyTypes()}:&nbsp;
                           </span>
-                        </strong>
-                        <ul>
-                          <oj-bind-for-each data="[[item.data.policyTypes]]">
-                            <template>
-                              <li>
-                                <oj-bind-text value="[[$current.data]]"></oj-bind-text>
-                              </li>
-                            </template>
-                          </oj-bind-for-each>
-                        </ul>
+                          </strong>
+                          <ul>
+                            <oj-bind-for-each data="[[item.data.policyTypes]]">
+                              <template>
+                                <li>
+                                  <oj-bind-text value="[[$current.data]]"></oj-bind-text>
+                                </li>
+                              </template>
+                            </oj-bind-for-each>
+                          </ul>
+                        </div>
                       </div>
-                    </div>
-                    <div class="oj-flex">
-                      <div class="oj-sm-12 oj-flex-item">
-                        <strong>
+                      <div class="oj-sm-6 oj-flex-item">
+                        <div class="oj-sm-12">
+                          <strong>
                           <span>
                             {Messages.Project.netPolIngressRules()}:&nbsp;
                           </span>
-                        </strong>
-                        <ul>
-                          <oj-bind-for-each data="[[item.data.ingressRules]]">
-                            <template>
-                              <li>
-                                <oj-bind-text value="[[$current.data]]"></oj-bind-text>
-                              </li>
-                            </template>
-                          </oj-bind-for-each>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="oj-flex">
-                      <div class="oj-sm-12 oj-flex-item">
-                        <strong>
+                          </strong>
+                          <ul>
+                            <oj-bind-for-each data="[[item.data.ingressRules]]">
+                              <template>
+                                <li>
+                                  <oj-bind-text value="[[$current.data]]"></oj-bind-text>
+                                </li>
+                              </template>
+                            </oj-bind-for-each>
+                          </ul>
+                        </div>
+                        <div class="oj-sm-12">
+                          <strong>
                           <span>
                             {Messages.Project.netPolEgressRules()}:&nbsp;
                           </span>
-                        </strong>
-                        <ul>
-                          <oj-bind-for-each data="[[item.data.egressRules]]">
-                            <template>
-                              <li>
-                                <oj-bind-text value="[[$current.data]]"></oj-bind-text>
-                              </li>
-                            </template>
-                          </oj-bind-for-each>
-                        </ul>
+                          </strong>
+                          <ul>
+                            <oj-bind-for-each data="[[item.data.egressRules]]">
+                              <template>
+                                <li>
+                                  <oj-bind-text value="[[$current.data]]"></oj-bind-text>
+                                </li>
+                              </template>
+                            </oj-bind-for-each>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </oj-list-item-layout>
