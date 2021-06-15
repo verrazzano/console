@@ -66,39 +66,6 @@ pipeline {
             }
         }
 
-        stage('Integ Test') {
-            when {
-                    expression { false == true }
-            }
-            environment {
-                CLUSTER_NAME='console-integ-test'
-            }
-            steps {
-                checkout poll: false, scm: [
-                        $class                           : 'GitSCM',
-                        branches                         : [[name: 'develop']],
-                        browser: [$class: 'GithubWeb', repoUrl: 'https://github.com/verrazzano/verrazzano'],
-                        doGenerateSubmoduleConfigurations: false,
-                        extensions                       : [
-                                [$class: 'RelativeTargetDirectory', relativeTargetDir: 'verrazzano'],
-                                [$class: 'CleanBeforeCheckout'],
-                        ],
-                        submoduleCfg                     : [],
-                        userRemoteConfigs                : [
-                                [credentialsId: 'github-markxnelns-private-access-token', url: 'https://github.com/verrazzano/verrazzano.git']
-                        ],
-                ]
-                sh """
-                    VERRAZZANO_REPO_PATH=${WORKSPACE}/verrazzano CLUSTER_NAME=${env.CLUSTER_NAME} make integ-test
-                """
-            }
-            post {
-                always {
-                    sh "CLUSTER_NAME=${env.CLUSTER_NAME} make delete-cluster"
-                }
-            }
-        }
-
         stage('Scan Image') {
             when { not { buildingTag() } }
             steps {
