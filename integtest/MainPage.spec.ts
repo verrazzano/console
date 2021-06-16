@@ -24,6 +24,14 @@ describe("Instance Details Page", (): void => {
     it("Main Page should contain footer", async () => {
       expect(await mainPage.waitForFooter()).to.be.true;
     });
+
+    it("Main Page should contain instance information", async () => {
+      expect(await mainPage.waitForInstanceInfo()).to.be.true;
+    });
+
+    it("Main Page should NOT contain error box", async () => {
+      expect(await mainPage.errorComponentExists()).to.be.false;
+    });
   });
 
   describe("Access Header logo", (): void => {

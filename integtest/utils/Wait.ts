@@ -98,4 +98,19 @@ export class Wait {
     );
     return element;
   }
+
+  public static async findNow(by: By): Promise<WebElement> {
+    try {
+      console.log(`Finding the element to locate "${by}"`);
+      const driver = await Utils.getDriver();
+      const e = await driver.findElement(by);
+      if (!e) {
+        console.log(`Unable to locate element: ${by}`);
+      }
+      return e;
+    } catch (error) {
+      console.log(`Error finding element ${by}`);
+      throw error;
+    }
+  }
 }
