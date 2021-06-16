@@ -275,7 +275,7 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
     return (
       <oj-list-item-layout>
         <div class="oj-flex oj-sm-12">
-          <div class="oj-sm-6 oj-flex-item">
+          <div class="oj-sm-8 oj-flex-item">
             <div class="oj-flex-item">
               <strong>
                 <span>{Messages.Labels.name()}:&nbsp;</span>
@@ -304,7 +304,7 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
               <ul>{renderedPolicyTypes || ""}</ul>
             </div>
           </div>
-          <div class="oj-sm-6 oj-flex-item">
+          <div class="oj-sm-4 oj-flex-item">
             <div class="oj-sm-12">
               <strong>
                 <span>{Messages.Project.netPolIngressRules()}:&nbsp;</span>
