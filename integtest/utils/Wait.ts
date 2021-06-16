@@ -8,6 +8,7 @@ export const PAGE_LOAD_TIMEOUT = 10000;
 const DEFAULT_TIMEOUT = 30000;
 
 export class Wait {
+
   public static async waitForPresent(
     by: By,
     timeOut: number = DEFAULT_TIMEOUT
@@ -98,4 +99,20 @@ export class Wait {
     );
     return element;
   }
+
+  public static async findNow(by: By): Promise<WebElement> {
+    try {
+      console.log(`Finding the element to locate "${by}"`);
+      const driver = await Utils.getDriver();
+      const e = await driver.findElement(by);
+      if (!e) {
+        console.log(`Unable to locate element: ${by}`)
+      }
+      return e;
+    } catch (error) {
+      console.log(`Error finding element ${by}`);
+      throw error;
+    }
+  }
+
 }
