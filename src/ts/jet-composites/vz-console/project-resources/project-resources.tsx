@@ -10,12 +10,14 @@ import {
 } from "ojs/ojvcomponent-element";
 import { ConsoleProjectClusters } from "vz-console/project-clusters/loader";
 import { ConsoleProjectNamespaces } from "vz-console/project-namespaces/loader";
+import { ConsoleProjectSecurity } from "vz-console/project-security/loader";
 import * as Messages from "vz-console/utils/Messages";
-import { Project } from "vz-console/service/types";
+import { Project, RoleBinding } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
+import { ConsoleProjectNetworkPolicies } from "vz-console/project-network-policies/loader";
 
 class State {
   selectedItem: string;
@@ -23,6 +25,8 @@ class State {
 
 class Props {
   project: Project;
+  adminRoleBindings: RoleBinding[];
+  monitorRoleBindings: RoleBinding[];
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => void;
   selectedItem?: string;
 }
@@ -42,6 +46,8 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
   labels = {
     namespaces: Messages.Labels.namespaces(),
     clusters: Messages.Labels.clusters(),
+    security: Messages.Labels.security(),
+    networkPolicies: Messages.Labels.networkPolicies(),
   };
 
   state: State = {
@@ -70,7 +76,13 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
       .sync()
       .then(() => {
         this.router = new CoreRouter(
-          [{ path: "" }, { path: `clusters` }, { path: `namespaces` }],
+          [
+            { path: "" },
+            { path: `clusters` },
+            { path: `namespaces` },
+            { path: `security` },
+            { path: `networkPolicies` },
+          ],
           {
             urlAdapter: new UrlPathAdapter(
               `/projects/${this.props.project.data.metadata.uid}`
@@ -139,6 +151,40 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
     }
   }
 
+  getProjectAdminSubjects() {
+    const security = this.props.project.data?.spec?.template?.security;
+    let subjects = [];
+    if (security && security.projectAdminSubjects) {
+      subjects = security.projectAdminSubjects;
+    }
+    if (subjects.length > 0) {
+      return subjects;
+    }
+    return this.roleBindingsToSubjects(this.props.adminRoleBindings);
+  }
+
+  getProjectMonitorSubjects() {
+    const security = this.props.project?.data?.spec?.template?.security;
+    let subjects = [];
+    if (security && security.projectMonitorSubjects) {
+      subjects = security.projectMonitorSubjects;
+    }
+    if (subjects.length > 0) {
+      return subjects;
+    }
+    return this.roleBindingsToSubjects(this.props.monitorRoleBindings);
+  }
+
+  private roleBindingsToSubjects(roleBindings: RoleBinding[]) {
+    if (roleBindings) {
+      const rbSubjectList = roleBindings
+        .map((rb) => rb.subjects)
+        .reduce((existing, curVal) => existing.concat(curVal), []);
+      return rbSubjectList;
+    }
+    return [];
+  }
+
   protected render() {
     let ResourceList: Element;
     let Heading: Element;
@@ -171,6 +217,31 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
 
         break;
       }
+      case "security": {
+        if (this.props.project) {
+          ResourceList = (
+            <ConsoleProjectSecurity
+              adminSubjects={this.getProjectAdminSubjects()}
+              monitorSubjects={this.getProjectMonitorSubjects()}
+            />
+          );
+          Heading = <h1 class="resheader">{this.labels.security}</h1>;
+        }
+        break;
+      }
+      case "networkPolicies": {
+        const networkPolicies = this.props.project?.networkPolicies;
+        const rawNetworkPolicies =
+          this.props.project?.data?.spec?.template?.networkPolicies || [];
+        ResourceList = (
+          <ConsoleProjectNetworkPolicies
+            networkPolicies={networkPolicies}
+            rawNetworkPolicies={rawNetworkPolicies}
+          />
+        );
+        Heading = <h1 class="resheader">{this.labels.networkPolicies}</h1>;
+        break;
+      }
       default: {
         break;
       }
@@ -193,6 +264,12 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
               </li>
               <li id="namespaces">
                 <a href="#">{this.labels.namespaces}</a>
+              </li>
+              <li id="security">
+                <a href="#">{this.labels.security}</a>
+              </li>
+              <li id="networkPolicies">
+                <a href="#">{this.labels.networkPolicies}</a>
               </li>
             </ul>
           </oj-navigation-list>

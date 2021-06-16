@@ -8,7 +8,12 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import { VerrazzanoApi, Project, Status } from "vz-console/service/loader";
+import {
+  VerrazzanoApi,
+  Project,
+  Status,
+  RoleBinding,
+} from "vz-console/service/loader";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/loader";
 import { ConsoleError } from "vz-console/error/loader";
 import * as Messages from "vz-console/utils/Messages";
@@ -28,6 +33,8 @@ class Props {
 
 class State {
   project?: Project;
+  projectAdminRoleBindings?: RoleBinding[];
+  projectMonitorRoleBindings?: RoleBinding[];
   loading?: boolean;
   error?: string;
   breadcrumbs?: BreadcrumbType[];
@@ -66,18 +73,35 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
 
   async getData() {
     this.updateState({ loading: true });
-    this.verrazzanoApi
-      .getProject(this.props.projectId)
-      .then((project) => {
-        this.updateState({ loading: false, project });
-      })
-      .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
+    try {
+      const project = await this.verrazzanoApi.getProject(this.props.projectId);
+      const projNamespaces = project.data?.spec?.template?.namespaces;
+      let projectAdminRoleBindings = [];
+      let projectMonitorRoleBindings = [];
+      if (projNamespaces && projNamespaces.length > 0) {
+        const nsRoleBindings = await this.verrazzanoApi.listRoleBindings(
+          projNamespaces[0].metadata?.name
+        );
+        projectAdminRoleBindings = nsRoleBindings.filter(
+          (rb) => rb.clusterRole === "verrazzano-project-admin"
+        );
+        projectMonitorRoleBindings = nsRoleBindings.filter(
+          (rb) => rb.clusterRole === "verrazzano-project-monitor"
+        );
+      }
+      this.updateState({
+        loading: false,
+        project,
+        projectAdminRoleBindings,
+        projectMonitorRoleBindings,
       });
+    } catch (error) {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      this.updateState({ error: errorMessage });
+    }
   }
 
   breadcrumbCallback = (breadcrumbs: BreadcrumbType[]): void => {
@@ -114,7 +138,7 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
       case "tabInfo":
         tabContents = [
           <div class="oj-flex">
-            <div class="oj-sm-12 oj-flex-item">
+            <div class="oj-sm-8 oj-flex-item">
               <h3>{Messages.Labels.generalInfo()}</h3>
               <ConsoleMetadataItem
                 label={Messages.Labels.name()}
@@ -139,38 +163,8 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
                 }}
                 id="tabMetaInfo"
               />
-              <oj-popup
-                id="projYamlPopup"
-                tail="none"
-                modality="modal"
-                {...{ "position.my.horizontal": "center" }}
-                {...{ "position.my.vertical": "bottom" }}
-                {...{ "position.at.horizontal": "center" }}
-                {...{ "position.at.vertical": "bottom" }}
-                {...{ "position.offset.y": "-10px" }}
-                className="popup"
-              >
-                <div class="popupbody">
-                  <div>
-                    <a
-                      onClick={() => {
-                        (document.getElementById(
-                          "projYamlPopup"
-                        ) as any).close();
-                      }}
-                      class="closelink"
-                    >
-                      Close
-                    </a>
-                  </div>
-                  <pre class="popupcontent">
-                    {yaml.dump(
-                      yaml.load(JSON.stringify(this.state.project.data))
-                    )}
-                  </pre>
-                </div>
-              </oj-popup>
             </div>
+            {this.renderPopup("projYamlPopup", this.state.project.data)}
           </div>,
         ];
         break;
@@ -203,6 +197,38 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
   @listener({ capture: true, passive: true })
   protected tabSwitch(event: CustomEvent) {
     this.updateState({ selectedTab: (event.target as Element).id });
+  }
+
+  private renderPopup(popupId: string, popupContent: any) {
+    return (
+      <oj-popup
+        id={popupId}
+        tail="none"
+        modality="modal"
+        {...{ "position.my.horizontal": "center" }}
+        {...{ "position.my.vertical": "bottom" }}
+        {...{ "position.at.horizontal": "center" }}
+        {...{ "position.at.vertical": "bottom" }}
+        {...{ "position.offset.y": "-10px" }}
+        className="popup"
+      >
+        <div class="popupbody">
+          <div>
+            <a
+              onClick={() => {
+                (document.getElementById(popupId) as any).close();
+              }}
+              class="closelink"
+            >
+              Close
+            </a>
+          </div>
+          <pre class="popupcontent">
+            {yaml.dump(yaml.load(JSON.stringify(popupContent)))}
+          </pre>
+        </div>
+      </oj-popup>
+    );
   }
 
   protected render() {
@@ -296,6 +322,8 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
         </div>
         <ConsoleProjectResources
           project={this.state.project}
+          adminRoleBindings={this.state.projectAdminRoleBindings}
+          monitorRoleBindings={this.state.projectMonitorRoleBindings}
           breadcrumbCallback={this.breadcrumbCallback}
           selectedItem={this.props.selectedItem}
         />

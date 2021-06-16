@@ -10,11 +10,13 @@ import {
   Project,
   ResourceType,
   ResourceTypeType,
+  RoleBinding,
 } from "./types";
 import {
   processOAMData,
   processClusterData,
   processProjectsData,
+  processRoleBindingsData,
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
@@ -437,7 +439,7 @@ export class VerrazzanoApi {
             namespace,
             name
           ),
-          response.status
+          response?.status
         );
       }
       return response;
@@ -523,10 +525,27 @@ export class VerrazzanoApi {
       })
       .then((projects) => {
         if (!projects) {
-          throw new Error(Messages.Error.errOAMApplicationsFetchError());
+          throw new Error(Messages.Error.errProjectsFetchError());
         }
 
         return processProjectsData(projects.items);
+      })
+      .catch((error) => {
+        throw new VzError(error);
+      });
+  }
+
+  public async listRoleBindings(namespace: string): Promise<RoleBinding[]> {
+    return this.getKubernetesResource(ResourceType.RoleBinding, namespace)
+      .then((rbResponse) => {
+        return rbResponse.json();
+      })
+      .then((roleBindings) => {
+        if (!roleBindings) {
+          throw new Error(Messages.Error.errRoleBindingsFetchError(namespace));
+        }
+
+        return processRoleBindingsData(roleBindings.items);
       })
       .catch((error) => {
         throw new VzError(error);
@@ -541,11 +560,15 @@ export class VerrazzanoApi {
     return project;
   }
 
-  public constructor(cluster: string = "local") {
+  public constructor(
+    cluster: string = "local",
+    fetchApi: FetchApiSignature = null
+  ) {
     this.defaultUrl = `${(window as any).vzApiUrl || ""}`;
     this.cluster = cluster;
     this.url = `${this.defaultUrl}/${this.apiVersion}`;
-    this.fetchApi = KeycloakJet.getInstance().getAuthenticatedFetchApi();
+    this.fetchApi =
+      fetchApi || KeycloakJet.getInstance().getAuthenticatedFetchApi();
     this.getInstance = this.getInstance.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
     this.getOAMApplication = this.getOAMApplication.bind(this);

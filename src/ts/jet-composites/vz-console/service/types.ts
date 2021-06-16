@@ -67,12 +67,38 @@ export interface VMI {
   url?: string;
 }
 
+export interface LabelSelectorRequirement {
+  key: string;
+  operator: string;
+  values?: Array<string>;
+}
+
+export interface IngressRule {
+  hasFrom: boolean;
+  ports?: Array<string>;
+}
+
+export interface EgressRule {
+  hasTo: boolean;
+  ports?: Array<string>;
+}
+
+export interface NetworkPolicy {
+  name: string;
+  policyTypes?: Array<string>;
+  labelPodSelectors?: { [key: string]: string };
+  expressionPodSelectors?: Array<LabelSelectorRequirement>;
+  ingressRules?: Array<IngressRule>;
+  egressRules?: Array<EgressRule>;
+}
+
 export interface Project {
   name?: string;
   namespace?: string;
   namespaces?: any[];
   clusters?: any[];
   data?: any;
+  networkPolicies?: NetworkPolicy[];
   createdOn?: string;
 }
 
@@ -156,6 +182,20 @@ export interface ResourceTypeType {
   Kind?: string;
 }
 
+export interface Subject {
+  apiGroup: string;
+  kind: string;
+  name: string;
+}
+
+export interface RoleBinding {
+  name?: string;
+  namespace?: string;
+  clusterRole?: string;
+  subjects?: Subject[];
+  createdOn?: string;
+}
+
 export const ResourceType = {
   Cluster: <ResourceTypeType>{
     ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
@@ -204,6 +244,10 @@ export const ResourceType = {
   ContainerizedWorkload: <ResourceTypeType>{
     ApiVersion: "apis/core.oam.dev/v1alpha2",
     Kind: "ContainerizedWorkload",
+  },
+  RoleBinding: <ResourceTypeType>{
+    ApiVersion: "apis/rbac.authorization.k8s.io/v1",
+    Kind: "RoleBinding",
   },
   Secret: <ResourceTypeType>{
     ApiVersion: "api/v1",

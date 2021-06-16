@@ -126,6 +126,16 @@ function rewriteUrls() {
       `/?ojr=project&projectId=${req.params.id}&selectedItem=clusters`
     );
   });
+  app.get("/projects/:id/security", (req, res, next) => {
+    res.redirect(
+      `/?ojr=project&projectId=${req.params.id}&selectedItem=security`
+    );
+  });
+  app.get("/projects/:id/networkPolicies", (req, res, next) => {
+    res.redirect(
+      `/?ojr=project&projectId=${req.params.id}&selectedItem=networkPolicies`
+    );
+  });
   return app;
 }
 

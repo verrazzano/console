@@ -33,6 +33,8 @@
     "vz-console-project": "1.0.0",
     "vz-console-project-resources": "1.0.0",
     "vz-console-project-clusters": "1.0.0",
-    "vz-console-project-namespaces": "1.0.0"
+    "vz-console-project-namespaces": "1.0.0",
+    "vz-console-project-security": "1.0.0",
+    "vz-console-project-network-policies": "1.0.0"
   }
 }

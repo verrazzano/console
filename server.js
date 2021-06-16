@@ -133,6 +133,16 @@ app.get("/projects/:id/clusters", (req, res, next) => {
     `/?ojr=project&projectId=${req.params.id}&selectedItem=clusters`
   );
 });
+app.get("/projects/:id/security", (req, res, next) => {
+  res.redirect(
+    `/?ojr=project&projectId=${req.params.id}&selectedItem=security`
+  );
+});
+app.get("/projects/:id/networkPolicies", (req, res, next) => {
+  res.redirect(
+    `/?ojr=project&projectId=${req.params.id}&selectedItem=networkPolicies`
+  );
+});
 
 app.get("/clusters", (req, res, next) => {
   res.redirect("/?ojr=instance&selectedItem=clusters");

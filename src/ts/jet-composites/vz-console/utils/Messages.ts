@@ -154,6 +154,9 @@ export const Error = {
 
   errVmcNotExists: (...args) =>
     Translations.getTranslatedString("error.errVmcNotExists", args),
+
+  errRoleBindingsFetchError: (...args) =>
+    Translations.getTranslatedString("error.errRoleBindingsFetchError", args),
 };
 
 export const Auth = {
@@ -221,9 +224,12 @@ export const Labels = {
   devProfile: () => Translations.getTranslatedString("labels.devProfile"),
   projectInfo: () => Translations.getTranslatedString("labels.projectInfo"),
   namespaces: () => Translations.getTranslatedString("labels.namespaces"),
+  networkPolicies: () =>
+    Translations.getTranslatedString("labels.networkPolicies"),
   projects: () => Translations.getTranslatedString("labels.projects"),
   project: () => Translations.getTranslatedString("labels.project"),
   projectSpec: () => Translations.getTranslatedString("labels.projectSpec"),
+  security: () => Translations.getTranslatedString("labels.security"),
   apiUrl: () => Translations.getTranslatedString("labels.apiUrl"),
 };
 
@@ -237,4 +243,28 @@ export const ComponentConfigLabels = {
   traits: Labels.traits(),
   scopes: Labels.scopes(),
   params: Labels.params(),
+};
+
+export const Project = {
+  projectAdmin: () => Translations.getTranslatedString("labels.projectAdmin"),
+  projectMonitor: () =>
+    Translations.getTranslatedString("labels.projectMonitor"),
+  subjectKind: () => Translations.getTranslatedString("labels.subjectKind"),
+  subjectAccess: () => Translations.getTranslatedString("labels.subjectAccess"),
+  netPolLabelSelector: () =>
+    Translations.getTranslatedString("labels.matchLabelsSelector"),
+  netPolExpressionSelector: () =>
+    Translations.getTranslatedString("labels.matchExpressionsSelector"),
+  netPolIngressRules: () =>
+    Translations.getTranslatedString("labels.netPolIngressRules"),
+  netPolEgressRules: () =>
+    Translations.getTranslatedString("labels.netPolEgressRules"),
+  netPolPolicyTypes: () =>
+    Translations.getTranslatedString("labels.netPolPolicyTypes"),
+  netPolPorts: () => Translations.getTranslatedString("labels.netPolPorts"),
+  netPolViewYaml: () =>
+    Translations.getTranslatedString("labels.netPolViewYaml"),
+  netPolToInfo: () => Translations.getTranslatedString("labels.netPolToInfo"),
+  netPolFromInfo: () =>
+    Translations.getTranslatedString("labels.netPolFromInfo"),
 };
