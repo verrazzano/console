@@ -101,36 +101,35 @@ class NetworkPolicyModel {
 // of the "this" context.
 const renderPopup = (popupId: string, popupContent: any) => {
   return (
-      <oj-popup
-          id={popupId}
-          tail="none"
-          modality="modal"
-          {...{ "position.my.horizontal": "center" }}
-          {...{ "position.my.vertical": "bottom" }}
-          {...{ "position.at.horizontal": "center" }}
-          {...{ "position.at.vertical": "bottom" }}
-          {...{ "position.offset.y": "-10px" }}
-          className="popup"
-      >
-        <div class="popupbody">
-          <div>
-            <a
-                onClick={() => {
-                  (document.getElementById(popupId) as any).close();
-                }}
-                class="closelink"
-            >
-              Close
-            </a>
-          </div>
-          <pre class="popupcontent">
-            {yaml.dump(yaml.load(JSON.stringify(popupContent)))}
-          </pre>
+    <oj-popup
+      id={popupId}
+      tail="none"
+      modality="modal"
+      {...{ "position.my.horizontal": "center" }}
+      {...{ "position.my.vertical": "bottom" }}
+      {...{ "position.at.horizontal": "center" }}
+      {...{ "position.at.vertical": "bottom" }}
+      {...{ "position.offset.y": "-10px" }}
+      className="popup"
+    >
+      <div class="popupbody">
+        <div>
+          <a
+            onClick={() => {
+              (document.getElementById(popupId) as any).close();
+            }}
+            class="closelink"
+          >
+            Close
+          </a>
         </div>
-      </oj-popup>
+        <pre class="popupcontent">
+          {yaml.dump(yaml.load(JSON.stringify(popupContent)))}
+        </pre>
+      </div>
+    </oj-popup>
   );
-}
-
+};
 
 /**
  * @ojmetadata pack "vz-console"
@@ -146,7 +145,11 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
   protected mounted() {
     const models: Model.Model[] = [];
     this.props.networkPolicies.forEach((netPol) => {
-      models.push(new Model.Model(new NetworkPolicyModel(netPol, this.extractRawYaml(netPol.name))));
+      models.push(
+        new Model.Model(
+          new NetworkPolicyModel(netPol, this.extractRawYaml(netPol.name))
+        )
+      );
     });
     this.updateState({
       networkPolicies: new Model.Collection(models),
@@ -157,7 +160,9 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
     if (!netPolName) {
       return "";
     }
-    return this.props.rawNetworkPolicies?.find(pol => pol?.metadata?.name === netPolName);
+    return this.props.rawNetworkPolicies?.find(
+      (pol) => pol?.metadata?.name === netPolName
+    );
   }
 
   protected render() {
@@ -245,17 +250,27 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
   }
 
   private renderOneNetworkPolicy(item: any) {
-    const renderedMatchLabels = item.data.matchLabels?.data()?.map((lbl) => <li>{lbl}</li>);
-    const renderedMatchExpressions = item.data.matchExpressions?.data()?.map((exp) => {
-      return (
+    const renderedMatchLabels = item.data.matchLabels
+      ?.data()
+      ?.map((lbl) => <li>{lbl}</li>);
+    const renderedMatchExpressions = item.data.matchExpressions
+      ?.data()
+      ?.map((exp) => {
+        return (
           <li>
             key: {exp.key}, operator: {exp.operator}
           </li>
-      )
-    });
-    const renderedPolicyTypes = item.data.policyTypes?.data?.map(p => <li>{p}</li>);
-    const renderedIngressRules = item.data.ingressRules?.data()?.map(p => <li>{p}</li>);
-    const renderedEgressRules = item.data.egressRules?.data()?.map(p => <li>{p}</li>);
+        );
+      });
+    const renderedPolicyTypes = item.data.policyTypes?.data?.map((p) => (
+      <li>{p}</li>
+    ));
+    const renderedIngressRules = item.data.ingressRules
+      ?.data()
+      ?.map((p) => <li>{p}</li>);
+    const renderedEgressRules = item.data.egressRules
+      ?.data()
+      ?.map((p) => <li>{p}</li>);
 
     return (
       <oj-list-item-layout>
@@ -271,9 +286,7 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
               <strong>
                 <span>{Messages.Project.netPolLabelSelector()}:&nbsp;</span>
               </strong>
-              <ul>
-                {renderedMatchLabels || ""}
-              </ul>
+              <ul>{renderedMatchLabels || ""}</ul>
             </div>
             <div class="oj-sm-12">
               <strong>
@@ -282,17 +295,13 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
                   :&nbsp;
                 </span>
               </strong>
-              <ul>
-                {renderedMatchExpressions || ""}
-              </ul>
+              <ul>{renderedMatchExpressions || ""}</ul>
             </div>
             <div class="oj-sm-12">
               <strong>
                 <span>{Messages.Project.netPolPolicyTypes()}:&nbsp;</span>
               </strong>
-              <ul>
-                {renderedPolicyTypes || ""}
-              </ul>
+              <ul>{renderedPolicyTypes || ""}</ul>
             </div>
           </div>
           <div class="oj-sm-6 oj-flex-item">
@@ -300,30 +309,29 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
               <strong>
                 <span>{Messages.Project.netPolIngressRules()}:&nbsp;</span>
               </strong>
-              <ul>
-                {renderedIngressRules || ""}
-              </ul>
+              <ul>{renderedIngressRules || ""}</ul>
             </div>
             <div class="oj-sm-12">
               <strong>
                 <span>{Messages.Project.netPolEgressRules()}:&nbsp;</span>
               </strong>
-              <ul>
-                {renderedEgressRules || ""}
-              </ul>
+              <ul>{renderedEgressRules || ""}</ul>
             </div>
             <div class="oj-sm-12">
-              <a href="#" id={`netPolLink_${item.data.name}`} onClick={(evt) => {
-                evt.preventDefault();
-                (document.getElementById(`netpolYaml_${item.data.name}`) as any).open(
-                    `#netPolLink_${item.data.name}`
-                );
-              }}>{Messages.Project.netPolViewYaml()}</a>
+              <a
+                href="#"
+                id={`netPolLink_${item.data.name}`}
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  (document.getElementById(
+                    `netpolYaml_${item.data.name}`
+                  ) as any).open(`#netPolLink_${item.data.name}`);
+                }}
+              >
+                {Messages.Project.netPolViewYaml()}
+              </a>
             </div>
-            {renderPopup(
-                `netpolYaml_${item.data.name}`,
-                item.data.rawYaml
-            )}
+            {renderPopup(`netpolYaml_${item.data.name}`, item.data.rawYaml)}
           </div>
         </div>
       </oj-list-item-layout>
