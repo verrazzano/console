@@ -31,12 +31,12 @@ export class MainPage {
 
   // vz-console-instance is the outer envelope of the "body" of the main page
   // if this exists, it means the content (i.e. not just header and footer) are rendered
-  private static readonly INSTANCE_BODY_OUTER_ELEM =  By.css("vz-console-instance");
+  private static readonly INSTANCE_BODY_OUTER_ELEM = By.css(
+    "vz-console-instance"
+  );
 
   // vz-console-error is the tag name of the error item
-  private static readonly ERROR_ITEM: By = By.css(
-      "vz-console-error"
-  );
+  private static readonly ERROR_ITEM: By = By.css("vz-console-error");
 
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = MainPage.HEADER_CONTAINER;
