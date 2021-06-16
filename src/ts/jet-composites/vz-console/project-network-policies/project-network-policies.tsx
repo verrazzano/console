@@ -11,7 +11,6 @@ import "ojs/ojpagingcontrol";
 import "ojs/ojlistitemlayout";
 import * as yaml from "js-yaml";
 import * as ko from "knockout";
-import { ConsoleMetadataItem } from "vz-console/metadata-item/metadata-item";
 import * as Messages from "vz-console/utils/Messages";
 import {
   LabelSelectorRequirement,
@@ -23,6 +22,7 @@ import ArrayDataProvider = require("ojs/ojarraydataprovider");
 
 class Props {
   networkPolicies?: NetworkPolicy[];
+  rawNetworkPolicies?: Array<any>;
 }
 
 class State {
@@ -36,8 +36,10 @@ class NetworkPolicyModel {
   matchExpressions: ArrayDataProvider<string, LabelSelectorRequirement>;
   ingressRules: ArrayDataProvider<string, string>;
   egressRules: ArrayDataProvider<string, string>;
-  constructor(netPol: NetworkPolicy) {
+  rawYaml?: string;
+  constructor(netPol: NetworkPolicy, rawYaml?: string) {
     this.name = netPol.name;
+    this.rawYaml = rawYaml;
     this.policyTypes = new ArrayDataProvider<string, string>(
       netPol.policyTypes || []
     );
@@ -92,6 +94,44 @@ class NetworkPolicyModel {
     this.egressRules = new ArrayDataProvider<string, string>(egressArray);
   }
 }
+
+// renderPopup renders a YAML popup with the given id and content. It should
+// be a const and not a method in the class, because it is used from
+// renderOneNetworkPolicy, which is a callback function that is not aware
+// of the "this" context.
+const renderPopup = (popupId: string, popupContent: any) => {
+  return (
+      <oj-popup
+          id={popupId}
+          tail="none"
+          modality="modal"
+          {...{ "position.my.horizontal": "center" }}
+          {...{ "position.my.vertical": "bottom" }}
+          {...{ "position.at.horizontal": "center" }}
+          {...{ "position.at.vertical": "bottom" }}
+          {...{ "position.offset.y": "-10px" }}
+          className="popup"
+      >
+        <div class="popupbody">
+          <div>
+            <a
+                onClick={() => {
+                  (document.getElementById(popupId) as any).close();
+                }}
+                class="closelink"
+            >
+              Close
+            </a>
+          </div>
+          <pre class="popupcontent">
+            {yaml.dump(yaml.load(JSON.stringify(popupContent)))}
+          </pre>
+        </div>
+      </oj-popup>
+  );
+}
+
+
 /**
  * @ojmetadata pack "vz-console"
  */
@@ -106,11 +146,18 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
   protected mounted() {
     const models: Model.Model[] = [];
     this.props.networkPolicies.forEach((netPol) => {
-      models.push(new Model.Model(new NetworkPolicyModel(netPol)));
+      models.push(new Model.Model(new NetworkPolicyModel(netPol, this.extractRawYaml(netPol.name))));
     });
     this.updateState({
       networkPolicies: new Model.Collection(models),
     });
+  }
+
+  private extractRawYaml(netPolName?: string): string | undefined {
+    if (!netPolName) {
+      return "";
+    }
+    return this.props.rawNetworkPolicies?.find(pol => pol?.metadata?.name === netPolName);
   }
 
   protected render() {
@@ -126,10 +173,6 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
 
     return (
       <div id="components" class="oj-flex component-margin">
-        <div class="oj-flex">
-          <div class="oj-sm-12 oj-flex-item">{this.renderLinkToYaml()}</div>
-        </div>
-        {this.renderPopup("netPolYaml", this.props.networkPolicies)}
         <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
           <div class="oj-flex">
             <div class="oj-sm-12 oj-flex-item res">
@@ -159,113 +202,17 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
 
               <oj-list-view
                 id="listview"
-                ariaLabel="project security"
+                ariaLabel="project network policies"
                 data={this.dataProvider()}
                 selectionMode="single"
                 class="oj-complete"
                 item={{ selectable: true }}
               >
-                <template slot="itemTemplate" data-oj-as="item">
-                  <oj-list-item-layout>
-                    <div class="oj-flex oj-sm-12">
-                      <div class="oj-sm-6 oj-flex-item">
-                        <div class="oj-flex-item">
-                          <strong>
-                            <span>{Messages.Labels.name()}:&nbsp;</span>
-                          </strong>
-                          <span>
-                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                          </span>
-                        </div>
-                        <div class="oj-sm-12">
-                          <strong>
-                            <span>
-                              {Messages.Project.netPolLabelSelector()}:&nbsp;
-                            </span>
-                          </strong>
-                          <ul>
-                            <oj-bind-for-each data="[[item.data.matchLabels]]">
-                              <template>
-                                <li>
-                                  <oj-bind-text value="[[$current.data]]"></oj-bind-text>
-                                </li>
-                              </template>
-                            </oj-bind-for-each>
-                          </ul>
-                        </div>
-                        <div class="oj-sm-12">
-                          <strong>
-                            <span>
-                              {Messages.Project.netPolExpressionSelector()}
-                              :&nbsp;
-                            </span>
-                          </strong>
-                          <ul>
-                            <oj-bind-for-each data="[[item.data.matchExpressions]]">
-                              <template>
-                                <li>
-                                  <oj-bind-text value="[[$current.data.key]]"></oj-bind-text>
-                                  <oj-bind-text value="[[$current.data.operator]]"></oj-bind-text>
-                                  <oj-bind-text value="[[$current.data.values]]"></oj-bind-text>
-                                </li>
-                              </template>
-                            </oj-bind-for-each>
-                          </ul>
-                        </div>
-                        <div class="oj-sm-12">
-                          <strong>
-                            <span>
-                              {Messages.Project.netPolPolicyTypes()}:&nbsp;
-                            </span>
-                          </strong>
-                          <ul>
-                            <oj-bind-for-each data="[[item.data.policyTypes]]">
-                              <template>
-                                <li>
-                                  <oj-bind-text value="[[$current.data]]"></oj-bind-text>
-                                </li>
-                              </template>
-                            </oj-bind-for-each>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="oj-sm-6 oj-flex-item">
-                        <div class="oj-sm-12">
-                          <strong>
-                            <span>
-                              {Messages.Project.netPolIngressRules()}:&nbsp;
-                            </span>
-                          </strong>
-                          <ul>
-                            <oj-bind-for-each data="[[item.data.ingressRules]]">
-                              <template>
-                                <li>
-                                  <oj-bind-text value="[[$current.data]]"></oj-bind-text>
-                                </li>
-                              </template>
-                            </oj-bind-for-each>
-                          </ul>
-                        </div>
-                        <div class="oj-sm-12">
-                          <strong>
-                            <span>
-                              {Messages.Project.netPolEgressRules()}:&nbsp;
-                            </span>
-                          </strong>
-                          <ul>
-                            <oj-bind-for-each data="[[item.data.egressRules]]">
-                              <template>
-                                <li>
-                                  <oj-bind-text value="[[$current.data]]"></oj-bind-text>
-                                </li>
-                              </template>
-                            </oj-bind-for-each>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </oj-list-item-layout>
-                </template>
+                <template
+                  slot="itemTemplate"
+                  data-oj-as="item"
+                  render={this.renderOneNetworkPolicy}
+                ></template>
               </oj-list-view>
               <div class="oj-flex card-border">
                 <div class="oj-sm-7 oj-flex-item"></div>
@@ -297,52 +244,89 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
     );
   }
 
-  private renderPopup(popupId: string, popupContent: any) {
-    return (
-      <oj-popup
-        id={popupId}
-        tail="none"
-        modality="modal"
-        {...{ "position.my.horizontal": "center" }}
-        {...{ "position.my.vertical": "bottom" }}
-        {...{ "position.at.horizontal": "center" }}
-        {...{ "position.at.vertical": "bottom" }}
-        {...{ "position.offset.y": "-10px" }}
-        className="popup"
-      >
-        <div class="popupbody">
-          <div>
-            <a
-              onClick={() => {
-                (document.getElementById(popupId) as any).close();
-              }}
-              class="closelink"
-            >
-              Close
-            </a>
-          </div>
-          <pre class="popupcontent">
-            {yaml.dump(yaml.load(JSON.stringify(popupContent)))}
-          </pre>
-        </div>
-      </oj-popup>
-    );
-  }
-
-  private renderLinkToYaml() {
-    if (this.props.networkPolicies && this.props.networkPolicies.length > 0) {
+  private renderOneNetworkPolicy(item: any) {
+    const renderedMatchLabels = item.data.matchLabels?.data()?.map((lbl) => <li>{lbl}</li>);
+    const renderedMatchExpressions = item.data.matchExpressions?.data()?.map((exp) => {
       return (
-        <ConsoleMetadataItem
-          label=""
-          value={Messages.Project.netPolViewYaml()}
-          link={true}
-          onclick={() => {
-            (document.getElementById("netPolYaml") as any).open("#viewNetPol");
-          }}
-          id="viewNetPol"
-        />
-      );
-    }
-    return "";
+          <li>
+            key: {exp.key}, operator: {exp.operator}
+          </li>
+      )
+    });
+    const renderedPolicyTypes = item.data.policyTypes?.data?.map(p => <li>{p}</li>);
+    const renderedIngressRules = item.data.ingressRules?.data()?.map(p => <li>{p}</li>);
+    const renderedEgressRules = item.data.egressRules?.data()?.map(p => <li>{p}</li>);
+
+    return (
+      <oj-list-item-layout>
+        <div class="oj-flex oj-sm-12">
+          <div class="oj-sm-6 oj-flex-item">
+            <div class="oj-flex-item">
+              <strong>
+                <span>{Messages.Labels.name()}:&nbsp;</span>
+              </strong>
+              {item.data.name}
+            </div>
+            <div class="oj-sm-12">
+              <strong>
+                <span>{Messages.Project.netPolLabelSelector()}:&nbsp;</span>
+              </strong>
+              <ul>
+                {renderedMatchLabels || ""}
+              </ul>
+            </div>
+            <div class="oj-sm-12">
+              <strong>
+                <span>
+                  {Messages.Project.netPolExpressionSelector()}
+                  :&nbsp;
+                </span>
+              </strong>
+              <ul>
+                {renderedMatchExpressions || ""}
+              </ul>
+            </div>
+            <div class="oj-sm-12">
+              <strong>
+                <span>{Messages.Project.netPolPolicyTypes()}:&nbsp;</span>
+              </strong>
+              <ul>
+                {renderedPolicyTypes || ""}
+              </ul>
+            </div>
+          </div>
+          <div class="oj-sm-6 oj-flex-item">
+            <div class="oj-sm-12">
+              <strong>
+                <span>{Messages.Project.netPolIngressRules()}:&nbsp;</span>
+              </strong>
+              <ul>
+                {renderedIngressRules || ""}
+              </ul>
+            </div>
+            <div class="oj-sm-12">
+              <strong>
+                <span>{Messages.Project.netPolEgressRules()}:&nbsp;</span>
+              </strong>
+              <ul>
+                {renderedEgressRules || ""}
+              </ul>
+            </div>
+            <div class="oj-sm-12">
+              <a href="#" id={`netPolLink_${item.data.name}`} onClick={(evt) => {
+                evt.preventDefault();
+                (document.getElementById(`netpolYaml_${item.data.name}`) as any).open(
+                    `#netPolLink_${item.data.name}`
+                );
+              }}>{Messages.Project.netPolViewYaml()}</a>
+            </div>
+            {renderPopup(
+                `netpolYaml_${item.data.name}`,
+                item.data.rawYaml
+            )}
+          </div>
+        </div>
+      </oj-list-item-layout>
+    );
   }
 }

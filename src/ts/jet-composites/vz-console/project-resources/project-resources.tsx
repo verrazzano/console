@@ -231,8 +231,9 @@ export class ConsoleProjectResources extends ElementVComponent<Props, State> {
       }
       case "networkPolicies": {
         const networkPolicies = this.props.project?.networkPolicies;
+        const rawNetworkPolicies = this.props.project?.data?.spec?.template?.networkPolicies || [];
         ResourceList = (
-          <ConsoleProjectNetworkPolicies networkPolicies={networkPolicies} />
+          <ConsoleProjectNetworkPolicies networkPolicies={networkPolicies} rawNetworkPolicies={rawNetworkPolicies}/>
         );
         Heading = <h1 class="resheader">{this.labels.networkPolicies}</h1>;
         break;
