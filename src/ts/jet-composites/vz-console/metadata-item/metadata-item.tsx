@@ -27,6 +27,7 @@ export class ConsoleMetadataItem extends ElementVComponent<Props> {
 
   @listener({ capture: true, passive: true })
   protected openLink(event: Event) {
+    event.preventDefault();
     const url = this.props.target ? this.props.target : this.props.value;
     if (this.props.replace) {
       window.open(url, "_self");
@@ -47,7 +48,9 @@ export class ConsoleMetadataItem extends ElementVComponent<Props> {
                     evt.preventDefault();
                     return this.props.onclick();
                   }
-                : this.openLink
+                : (evt) => {
+                    return this.openLink(evt);
+                  }
             }
             href={this.props.target ? this.props.target : this.props.value}
             tabindex="0"
