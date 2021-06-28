@@ -23,12 +23,7 @@ import { ConsoleMetadataItem } from "vz-console/metadata-item/metadata-item";
 import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
 
-
-
-class Props {
-}
-
-
+class Props {}
 
 class State {
   images?: Model.Collection;
@@ -38,18 +33,18 @@ class State {
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-instance-weblogic-images")
-export class ConsoleInstanceWeblogicImages extends ElementVComponent<Props, State> {
+export class ConsoleInstanceWeblogicImages extends ElementVComponent<
+  Props,
+  State
+> {
   popupId = "createImagePopup";
-  state: State = {
-
-  };
+  state: State = {};
 
   options = [
     {
       value: Messages.Labels.name().toLowerCase(),
       label: Messages.Labels.name(),
     },
-
   ];
 
   optionsDataProvider = new ArrayDataProvider(this.options, {
@@ -61,7 +56,6 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<Props, Stat
   defaultSort = "default";
 
   currentSort = ko.observable(this.defaultSort);
-
 
   constructor() {
     super(new Props());
@@ -85,18 +79,16 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<Props, Stat
     return result;
   };
 
-
   private handleImageAdded = (image: WeblogicImage) => {
     this.state.images.push(new Model.Model(image));
     this.updateState({
       images: new Model.Collection(this.state.images.models),
     });
-  }
-
+  };
 
   private handleClosePopup = () => {
     (document.getElementById(this.popupId) as any).close();
-  }
+  };
 
   executeSort = (images: Model.Collection): Model.Collection => {
     if (images) {
@@ -113,8 +105,6 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<Props, Stat
     });
   }
 
-
-
   @listener({ capture: true, passive: true })
   private handleSortCriteriaChanged(event: CustomEvent) {
     if (event.detail.value) {
@@ -127,14 +117,10 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<Props, Stat
     this.dataProvider(
       new PagingDataProviderView(
         new CollectionDataProvider(
-          this.state.images
-            ? this.state.images
-            : new Model.Collection([])
+          this.state.images ? this.state.images : new Model.Collection([])
         )
       )
     );
-
-
 
     return (
       <div>
@@ -148,7 +134,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<Props, Stat
             class="openlink"
           >
             Create Image
-            </oj-button>
+          </oj-button>
         </div>
         <div>
           <oj-popup
@@ -223,7 +209,6 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<Props, Stat
                     <oj-list-item-layout class="oj-complete">
                       <div class="oj-flex cardmargin">
                         <div class="oj-sm-10 oj-flex-item">
-
                           <div class="carditem">
                             <strong>
                               <span>{Messages.Labels.name()}:&nbsp;</span>
@@ -232,7 +217,6 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<Props, Stat
                             <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
                           </div>
                         </div>
-
                       </div>
                     </oj-list-item-layout>
                   </template>
@@ -265,8 +249,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<Props, Stat
             </div>
           </div>
         </div>
-      </div >
-
+      </div>
     );
   }
 }

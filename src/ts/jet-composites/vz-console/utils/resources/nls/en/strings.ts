@@ -34,7 +34,7 @@ export = {
     oamApps: "OAM Applications",
     oamComponents: "OAM Components",
     projects: "Projects",
-    webLogicImages: "WebLogic Images"
+    webLogicImages: "WebLogic Images",
   },
   error: {
     errSendAuthReq: "Error sending auth request: {0}",

@@ -25,7 +25,6 @@ import { ConsoleInstanceWeblogicImages } from "vz-console/instance-weblogic-imag
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
 
-
 const vzWLSImagesEnabled = (window as any).vzWLSImagesEnabled;
 
 class Props {
@@ -80,7 +79,7 @@ export class ConsoleInstanceResources extends ElementVComponent<Props, State> {
         { path: "oamcomps" },
         { path: "clusters" },
         { path: "projects" },
-        { path: "weblogicimages" }
+        { path: "weblogicimages" },
       ],
       {
         urlAdapter: new UrlPathAdapter("/"),
@@ -167,15 +166,11 @@ export class ConsoleInstanceResources extends ElementVComponent<Props, State> {
         break;
       }
 
-
       case "weblogicimages": {
         ResourceList = (
-          <ConsoleInstanceWeblogicImages
-            filterCallback={this.filterCallback}
-          />
+          <ConsoleInstanceWeblogicImages filterCallback={this.filterCallback} />
         );
-        Heading =
-          <h1 class="resheader">{this.labels.weblogicimages}</h1>
+        Heading = <h1 class="resheader">{this.labels.weblogicimages}</h1>;
         break;
       }
 
@@ -209,12 +204,13 @@ export class ConsoleInstanceResources extends ElementVComponent<Props, State> {
               <li id="projects">
                 <a href="#">{this.labels.projects}</a>
               </li>
-              {vzWLSImagesEnabled ?
+              {vzWLSImagesEnabled ? (
                 <li id="weblogicimages">
                   <a href="#">{this.labels.weblogicimages}</a>
                 </li>
-                : ""
-              }
+              ) : (
+                ""
+              )}
             </ul>
             <div id="filters">{this.state.filter}</div>
           </oj-navigation-list>

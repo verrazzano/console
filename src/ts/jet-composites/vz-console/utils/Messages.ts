@@ -49,7 +49,8 @@ export const Instance = {
   oamCompoennts: () =>
     Translations.getTranslatedString("instance.oamComponents"),
   projects: () => Translations.getTranslatedString("instance.projects"),
-  weblogicImages: () => Translations.getTranslatedString("instance.webLogicImages")
+  weblogicImages: () =>
+    Translations.getTranslatedString("instance.webLogicImages"),
 };
 
 export const Error = {
@@ -192,7 +193,8 @@ export const Labels = {
   grafana: () => Translations.getTranslatedString("labels.grafana"),
   prom: () => Translations.getTranslatedString("labels.prom"),
   es: () => Translations.getTranslatedString("labels.es"),
-  newWeblogicImage: () => Translations.getTranslatedString("New Weblogic Image"),
+  newWeblogicImage: () =>
+    Translations.getTranslatedString("New Weblogic Image"),
   version: () => Translations.getTranslatedString("labels.version"),
   profile: () => Translations.getTranslatedString("labels.profile"),
   mgmtCluster: () => Translations.getTranslatedString("labels.mgmtCluster"),
