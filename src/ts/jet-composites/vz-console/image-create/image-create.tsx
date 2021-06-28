@@ -13,7 +13,6 @@ import "ojs/ojpagingcontrol";
 import "ojs/ojinputtext";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/metadata-item";
 import * as Messages from "vz-console/utils/Messages";
-import * as ko from "knockout";
 import { WeblogicImage } from "vz-console/service/types";
 
 class Props {

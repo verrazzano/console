@@ -8,22 +8,20 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import { OAMComponent, WeblogicImage } from "vz-console/service/loader";
+import { WeblogicImage } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
 import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
 import * as ko from "knockout";
-import { ConsoleFilter } from "vz-console/filter/loader";
 import * as Messages from "vz-console/utils/Messages";
 import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
-import { ConsoleMetadataItem } from "vz-console/metadata-item/metadata-item";
 import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
 
-class Props {}
+class Props { }
 
 class State {
   images?: Model.Collection;
@@ -34,8 +32,8 @@ class State {
  */
 @customElement("vz-console-instance-weblogic-images")
 export class ConsoleInstanceWeblogicImages extends ElementVComponent<
-  Props,
-  State
+Props,
+State
 > {
   popupId = "createImagePopup";
   state: State = {};
