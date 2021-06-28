@@ -34,6 +34,7 @@ export = {
     oamApps: "OAM Applications",
     oamComponents: "OAM Components",
     projects: "Projects",
+    webLogicImages: "WebLogic Images"
   },
   error: {
     errSendAuthReq: "Error sending auth request: {0}",
@@ -111,6 +112,8 @@ export = {
   },
   labels: {
     generalInfo: "General Information",
+    add: "Add",
+    close: "Close",
     name: "Name",
     desc: "Description",
     loading: "Loading...",
@@ -131,6 +134,7 @@ export = {
     rancher: "Rancher",
     keycloak: "Keycloak",
     created: "Created",
+    newWeblogicImage: "New Weblogic Image",
     selectOption: "Please select an option ...",
     workloadType: "Workload Type",
     workloadSpec: "Workload Spec",

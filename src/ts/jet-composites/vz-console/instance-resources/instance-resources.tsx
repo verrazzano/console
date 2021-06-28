@@ -21,8 +21,12 @@ import { ConsoleInstanceClusters } from "vz-console/instance-clusters/loader";
 import { ConsoleInstanceApps } from "vz-console/instance-apps/loader";
 import { ConsoleInstanceComponents } from "vz-console/instance-components/loader";
 import { ConsoleInstanceProjects } from "vz-console/instance-projects/loader";
+import { ConsoleInstanceWeblogicImages } from "vz-console/instance-weblogic-images/loader";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
+
+
+const vzWLSImagesEnabled = (window as any).vzWLSImagesEnabled;
 
 class Props {
   breadcrumbCallback: (breadcrumbs: BreadcrumbType[]) => void;
@@ -59,6 +63,7 @@ export class ConsoleInstanceResources extends ElementVComponent<Props, State> {
     oamapps: Messages.Instance.oamApps(),
     oamcomps: Messages.Instance.oamCompoennts(),
     projects: Messages.Instance.projects(),
+    weblogicimages: Messages.Instance.weblogicImages(),
   };
 
   state: State = {
@@ -75,6 +80,7 @@ export class ConsoleInstanceResources extends ElementVComponent<Props, State> {
         { path: "oamcomps" },
         { path: "clusters" },
         { path: "projects" },
+        { path: "weblogicimages" }
       ],
       {
         urlAdapter: new UrlPathAdapter("/"),
@@ -161,6 +167,18 @@ export class ConsoleInstanceResources extends ElementVComponent<Props, State> {
         break;
       }
 
+
+      case "weblogicimages": {
+        ResourceList = (
+          <ConsoleInstanceWeblogicImages
+            filterCallback={this.filterCallback}
+          />
+        );
+        Heading =
+          <h1 class="resheader">{this.labels.weblogicimages}</h1>
+        break;
+      }
+
       default: {
         break;
       }
@@ -191,6 +209,12 @@ export class ConsoleInstanceResources extends ElementVComponent<Props, State> {
               <li id="projects">
                 <a href="#">{this.labels.projects}</a>
               </li>
+              {vzWLSImagesEnabled ?
+                <li id="weblogicimages">
+                  <a href="#">{this.labels.weblogicimages}</a>
+                </li>
+                : ""
+              }
             </ul>
             <div id="filters">{this.state.filter}</div>
           </oj-navigation-list>
