@@ -149,6 +149,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
             <ConsoleImageCreate
               createImageHandler={this.handleImageAdded}
               closeHandler={this.handleClosePopup}
+              value=""
             />
           </oj-popup>
         </div>

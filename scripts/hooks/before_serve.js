@@ -32,7 +32,9 @@ function createEnvJs() {
         process.env.VZ_CLIENT_ID
       }"; var vzApiUrl = "${
         process.env.VZ_API_URL || ""
-      }"; var vzWLSImagesEnabled = ${process.env.VZ_WLS_IMAGES || false};`,
+      }"; var vzWLSImagesEnabled = ${
+        process.env.VZ_WLS_IMAGES_ENABLED || false
+      };`,
       { flag: "wx" }
     );
     console.log(`${envJsFilePath} created.`);

@@ -41,7 +41,9 @@ function createEnvJs() {
         process.env.VZ_CLIENT_ID
       }"; var vzApiUrl = "${apiUrl}"; var vzApiVersion = "${
         process.env.VZ_API_VERSION || ""
-      }"; var vzWLSImagesEnabled = ${process.env.VZ_WLS_IMAGES || false};`,
+      }"; var vzWLSImagesEnabled = ${
+        process.env.VZ_WLS_IMAGES_ENABLED || false
+      };`,
       { flag: "wx" }
     );
     console.log(`${envJsFilePath} created.`);

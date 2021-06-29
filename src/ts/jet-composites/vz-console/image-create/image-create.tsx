@@ -10,21 +10,34 @@ import {
 import "ojs/ojtable";
 import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
-import "ojs/ojinputtext";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/metadata-item";
 import * as Messages from "vz-console/utils/Messages";
 import { WeblogicImage } from "vz-console/service/types";
+import { ojInputTextEventMap } from "ojs/ojinputtext";
 
 class Props {
   createImageHandler: (image: WeblogicImage) => void;
   closeHandler: () => void;
 }
 
+class State {
+  value?: string;
+}
 /**
  * @ojmetadata pack "vz-console"
  */
 @customElement("vz-console-image-create")
-export class ConsoleImageCreate extends ElementVComponent<Props> {
+export class ConsoleImageCreate extends ElementVComponent<Props, State> {
+  state = {
+    value: "",
+  };
+
+  private handleValueChanged = (event: ojInputTextEventMap["valueChanged"]) => {
+    this.updateState({
+      value: event.detail.value,
+    });
+  };
+
   render() {
     return (
       <div class="popupbody">
@@ -32,10 +45,9 @@ export class ConsoleImageCreate extends ElementVComponent<Props> {
           <a
             onClick={() => {
               this.props.closeHandler();
-              const textElement = document.getElementById(
-                "imageName"
-              ) as HTMLInputElement;
-              textElement.value = "";
+              this.updateState({
+                value: "",
+              });
             }}
             class="closelink"
           >
@@ -52,7 +64,11 @@ export class ConsoleImageCreate extends ElementVComponent<Props> {
                 <ConsoleMetadataItem label={Messages.Labels.name()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
-                <oj-input-text id="imageName" value=""></oj-input-text>
+                <oj-input-text
+                  id="imageName"
+                  value={this.state.value}
+                  onValueChanged={this.handleValueChanged}
+                ></oj-input-text>
               </div>
             </div>
           </div>
@@ -60,12 +76,11 @@ export class ConsoleImageCreate extends ElementVComponent<Props> {
         <div class="oj-sm-margin-4x-right">
           <oj-button
             onClick={() => {
-              const textElement = document.getElementById(
-                "imageName"
-              ) as HTMLInputElement;
-              this.props.createImageHandler({ name: `${textElement.value}` });
+              this.props.createImageHandler({ name: this.state.value });
               this.props.closeHandler();
-              textElement.value = "";
+              this.updateState({
+                value: "",
+              });
             }}
           >
             {Messages.Labels.add()}
