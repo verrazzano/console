@@ -30,7 +30,11 @@ function createEnvJs() {
         process.env.VZ_KEYCLOAK_URL
       }"; var vzAuth = "${process.env.VZ_AUTH || true}"; var vzClientId = "${
         process.env.VZ_CLIENT_ID
-      }"; var vzApiUrl = "${process.env.VZ_API_URL || ""}"`,
+      }"; var vzApiUrl = "${
+        process.env.VZ_API_URL || ""
+      }"; var vzWLSImagesEnabled = ${
+        process.env.VZ_WLS_IMAGES_ENABLED || false
+      };`,
       { flag: "wx" }
     );
     console.log(`${envJsFilePath} created.`);
@@ -59,6 +63,13 @@ function rewriteUrls() {
   });
   app.get("/projects", (req, res, next) => {
     res.redirect(`/?ojr=instance&selectedItem=projects`);
+  });
+  app.get("/weblogicimages", (req, res, next) => {
+    res.redirect(
+      `/?ojr=instance&selectedItem=weblogicimages${
+        req.query.cluster ? "&cluster=" + req.query.cluster : ""
+      }`
+    );
   });
   app.get("/oamapps/:id", (req, res, next) => {
     res.redirect(

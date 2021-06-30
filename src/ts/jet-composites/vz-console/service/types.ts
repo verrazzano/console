@@ -102,6 +102,10 @@ export interface Project {
   createdOn?: string;
 }
 
+export interface WeblogicImage {
+  name?: string;
+}
+
 export interface OAMApplication {
   name?: string;
   namespace?: string;

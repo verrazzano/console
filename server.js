@@ -41,7 +41,9 @@ function createEnvJs() {
         process.env.VZ_CLIENT_ID
       }"; var vzApiUrl = "${apiUrl}"; var vzApiVersion = "${
         process.env.VZ_API_VERSION || ""
-      }"`,
+      }"; var vzWLSImagesEnabled = ${
+        process.env.VZ_WLS_IMAGES_ENABLED || false
+      };`,
       { flag: "wx" }
     );
     console.log(`${envJsFilePath} created.`);
@@ -70,6 +72,13 @@ app.get("/oamcomps", (req, res, next) => {
 });
 app.get("/projects", (req, res, next) => {
   res.redirect(`/?ojr=instance&selectedItem=projects`);
+});
+app.get("/weblogicimages", (req, res, next) => {
+  res.redirect(
+    `/?ojr=instance&selectedItem=weblogicimages${
+      req.query.cluster ? "&cluster=" + req.query.cluster : ""
+    }`
+  );
 });
 app.get("/oamapps/:id", (req, res, next) => {
   res.redirect(
