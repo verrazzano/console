@@ -73,7 +73,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
             </div>
           </div>
         </div>
-        <div class="oj-sm-margin-4x-right">
+        <div class="oj-sm-padding-2x-horizontal">
           <oj-button
             onClick={() => {
               this.props.createImageHandler({ name: this.state.value });

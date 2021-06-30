@@ -124,9 +124,10 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
       <div>
         <div>
           <oj-button
+            id="weblogicCreateButton"
             onClick={() => {
               (document.getElementById(this.popupId) as any).open(
-                "#tabMetaInfo"
+                "#weblogicCreateButton"
               );
             }}
             class="openlink"
@@ -154,7 +155,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
           </oj-popup>
         </div>
 
-        <div id="components" class="oj-flex component-margin">
+        <div id="webLogicImages" class="oj-flex component-margin">
           <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-flex-item">
             <div class="oj-flex">
               <div class="oj-sm-12 oj-flex-item res">
