@@ -54,7 +54,7 @@ Clone the `git` repository and install `npm` dependencies:
 
 ### Set up the Keycloak client
 
-[Keycloak](https://github.com/keycloak/keycloak) provides Identity and Access Management in Verrazzano for authentication to various dashboards and the Console application. To run the Verrazzano Console locally, first you need to configure the **webui** [OpenID Connect client](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) to authenticate the login and API requests originating from the application deployed at `localhost`.
+[Keycloak](https://github.com/keycloak/keycloak) provides Identity and Access Management in Verrazzano for authentication to various dashboards and the Console application. To run the Verrazzano Console locally, first you need to configure the **verrazzano-pkce** [OpenID Connect client](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) to authenticate the login and API requests originating from the application deployed at `localhost`.
 
 1. Access the Keycloak administration console for your Verrazzano environment: `https://keycloak.v8o-env.v8o-domain.com`
 2. Log in with the Keycloak admin user and password. Typically the Keycloak admin user name is `keycloakadmin` and the password can be obtained from your management cluster:
@@ -65,7 +65,7 @@ Clone the `git` repository and install `npm` dependencies:
 
 For more information on accessing Keycloak and other user interfaces in Verrazzano, see [Get console credentials](https://github.com/verrazzano/verrazzano/blob/master/install/README.md#6-get-console-credentials).
 
-3. Navigate to **Clients** and select the client, **webui**. On the **Settings** page, go to **Valid Redirect URIs** and select the plus (+) sign to add the redirect URL `http://localhost:8000/*`.
+3. Navigate to **Clients** and select the client, **verrazzano-pkce**. On the **Settings** page, go to **Valid Redirect URIs** and select the plus (+) sign to add the redirect URL `http://localhost:8000/*`.
 4. On the same page, go to **Web Origins** and select the plus (+) sign to add `http://localhost:8000`.
 5. Click **Save**.
 
@@ -89,7 +89,7 @@ Set the following environment variables:
   export VZ_AUTH=true
   export VZ_KEYCLOAK_URL=<your Keycloak URL> e.g. https://keycloak.default.11.22.33.44.xip.io
   export VZ_UI_URL=http://localhost:8000
-  export VZ_CLIENT_ID=<your client id which allows redirect uri on localhost:8000 or webui if using default>
+  export VZ_CLIENT_ID=<your client id which allows redirect uri on localhost:8000 or verrazzano-pkce if using default>
   export VZ_API_URL=<your Verrazzano API Server URL> e.g. https://verrazzano.default.11.22.33.44.xip.io
 ```
 
