@@ -14,6 +14,7 @@ import {
   LabelSelectorRequirement,
   IngressRule,
   EgressRule,
+  ImageBuildRequest,
 } from "../service/types";
 import * as DateTimeConverter from "ojs/ojconverter-datetime";
 import { getStatusForOAMResource } from "vz-console/utils/utils";
@@ -49,8 +50,8 @@ export const processClusterData = (clustersData: any[]): Cluster[] => {
         apiUrl: clusterData.status ? clusterData.status.apiUrl : undefined,
         status:
           clusterData.status &&
-          clusterData.status.conditions &&
-          clusterData.status.conditions.length > 0
+            clusterData.status.conditions &&
+            clusterData.status.conditions.length > 0
             ? getStatusForOAMResource(clusterData.status.conditions[0].status)
             : Status.Pending,
         createdOn: convertDate(clusterData.metadata.creationTimestamp),
@@ -83,8 +84,8 @@ export const processOAMData = (
         namespace: component.metadata.namespace,
         workloadType:
           component.spec &&
-          component.spec.workload &&
-          component.spec.workload.kind
+            component.spec.workload &&
+            component.spec.workload.kind
             ? component.spec.workload.kind
             : "",
         latestRevision:
@@ -116,8 +117,8 @@ export const processOAMData = (
         data: application,
         status:
           application.status &&
-          application.status.conditions &&
-          application.status.conditions.length > 0
+            application.status.conditions &&
+            application.status.conditions.length > 0
             ? getStatusForOAMResource(application.status.conditions[0].status)
             : Status.Pending,
         createdOn: convertDate(application.metadata.creationTimestamp),
@@ -245,6 +246,23 @@ export const processProjectsData = (projects: any[]): Project[] => {
     });
   }
   return vps;
+};
+
+
+export const processIBRData = (requests: any[]): ImageBuildRequest[] => {
+  const ibrs: ImageBuildRequest[] = [];
+  if (requests) {
+    requests.forEach((request) => {
+      const ibr = <ImageBuildRequest>{
+        name: request.metadata?.name,
+        namespace: request.metadata?.namespace,
+        createdOn: convertDate(request.metadata.creationTimestamp),
+        status: request.status?.state,
+      };
+      ibrs.push(ibr);
+    });
+  }
+  return ibrs;
 };
 
 export const processRoleBindingsData = (rbs: any[]): RoleBinding[] => {
