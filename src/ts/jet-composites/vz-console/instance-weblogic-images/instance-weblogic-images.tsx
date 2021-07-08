@@ -8,7 +8,10 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import { WeblogicImage } from "vz-console/service/loader";
+import {
+  VerrazzanoApi,
+  ImageBuildRequest
+} from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
@@ -20,11 +23,14 @@ import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
+import { ConsoleError } from "vz-console/error/error";
 
-class Props {}
+class Props { }
 
 class State {
   images?: Model.Collection;
+  loading?: boolean;
+  error?: string;
 }
 
 /**
@@ -32,17 +38,22 @@ class State {
  */
 @customElement("vz-console-instance-weblogic-images")
 export class ConsoleInstanceWeblogicImages extends ElementVComponent<
-  Props,
-  State
+Props,
+State
 > {
   popupId = "createImagePopup";
-  state: State = {};
+  verrazzanoApi: VerrazzanoApi;
+  state: State = {
+    loading: true,
+  };
 
   options = [
     {
       value: Messages.Labels.name().toLowerCase(),
       label: Messages.Labels.name(),
     },
+    { value: Messages.Labels.ns().toLowerCase(), label: Messages.Labels.ns() },
+
   ];
 
   optionsDataProvider = new ArrayDataProvider(this.options, {
@@ -57,12 +68,13 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
 
   constructor() {
     super(new Props());
+    this.verrazzanoApi = new VerrazzanoApi();
   }
 
   compare = (left: Model.Model, right: Model.Model): number => {
     let result = 0;
-    const leftComponent = left.attributes as WeblogicImage;
-    const rightComponent = right.attributes as WeblogicImage;
+    const leftComponent = left.attributes as ImageBuildRequest;
+    const rightComponent = right.attributes as ImageBuildRequest;
     switch (this.currentSort()) {
       case "default":
       case Messages.Labels.name().toLowerCase(): {
@@ -70,6 +82,12 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
         break;
       }
 
+      case Messages.Labels.ns().toLowerCase(): {
+        result = leftComponent.namespace?.localeCompare(
+          rightComponent.namespace
+        );
+        break;
+      }
       default: {
         break;
       }
@@ -77,7 +95,8 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     return result;
   };
 
-  private handleImageAdded = (image: WeblogicImage) => {
+
+  private handleImageAdded = (image: ImageBuildRequest) => {
     this.state.images.push(new Model.Model(image));
     this.updateState({
       images: new Model.Collection(this.state.images.models),
@@ -101,6 +120,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     this.updateState({
       images: new Model.Collection(models),
     });
+    this.getData();
   }
 
   @listener({ capture: true, passive: true })
@@ -108,6 +128,27 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     if (event.detail.value) {
       this.currentSort(event.detail.value.toLowerCase());
       this.updateState({ images: this.executeSort(this.state.images) });
+    }
+  }
+
+  async getData() {
+    this.updateState({ loading: true });
+    try {
+      const imageBuildRequests = await this.verrazzanoApi.listImageBuildRequests();
+      imageBuildRequests.forEach((request) => {
+        this.state.images.push(new Model.Model(request));
+      });
+      this.updateState({
+        images: new Model.Collection(this.state.images.models),
+        loading: false,
+        error: "",
+      });
+    } catch (error) {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      this.updateState({ error: errorMessage });
     }
   }
 
@@ -119,6 +160,21 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
         )
       )
     );
+
+
+    if (this.state.error) {
+      return (
+        <ConsoleError
+          context={Messages.Error.errImageBuildRequestsFetchError()}
+          error={this.state.error}
+        />
+      );
+    }
+
+
+    if (this.state.loading) {
+      return <p>{Messages.Labels.loading()}</p>;
+    }
 
     return (
       <div>
@@ -213,8 +269,22 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                             <strong>
                               <span>{Messages.Labels.name()}:&nbsp;</span>
                             </strong>
-
                             <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                          </div>
+
+                          <div class="carditem">
+                            <strong>
+                              <span>{Messages.Labels.ns()}:&nbsp;</span>
+                            </strong>
+
+                            <oj-bind-text value="[[item.data.namespace]]"></oj-bind-text>
+                          </div>
+
+                          <div class="carditem">
+                            <strong>
+                              <span>{Messages.Labels.status()}:&nbsp;</span>
+                            </strong>
+                            <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
                           </div>
                         </div>
                       </div>

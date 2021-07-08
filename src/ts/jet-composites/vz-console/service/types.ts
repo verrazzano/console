@@ -102,8 +102,22 @@ export interface Project {
   createdOn?: string;
 }
 
+export interface ImageBuildRequest {
+  name?: string;
+  namespace?: string;
+  baseImage?: string;
+  image?: WeblogicImage;
+  jdkInstaller?: string;
+  webLogicInstaller?: string;
+  status?: string;
+}
+
+
 export interface WeblogicImage {
   name?: string;
+  registry?: string;
+  repository?: string;
+  tag?: string;
 }
 
 export interface OAMApplication {
@@ -276,5 +290,9 @@ export const ResourceType = {
   VerrazzanoProject: <ResourceTypeType>{
     ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
     Kind: "VerrazzanoProject",
+  },
+  VerrazzanoImageBuildRequest: <ResourceTypeType>{
+    ApiVersion: "apis/images.verrazzano.io/v1alpha1",
+    Kind: "ImageBuildRequest",
   },
 };
