@@ -8,10 +8,7 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import {
-  VerrazzanoApi,
-  ImageBuildRequest
-} from "vz-console/service/loader";
+import { VerrazzanoApi, ImageBuildRequest } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
@@ -25,7 +22,7 @@ import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
 import { ConsoleError } from "vz-console/error/error";
 
-class Props { }
+class Props {}
 
 class State {
   images?: Model.Collection;
@@ -38,8 +35,8 @@ class State {
  */
 @customElement("vz-console-instance-weblogic-images")
 export class ConsoleInstanceWeblogicImages extends ElementVComponent<
-Props,
-State
+  Props,
+  State
 > {
   popupId = "createImagePopup";
   verrazzanoApi: VerrazzanoApi;
@@ -53,7 +50,6 @@ State
       label: Messages.Labels.name(),
     },
     { value: Messages.Labels.ns().toLowerCase(), label: Messages.Labels.ns() },
-
   ];
 
   optionsDataProvider = new ArrayDataProvider(this.options, {
@@ -94,7 +90,6 @@ State
     }
     return result;
   };
-
 
   private handleImageAdded = (image: ImageBuildRequest) => {
     this.state.images.push(new Model.Model(image));
@@ -161,7 +156,6 @@ State
       )
     );
 
-
     if (this.state.error) {
       return (
         <ConsoleError
@@ -170,7 +164,6 @@ State
         />
       );
     }
-
 
     if (this.state.loading) {
       return <p>{Messages.Labels.loading()}</p>;
