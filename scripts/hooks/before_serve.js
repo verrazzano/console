@@ -26,28 +26,11 @@ function createEnvJs() {
     console.log("Creating env.js.");
     fs.writeFileSync(
       `${envJsFilePath}`,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 4c74d94 (prettier)
-      `var vzUiUrl = "${process.env.VZ_UI_URL}"; var vzKeycloakUrl = "${
-        process.env.VZ_KEYCLOAK_URL
-      }"; var vzAuth = "${process.env.VZ_AUTH || true}"; var vzClientId = "${
-        process.env.VZ_CLIENT_ID
-      }"; var vzApiUrl = "${
-        process.env.VZ_API_URL || ""
-<<<<<<< HEAD
-      }"; var vzWLSImagesEnabled = ${
-        process.env.VZ_WLS_IMAGES_ENABLED || false
-      };`,
-=======
       `var vzUiUrl = "${process.env.VZ_UI_URL}"; var vzKeycloakUrl = "${process.env.VZ_KEYCLOAK_URL
       }"; var vzAuth = "${process.env.VZ_AUTH || true}"; var vzClientId = "${process.env.VZ_CLIENT_ID
       }"; var vzApiUrl = "${process.env.VZ_API_URL || ""
-=======
->>>>>>> 4c74d94 (prettier)
-      }"; var vzWLSImagesEnabled = ${process.env.VZ_WLS_IMAGES || false};`,
->>>>>>> 03ad937 (added weblogic images UI)
+      }"; var vzWLSImagesEnabled = ${process.env.VZ_WLS_IMAGES_ENABLED || false
+      };`,
       { flag: "wx" }
     );
     console.log(`${envJsFilePath} created.`);
@@ -62,15 +45,13 @@ function rewriteUrls() {
   const app = express();
   app.get("/oamapps", (req, res, next) => {
     res.redirect(
-      `/?ojr=instance&selectedItem=oamapps${
-        req.query.cluster ? "&cluster=" + req.query.cluster : ""
+      `/?ojr=instance&selectedItem=oamapps${req.query.cluster ? "&cluster=" + req.query.cluster : ""
       }`
     );
   });
   app.get("/oamcomps", (req, res, next) => {
     res.redirect(
-      `/?ojr=instance&selectedItem=oamcomps${
-        req.query.cluster ? "&cluster=" + req.query.cluster : ""
+      `/?ojr=instance&selectedItem=oamcomps${req.query.cluster ? "&cluster=" + req.query.cluster : ""
       }`
     );
   });
@@ -78,34 +59,20 @@ function rewriteUrls() {
     res.redirect(`/?ojr=instance&selectedItem=projects`);
   });
   app.get("/weblogicimages", (req, res, next) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 4c74d94 (prettier)
     res.redirect(
-      `/?ojr=instance&selectedItem=weblogicimages${
-        req.query.cluster ? "&cluster=" + req.query.cluster : ""
+      `/?ojr=instance&selectedItem=weblogicimages${req.query.cluster ? "&cluster=" + req.query.cluster : ""
       }`
     );
-<<<<<<< HEAD
-=======
-    res.redirect(`/?ojr=instance&selectedItem=weblogicimages${req.query.cluster ? "&cluster=" + req.query.cluster : ""
-      }`)
->>>>>>> 03ad937 (added weblogic images UI)
-=======
->>>>>>> 4c74d94 (prettier)
   });
   app.get("/oamapps/:id", (req, res, next) => {
     res.redirect(
-      `/?ojr=oamapp&oamAppId=${req.params.id}${
-        req.query.cluster ? "&cluster=" + req.query.cluster : ""
+      `/?ojr=oamapp&oamAppId=${req.params.id}${req.query.cluster ? "&cluster=" + req.query.cluster : ""
       }`
     );
   });
   app.get("/oamcomps/:id", (req, res, next) => {
     res.redirect(
-      `/?ojr=oamcomp&oamCompId=${req.params.id}${
-        req.query.cluster ? "&cluster=" + req.query.cluster : ""
+      `/?ojr=oamcomp&oamCompId=${req.params.id}${req.query.cluster ? "&cluster=" + req.query.cluster : ""
       }`
     );
   });
@@ -114,17 +81,14 @@ function rewriteUrls() {
   });
   app.get("/oamapps/:id/components", (req, res, next) => {
     res.redirect(
-      `/?ojr=oamapp&oamAppId=${req.params.id}&selectedItem=components${
-        req.query.cluster ? "&cluster=" + req.query.cluster : ""
+      `/?ojr=oamapp&oamAppId=${req.params.id}&selectedItem=components${req.query.cluster ? "&cluster=" + req.query.cluster : ""
       }`
     );
   });
   app.get("/oamapps/:id/components/:selectedComponent", (req, res, next) => {
     res.redirect(
-      `/?ojr=oamapp&oamAppId=${
-        req.params.id
-      }&selectedItem=components&selectedComponent=${
-        req.params.selectedComponent
+      `/?ojr=oamapp&oamAppId=${req.params.id
+      }&selectedItem=components&selectedComponent=${req.params.selectedComponent
       }${req.query.cluster ? "&cluster=" + req.query.cluster : ""}`
     );
   });
@@ -132,18 +96,15 @@ function rewriteUrls() {
     "/oamapps/:id/components/:selectedComponent/:selectedItem",
     (req, res, next) => {
       res.redirect(
-        `/?ojr=oamapp&oamAppId=${req.params.id}&selectedItem=${
-          req.params.selectedItem
-        }&selectedComponent=${req.params.selectedComponent}${
-          req.query.cluster ? "&cluster=" + req.query.cluster : ""
+        `/?ojr=oamapp&oamAppId=${req.params.id}&selectedItem=${req.params.selectedItem
+        }&selectedComponent=${req.params.selectedComponent}${req.query.cluster ? "&cluster=" + req.query.cluster : ""
         }`
       );
     }
   );
   app.get("/oamcomps/:id/:selectedItem", (req, res, next) => {
     res.redirect(
-      `/?ojr=oamcomp&oamCompId=${req.params.id}&selectedItem=${
-        req.params.selectedItem
+      `/?ojr=oamcomp&oamCompId=${req.params.id}&selectedItem=${req.params.selectedItem
       }${req.query.cluster ? "&cluster=" + req.query.cluster : ""}`
     );
   });
