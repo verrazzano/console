@@ -21,7 +21,7 @@ import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
 
-class Props {}
+class Props { }
 
 class State {
   images?: Model.Collection;
@@ -32,8 +32,8 @@ class State {
  */
 @customElement("vz-console-instance-weblogic-images")
 export class ConsoleInstanceWeblogicImages extends ElementVComponent<
-  Props,
-  State
+Props,
+State
 > {
   popupId = "createImagePopup";
   state: State = {};
