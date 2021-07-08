@@ -149,7 +149,10 @@ export const Error = {
     Translations.getTranslatedString("error.errProjectsFetchError", args),
 
   errImageBuildRequestsFetchError: (...args) =>
-    Translations.getTranslatedString("error.errImageBuildRequestFetchError", args),
+    Translations.getTranslatedString(
+      "error.errImageBuildRequestFetchError",
+      args
+    ),
 
   errInvalidProjectId: (...args) =>
     Translations.getTranslatedString("error.errInvalidProjectId", args),

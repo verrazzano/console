@@ -40,7 +40,9 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
     });
   };
 
-  private handleNamespaceChanged = (event: ojInputTextEventMap["valueChanged"]) => {
+  private handleNamespaceChanged = (
+    event: ojInputTextEventMap["valueChanged"]
+  ) => {
     this.updateState({
       namespace: event.detail.value,
     });
@@ -95,11 +97,14 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
         <div class="oj-sm-padding-2x-horizontal">
           <oj-button
             onClick={() => {
-              this.props.createImageHandler({ name: this.state.name, namespace: this.state.namespace });
+              this.props.createImageHandler({
+                name: this.state.name,
+                namespace: this.state.namespace,
+              });
               this.props.closeHandler();
               this.updateState({
                 name: "",
-                namespace: ""
+                namespace: "",
               });
             }}
           >

@@ -102,6 +102,13 @@ export interface Project {
   createdOn?: string;
 }
 
+export interface WeblogicImage {
+  name?: string;
+  registry?: string;
+  repository?: string;
+  tag?: string;
+}
+
 export interface ImageBuildRequest {
   name?: string;
   namespace?: string;
@@ -110,14 +117,6 @@ export interface ImageBuildRequest {
   jdkInstaller?: string;
   webLogicInstaller?: string;
   status?: string;
-}
-
-
-export interface WeblogicImage {
-  name?: string;
-  registry?: string;
-  repository?: string;
-  tag?: string;
 }
 
 export interface OAMApplication {
