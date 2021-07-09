@@ -77,7 +77,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
                   id="imageName"
-                  name={this.state.imageName}
                   onValueChanged={this.handleNameChanged}
                 ></oj-input-text>
               </div>
@@ -87,7 +86,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
                   id="imageNamespace"
-                  name={this.state.imageNamespace}
                   onValueChanged={this.handleNamespaceChanged}
                 ></oj-input-text>
               </div>
