@@ -40,6 +40,98 @@ const makeMockRoleBindings = (ns) => {
     ],
   };
 };
+
+const makeMockImageBuildRequests = () => {
+  return {
+    items: [
+      {
+        apiVersion: "images.verrazzano.io/v1alpha1",
+        kind: "ImageBuildRequest",
+        metadata: {
+          creationTimestamp: "2021-07-02T19:41:06Z",
+          generation: 1,
+          name: "image1",
+          namespace: "default",
+        },
+        spec: {
+          baseImage: "base image",
+          image: {
+            name: "image",
+            registry: "registry",
+            repository: "repo",
+            tag: "tag",
+          },
+          jdkInstaller: "installer",
+          webLogicInstaller: "installer",
+        },
+      },
+      {
+        apiVersion: "images.verrazzano.io/v1alpha1",
+        kind: "ImageBuildRequest",
+        metadata: {
+          creationTimestamp: "2021-07-07T18:13:54Z",
+          generation: 1,
+          name: "image4",
+          namespace: "default",
+        },
+        spec: {
+          baseImage: "base image",
+          image: {
+            name: "image",
+            registry: "registry",
+            repository: "repo",
+            tag: "tag",
+          },
+          jdkInstaller: "installer",
+          webLogicInstaller: "installer",
+        },
+      },
+      {
+        apiVersion: "images.verrazzano.io/v1alpha1",
+        kind: "ImageBuildRequest",
+        metadata: {
+          creationTimestamp: "2021-07-07T19:15:36Z",
+          generation: 1,
+          name: "image2",
+          namespace: "verrazzano-system",
+        },
+        spec: {
+          baseImage: "base image",
+          image: {
+            name: "image",
+            registry: "registry",
+            repository: "repo",
+            tag: "tag",
+          },
+          jdkInstaller: "installer",
+          webLogicInstaller: "installer",
+        },
+      },
+      {
+        apiVersion: "images.verrazzano.io/v1alpha1",
+        kind: "ImageBuildRequest",
+        metadata: {
+          creationTimestamp: "2021-07-07T18:20:35Z",
+          generation: 1,
+          name: "image5",
+          namespace: "verrazzano-system",
+        },
+        spec: {
+          baseImage: "base image",
+          image: {
+            name: "image",
+            registry: "registry",
+            repository: "repo",
+            tag: "tag",
+          },
+          jdkInstaller: "installer",
+          webLogicInstaller: "installer",
+        },
+      },
+    ],
+  };
+};
+
 describe("VerrazzanoApi tests", () => {
   it("listRoleBindings returns expected data", async () => {
     const testNs = "listRoleBindingsNs";
@@ -67,6 +159,33 @@ describe("VerrazzanoApi tests", () => {
         expect(rb.clusterRole).to.be.not.ok;
       }
       expect(rb.subjects).to.deep.equal(matchingMockRb.subjects);
+    });
+  });
+
+  it("listImageBuildRequests returns expected data", async () => {
+    const mockImageBuildRequests = makeMockImageBuildRequests();
+    const fakeFetch = sinon.fake.returns(
+      makeMockResponse(mockImageBuildRequests)
+    );
+    const vzApi = new VerrazzanoApi("local", fakeFetch);
+    let imageBuildRequests = await vzApi.listImageBuildRequests();
+    expect(fakeFetch.callCount).to.eq(1);
+    expect(
+      fakeFetch.calledWith(
+        sinon.match(
+          `/${ResourceType.VerrazzanoImageBuildRequest.Kind.toLowerCase()}s`
+        )
+      )
+    ).to.be.true;
+    expect(imageBuildRequests.length).to.eq(
+      mockImageBuildRequests.items.length
+    );
+    imageBuildRequests.forEach((ibr) => {
+      const matchingMockIBR = mockImageBuildRequests.items.find(
+        (mibr) => mibr.metadata.name == ibr.name,
+        (mibr) => mibr.metadata.namespace == ibr.namespace
+      );
+      expect(matchingMockIBR).to.be.ok;
     });
   });
 

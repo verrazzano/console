@@ -14,6 +14,7 @@ import {
   LabelSelectorRequirement,
   IngressRule,
   EgressRule,
+  ImageBuildRequest,
 } from "../service/types";
 import * as DateTimeConverter from "ojs/ojconverter-datetime";
 import { getStatusForOAMResource } from "vz-console/utils/utils";
@@ -245,6 +246,24 @@ export const processProjectsData = (projects: any[]): Project[] => {
     });
   }
   return vps;
+};
+
+export const processImageBuildRequestData = (
+  requests: any[]
+): ImageBuildRequest[] => {
+  const ibrs: ImageBuildRequest[] = [];
+  if (requests) {
+    requests.forEach((request) => {
+      const ibr = <ImageBuildRequest>{
+        name: request.metadata?.name,
+        namespace: request.metadata?.namespace,
+        createdOn: convertDate(request.metadata.creationTimestamp),
+        status: request.status?.state,
+      };
+      ibrs.push(ibr);
+    });
+  }
+  return ibrs;
 };
 
 export const processRoleBindingsData = (rbs: any[]): RoleBinding[] => {

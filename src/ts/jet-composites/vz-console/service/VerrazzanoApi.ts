@@ -4,6 +4,7 @@
 import {
   Cluster,
   FetchApiSignature,
+  ImageBuildRequest,
   Instance,
   OAMApplication,
   OAMComponent,
@@ -17,6 +18,7 @@ import {
   processClusterData,
   processProjectsData,
   processRoleBindingsData,
+  processImageBuildRequestData,
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
@@ -535,6 +537,22 @@ export class VerrazzanoApi {
       });
   }
 
+  public async listImageBuildRequests(): Promise<ImageBuildRequest[]> {
+    return this.getKubernetesResource(ResourceType.VerrazzanoImageBuildRequest)
+      .then((buildRequestResponse) => {
+        return buildRequestResponse.json();
+      })
+      .then((imageBuildRequests) => {
+        if (!imageBuildRequests) {
+          throw new Error(Messages.Error.errImageBuildRequestsFetchError());
+        }
+        return processImageBuildRequestData(imageBuildRequests.items);
+      })
+      .catch((error) => {
+        throw new VzError(error);
+      });
+  }
+
   public async listRoleBindings(namespace: string): Promise<RoleBinding[]> {
     return this.getKubernetesResource(ResourceType.RoleBinding, namespace)
       .then((rbResponse) => {
@@ -577,5 +595,6 @@ export class VerrazzanoApi {
     this.getVMC = this.getVMC.bind(this);
     this.listProjects = this.listProjects.bind(this);
     this.getProject = this.getProject.bind(this);
+    this.listImageBuildRequests = this.listImageBuildRequests.bind(this);
   }
 }
