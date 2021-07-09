@@ -21,8 +21,8 @@ class Props {
 }
 
 class State {
-  name?: string;
-  namespace?: string;
+  imageName?: string;
+  imageNamespace?: string;
 }
 /**
  * @ojmetadata pack "vz-console"
@@ -30,13 +30,13 @@ class State {
 @customElement("vz-console-image-create")
 export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   state = {
-    name: "",
-    namespace: "",
+    imageName: "",
+    imageNamespace: "",
   };
 
   private handleNameChanged = (event: ojInputTextEventMap["valueChanged"]) => {
     this.updateState({
-      name: event.detail.value,
+      imageName: event.detail.value,
     });
   };
 
@@ -44,7 +44,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
     event: ojInputTextEventMap["valueChanged"]
   ) => {
     this.updateState({
-      namespace: event.detail.value,
+      imageNamespace: event.detail.value,
     });
   };
 
@@ -56,8 +56,8 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
             onClick={() => {
               this.props.closeHandler();
               this.updateState({
-                name: "",
-                namespace: "",
+                imageName: "",
+                imageNamespace: "",
               });
             }}
             class="closelink"
@@ -77,17 +77,17 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
                   id="imageName"
-                  name={this.state.name}
+                  name={this.state.imageName}
                   onValueChanged={this.handleNameChanged}
                 ></oj-input-text>
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
-                <ConsoleMetadataItem label="Namespace" />
+                <ConsoleMetadataItem label={Messages.Labels.ns()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
                   id="imageNamespace"
-                  name={this.state.namespace}
+                  name={this.state.imageNamespace}
                   onValueChanged={this.handleNamespaceChanged}
                 ></oj-input-text>
               </div>
@@ -98,13 +98,13 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           <oj-button
             onClick={() => {
               this.props.createImageHandler({
-                name: this.state.name,
-                namespace: this.state.namespace,
+                name: this.state.imageName,
+                namespace: this.state.imageNamespace,
               });
               this.props.closeHandler();
               this.updateState({
-                name: "",
-                namespace: "",
+                imageName: "",
+                imageNamespace: "",
               });
             }}
           >

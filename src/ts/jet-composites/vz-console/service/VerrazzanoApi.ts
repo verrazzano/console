@@ -18,7 +18,7 @@ import {
   processClusterData,
   processProjectsData,
   processRoleBindingsData,
-  processIBRData,
+  processImageBuildRequestData,
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
@@ -546,7 +546,7 @@ export class VerrazzanoApi {
         if (!imageBuildRequests) {
           throw new Error(Messages.Error.errImageBuildRequestsFetchError());
         }
-        return processIBRData(imageBuildRequests.items);
+        return processImageBuildRequestData(imageBuildRequests.items);
       })
       .catch((error) => {
         throw new VzError(error);

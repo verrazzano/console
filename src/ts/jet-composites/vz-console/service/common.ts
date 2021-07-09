@@ -248,7 +248,9 @@ export const processProjectsData = (projects: any[]): Project[] => {
   return vps;
 };
 
-export const processIBRData = (requests: any[]): ImageBuildRequest[] => {
+export const processImageBuildRequestData = (
+  requests: any[]
+): ImageBuildRequest[] => {
   const ibrs: ImageBuildRequest[] = [];
   if (requests) {
     requests.forEach((request) => {
