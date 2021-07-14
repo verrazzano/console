@@ -119,6 +119,34 @@ export interface ImageBuildRequest {
   status?: string;
 }
 
+
+export interface Metadata {
+  name?: string;
+  namespace?: string;
+}
+
+
+export interface Image {
+  name?: string;
+  registry?: string;
+  repository?: string;
+  tag?: string;
+}
+
+export interface Spec {
+  baseImage?: string;
+  image?: Image;
+  jdkInstaller?: string;
+  webLogicInstaller?: string;
+}
+
+export interface ImageBuildPostRequest {
+  apiVersion?: string;
+  kind?: string;
+  metadata?: Metadata;
+  spec?: Spec;
+}
+
 export interface OAMApplication {
   name?: string;
   namespace?: string;

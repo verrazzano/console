@@ -8,7 +8,7 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import { VerrazzanoApi, ImageBuildRequest } from "vz-console/service/loader";
+import { VerrazzanoApi, ImageBuildRequest, ResourceType } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
@@ -22,7 +22,7 @@ import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
 import { ConsoleError } from "vz-console/error/error";
 
-class Props {}
+class Props { }
 
 class State {
   images?: Model.Collection;
@@ -35,8 +35,8 @@ class State {
  */
 @customElement("vz-console-instance-weblogic-images")
 export class ConsoleInstanceWeblogicImages extends ElementVComponent<
-  Props,
-  State
+Props,
+State
 > {
   popupId = "createImagePopup";
   verrazzanoApi: VerrazzanoApi;
@@ -91,12 +91,35 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     return result;
   };
 
-  private handleImageAdded = (image: ImageBuildRequest) => {
-    this.state.images.push(new Model.Model(image));
-    this.updateState({
-      images: new Model.Collection(this.state.images.models),
-    });
+  private handleImageAdded = async (image: ImageBuildRequest) => {
+    this.updateState({ loading: true });
+    try {
+      const imageBuildPostRequest = {
+        apiVersion: "images.verrazzano.io/v1alpha1",
+        // apiVersion: String(ResourceType.VerrazzanoImageBuildRequest.ApiVersion), 
+        //need way to remove api from front
+        kind: ResourceType.VerrazzanoImageBuildRequest.Kind,
+        metadata: {
+          name: image.name,
+          namespace: image.namespace,
+        },
+      };
+      const postRequestResponse = await this.verrazzanoApi.postKubernetesResource(ResourceType.VerrazzanoImageBuildRequest, imageBuildPostRequest, imageBuildPostRequest.metadata.namespace);
+      this.state.images.push(new Model.Model(image));
+      this.updateState({
+        images: new Model.Collection(this.state.images.models),
+        loading: false,
+        error: "",
+      });
+    } catch (error) {
+      let errorMessage = error;
+      if (error && error.message) {
+        errorMessage = error.message;
+      }
+      this.updateState({ error: errorMessage });
+    }
   };
+
 
   private handleClosePopup = () => {
     (document.getElementById(this.popupId) as any).close();
