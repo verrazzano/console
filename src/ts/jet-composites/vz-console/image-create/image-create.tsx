@@ -96,8 +96,10 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           <oj-button
             onClick={() => {
               this.props.createImageHandler({
-                name: this.state.imageName,
-                namespace: this.state.imageNamespace,
+                metadata: {
+                  name: this.state.imageName,
+                  namespace: this.state.imageNamespace,
+                },
               });
               this.props.closeHandler();
               this.updateState({

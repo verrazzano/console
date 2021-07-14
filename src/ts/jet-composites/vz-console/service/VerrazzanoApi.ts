@@ -18,7 +18,6 @@ import {
   processClusterData,
   processProjectsData,
   processRoleBindingsData,
-  processImageBuildRequestData,
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
@@ -419,14 +418,18 @@ export class VerrazzanoApi {
   ): Promise<Response> {
     return Promise.resolve(
       this.fetchApi(
-        `${this.url}/${type.ApiVersion}/${namespace
-          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
-          }`
-          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
-          }`
-        }${name ? `/${name}` : ""}${this.cluster && this.cluster !== "local"
-          ? `?cluster=${this.cluster}`
-          : ""
+        `${this.url}/${type.ApiVersion}/${
+          namespace
+            ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
+            : `${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
+        }${name ? `/${name}` : ""}${
+          this.cluster && this.cluster !== "local"
+            ? `?cluster=${this.cluster}`
+            : ""
         }`
       )
     ).then((response) => {
@@ -447,22 +450,25 @@ export class VerrazzanoApi {
   public async postKubernetesResource(
     type: ResourceTypeType,
     data: any,
-    namespace?: string,
+    namespace?: string
   ): Promise<Response> {
     return Promise.resolve(
       this.fetchApi(
-        `${this.url}/${type.ApiVersion}/${namespace
-          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
-          }`
-          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
-          }`
+        `${this.url}/${type.ApiVersion}/${
+          namespace
+            ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
+            : `${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
         }`,
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(data),
         }
       )
     ).then((response) => {
@@ -470,7 +476,7 @@ export class VerrazzanoApi {
         throw new VzError(
           Messages.Error.errFetchingKubernetesResource(
             `${type.ApiVersion}/${type.Kind}`,
-            namespace,
+            namespace
           ),
           response?.status
         );
@@ -577,7 +583,7 @@ export class VerrazzanoApi {
         if (!imageBuildRequests) {
           throw new Error(Messages.Error.errImageBuildRequestsFetchError());
         }
-        return processImageBuildRequestData(imageBuildRequests.items);
+        return imageBuildRequests.items;
       })
       .catch((error) => {
         throw new VzError(error);

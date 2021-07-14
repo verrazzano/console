@@ -8,7 +8,11 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import { VerrazzanoApi, ImageBuildRequest, ResourceType } from "vz-console/service/loader";
+import {
+  VerrazzanoApi,
+  ImageBuildRequest,
+  ResourceType,
+} from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
@@ -22,7 +26,7 @@ import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
 import { ConsoleError } from "vz-console/error/error";
 
-class Props { }
+class Props {}
 
 class State {
   images?: Model.Collection;
@@ -35,8 +39,8 @@ class State {
  */
 @customElement("vz-console-instance-weblogic-images")
 export class ConsoleInstanceWeblogicImages extends ElementVComponent<
-Props,
-State
+  Props,
+  State
 > {
   popupId = "createImagePopup";
   verrazzanoApi: VerrazzanoApi;
@@ -74,13 +78,14 @@ State
     switch (this.currentSort()) {
       case "default":
       case Messages.Labels.name().toLowerCase(): {
-        result = leftComponent.name?.localeCompare(rightComponent.name);
+        result = leftComponent.metadata.name?.localeCompare(
+          rightComponent.metadata.name
+        );
         break;
       }
-
       case Messages.Labels.ns().toLowerCase(): {
-        result = leftComponent.namespace?.localeCompare(
-          rightComponent.namespace
+        result = leftComponent.metadata.namespace?.localeCompare(
+          rightComponent.metadata.namespace
         );
         break;
       }
@@ -94,17 +99,23 @@ State
   private handleImageAdded = async (image: ImageBuildRequest) => {
     this.updateState({ loading: true });
     try {
+      console.log(image.metadata.name);
+      console.log(image.metadata.namespace);
       const imageBuildPostRequest = {
         apiVersion: "images.verrazzano.io/v1alpha1",
-        // apiVersion: String(ResourceType.VerrazzanoImageBuildRequest.ApiVersion), 
-        //need way to remove api from front
+        // apiVersion: String(ResourceType.VerrazzanoImageBuildRequest.ApiVersion),
+        // need way to remove api from front
         kind: ResourceType.VerrazzanoImageBuildRequest.Kind,
         metadata: {
-          name: image.name,
-          namespace: image.namespace,
+          name: image.metadata.name,
+          namespace: image.metadata.namespace,
         },
       };
-      const postRequestResponse = await this.verrazzanoApi.postKubernetesResource(ResourceType.VerrazzanoImageBuildRequest, imageBuildPostRequest, imageBuildPostRequest.metadata.namespace);
+      await this.verrazzanoApi.postKubernetesResource(
+        ResourceType.VerrazzanoImageBuildRequest,
+        imageBuildPostRequest,
+        imageBuildPostRequest.metadata.namespace
+      );
       this.state.images.push(new Model.Model(image));
       this.updateState({
         images: new Model.Collection(this.state.images.models),
@@ -119,7 +130,6 @@ State
       this.updateState({ error: errorMessage });
     }
   };
-
 
   private handleClosePopup = () => {
     (document.getElementById(this.popupId) as any).close();
@@ -285,7 +295,7 @@ State
                             <strong>
                               <span>{Messages.Labels.name()}:&nbsp;</span>
                             </strong>
-                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                            <oj-bind-text value="[[item.data.metadata.name]]"></oj-bind-text>
                           </div>
 
                           <div class="carditem">
@@ -293,7 +303,7 @@ State
                               <span>{Messages.Labels.ns()}:&nbsp;</span>
                             </strong>
 
-                            <oj-bind-text value="[[item.data.namespace]]"></oj-bind-text>
+                            <oj-bind-text value="[[item.data.metadata.namespace]]"></oj-bind-text>
                           </div>
 
                           <div class="carditem">
