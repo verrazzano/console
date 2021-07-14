@@ -182,8 +182,8 @@ describe("VerrazzanoApi tests", () => {
     );
     imageBuildRequests.forEach((ibr) => {
       const matchingMockIBR = mockImageBuildRequests.items.find(
-        (mibr) => mibr.metadata.name == ibr.name,
-        (mibr) => mibr.metadata.namespace == ibr.namespace
+        (mibr) => mibr.metadata.name == ibr.metadata.name,
+        (mibr) => mibr.metadata.namespace == ibr.metadata.namespace
       );
       expect(matchingMockIBR).to.be.ok;
     });
