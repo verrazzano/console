@@ -32,6 +32,7 @@ class State {
   images?: Model.Collection;
   loading?: boolean;
   error?: string;
+  errorContext?: string;
 }
 
 /**
@@ -97,38 +98,34 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
   };
 
   private handleImageAdded = async (image: ImageBuildRequest) => {
-    this.updateState({ loading: true });
-    try {
-      console.log(image.metadata.name);
-      console.log(image.metadata.namespace);
-      const imageBuildPostRequest = {
-        apiVersion: "images.verrazzano.io/v1alpha1",
-        // apiVersion: String(ResourceType.VerrazzanoImageBuildRequest.ApiVersion),
-        // need way to remove api from front
-        kind: ResourceType.VerrazzanoImageBuildRequest.Kind,
-        metadata: {
-          name: image.metadata.name,
-          namespace: image.metadata.namespace,
-        },
-      };
-      await this.verrazzanoApi.postKubernetesResource(
-        ResourceType.VerrazzanoImageBuildRequest,
-        imageBuildPostRequest,
-        imageBuildPostRequest.metadata.namespace
+    let apiVersionValue = ResourceType.VerrazzanoImageBuildRequest.ApiVersion;
+    const slashIndex = ResourceType.VerrazzanoImageBuildRequest.ApiVersion.indexOf(
+      "/"
+    );
+    if (slashIndex > -1) {
+      apiVersionValue = ResourceType.VerrazzanoImageBuildRequest.ApiVersion.substring(
+        slashIndex + 1
       );
-      this.state.images.push(new Model.Model(image));
-      this.updateState({
-        images: new Model.Collection(this.state.images.models),
-        loading: false,
-        error: "",
-      });
-    } catch (error) {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      this.updateState({ error: errorMessage });
     }
+    const imageBuildRequest = {
+      apiVersion: apiVersionValue,
+      kind: ResourceType.VerrazzanoImageBuildRequest.Kind,
+      metadata: {
+        name: image.metadata.name,
+        namespace: image.metadata.namespace,
+      },
+    };
+    await this.verrazzanoApi.postKubernetesResource(
+      ResourceType.VerrazzanoImageBuildRequest,
+      imageBuildRequest,
+      imageBuildRequest.metadata.namespace
+    );
+    this.state.images.push(new Model.Model(image));
+    this.updateState({
+      images: new Model.Collection(this.state.images.models),
+      loading: false,
+      error: "",
+    });
   };
 
   private handleClosePopup = () => {
@@ -176,7 +173,10 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
       if (error && error.message) {
         errorMessage = error.message;
       }
-      this.updateState({ error: errorMessage });
+      this.updateState({
+        error: errorMessage,
+        errorContext: Messages.Error.errFetchingKubernetesResource(),
+      });
     }
   }
 
@@ -192,7 +192,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     if (this.state.error) {
       return (
         <ConsoleError
-          context={Messages.Error.errImageBuildRequestsFetchError()}
+          context={this.state.errorContext}
           error={this.state.error}
         />
       );

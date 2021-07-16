@@ -452,37 +452,35 @@ export class VerrazzanoApi {
     data: any,
     namespace?: string
   ): Promise<Response> {
-    return Promise.resolve(
-      this.fetchApi(
-        `${this.url}/${type.ApiVersion}/${
-          namespace
-            ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
-                type.Kind.endsWith("s") ? "es" : "s"
-              }`
-            : `${type.Kind.toLowerCase()}${
-                type.Kind.endsWith("s") ? "es" : "s"
-              }`
-        }`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      )
-    ).then((response) => {
-      if (!response || !response.status || response.status >= 400) {
-        throw new VzError(
-          Messages.Error.errFetchingKubernetesResource(
-            `${type.ApiVersion}/${type.Kind}`,
-            namespace
-          ),
-          response?.status
-        );
+    const response = await this.fetchApi(
+      `${this.url}/${type.ApiVersion}/${
+        namespace
+          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
+              type.Kind.endsWith("s") ? "es" : "s"
+            }`
+          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"}`
+      }`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       }
-      return response;
-    });
+    );
+    if (!response || !response.status || response.status >= 400) {
+      const jsonResponse = await response.json();
+      throw new VzError(
+        Messages.Error.errCreatingKubernetesResource(
+          `${type.ApiVersion}/${type.Kind}`,
+          namespace,
+          data.metadata.name,
+          jsonResponse.message
+        ),
+        response?.status
+      );
+    }
+    return response;
   }
 
   populateInstance(vzInstance, instanceId): Instance {
