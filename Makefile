@@ -31,8 +31,10 @@ all: build
 .PHONY: npm-install
 npm-install:
 	echo NodeJS version is $(shell node --version)
-	npm install && \
+	npm install
+ifndef JENKINS_URL
 	npm install @oracle/ojet-cli@${JET_CLI_VERSION}
+endif
 
 .PHONY: check-formatting
 check-formatting: npm-install
@@ -44,7 +46,7 @@ lint-code: check-formatting
 
 .PHONY: unit-test
 unit-test: npm-install
-ifdef JENKINS_URL
+ifndef JENKINS_URL
 	curl -o google-chrome.rpm "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-${GOOGLE_CHROME_VERSION}.x86_64.rpm"
 	sudo yum install -y ./google-chrome.rpm
 endif
@@ -81,3 +83,4 @@ run-ui-tests: npm-install
 	./integtest/scripts/edit_integ_test_config.sh ${VZ_UITEST_CONFIG_TEMPLATE} > tmp.uitestconfig.json
 	export VZ_UITEST_CONFIG=tmp.uitestconfig.json && \
 	npm run integtest
+
