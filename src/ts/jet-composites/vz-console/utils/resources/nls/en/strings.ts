@@ -61,6 +61,9 @@ export = {
     errFetchingKubernetesResource:
       "Error fetching {0} {1}/{2} from the cluster.",
 
+    errCreatingKubernetesResource:
+      "Error creating {0} {1}/{2} in the cluster. {3}",
+
     errOAMApplicationsFetchError:
       "Error fetching OAM ApplicationConfigurations.",
 
@@ -96,6 +99,7 @@ export = {
 
     errProjectsFetchError: "Error fetching Projects.",
     errImageBuildRequestFetchError: "Error fetching Image Build Requests",
+    errImageBuildRequestCreateError: "Failed to create Image Build Request",
     errRoleBindingsFetchError: "Error fetching RoleBindings in namespace {0}.",
     errInvalidProjectId: "Invalid Project Id.",
     errRenderProject: "Error displaying Project {0}.",

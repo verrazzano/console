@@ -18,7 +18,6 @@ import {
   processClusterData,
   processProjectsData,
   processRoleBindingsData,
-  processImageBuildRequestData,
 } from "./common";
 import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
@@ -448,6 +447,42 @@ export class VerrazzanoApi {
     });
   }
 
+  public async postKubernetesResource(
+    type: ResourceTypeType,
+    data: any,
+    namespace?: string
+  ): Promise<Response> {
+    const response = await this.fetchApi(
+      `${this.url}/${type.ApiVersion}/${
+        namespace
+          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
+              type.Kind.endsWith("s") ? "es" : "s"
+            }`
+          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"}`
+      }`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    if (!response || !response.status || response.status >= 400) {
+      const jsonResponse = await response.json();
+      throw new VzError(
+        Messages.Error.errCreatingKubernetesResource(
+          `${type.ApiVersion}/${type.Kind}`,
+          namespace,
+          data.metadata.name,
+          jsonResponse.message
+        ),
+        response?.status
+      );
+    }
+    return response;
+  }
+
   populateInstance(vzInstance, instanceId): Instance {
     const instance = <Instance>{
       id: instanceId,
@@ -546,7 +581,7 @@ export class VerrazzanoApi {
         if (!imageBuildRequests) {
           throw new Error(Messages.Error.errImageBuildRequestsFetchError());
         }
-        return processImageBuildRequestData(imageBuildRequests.items);
+        return imageBuildRequests.items;
       })
       .catch((error) => {
         throw new VzError(error);

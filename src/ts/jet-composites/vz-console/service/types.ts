@@ -109,14 +109,35 @@ export interface WeblogicImage {
   tag?: string;
 }
 
-export interface ImageBuildRequest {
+export interface Metadata {
   name?: string;
   namespace?: string;
+}
+
+export interface Image {
+  name?: string;
+  registry?: string;
+  repository?: string;
+  tag?: string;
+}
+
+export interface Spec {
   baseImage?: string;
-  image?: WeblogicImage;
+  image?: Image;
   jdkInstaller?: string;
   webLogicInstaller?: string;
-  status?: string;
+}
+
+export interface IBRStatus {
+  state: string;
+}
+
+export interface ImageBuildRequest {
+  apiVersion?: string;
+  kind?: string;
+  metadata?: Metadata;
+  spec?: Spec;
+  status?: IBRStatus;
 }
 
 export interface OAMApplication {

@@ -8,7 +8,11 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import { VerrazzanoApi, ImageBuildRequest } from "vz-console/service/loader";
+import {
+  VerrazzanoApi,
+  ImageBuildRequest,
+  ResourceType,
+} from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
@@ -28,6 +32,7 @@ class State {
   images?: Model.Collection;
   loading?: boolean;
   error?: string;
+  errorContext?: string;
 }
 
 /**
@@ -74,13 +79,14 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     switch (this.currentSort()) {
       case "default":
       case Messages.Labels.name().toLowerCase(): {
-        result = leftComponent.name?.localeCompare(rightComponent.name);
+        result = leftComponent.metadata.name?.localeCompare(
+          rightComponent.metadata.name
+        );
         break;
       }
-
       case Messages.Labels.ns().toLowerCase(): {
-        result = leftComponent.namespace?.localeCompare(
-          rightComponent.namespace
+        result = leftComponent.metadata.namespace?.localeCompare(
+          rightComponent.metadata.namespace
         );
         break;
       }
@@ -91,10 +97,34 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     return result;
   };
 
-  private handleImageAdded = (image: ImageBuildRequest) => {
+  private handleImageAdded = async (image: ImageBuildRequest) => {
+    let apiVersionValue = ResourceType.VerrazzanoImageBuildRequest.ApiVersion;
+    const slashIndex = ResourceType.VerrazzanoImageBuildRequest.ApiVersion.indexOf(
+      "/"
+    );
+    if (slashIndex > -1) {
+      apiVersionValue = ResourceType.VerrazzanoImageBuildRequest.ApiVersion.substring(
+        slashIndex + 1
+      );
+    }
+    const imageBuildRequest = {
+      apiVersion: apiVersionValue,
+      kind: ResourceType.VerrazzanoImageBuildRequest.Kind,
+      metadata: {
+        name: image.metadata.name,
+        namespace: image.metadata.namespace,
+      },
+    };
+    await this.verrazzanoApi.postKubernetesResource(
+      ResourceType.VerrazzanoImageBuildRequest,
+      imageBuildRequest,
+      imageBuildRequest.metadata.namespace
+    );
     this.state.images.push(new Model.Model(image));
     this.updateState({
       images: new Model.Collection(this.state.images.models),
+      loading: false,
+      error: "",
     });
   };
 
@@ -143,7 +173,10 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
       if (error && error.message) {
         errorMessage = error.message;
       }
-      this.updateState({ error: errorMessage });
+      this.updateState({
+        error: errorMessage,
+        errorContext: Messages.Error.errFetchingKubernetesResource(),
+      });
     }
   }
 
@@ -159,7 +192,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     if (this.state.error) {
       return (
         <ConsoleError
-          context={Messages.Error.errImageBuildRequestsFetchError()}
+          context={this.state.errorContext}
           error={this.state.error}
         />
       );
@@ -262,7 +295,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                             <strong>
                               <span>{Messages.Labels.name()}:&nbsp;</span>
                             </strong>
-                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                            <oj-bind-text value="[[item.data.metadata.name]]"></oj-bind-text>
                           </div>
 
                           <div class="carditem">
@@ -270,7 +303,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                               <span>{Messages.Labels.ns()}:&nbsp;</span>
                             </strong>
 
-                            <oj-bind-text value="[[item.data.namespace]]"></oj-bind-text>
+                            <oj-bind-text value="[[item.data.metadata.namespace]]"></oj-bind-text>
                           </div>
 
                           <div class="carditem">

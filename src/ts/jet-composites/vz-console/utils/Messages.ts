@@ -97,6 +97,12 @@ export const Error = {
       args
     ),
 
+  errCreatingKubernetesResource: (...args) =>
+    Translations.getTranslatedString(
+      "error.errCreatingKubernetesResource",
+      args
+    ),
+
   errOAMApplicationsFetchError: (...args) =>
     Translations.getTranslatedString(
       "error.errOAMApplicationsFetchError",
@@ -151,6 +157,12 @@ export const Error = {
   errImageBuildRequestsFetchError: (...args) =>
     Translations.getTranslatedString(
       "error.errImageBuildRequestFetchError",
+      args
+    ),
+
+  errImageBuildRequestsCreateError: (...args) =>
+    Translations.getTranslatedString(
+      "error.errImageBuildRequestCreateError",
       args
     ),
 
