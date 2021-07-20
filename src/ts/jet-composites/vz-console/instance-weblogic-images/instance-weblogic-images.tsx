@@ -26,7 +26,7 @@ import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
 import { ConsoleError } from "vz-console/error/error";
 
-class Props {}
+class Props { }
 
 class State {
   images?: Model.Collection;
@@ -40,8 +40,8 @@ class State {
  */
 @customElement("vz-console-instance-weblogic-images")
 export class ConsoleInstanceWeblogicImages extends ElementVComponent<
-  Props,
-  State
+Props,
+State
 > {
   popupId = "createImagePopup";
   verrazzanoApi: VerrazzanoApi;
@@ -114,6 +114,17 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
         name: image.metadata.name,
         namespace: image.metadata.namespace,
       },
+      spec: {
+        baseImage: image.spec.baseImage,
+        image: {
+          name: image.spec.image.name,
+          registry: image.spec.image.registry,
+          repository: image.spec.image.repository,
+          tag: image.spec.image.tag,
+        },
+        jdkInstaller: image.spec.jdkInstaller,
+        webLogicInstaller: image.spec.webLogicInstaller,
+      }
     };
     await this.verrazzanoApi.postKubernetesResource(
       ResourceType.VerrazzanoImageBuildRequest,
@@ -160,6 +171,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     this.updateState({ loading: true });
     try {
       const imageBuildRequests = await this.verrazzanoApi.listImageBuildRequests();
+      console.log(imageBuildRequests);
       imageBuildRequests.forEach((request) => {
         this.state.images.push(new Model.Model(request));
       });

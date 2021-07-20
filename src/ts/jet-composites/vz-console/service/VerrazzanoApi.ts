@@ -418,18 +418,14 @@ export class VerrazzanoApi {
   ): Promise<Response> {
     return Promise.resolve(
       this.fetchApi(
-        `${this.url}/${type.ApiVersion}/${
-          namespace
-            ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
-                type.Kind.endsWith("s") ? "es" : "s"
-              }`
-            : `${type.Kind.toLowerCase()}${
-                type.Kind.endsWith("s") ? "es" : "s"
-              }`
-        }${name ? `/${name}` : ""}${
-          this.cluster && this.cluster !== "local"
-            ? `?cluster=${this.cluster}`
-            : ""
+        `${this.url}/${type.ApiVersion}/${namespace
+          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
+          }`
+          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
+          }`
+        }${name ? `/${name}` : ""}${this.cluster && this.cluster !== "local"
+          ? `?cluster=${this.cluster}`
+          : ""
         }`
       )
     ).then((response) => {
@@ -453,12 +449,10 @@ export class VerrazzanoApi {
     namespace?: string
   ): Promise<Response> {
     const response = await this.fetchApi(
-      `${this.url}/${type.ApiVersion}/${
-        namespace
-          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
-              type.Kind.endsWith("s") ? "es" : "s"
-            }`
-          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"}`
+      `${this.url}/${type.ApiVersion}/${namespace
+        ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
+        }`
+        : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"}`
       }`,
       {
         method: "POST",
