@@ -125,7 +125,9 @@ export interface Spec {
   baseImage?: string;
   image?: Image;
   jdkInstaller?: string;
+  jdkInstallerVersion?: string;
   webLogicInstaller?: string;
+  webLogicInstallerVersion?: string;
 }
 
 export interface IBRStatus {

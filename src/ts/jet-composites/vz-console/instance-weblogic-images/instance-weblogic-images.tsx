@@ -107,6 +107,24 @@ State
         slashIndex + 1
       );
     }
+    //find index of first dash and second dash in jdkInstaller
+    let dashList = [];
+    let dashIdx = image.spec.jdkInstaller.indexOf("-");
+    while (dashIdx != -1) {
+      dashList.push(dashIdx);
+      dashIdx = image.spec.jdkInstaller.indexOf("-", dashIdx + 1);
+    }
+    const jdkVersion = image.spec.jdkInstaller.substring(dashList[0] + 1, dashList[1]);
+    //find index of first underscore and second underscore in jdkInstaller
+    let underscoreList = [];
+    let underscoreIdx = image.spec.webLogicInstaller.indexOf("_");
+    while (underscoreIdx != -1) {
+      underscoreList.push(underscoreIdx);
+      underscoreIdx = image.spec.webLogicInstaller.indexOf("_", underscoreIdx + 1);
+    }
+    const weblogicVersion = image.spec.webLogicInstaller.substring(underscoreList[0] + 1, underscoreList[1]);
+    console.log(jdkVersion);
+    console.log(weblogicVersion);
     const imageBuildRequest = {
       apiVersion: apiVersionValue,
       kind: ResourceType.VerrazzanoImageBuildRequest.Kind,
@@ -123,7 +141,9 @@ State
           tag: image.spec.image.tag,
         },
         jdkInstaller: image.spec.jdkInstaller,
+        jdkInstallerVersion: jdkVersion,
         webLogicInstaller: image.spec.webLogicInstaller,
+        webLogicInstallerVersion: weblogicVersion,
       }
     };
     await this.verrazzanoApi.postKubernetesResource(
