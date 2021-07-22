@@ -200,7 +200,8 @@ export const Labels = {
   repository: () => Translations.getTranslatedString("labels.repository"),
   tag: () => Translations.getTranslatedString("labels.tag"),
   jdkInstaller: () => Translations.getTranslatedString("labels.jdkInstaller"),
-  weblogicInstaller: () => Translations.getTranslatedString("labels.weblogicInstaller"),
+  weblogicInstaller: () =>
+    Translations.getTranslatedString("labels.weblogicInstaller"),
   generalInfo: () => Translations.getTranslatedString("labels.generalInfo"),
   add: () => Translations.getTranslatedString("labels.add"),
   close: () => Translations.getTranslatedString("labels.close"),

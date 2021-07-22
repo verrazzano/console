@@ -285,7 +285,9 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                 ></oj-select-single>
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label={Messages.Labels.weblogicInstaller()} />
+                <ConsoleMetadataItem
+                  label={Messages.Labels.weblogicInstaller()}
+                />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-select-single
