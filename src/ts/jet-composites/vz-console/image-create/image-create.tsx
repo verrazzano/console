@@ -22,6 +22,7 @@ import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 class Props {
   createImageHandler: (image: ImageBuildRequest) => Promise<void>;
   closeHandler: () => void;
+  namespaces: Array<{ value: string, label: string }>;
 }
 
 class State {
@@ -36,6 +37,7 @@ class State {
   imageRegistry?: string;
   imageRepository?: string;
   imageTag?: string;
+  namespaces?: Array<string>;
 }
 /**
  * @ojmetadata pack "vz-console"
@@ -74,11 +76,17 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   weblogicInstallerDataProvider = new ArrayDataProvider(this.weblogicInstallers, {
     keyAttributes: "value",
   });
+  namespacesDataProvider = new ArrayDataProvider(this.props.namespaces, {
+    keyAttributes: "value",
+  });
 
   defaultSelect = "default";
+  defaultNamespace = 0;
+  namespaceSelection = ko.observable(this.defaultNamespace);
   baseImageSelection = ko.observable(this.defaultSelect);
   jdkInstallerSelection = ko.observable(this.defaultSelect);
   webLogicInstallerSelection = ko.observable(this.defaultSelect);
+
 
   private createImage = async (
     imageName: string,
@@ -131,14 +139,13 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
     });
   };
 
-  private handleNamespaceChanged = (
-    event: ojInputTextEventMap["valueChanged"]
-  ) => {
-    this.updateState({
-      imageNamespace: event.detail.value,
-    });
-  };
-
+  @listener({ capture: true, passive: true })
+  private handleNamespaceChanged(event: CustomEvent) {
+    if (event.detail.value) {
+      this.namespaceSelection(event.detail.value);
+      this.updateState({ imageNamespace: event.detail.value });
+    }
+  }
 
   private handleImageRegistryChanged = (
     event: ojInputTextEventMap["valueChanged"]
@@ -198,6 +205,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               this.baseImageSelection(this.defaultSelect)
               this.jdkInstallerSelection(this.defaultSelect);
               this.webLogicInstallerSelection(this.defaultSelect);
+              this.namespaceSelection(this.defaultNamespace);
               this.updateState({
                 imageName: "",
                 imageNamespace: "",
@@ -233,17 +241,19 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                   onValueChanged={this.handleNameChanged}
                 ></oj-input-text>
               </div>
-              <div class="oj-flex-item oj-sm-padding-2x-horizontal">
-                <ConsoleMetadataItem label={Messages.Labels.ns()} />
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+                <ConsoleMetadataItem label="Namespace" />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
-                <oj-input-text
-                  id="imageNamespace"
-                  value={this.state.imageNamespace}
+                <oj-select-single
+                  id="namespaceOptions"
+                  data={this.namespacesDataProvider}
+                  value={this.namespaceSelection}
                   onValueChanged={this.handleNamespaceChanged}
-                ></oj-input-text>
+                  class="oj-complete sortselect"
+                  placeholder={Messages.Labels.selectOption()}
+                ></oj-select-single>
               </div>
-
               <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
                 <ConsoleMetadataItem label="Image" />
               </div>
@@ -344,6 +354,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                 this.baseImageSelection(this.defaultSelect);
                 this.jdkInstallerSelection(this.defaultSelect);
                 this.webLogicInstallerSelection(this.defaultSelect);
+                this.namespaceSelection(this.defaultNamespace);
                 this.updateState({
                   imageName: "",
                   imageNamespace: "",

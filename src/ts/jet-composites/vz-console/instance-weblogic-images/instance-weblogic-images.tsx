@@ -33,6 +33,7 @@ class State {
   loading?: boolean;
   error?: string;
   errorContext?: string;
+  namespaces?: Array<{ value: string, label: string }>;
 }
 
 /**
@@ -107,7 +108,6 @@ State
         slashIndex + 1
       );
     }
-    //find index of first dash and second dash in jdkInstaller
     let dashList = [];
     let dashIdx = image.spec.jdkInstaller.indexOf("-");
     while (dashIdx != -1) {
@@ -115,7 +115,6 @@ State
       dashIdx = image.spec.jdkInstaller.indexOf("-", dashIdx + 1);
     }
     const jdkVersion = image.spec.jdkInstaller.substring(dashList[0] + 1, dashList[1]);
-    //find index of first underscore and second underscore in jdkInstaller
     let underscoreList = [];
     let underscoreIdx = image.spec.webLogicInstaller.indexOf("_");
     while (underscoreIdx != -1) {
@@ -123,8 +122,6 @@ State
       underscoreIdx = image.spec.webLogicInstaller.indexOf("_", underscoreIdx + 1);
     }
     const weblogicVersion = image.spec.webLogicInstaller.substring(underscoreList[0] + 1, underscoreList[1]);
-    console.log(jdkVersion);
-    console.log(weblogicVersion);
     const imageBuildRequest = {
       apiVersion: apiVersionValue,
       kind: ResourceType.VerrazzanoImageBuildRequest.Kind,
@@ -190,8 +187,20 @@ State
   async getData() {
     this.updateState({ loading: true });
     try {
+      let currNamespaces = new Array<string>();
+      const namespaces = await this.verrazzanoApi.listNamespaces();
+      namespaces.forEach((namespace) => {
+        currNamespaces.push(namespace.metadata.name);
+      });
+      let namespaceKeys = [];
+      for (var i = 0; i < currNamespaces.length; i++) {
+        namespaceKeys.push(i);
+      }
+      let namespacesDataProvider = [];
+      for (var i = 0; i < currNamespaces.length; i++) {
+        namespacesDataProvider.push({ value: namespaceKeys[i], label: currNamespaces[i] });
+      }
       const imageBuildRequests = await this.verrazzanoApi.listImageBuildRequests();
-      console.log(imageBuildRequests);
       imageBuildRequests.forEach((request) => {
         this.state.images.push(new Model.Model(request));
       });
@@ -199,6 +208,7 @@ State
         images: new Model.Collection(this.state.images.models),
         loading: false,
         error: "",
+        namespaces: namespacesDataProvider,
       });
     } catch (error) {
       let errorMessage = error;
@@ -265,6 +275,7 @@ State
               createImageHandler={this.handleImageAdded}
               closeHandler={this.handleClosePopup}
               value=""
+              namespaces={this.state.namespaces}
             />
           </oj-popup>
         </div>

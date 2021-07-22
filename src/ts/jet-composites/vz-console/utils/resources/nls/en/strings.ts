@@ -64,6 +64,8 @@ export = {
     errCreatingKubernetesResource:
       "Error creating {0} {1}/{2} in the cluster. {3}",
 
+    errFetchingNamespaces: "Error fetching namespaces.",
+
     errOAMApplicationsFetchError:
       "Error fetching OAM ApplicationConfigurations.",
 
