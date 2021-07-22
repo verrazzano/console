@@ -104,10 +104,7 @@ export const Error = {
     ),
 
   errFetchingNamespaces: (...args) =>
-    Translations.getTranslatedString(
-      "error.errFetchingNamespaces",
-      args
-    ),
+    Translations.getTranslatedString("error.errFetchingNamespaces", args),
 
   errOAMApplicationsFetchError: (...args) =>
     Translations.getTranslatedString(

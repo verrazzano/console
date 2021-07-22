@@ -22,7 +22,7 @@ import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 class Props {
   createImageHandler: (image: ImageBuildRequest) => Promise<void>;
   closeHandler: () => void;
-  namespaces: Array<{ value: string, label: string }>;
+  namespaces: Array<{ value: string; label: string }>;
 }
 
 class State {
@@ -61,21 +61,26 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   baseImages = [
     { value: "default", label: "ghcr.io/oracle/oraclelinux:8-slim" },
   ];
+
   baseImageDataProvider = new ArrayDataProvider(this.baseImages, {
     keyAttributes: "value",
   });
-  jdkInstallers = [
-    { value: "default", label: "jdk-8u281-linux-x64.tar.gz" },
-  ];
+
+  jdkInstallers = [{ value: "default", label: "jdk-8u281-linux-x64.tar.gz" }];
+
   jdkInstallerDataProvider = new ArrayDataProvider(this.jdkInstallers, {
     keyAttributes: "value",
   });
-  weblogicInstallers = [
-    { value: "default", label: "fmw_12.2.1.4.0_wls.jar" },
-  ];
-  weblogicInstallerDataProvider = new ArrayDataProvider(this.weblogicInstallers, {
-    keyAttributes: "value",
-  });
+
+  weblogicInstallers = [{ value: "default", label: "fmw_12.2.1.4.0_wls.jar" }];
+
+  weblogicInstallerDataProvider = new ArrayDataProvider(
+    this.weblogicInstallers,
+    {
+      keyAttributes: "value",
+    }
+  );
+
   namespacesDataProvider = new ArrayDataProvider(this.props.namespaces, {
     keyAttributes: "value",
   });
@@ -87,7 +92,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   jdkInstallerSelection = ko.observable(this.defaultSelect);
   webLogicInstallerSelection = ko.observable(this.defaultSelect);
 
-
   private createImage = async (
     imageName: string,
     imageNamespace: string,
@@ -96,7 +100,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
     webLogicInstaller: string,
     imageRegistry: string,
     imageRepository: string,
-    imageTag: string,
+    imageTag: string
   ): Promise<boolean> => {
     try {
       await this.props.createImageHandler({
@@ -202,7 +206,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           <a
             onClick={() => {
               this.props.closeHandler();
-              this.baseImageSelection(this.defaultSelect)
+              this.baseImageSelection(this.defaultSelect);
               this.jdkInstallerSelection(this.defaultSelect);
               this.webLogicInstallerSelection(this.defaultSelect);
               this.namespaceSelection(this.defaultNamespace);
@@ -347,7 +351,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                 this.state.webLogicInstaller,
                 this.state.imageRegistry,
                 this.state.imageRepository,
-                this.state.imageTag,
+                this.state.imageTag
               );
               if (success) {
                 this.props.closeHandler();

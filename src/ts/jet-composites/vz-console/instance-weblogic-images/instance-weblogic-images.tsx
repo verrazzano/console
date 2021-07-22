@@ -26,14 +26,14 @@ import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
 import { ConsoleError } from "vz-console/error/error";
 
-class Props { }
+class Props {}
 
 class State {
   images?: Model.Collection;
   loading?: boolean;
   error?: string;
   errorContext?: string;
-  namespaces?: Array<{ value: string, label: string }>;
+  namespaces?: Array<{ value: string; label: string }>;
 }
 
 /**
@@ -41,8 +41,8 @@ class State {
  */
 @customElement("vz-console-instance-weblogic-images")
 export class ConsoleInstanceWeblogicImages extends ElementVComponent<
-Props,
-State
+  Props,
+  State
 > {
   popupId = "createImagePopup";
   verrazzanoApi: VerrazzanoApi;
@@ -108,20 +108,29 @@ State
         slashIndex + 1
       );
     }
-    let dashList = [];
+    const dashList = [];
     let dashIdx = image.spec.jdkInstaller.indexOf("-");
-    while (dashIdx != -1) {
+    while (dashIdx !== -1) {
       dashList.push(dashIdx);
       dashIdx = image.spec.jdkInstaller.indexOf("-", dashIdx + 1);
     }
-    const jdkVersion = image.spec.jdkInstaller.substring(dashList[0] + 1, dashList[1]);
-    let underscoreList = [];
+    const jdkVersion = image.spec.jdkInstaller.substring(
+      dashList[0] + 1,
+      dashList[1]
+    );
+    const underscoreList = [];
     let underscoreIdx = image.spec.webLogicInstaller.indexOf("_");
-    while (underscoreIdx != -1) {
+    while (underscoreIdx !== -1) {
       underscoreList.push(underscoreIdx);
-      underscoreIdx = image.spec.webLogicInstaller.indexOf("_", underscoreIdx + 1);
+      underscoreIdx = image.spec.webLogicInstaller.indexOf(
+        "_",
+        underscoreIdx + 1
+      );
     }
-    const weblogicVersion = image.spec.webLogicInstaller.substring(underscoreList[0] + 1, underscoreList[1]);
+    const weblogicVersion = image.spec.webLogicInstaller.substring(
+      underscoreList[0] + 1,
+      underscoreList[1]
+    );
     const imageBuildRequest = {
       apiVersion: apiVersionValue,
       kind: ResourceType.VerrazzanoImageBuildRequest.Kind,
@@ -141,7 +150,7 @@ State
         jdkInstallerVersion: jdkVersion,
         webLogicInstaller: image.spec.webLogicInstaller,
         webLogicInstallerVersion: weblogicVersion,
-      }
+      },
     };
     await this.verrazzanoApi.postKubernetesResource(
       ResourceType.VerrazzanoImageBuildRequest,
@@ -187,18 +196,21 @@ State
   async getData() {
     this.updateState({ loading: true });
     try {
-      let currNamespaces = new Array<string>();
+      const currNamespaces = [];
       const namespaces = await this.verrazzanoApi.listNamespaces();
       namespaces.forEach((namespace) => {
         currNamespaces.push(namespace.metadata.name);
       });
-      let namespaceKeys = [];
+      const namespaceKeys = [];
       for (var i = 0; i < currNamespaces.length; i++) {
         namespaceKeys.push(i);
       }
-      let namespacesDataProvider = [];
-      for (var i = 0; i < currNamespaces.length; i++) {
-        namespacesDataProvider.push({ value: namespaceKeys[i], label: currNamespaces[i] });
+      const namespacesDataProvider = [];
+      for (var j = 0; j < currNamespaces.length; j++) {
+        namespacesDataProvider.push({
+          value: namespaceKeys[j],
+          label: currNamespaces[j],
+        });
       }
       const imageBuildRequests = await this.verrazzanoApi.listImageBuildRequests();
       imageBuildRequests.forEach((request) => {

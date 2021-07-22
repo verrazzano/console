@@ -102,10 +102,6 @@ export interface Project {
   createdOn?: string;
 }
 
-export interface Namespace {
-  metadata?: Metadata;
-}
-
 export interface WeblogicImage {
   name?: string;
   registry?: string;
@@ -144,6 +140,10 @@ export interface ImageBuildRequest {
   metadata?: Metadata;
   spec?: Spec;
   status?: IBRStatus;
+}
+
+export interface Namespace {
+  metadata?: Metadata;
 }
 
 export interface OAMApplication {
