@@ -107,6 +107,9 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           jdkInstaller: jdkInstaller,
           webLogicInstaller: webLogicInstaller,
         },
+        status: {
+          state: Messages.Labels.loading(),
+        },
       });
       return true;
     } catch (error) {
@@ -192,7 +195,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           <a
             onClick={() => {
               this.props.closeHandler();
-              this.baseImageSelection(this.defaultSelect);
+              this.baseImageSelection(this.defaultSelect)
               this.jdkInstallerSelection(this.defaultSelect);
               this.webLogicInstallerSelection(this.defaultSelect);
               this.updateState({
@@ -255,6 +258,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
                   id="imageRegistry"
+                  value={this.state.imageRegistry}
                   onValueChanged={this.handleImageRegistryChanged}
                 ></oj-input-text>
               </div>
@@ -264,6 +268,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
                   id="imageRepository"
+                  value={this.state.imageRepository}
                   onValueChanged={this.handleImageRepositoryChanged}
                 ></oj-input-text>
               </div>
@@ -273,7 +278,8 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
-                  id="imageImage"
+                  id="imageTag"
+                  value={this.state.imageTag}
                   onValueChanged={this.handleImageTagChanged}
                 ></oj-input-text>
               </div>
