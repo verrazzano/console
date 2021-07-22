@@ -142,10 +142,6 @@ export interface ImageBuildRequest {
   status?: IBRStatus;
 }
 
-export interface Namespace {
-  metadata?: Metadata;
-}
-
 export interface OAMApplication {
   name?: string;
   namespace?: string;

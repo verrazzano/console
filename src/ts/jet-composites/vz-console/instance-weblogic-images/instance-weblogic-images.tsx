@@ -33,7 +33,6 @@ class State {
   loading?: boolean;
   error?: string;
   errorContext?: string;
-  namespaces?: Array<{ value: string; label: string }>;
 }
 
 /**
@@ -196,22 +195,6 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
   async getData() {
     this.updateState({ loading: true });
     try {
-      const currNamespaces = [];
-      const namespaces = await this.verrazzanoApi.listNamespaces();
-      namespaces.forEach((namespace) => {
-        currNamespaces.push(namespace.metadata.name);
-      });
-      const namespaceKeys = [];
-      for (var i = 0; i < currNamespaces.length; i++) {
-        namespaceKeys.push(i);
-      }
-      const namespacesDataProvider = [];
-      for (var j = 0; j < currNamespaces.length; j++) {
-        namespacesDataProvider.push({
-          value: namespaceKeys[j],
-          label: currNamespaces[j],
-        });
-      }
       const imageBuildRequests = await this.verrazzanoApi.listImageBuildRequests();
       imageBuildRequests.forEach((request) => {
         this.state.images.push(new Model.Model(request));
@@ -220,7 +203,6 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
         images: new Model.Collection(this.state.images.models),
         loading: false,
         error: "",
-        namespaces: namespacesDataProvider,
       });
     } catch (error) {
       let errorMessage = error;
@@ -287,7 +269,6 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
               createImageHandler={this.handleImageAdded}
               closeHandler={this.handleClosePopup}
               value=""
-              namespaces={this.state.namespaces}
             />
           </oj-popup>
         </div>

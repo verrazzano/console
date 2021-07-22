@@ -22,12 +22,10 @@ import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 class Props {
   createImageHandler: (image: ImageBuildRequest) => Promise<void>;
   closeHandler: () => void;
-  namespaces: Array<{ value: string; label: string }>;
 }
 
 class State {
   imageName?: string;
-  imageNamespace?: string;
   error?: string;
   errorContext?: string;
   baseImage?: string;
@@ -37,7 +35,6 @@ class State {
   imageRegistry?: string;
   imageRepository?: string;
   imageTag?: string;
-  namespaces?: Array<string>;
 }
 /**
  * @ojmetadata pack "vz-console"
@@ -46,7 +43,6 @@ class State {
 export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   state = {
     imageName: "",
-    imageNamespace: "",
     error: "",
     errorContext: "",
     baseImage: "",
@@ -81,20 +77,13 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
     }
   );
 
-  namespacesDataProvider = new ArrayDataProvider(this.props.namespaces, {
-    keyAttributes: "value",
-  });
-
   defaultSelect = "default";
-  defaultNamespace = 0;
-  namespaceSelection = ko.observable(this.defaultNamespace);
   baseImageSelection = ko.observable(this.defaultSelect);
   jdkInstallerSelection = ko.observable(this.defaultSelect);
   webLogicInstallerSelection = ko.observable(this.defaultSelect);
 
   private createImage = async (
     imageName: string,
-    imageNamespace: string,
     baseImage: string,
     jdkInstaller: string,
     webLogicInstaller: string,
@@ -106,7 +95,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
       await this.props.createImageHandler({
         metadata: {
           name: imageName,
-          namespace: imageNamespace,
+          namespace: "verrazzano-system",
         },
         spec: {
           baseImage: baseImage,
@@ -118,9 +107,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           },
           jdkInstaller: jdkInstaller,
           webLogicInstaller: webLogicInstaller,
-        },
-        status: {
-          state: Messages.Labels.loading(),
         },
       });
       return true;
@@ -142,14 +128,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
       imageName: event.detail.value,
     });
   };
-
-  @listener({ capture: true, passive: true })
-  private handleNamespaceChanged(event: CustomEvent) {
-    if (event.detail.value) {
-      this.namespaceSelection(event.detail.value);
-      this.updateState({ imageNamespace: event.detail.value });
-    }
-  }
 
   private handleImageRegistryChanged = (
     event: ojInputTextEventMap["valueChanged"]
@@ -206,13 +184,8 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           <a
             onClick={() => {
               this.props.closeHandler();
-              this.baseImageSelection(this.defaultSelect);
-              this.jdkInstallerSelection(this.defaultSelect);
-              this.webLogicInstallerSelection(this.defaultSelect);
-              this.namespaceSelection(this.defaultNamespace);
               this.updateState({
                 imageName: "",
-                imageNamespace: "",
                 error: "",
                 errorContext: "",
                 baseImage: "",
@@ -244,19 +217,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                   value={this.state.imageName}
                   onValueChanged={this.handleNameChanged}
                 ></oj-input-text>
-              </div>
-              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label="Namespace" />
-              </div>
-              <div class="oj-flex-item oj-sm-padding-2x-horizontal">
-                <oj-select-single
-                  id="namespaceOptions"
-                  data={this.namespacesDataProvider}
-                  value={this.namespaceSelection}
-                  onValueChanged={this.handleNamespaceChanged}
-                  class="oj-complete sortselect"
-                  placeholder={Messages.Labels.selectOption()}
-                ></oj-select-single>
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
                 <ConsoleMetadataItem label="Image" />
@@ -340,52 +300,54 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
             </div>
           </div>
         </div>
-        <div class="oj-sm-padding-2x-horizontal oj-sm-padding-8x-vertical">
-          <oj-button
-            onClick={async () => {
-              const success = await this.createImage(
-                this.state.imageName,
-                this.state.imageNamespace,
-                this.state.baseImage,
-                this.state.jdkInstaller,
-                this.state.webLogicInstaller,
-                this.state.imageRegistry,
-                this.state.imageRepository,
-                this.state.imageTag
-              );
-              if (success) {
-                this.props.closeHandler();
-                this.baseImageSelection(this.defaultSelect);
-                this.jdkInstallerSelection(this.defaultSelect);
-                this.webLogicInstallerSelection(this.defaultSelect);
-                this.namespaceSelection(this.defaultNamespace);
-                this.updateState({
-                  imageName: "",
-                  imageNamespace: "",
-                  error: "",
-                  errorContext: "",
-                  baseImage: "",
-                  jdkInstaller: "",
-                  webLogicInstaller: "",
-                  dockerImageName: "",
-                  imageRegistry: "",
-                  imageRepository: "",
-                  imageTag: "",
-                });
-              }
-            }}
-          >
-            {Messages.Labels.add()}
-          </oj-button>
+        <div class="demo-flex-display">
+          <div class="oj-sm-odd-cols-12 oj-md-odd-cols-2">
+            <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-padding-4x-horizontal oj-sm-padding-8x-vertical">
+                <oj-button
+                  onClick={async () => {
+                    const success = await this.createImage(
+                      this.state.imageName,
+                      this.state.baseImage,
+                      this.state.jdkInstaller,
+                      this.state.webLogicInstaller,
+                      this.state.imageRegistry,
+                      this.state.imageRepository,
+                      this.state.imageTag
+                    );
+                    if (success) {
+                      this.props.closeHandler();
+                      this.updateState({
+                        imageName: "",
+                        error: "",
+                        errorContext: "",
+                        baseImage: "",
+                        jdkInstaller: "",
+                        webLogicInstaller: "",
+                        dockerImageName: "",
+                        imageRegistry: "",
+                        imageRepository: "",
+                        imageTag: "",
+                      });
+                    }
+                  }}
+                >
+                  {Messages.Labels.add()}
+                </oj-button>
+              </div>
+              <div class="oj-flex-item oj-sm-padding-20x-horizontal oj-sm-padding-8x-vertical">
+                {this.state.error ? (
+                  <ConsoleError
+                    context={this.state.errorContext}
+                    error={this.state.error}
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-        {this.state.error ? (
-          <ConsoleError
-            context={this.state.errorContext}
-            error={this.state.error}
-          />
-        ) : (
-          ""
-        )}
         <div class="oj-sm-margin-4x-right"></div>
       </div>
     );

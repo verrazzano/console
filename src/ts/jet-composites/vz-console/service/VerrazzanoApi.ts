@@ -12,7 +12,6 @@ import {
   ResourceType,
   ResourceTypeType,
   RoleBinding,
-  Namespace,
 } from "./types";
 import {
   processOAMData,
@@ -484,16 +483,6 @@ export class VerrazzanoApi {
     return response;
   }
 
-  public async getNamespaces(): Promise<Response> {
-    return Promise.resolve(
-      this.fetchApi(
-        `${this.url}/api/v1/namespaces?labelSelector=verrazzano-managed=true`
-      )
-    ).then((response) => {
-      return response;
-    });
-  }
-
   populateInstance(vzInstance, instanceId): Instance {
     const instance = <Instance>{
       id: instanceId,
@@ -593,22 +582,6 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errImageBuildRequestsFetchError());
         }
         return imageBuildRequests.items;
-      })
-      .catch((error) => {
-        throw new VzError(error);
-      });
-  }
-
-  public async listNamespaces(): Promise<Namespace[]> {
-    return this.getNamespaces()
-      .then((Response) => {
-        return Response.json();
-      })
-      .then((Response) => {
-        if (!Response) {
-          throw new Error(Messages.Error.errFetchingNamespaces());
-        }
-        return Response.items;
       })
       .catch((error) => {
         throw new VzError(error);
