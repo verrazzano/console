@@ -219,7 +219,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                 ></oj-input-text>
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label="Image" />
+                <ConsoleMetadataItem label={Messages.Labels.image()} />
               </div>
 
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
@@ -227,7 +227,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               </div>
 
               <div class="oj-flex-item oj-sm-padding-10x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label="Registry" />
+                <ConsoleMetadataItem label={Messages.Labels.registry()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
@@ -237,7 +237,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                 ></oj-input-text>
               </div>
               <div class="oj-flex-item oj-sm-padding-10x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label="Repository" />
+                <ConsoleMetadataItem label={Messages.Labels.repository()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
@@ -248,7 +248,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               </div>
 
               <div class="oj-flex-item oj-sm-padding-10x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label="Tag" />
+                <ConsoleMetadataItem label={Messages.Labels.tag()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
@@ -259,11 +259,11 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               </div>
 
               <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label="Base Image" />
+                <ConsoleMetadataItem label={Messages.Labels.baseImage()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-select-single
-                  id="baseImageOptions"
+                  id="baseImageSelection"
                   data={this.baseImageDataProvider}
                   value={this.baseImageSelection}
                   onValueChanged={this.handleBaseImageChanged}
@@ -272,11 +272,11 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                 ></oj-select-single>
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label="JDK Installer" />
+                <ConsoleMetadataItem label={Messages.Labels.jdkInstaller()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-select-single
-                  id="jdkInstallerOptions"
+                  id="jdkInstallerSelection"
                   data={this.jdkInstallerDataProvider}
                   value={this.jdkInstallerSelection}
                   onValueChanged={this.handleJDKInstallerChanged}
@@ -285,11 +285,11 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                 ></oj-select-single>
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label="Weblogic Installer" />
+                <ConsoleMetadataItem label={Messages.Labels.weblogicInstaller()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-select-single
-                  id="weblogicInstallerOptions"
+                  id="weblogicInstallerSelection"
                   data={this.weblogicInstallerDataProvider}
                   value={this.jdkInstallerSelection}
                   onValueChanged={this.handleWeblogicInstallerChanged}
