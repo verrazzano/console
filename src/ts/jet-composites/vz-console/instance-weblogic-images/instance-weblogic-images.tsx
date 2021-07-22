@@ -342,7 +342,7 @@ State
                             <strong>
                               <span>{Messages.Labels.status()}:&nbsp;</span>
                             </strong>
-                            <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                            <oj-bind-text value="[[item.data.status?.state]]"></oj-bind-text>
                           </div>
                         </div>
                       </div>
