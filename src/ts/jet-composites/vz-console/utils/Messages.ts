@@ -194,6 +194,14 @@ export const Auth = {
 };
 
 export const Labels = {
+  baseImage: () => Translations.getTranslatedString("labels.baseImage"),
+  image: () => Translations.getTranslatedString("labels.image"),
+  registry: () => Translations.getTranslatedString("labels.registry"),
+  repository: () => Translations.getTranslatedString("labels.repository"),
+  tag: () => Translations.getTranslatedString("labels.tag"),
+  jdkInstaller: () => Translations.getTranslatedString("labels.jdkInstaller"),
+  weblogicInstaller: () =>
+    Translations.getTranslatedString("labels.weblogicInstaller"),
   generalInfo: () => Translations.getTranslatedString("labels.generalInfo"),
   add: () => Translations.getTranslatedString("labels.add"),
   close: () => Translations.getTranslatedString("labels.close"),

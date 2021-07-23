@@ -107,12 +107,48 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
         slashIndex + 1
       );
     }
+    const dashList = [];
+    let dashIdx = image.spec.jdkInstaller.indexOf("-");
+    while (dashIdx !== -1) {
+      dashList.push(dashIdx);
+      dashIdx = image.spec.jdkInstaller.indexOf("-", dashIdx + 1);
+    }
+    const jdkVersion = image.spec.jdkInstaller.substring(
+      dashList[0] + 1,
+      dashList[1]
+    );
+    const underscoreList = [];
+    let underscoreIdx = image.spec.webLogicInstaller.indexOf("_");
+    while (underscoreIdx !== -1) {
+      underscoreList.push(underscoreIdx);
+      underscoreIdx = image.spec.webLogicInstaller.indexOf(
+        "_",
+        underscoreIdx + 1
+      );
+    }
+    const weblogicVersion = image.spec.webLogicInstaller.substring(
+      underscoreList[0] + 1,
+      underscoreList[1]
+    );
     const imageBuildRequest = {
       apiVersion: apiVersionValue,
       kind: ResourceType.VerrazzanoImageBuildRequest.Kind,
       metadata: {
         name: image.metadata.name,
         namespace: image.metadata.namespace,
+      },
+      spec: {
+        baseImage: image.spec.baseImage,
+        image: {
+          name: image.spec.image.name,
+          registry: image.spec.image.registry,
+          repository: image.spec.image.repository,
+          tag: image.spec.image.tag,
+        },
+        jdkInstaller: image.spec.jdkInstaller,
+        jdkInstallerVersion: jdkVersion,
+        webLogicInstaller: image.spec.webLogicInstaller,
+        webLogicInstallerVersion: weblogicVersion,
       },
     };
     await this.verrazzanoApi.postKubernetesResource(
@@ -310,7 +346,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                             <strong>
                               <span>{Messages.Labels.status()}:&nbsp;</span>
                             </strong>
-                            <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                            <oj-bind-text value="[[item.data.status?.state]]"></oj-bind-text>
                           </div>
                         </div>
                       </div>

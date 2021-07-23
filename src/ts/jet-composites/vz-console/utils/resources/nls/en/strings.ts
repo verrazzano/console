@@ -116,6 +116,13 @@ export = {
     msgUiUrl: "UI URL = {0}",
   },
   labels: {
+    baseImage: "Base Image",
+    image: "Image",
+    registry: "Registry",
+    repository: "Repository",
+    tag: "Tag",
+    jdkInstaller: "JDK Installer",
+    weblogicInstaller: "WebLogic Installer",
     generalInfo: "General Information",
     add: "Add",
     close: "Close",
