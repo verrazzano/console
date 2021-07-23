@@ -293,7 +293,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                 <oj-select-single
                   id="weblogicInstallerSelection"
                   data={this.weblogicInstallerDataProvider}
-                  value={this.jdkInstallerSelection}
+                  value={this.webLogicInstallerSelection}
                   onValueChanged={this.handleWeblogicInstallerChanged}
                   class="oj-complete sortselect"
                   placeholder={Messages.Labels.selectOption()}
