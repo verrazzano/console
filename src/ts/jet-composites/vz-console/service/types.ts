@@ -102,13 +102,6 @@ export interface Project {
   createdOn?: string;
 }
 
-export interface WeblogicImage {
-  name?: string;
-  registry?: string;
-  repository?: string;
-  tag?: string;
-}
-
 export interface Metadata {
   name?: string;
   namespace?: string;

@@ -36,6 +36,8 @@ class State {
   imageRepository?: string;
   imageTag?: string;
 }
+
+const IMAGE_BUILD_REQUEST_NAMESPACE = "verrazzano-system";
 /**
  * @ojmetadata pack "vz-console"
  */
@@ -82,33 +84,9 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   jdkInstallerSelection = ko.observable(this.defaultSelect);
   webLogicInstallerSelection = ko.observable(this.defaultSelect);
 
-  private createImage = async (
-    imageName: string,
-    baseImage: string,
-    jdkInstaller: string,
-    webLogicInstaller: string,
-    imageRegistry: string,
-    imageRepository: string,
-    imageTag: string
-  ): Promise<boolean> => {
+  private createImage = async (image: ImageBuildRequest): Promise<boolean> => {
     try {
-      await this.props.createImageHandler({
-        metadata: {
-          name: imageName,
-          namespace: "verrazzano-system",
-        },
-        spec: {
-          baseImage: baseImage,
-          image: {
-            name: imageName,
-            registry: imageRegistry,
-            repository: imageRepository,
-            tag: imageTag,
-          },
-          jdkInstaller: jdkInstaller,
-          webLogicInstaller: webLogicInstaller,
-        },
-      });
+      await this.props.createImageHandler(image);
       return true;
     } catch (error) {
       let errorMessage = error;
@@ -218,14 +196,13 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                   onValueChanged={this.handleNameChanged}
                 ></oj-input-text>
               </div>
-              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label={Messages.Labels.image()} />
-              </div>
-
-              <div class="oj-flex-item oj-sm-padding-2x-horizontal">
-                <ConsoleMetadataItem label="" />
-              </div>
-
+            </div>
+          </div>
+          <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+            <ConsoleMetadataItem label={Messages.Labels.image()} />
+          </div>
+          <div class="oj-sm-odd-cols-12 oj-md-odd-cols-4">
+            <div class="oj-flex">
               <div class="oj-flex-item oj-sm-padding-10x-horizontal oj-sm-padding-2x-vertical">
                 <ConsoleMetadataItem label={Messages.Labels.registry()} />
               </div>
@@ -246,7 +223,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                   onValueChanged={this.handleImageRepositoryChanged}
                 ></oj-input-text>
               </div>
-
               <div class="oj-flex-item oj-sm-padding-10x-horizontal oj-sm-padding-2x-vertical">
                 <ConsoleMetadataItem label={Messages.Labels.tag()} />
               </div>
@@ -257,7 +233,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                   onValueChanged={this.handleImageTagChanged}
                 ></oj-input-text>
               </div>
-
               <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
                 <ConsoleMetadataItem label={Messages.Labels.baseImage()} />
               </div>
@@ -308,15 +283,24 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               <div class="oj-flex-item oj-sm-padding-4x-horizontal oj-sm-padding-8x-vertical">
                 <oj-button
                   onClick={async () => {
-                    const success = await this.createImage(
-                      this.state.imageName,
-                      this.state.baseImage,
-                      this.state.jdkInstaller,
-                      this.state.webLogicInstaller,
-                      this.state.imageRegistry,
-                      this.state.imageRepository,
-                      this.state.imageTag
-                    );
+                    const newImage = {
+                      metadata: {
+                        name: this.state.imageName,
+                        namespace: IMAGE_BUILD_REQUEST_NAMESPACE,
+                      },
+                      spec: {
+                        baseImage: this.state.baseImage,
+                        image: {
+                          name: this.state.imageName,
+                          registry: this.state.imageRegistry,
+                          repository: this.state.imageRepository,
+                          tag: this.state.imageTag,
+                        },
+                        jdkInstaller: this.state.jdkInstaller,
+                        webLogicInstaller: this.state.webLogicInstaller,
+                      },
+                    };
+                    const success = await this.createImage(newImage);
                     if (success) {
                       this.props.closeHandler();
                       this.updateState({
