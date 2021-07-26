@@ -16,7 +16,6 @@ if (!apiUrl) {
  * env.js is generated before we get here so we can form an integrity hash and add that into index.html
  */
 function addEnvJs() {
-  const fs = require("fs");
   const envJsFilePath = path.join(staticPath, "js/env.js");
   console.log(`${envJsFilePath} joined.`);
 }

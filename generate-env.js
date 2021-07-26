@@ -2,10 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 const path = require("path");
-const express = require("express");
 
-const port = 8000;
-const app = express();
 const staticPath = path.join(__dirname, "web");
 const apiUrl = process.env.VZ_API_URL;
 if (!apiUrl) {
