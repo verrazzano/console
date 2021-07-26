@@ -1,4 +1,4 @@
-# Copyright (C) 2020, Oracle and/or its affiliates.
+# Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 FROM ghcr.io/oracle/oraclelinux:7-slim
@@ -17,9 +17,10 @@ COPY web /verrazzano/web
 COPY livenessProbe.sh /verrazzano/
 COPY start.sh /verrazzano/
 COPY server.js /verrazzano/
+COPY generate-env.js /verrazzano/
 COPY package.json /verrazzano/
 RUN cd /verrazzano/
-RUN npm install --save express express-http-proxy 
+RUN npm install --save express express-http-proxy
 HEALTHCHECK --interval=1m --timeout=10s \
   CMD /verrazzano/livenessProbe.sh
 
