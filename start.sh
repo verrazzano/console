@@ -5,6 +5,6 @@
 #
 set -x
 node generate-env.js
-ENV_JS_HASH=$(cat js/env.js | openssl dgst -sha384 -binary | openssl base64 -A)
-sed "s/ENV_JS_INTEGRITY_VALUE/${ENV_JS_HASH}/g" -i index.html
+ENV_JS_HASH=$(cat web/js/env.js | openssl dgst -sha384 -binary | openssl base64 -A)
+sed "s/ENV_JS_INTEGRITY_VALUE/${ENV_JS_HASH}/g" -i web/index.html
 node server.js
