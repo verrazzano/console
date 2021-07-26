@@ -14,4 +14,4 @@ Makefile
 *.md
 tsconfig.json
 .tmp
-index.html
+src/index.html
