@@ -99,10 +99,10 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
 
   private getInstallerVersion = (punctuation: string, installer: string) => {
     const newList = [];
-    let idx = installer.indexOf("-");
+    let idx = installer.indexOf(punctuation);
     while (idx !== -1) {
       newList.push(idx);
-      idx = installer.indexOf("-", idx + 1);
+      idx = installer.indexOf(punctuation, idx + 1);
     }
     const installerVersion = installer.substring(newList[0] + 1, newList[1]);
     return installerVersion;
