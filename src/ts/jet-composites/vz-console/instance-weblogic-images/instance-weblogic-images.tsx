@@ -97,6 +97,17 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     return result;
   };
 
+  private getInstallerVersion = (punctuation: string, installer: string) => {
+    const newList = [];
+    let idx = installer.indexOf(punctuation);
+    while (idx !== -1) {
+      newList.push(idx);
+      idx = installer.indexOf(punctuation, idx + 1);
+    }
+    const installerVersion = installer.substring(newList[0] + 1, newList[1]);
+    return installerVersion;
+  };
+
   private handleImageAdded = async (image: ImageBuildRequest) => {
     let apiVersionValue = ResourceType.VerrazzanoImageBuildRequest.ApiVersion;
     const slashIndex = ResourceType.VerrazzanoImageBuildRequest.ApiVersion.indexOf(
@@ -107,28 +118,13 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
         slashIndex + 1
       );
     }
-    const dashList = [];
-    let dashIdx = image.spec.jdkInstaller.indexOf("-");
-    while (dashIdx !== -1) {
-      dashList.push(dashIdx);
-      dashIdx = image.spec.jdkInstaller.indexOf("-", dashIdx + 1);
-    }
-    const jdkVersion = image.spec.jdkInstaller.substring(
-      dashList[0] + 1,
-      dashList[1]
+    const jdkInstallerVersion = this.getInstallerVersion(
+      "-",
+      image.spec.jdkInstaller
     );
-    const underscoreList = [];
-    let underscoreIdx = image.spec.webLogicInstaller.indexOf("_");
-    while (underscoreIdx !== -1) {
-      underscoreList.push(underscoreIdx);
-      underscoreIdx = image.spec.webLogicInstaller.indexOf(
-        "_",
-        underscoreIdx + 1
-      );
-    }
-    const weblogicVersion = image.spec.webLogicInstaller.substring(
-      underscoreList[0] + 1,
-      underscoreList[1]
+    const weblogicInstallerVersion = this.getInstallerVersion(
+      "_",
+      image.spec.webLogicInstaller
     );
     const imageBuildRequest = {
       apiVersion: apiVersionValue,
@@ -146,9 +142,9 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
           tag: image.spec.image.tag,
         },
         jdkInstaller: image.spec.jdkInstaller,
-        jdkInstallerVersion: jdkVersion,
+        jdkInstallerVersion: jdkInstallerVersion,
         webLogicInstaller: image.spec.webLogicInstaller,
-        webLogicInstallerVersion: weblogicVersion,
+        webLogicInstallerVersion: weblogicInstallerVersion,
       },
     };
     await this.verrazzanoApi.postKubernetesResource(
