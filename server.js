@@ -12,15 +12,6 @@ if (!apiUrl) {
   throw new Error("VZ_API_URL not specified. Aborting..");
 }
 
-/**
- * env.js is generated before we get here so we can form an integrity hash and add that into index.html
- */
-function addEnvJs() {
-  const envJsFilePath = path.join(staticPath, "js/env.js");
-  console.log(`${envJsFilePath} joined.`);
-}
-
-addEnvJs();
 app.use(express.static(staticPath));
 
 app.get("/oamapps", (req, res, next) => {
