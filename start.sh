@@ -8,13 +8,13 @@ node generate-env.js
 ENV_JS_HASH=$(openssl dgst -sha384 -binary web/js/env.js | openssl base64 -A)
 REQUIRE_JS_HASH=$(openssl dgst -sha384 -binary web/js/libs/require/require.js | openssl base64 -A)
 MAIN_JS_HASH=$(openssl dgst -sha384 -binary web/js/main.js | openssl base64 -A)
-FAVICO_HASH=$(openssl dgst -sha384 -binary web/css/images/favico.svg | openssl base64 -A)
-REDWOOD_CSS_HASH=$(openssl dgst -sha384 -binary web/css/redwood/10.1.0/web/redwood-min.css | openssl base64 -A)
-DEMO_ALTA_CSS_HASH=$(openssl dgst -sha384 -binary web/css/demo-alta-site.css | openssl base64 -A)
-curl https://static.oracle.com/cdn/fnd/gallery/2101.3.0/images/iconfont/ojuxIconFont.min.css -o /tmp/ojuxIconFont.min.css
-UNIXFONT_CSS_HASH=$(openssl dgst -sha384 -binary /tmp/ojuxIconFont.min.css | openssl base64 -A)
+FAVICO_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/css/images/favico.svg | openssl base64 -A))
+REDWOOD_CSS_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/css/redwood/10.1.0/web/redwood.min.css | openssl base64 -A))
+DEMO_ALTA_CSS_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/css/demo-alta-site.css | openssl base64 -A))
+curl -sS https://static.oracle.com/cdn/fnd/gallery/2101.3.0/images/iconfont/ojuxIconFont.min.css -o /tmp/ojuxIconFont.min.css
+UNIXFONT_CSS_HASH=$(echo sha384-$(openssl dgst -sha384 -binary /tmp/ojuxIconFont.min.css | openssl base64 -A))
 rm -rf /tmp/ojuxIconFont.min.css
-APP_CSS_HASH=$(openssl dgst -sha384 -binary web/css/app.css | openssl base64 -A)
+APP_CSS_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/css/app.css | openssl base64 -A))
 
-sed -e "s;ENV_JS_INTEGRITY_VALUE;${ENV_JS_HASH};g" -e "s;REQUIRE_JS_INTEGRITY_VALUE;${REQUIRE_JS_HASH};g" -e "s;MAIN_JS_INTEGRITY_VALUE;${MAIN_JS_HASH};g" -e "s;FAVICO_INTEGRITY_VALUE;${FAVICO_HASH};g" -e "s;REDWOOD_CSS_INTEGRITY_VALUE;${REDWOOD_CSS_HASH};g" -e "s;DEMO_ALTA_CSS_INTEGRITY_VALUE;${DEMO_ALTA_CSS_HASH};g" -e "s;UNIXFONT_CSS_INTEGRITY_VALUE;${UNIXFONT_CSS_HASH};g" -e "s;APP_CSS_INTEGRITY_VALUE;${APP_CSS_HASH};g" -i web/index.html
+sed -i.bk -e "s;ENV_JS_INTEGRITY_VALUE;${ENV_JS_HASH};g" -e "s;REQUIRE_JS_INTEGRITY_VALUE;${REQUIRE_JS_HASH};g" -e "s;MAIN_JS_INTEGRITY_VALUE;${MAIN_JS_HASH};g" -e "s;FAVICO_INTEGRITY_VALUE;${FAVICO_HASH};g" -e "s;id=\"css\";id=\"css\" integrity=\"${REDWOOD_CSS_HASH}\";g" -e "s;DEMO_ALTA_CSS_INTEGRITY_VALUE;${DEMO_ALTA_CSS_HASH};g" -e "s;UNIXFONT_CSS_INTEGRITY_VALUE;${UNIXFONT_CSS_HASH};g" -e "s;APP_CSS_INTEGRITY_VALUE;${APP_CSS_HASH};g" web/index.html
 node server.js
