@@ -5,9 +5,9 @@
 #
 set -x
 node generate-env.js
-ENV_JS_HASH=$(openssl dgst -sha384 -binary web/js/env.js | openssl base64 -A)
-REQUIRE_JS_HASH=$(openssl dgst -sha384 -binary web/js/libs/require/require.js | openssl base64 -A)
-MAIN_JS_HASH=$(openssl dgst -sha384 -binary web/js/main.js | openssl base64 -A)
+ENV_JS_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/js/env.js | openssl base64 -A))
+REQUIRE_JS_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/js/libs/require/require.js | openssl base64 -A))
+MAIN_JS_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/js/main.js | openssl base64 -A))
 FAVICO_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/css/images/favico.svg | openssl base64 -A))
 REDWOOD_CSS_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/css/redwood/10.1.0/web/redwood.min.css | openssl base64 -A))
 DEMO_ALTA_CSS_HASH=$(echo sha384-$(openssl dgst -sha384 -binary web/css/demo-alta-site.css | openssl base64 -A))
