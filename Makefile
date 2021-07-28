@@ -62,6 +62,7 @@ endif
 ojet-build: npm-install
 	PATH=./node_modules/.bin:${PATH} && \
 	ojet build --release
+	./calc_integrity_hash.sh
 
 .PHONY: build
 build: ojet-build

@@ -15,4 +15,3 @@ Makefile
 tsconfig.json
 .tmp
 src/index.html
-ojuxIconFont.min.css
