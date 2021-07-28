@@ -13,7 +13,7 @@ import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/metadata-item";
 import * as Messages from "vz-console/utils/Messages";
-import { ImageBuildRequest } from "vz-console/service/types";
+import { ImageBuildRequest, IBRStatus } from "vz-console/service/types";
 import { ojInputTextEventMap } from "ojs/ojinputtext";
 import { ConsoleError } from "vz-console/error/error";
 import ko = require("knockout");
@@ -25,16 +25,17 @@ class Props {
 }
 
 class State {
-  imageName?: string;
+  ibrName?: string;
   error?: string;
   errorContext?: string;
   baseImage?: string;
   jdkInstaller?: string;
   webLogicInstaller?: string;
-  dockerImageName?: string;
+  imageName?: string;
   imageRegistry?: string;
   imageRepository?: string;
   imageTag?: string;
+  status: IBRStatus;
 }
 
 const IMAGE_BUILD_REQUEST_NAMESPACE = "verrazzano-system";
@@ -44,16 +45,19 @@ const IMAGE_BUILD_REQUEST_NAMESPACE = "verrazzano-system";
 @customElement("vz-console-image-create")
 export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   state = {
-    imageName: "",
+    ibrName: "",
     error: "",
     errorContext: "",
     baseImage: "",
     jdkInstaller: "",
     webLogicInstaller: "",
-    dockerImageName: "",
+    imageName: "",
     imageRegistry: "",
     imageRepository: "",
     imageTag: "",
+    status: {
+      state: "",
+    },
   };
 
   baseImages = [
@@ -101,7 +105,18 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
     }
   };
 
-  private handleNameChanged = (event: ojInputTextEventMap["valueChanged"]) => {
+  private handleIbrNameChanged = (
+    event: ojInputTextEventMap["valueChanged"]
+  ) => {
+    this.updateState({
+      ibrName: event.detail.value,
+      imageName: event.detail.value,
+    });
+  };
+
+  private handleImageNameChanged = (
+    event: ojInputTextEventMap["valueChanged"]
+  ) => {
     this.updateState({
       imageName: event.detail.value,
     });
@@ -163,13 +178,13 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
             onClick={() => {
               this.props.closeHandler();
               this.updateState({
-                imageName: "",
+                ibrName: "",
                 error: "",
                 errorContext: "",
                 baseImage: "",
                 jdkInstaller: "",
                 webLogicInstaller: "",
-                dockerImageName: "",
+                imageName: "",
                 imageRegistry: "",
                 imageRepository: "",
                 imageTag: "",
@@ -191,9 +206,9 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
-                  id="imageName"
-                  value={this.state.imageName}
-                  onValueChanged={this.handleNameChanged}
+                  id="ibrName"
+                  value={this.state.ibrName}
+                  onValueChanged={this.handleIbrNameChanged}
                 ></oj-input-text>
               </div>
             </div>
@@ -203,6 +218,16 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           </div>
           <div class="oj-sm-odd-cols-12 oj-md-odd-cols-4">
             <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-padding-10x-horizontal oj-sm-padding-2x-vertical">
+                <ConsoleMetadataItem label={Messages.Labels.image()} />
+              </div>
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal">
+                <oj-input-text
+                  id="imageName"
+                  value={this.state.imageName}
+                  onValueChanged={this.handleImageNameChanged}
+                ></oj-input-text>
+              </div>
               <div class="oj-flex-item oj-sm-padding-10x-horizontal oj-sm-padding-2x-vertical">
                 <ConsoleMetadataItem label={Messages.Labels.registry()} />
               </div>
@@ -285,7 +310,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                   onClick={async () => {
                     const newImage = {
                       metadata: {
-                        name: this.state.imageName,
+                        name: this.state.ibrName,
                         namespace: IMAGE_BUILD_REQUEST_NAMESPACE,
                       },
                       spec: {
@@ -299,21 +324,27 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                         jdkInstaller: this.state.jdkInstaller,
                         webLogicInstaller: this.state.webLogicInstaller,
                       },
+                      status: {
+                        state: "Not Available",
+                      },
                     };
                     const success = await this.createImage(newImage);
                     if (success) {
                       this.props.closeHandler();
                       this.updateState({
-                        imageName: "",
+                        ibrName: "",
                         error: "",
                         errorContext: "",
                         baseImage: "",
                         jdkInstaller: "",
                         webLogicInstaller: "",
-                        dockerImageName: "",
+                        imageName: "",
                         imageRegistry: "",
                         imageRepository: "",
                         imageTag: "",
+                        status: {
+                          state: "",
+                        },
                       });
                     }
                   }}
