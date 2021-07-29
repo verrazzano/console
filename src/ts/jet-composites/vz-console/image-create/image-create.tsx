@@ -13,7 +13,10 @@ import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
 import { ConsoleMetadataItem } from "vz-console/metadata-item/metadata-item";
 import * as Messages from "vz-console/utils/Messages";
-import { ImageBuildRequest, IBRStatus } from "vz-console/service/types";
+import {
+  ImageBuildRequest,
+  ImageBuildRequestStatus,
+} from "vz-console/service/types";
 import { ojInputTextEventMap } from "ojs/ojinputtext";
 import { ConsoleError } from "vz-console/error/error";
 import ko = require("knockout");
@@ -25,7 +28,7 @@ class Props {
 }
 
 class State {
-  ibrName?: string;
+  requestName?: string;
   error?: string;
   errorContext?: string;
   baseImage?: string;
@@ -35,7 +38,7 @@ class State {
   imageRegistry?: string;
   imageRepository?: string;
   imageTag?: string;
-  status: IBRStatus;
+  status: ImageBuildRequestStatus;
 }
 
 const IMAGE_BUILD_REQUEST_NAMESPACE = "verrazzano-system";
@@ -45,7 +48,7 @@ const IMAGE_BUILD_REQUEST_NAMESPACE = "verrazzano-system";
 @customElement("vz-console-image-create")
 export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   state = {
-    ibrName: "",
+    requestName: "",
     error: "",
     errorContext: "",
     baseImage: "",
@@ -105,13 +108,19 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
     }
   };
 
-  private handleIbrNameChanged = (
+  private handleRequestNameChanged = (
     event: ojInputTextEventMap["valueChanged"]
   ) => {
-    this.updateState({
-      ibrName: event.detail.value,
-      imageName: event.detail.value,
-    });
+    if (this.state.imageName === "") {
+      this.updateState({
+        requestName: event.detail.value,
+        imageName: event.detail.value,
+      });
+    } else {
+      this.updateState({
+        requestName: event.detail.value,
+      });
+    }
   };
 
   private handleImageNameChanged = (
@@ -178,7 +187,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
             onClick={() => {
               this.props.closeHandler();
               this.updateState({
-                ibrName: "",
+                requestName: "",
                 error: "",
                 errorContext: "",
                 baseImage: "",
@@ -207,8 +216,8 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
                   id="ibrName"
-                  value={this.state.ibrName}
-                  onValueChanged={this.handleIbrNameChanged}
+                  value={this.state.requestName}
+                  onValueChanged={this.handleRequestNameChanged}
                 ></oj-input-text>
               </div>
             </div>
@@ -308,9 +317,9 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               <div class="oj-flex-item oj-sm-padding-4x-horizontal oj-sm-padding-8x-vertical">
                 <oj-button
                   onClick={async () => {
-                    const newImage = {
+                    const newImageBuildRequest = {
                       metadata: {
-                        name: this.state.ibrName,
+                        name: this.state.requestName,
                         namespace: IMAGE_BUILD_REQUEST_NAMESPACE,
                       },
                       spec: {
@@ -328,11 +337,13 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                         state: "Not Available",
                       },
                     };
-                    const success = await this.createImage(newImage);
+                    const success = await this.createImage(
+                      newImageBuildRequest
+                    );
                     if (success) {
                       this.props.closeHandler();
                       this.updateState({
-                        ibrName: "",
+                        requestName: "",
                         error: "",
                         errorContext: "",
                         baseImage: "",
