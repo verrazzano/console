@@ -329,7 +329,6 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                             </strong>
                             <oj-bind-text value="[[item.data.metadata.name]]"></oj-bind-text>
                           </div>
-
                           <div class="carditem">
                             <strong>
                               <span>{Messages.Labels.ns()}:&nbsp;</span>

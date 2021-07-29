@@ -123,7 +123,7 @@ export interface Spec {
   webLogicInstallerVersion?: string;
 }
 
-export interface IBRStatus {
+export interface ImageBuildRequestStatus {
   state: string;
 }
 
@@ -132,7 +132,7 @@ export interface ImageBuildRequest {
   kind?: string;
   metadata?: Metadata;
   spec?: Spec;
-  status?: IBRStatus;
+  status?: ImageBuildRequestStatus;
 }
 
 export interface OAMApplication {
