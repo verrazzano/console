@@ -39,6 +39,8 @@ class State {
   imageRepository?: string;
   imageTag?: string;
   status: ImageBuildRequestStatus;
+  latestPSU: boolean;
+  recommendedPatches: boolean;
 }
 
 const IMAGE_BUILD_REQUEST_NAMESPACE = "verrazzano-system";
@@ -61,6 +63,8 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
     status: {
       state: "",
     },
+    latestPSU: false,
+    recommendedPatches: false,
   };
 
   baseImages = [
@@ -90,6 +94,8 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   baseImageSelection = ko.observable(this.defaultSelect);
   jdkInstallerSelection = ko.observable(this.defaultSelect);
   webLogicInstallerSelection = ko.observable(this.defaultSelect);
+  latestPSUSelection: ko.ObservableArray<string>;
+  recommendedPatchesSelection: ko.ObservableArray<string>;
 
   private createImage = async (image: ImageBuildRequest): Promise<boolean> => {
     try {
@@ -179,6 +185,30 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
     }
   }
 
+  private handleLatestPSUChanged = (event: CustomEvent) => {
+    if (event.detail.value.length !== 0) {
+      this.updateState({
+        latestPSU: true,
+      });
+    } else {
+      this.updateState({
+        latestPSU: false,
+      });
+    }
+  };
+
+  private handleRecommendedPatchesChanged = (event: CustomEvent) => {
+    if (event.detail.value.length !== 0) {
+      this.updateState({
+        recommendedPatches: true,
+      });
+    } else {
+      this.updateState({
+        recommendedPatches: false,
+      });
+    }
+  };
+
   render() {
     return (
       <div class="popupbody">
@@ -190,9 +220,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                 requestName: "",
                 error: "",
                 errorContext: "",
-                baseImage: "",
-                jdkInstaller: "",
-                webLogicInstaller: "",
                 imageName: "",
                 imageRegistry: "",
                 imageRepository: "",
@@ -211,7 +238,9 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           <div class="oj-sm-odd-cols-12 oj-md-odd-cols-4">
             <div class="oj-flex">
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
-                <ConsoleMetadataItem label={Messages.Labels.name()} />
+                <ConsoleMetadataItem
+                  label={Messages.Labels.imageBuildRequestName()}
+                />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
@@ -228,7 +257,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           <div class="oj-sm-odd-cols-12 oj-md-odd-cols-4">
             <div class="oj-flex">
               <div class="oj-flex-item oj-sm-padding-10x-horizontal oj-sm-padding-2x-vertical">
-                <ConsoleMetadataItem label={Messages.Labels.image()} />
+                <ConsoleMetadataItem label={Messages.Labels.name()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
@@ -308,6 +337,38 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                   placeholder={Messages.Labels.selectOption()}
                 ></oj-select-single>
               </div>
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+                <ConsoleMetadataItem label={Messages.Labels.latestPSU()} />
+              </div>
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+                <oj-checkboxset
+                  id="latestPSUId"
+                  label-edge="inside"
+                  value={this.latestPSUSelection}
+                  onValueChanged={this.handleLatestPSUChanged}
+                >
+                  <oj-option value="true">
+                    {Messages.Labels.latestPSUCheckboxLabel()}
+                  </oj-option>
+                </oj-checkboxset>
+              </div>
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+                <ConsoleMetadataItem
+                  label={Messages.Labels.recommendedPatches()}
+                />
+              </div>
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+                <oj-checkboxset
+                  id="RecommendedPatchesId"
+                  label-edge="inside"
+                  value={this.recommendedPatchesSelection}
+                  onValueChanged={this.handleRecommendedPatchesChanged}
+                >
+                  <oj-option value="true">
+                    {Messages.Labels.recommendedPatchesCheckboxLabel()}
+                  </oj-option>
+                </oj-checkboxset>
+              </div>
             </div>
           </div>
         </div>
@@ -332,6 +393,8 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                         },
                         jdkInstaller: this.state.jdkInstaller,
                         webLogicInstaller: this.state.webLogicInstaller,
+                        latestPSU: this.state.latestPSU,
+                        recommendedPatches: this.state.recommendedPatches,
                       },
                       status: {
                         state: "Not Available",
@@ -346,9 +409,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                         requestName: "",
                         error: "",
                         errorContext: "",
-                        baseImage: "",
-                        jdkInstaller: "",
-                        webLogicInstaller: "",
                         imageName: "",
                         imageRegistry: "",
                         imageRepository: "",

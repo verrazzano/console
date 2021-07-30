@@ -121,6 +121,8 @@ export interface Spec {
   jdkInstallerVersion?: string;
   webLogicInstaller?: string;
   webLogicInstallerVersion?: string;
+  latestPSU?: boolean;
+  recommendedPatches?: boolean;
 }
 
 export interface ImageBuildRequestStatus {
