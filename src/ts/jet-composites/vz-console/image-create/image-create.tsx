@@ -337,36 +337,32 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                   placeholder={Messages.Labels.selectOption()}
                 ></oj-select-single>
               </div>
-              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-6x-vertical">
                 <ConsoleMetadataItem label={Messages.Labels.latestPSU()} />
               </div>
-              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-6x-vertical">
                 <oj-checkboxset
                   id="latestPSUId"
                   label-edge="inside"
                   value={this.latestPSUSelection}
                   onValueChanged={this.handleLatestPSUChanged}
                 >
-                  <oj-option value="true">
-                    {Messages.Labels.latestPSUCheckboxLabel()}
-                  </oj-option>
+                  <oj-option value="true"></oj-option>
                 </oj-checkboxset>
               </div>
-              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <ConsoleMetadataItem
                   label={Messages.Labels.recommendedPatches()}
                 />
               </div>
-              <div class="oj-flex-item oj-sm-padding-2x-horizontal oj-sm-padding-2x-vertical">
+              <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-checkboxset
                   id="RecommendedPatchesId"
                   label-edge="inside"
                   value={this.recommendedPatchesSelection}
                   onValueChanged={this.handleRecommendedPatchesChanged}
                 >
-                  <oj-option value="true">
-                    {Messages.Labels.recommendedPatchesCheckboxLabel()}
-                  </oj-option>
+                  <oj-option value="true"></oj-option>
                 </oj-checkboxset>
               </div>
             </div>

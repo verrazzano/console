@@ -197,10 +197,6 @@ export const Labels = {
   latestPSU: () => Translations.getTranslatedString("labels.latestPSU"),
   recommendedPatches: () =>
     Translations.getTranslatedString("labels.recommendedPatches"),
-  latestPSUCheckboxLabel: () =>
-    Translations.getTranslatedString("labels.latestPSUCheckboxLabel"),
-  recommendedPatchesCheckboxLabel: () =>
-    Translations.getTranslatedString("labels.recommendedPatchesCheckboxLabel"),
   baseImage: () => Translations.getTranslatedString("labels.baseImage"),
   image: () => Translations.getTranslatedString("labels.image"),
   registry: () => Translations.getTranslatedString("labels.registry"),
