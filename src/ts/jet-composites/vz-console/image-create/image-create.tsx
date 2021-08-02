@@ -186,27 +186,11 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   }
 
   private handleLatestPSUChanged = (event: CustomEvent) => {
-    if (event.detail.value.length !== 0) {
-      this.updateState({
-        latestPSU: true,
-      });
-    } else {
-      this.updateState({
-        latestPSU: false,
-      });
-    }
+    this.updateState({ latestPSU: event.detail.value.length !== 0 });
   };
 
   private handleRecommendedPatchesChanged = (event: CustomEvent) => {
-    if (event.detail.value.length !== 0) {
-      this.updateState({
-        recommendedPatches: true,
-      });
-    } else {
-      this.updateState({
-        recommendedPatches: false,
-      });
-    }
+    this.updateState({ recommendedPatches: event.detail.value.length !== 0 });
   };
 
   render() {

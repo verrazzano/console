@@ -315,40 +315,17 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                 </div>
                 <oj-list-view
                   id="listview"
-                  ariaLabel="weblogic images"
+                  ariaLabel="project network policies"
                   data={this.dataProvider()}
                   selectionMode="single"
                   class="oj-complete"
                   item={{ selectable: true }}
                 >
-                  <template slot="itemTemplate" data-oj-as="item">
-                    <oj-list-item-layout class="oj-complete">
-                      <div class="oj-flex cardmargin">
-                        <div class="oj-sm-10 oj-flex-item">
-                          <div class="carditem">
-                            <strong>
-                              <span>
-                                {Messages.Labels.imageBuildRequestName()}:&nbsp;
-                              </span>
-                            </strong>
-                            <oj-bind-text value="[[item.data.metadata.name]]"></oj-bind-text>
-                          </div>
-                          <div class="carditem">
-                            <strong>
-                              <span>{Messages.Labels.ns()}:&nbsp;</span>
-                            </strong>
-                            <oj-bind-text value="[[item.data.metadata.namespace]]"></oj-bind-text>
-                          </div>
-                          <div class="carditem">
-                            <strong>
-                              <span>{Messages.Labels.status()}:&nbsp;</span>
-                            </strong>
-                            <oj-bind-text value="[[item.data.status?.state]]"></oj-bind-text>
-                          </div>
-                        </div>
-                      </div>
-                    </oj-list-item-layout>
-                  </template>
+                  <template
+                    slot="itemTemplate"
+                    data-oj-as="item"
+                    render={this.renderListOfImages}
+                  ></template>
                 </oj-list-view>
                 <div class="oj-flex card-border">
                   <div class="oj-sm-7 oj-flex-item"></div>
@@ -378,6 +355,43 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
           </div>
         </div>
       </div>
+    );
+  }
+
+  private renderListOfImages(item: any) {
+    const imageInfo =
+      item.data.spec.image.registry +
+      "/" +
+      item.data.spec.image.repository +
+      "/" +
+      item.data.spec.image.name +
+      ":" +
+      item.data.spec.image.tag;
+    return (
+      <oj-list-item-layout class="oj-complete">
+        <div class="oj-flex cardmargin">
+          <div class="oj-sm-10 oj-flex-item">
+            <div class="carditem">
+              <strong>
+                <span>{Messages.Labels.name()}:&nbsp;</span>
+              </strong>
+              {item.data.metadata.name}
+            </div>
+            <div class="carditem">
+              <strong>
+                <span>{Messages.Labels.image()}:&nbsp;</span>
+              </strong>
+              {imageInfo}
+            </div>
+            <div class="carditem">
+              <strong>
+                <span>{Messages.Labels.status()}:&nbsp;</span>
+              </strong>
+              {item.data.status?.state}
+            </div>
+          </div>
+        </div>
+      </oj-list-item-layout>
     );
   }
 }
