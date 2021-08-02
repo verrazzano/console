@@ -116,7 +116,8 @@ export = {
     msgUiUrl: "UI URL = {0}",
   },
   labels: {
-    imageBuildRequestName: "Image Build Request Name",
+    notAvailable: "Not Available",
+    requestName: "Request Name",
     latestPSU: "Install latest patch service updates",
     recommendedPatches: "Install recommended patches",
     baseImage: "Base Image",

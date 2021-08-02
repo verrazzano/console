@@ -222,9 +222,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           <div class="oj-sm-odd-cols-12 oj-md-odd-cols-4">
             <div class="oj-flex">
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
-                <ConsoleMetadataItem
-                  label={Messages.Labels.imageBuildRequestName()}
-                />
+                <ConsoleMetadataItem label={Messages.Labels.requestName()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
@@ -375,9 +373,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                         webLogicInstaller: this.state.webLogicInstaller,
                         latestPSU: this.state.latestPSU,
                         recommendedPatches: this.state.recommendedPatches,
-                      },
-                      status: {
-                        state: "Not Available",
                       },
                     };
                     const success = await this.createImage(

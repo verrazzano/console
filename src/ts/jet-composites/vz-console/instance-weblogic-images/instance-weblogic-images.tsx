@@ -367,16 +367,12 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
       item.data.spec.image.name +
       ":" +
       item.data.spec.image.tag;
+    const statusInfo =
+      item.data.status?.state || Messages.Labels.notAvailable();
     return (
       <oj-list-item-layout class="oj-complete">
         <div class="oj-flex cardmargin">
           <div class="oj-sm-10 oj-flex-item">
-            <div class="carditem">
-              <strong>
-                <span>{Messages.Labels.name()}:&nbsp;</span>
-              </strong>
-              {item.data.metadata.name}
-            </div>
             <div class="carditem">
               <strong>
                 <span>{Messages.Labels.image()}:&nbsp;</span>
@@ -387,7 +383,13 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
               <strong>
                 <span>{Messages.Labels.status()}:&nbsp;</span>
               </strong>
-              {item.data.status?.state}
+              {statusInfo}
+            </div>
+            <div class="carditem">
+              <strong>
+                <span>{Messages.Labels.requestName()}:&nbsp;</span>
+              </strong>
+              {item.data.metadata.name}
             </div>
           </div>
         </div>
