@@ -145,6 +145,8 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
         jdkInstallerVersion: jdkInstallerVersion,
         webLogicInstaller: image.spec.webLogicInstaller,
         webLogicInstallerVersion: weblogicInstallerVersion,
+        latestPSU: image.spec.latestPSU,
+        recommendedPatches: image.spec.recommendedPatches,
       },
     };
     await this.verrazzanoApi.postKubernetesResource(
@@ -325,7 +327,9 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                         <div class="oj-sm-10 oj-flex-item">
                           <div class="carditem">
                             <strong>
-                              <span>{Messages.Labels.name()}:&nbsp;</span>
+                              <span>
+                                {Messages.Labels.imageBuildRequestName()}:&nbsp;
+                              </span>
                             </strong>
                             <oj-bind-text value="[[item.data.metadata.name]]"></oj-bind-text>
                           </div>
@@ -333,10 +337,8 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                             <strong>
                               <span>{Messages.Labels.ns()}:&nbsp;</span>
                             </strong>
-
                             <oj-bind-text value="[[item.data.metadata.namespace]]"></oj-bind-text>
                           </div>
-
                           <div class="carditem">
                             <strong>
                               <span>{Messages.Labels.status()}:&nbsp;</span>
@@ -348,7 +350,6 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                     </oj-list-item-layout>
                   </template>
                 </oj-list-view>
-
                 <div class="oj-flex card-border">
                   <div class="oj-sm-7 oj-flex-item"></div>
                   <div class="oj-sm-5 oj-flex-item">

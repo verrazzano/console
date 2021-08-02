@@ -194,6 +194,9 @@ export const Auth = {
 };
 
 export const Labels = {
+  latestPSU: () => Translations.getTranslatedString("labels.latestPSU"),
+  recommendedPatches: () =>
+    Translations.getTranslatedString("labels.recommendedPatches"),
   baseImage: () => Translations.getTranslatedString("labels.baseImage"),
   image: () => Translations.getTranslatedString("labels.image"),
   registry: () => Translations.getTranslatedString("labels.registry"),
@@ -206,6 +209,8 @@ export const Labels = {
   add: () => Translations.getTranslatedString("labels.add"),
   close: () => Translations.getTranslatedString("labels.close"),
   name: () => Translations.getTranslatedString("labels.name"),
+  imageBuildRequestName: () =>
+    Translations.getTranslatedString("labels.imageBuildRequestName"),
   desc: () => Translations.getTranslatedString("labels.desc"),
   loading: () => Translations.getTranslatedString("labels.loading"),
   refineBy: () => Translations.getTranslatedString("labels.refineBy"),
