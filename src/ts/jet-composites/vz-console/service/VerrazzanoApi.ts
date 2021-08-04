@@ -113,95 +113,12 @@ export class VerrazzanoApi {
         ];
       })
       .then(([apps, components, mcApps, mcComponents]) => {
-        const mcApplicationsByClusterAndNamespace = new Map<
-          string,
-          Map<string, Map<string, any>>
-        >();
-        const mcComponentsByClusterAndNamespace = new Map<
-          string,
-          Map<string, Map<string, any>>
-        >();
-        mcApps.forEach((mcApp) => {
-          if (
-            mcApp &&
-            mcApp.spec.placement &&
-            mcApp.spec.placement.clusters &&
-            mcApp.spec.placement.clusters.length > 0
-          ) {
-            mcApp.spec.placement.clusters
-              .filter((cluster) => cluster.name !== "local")
-              .forEach((cluster) => {
-                let mcAppsInCluster = mcApplicationsByClusterAndNamespace.get(
-                  cluster.name
-                );
-                if (!mcAppsInCluster) {
-                  mcAppsInCluster = new Map<string, Map<string, any>>();
-                  mcApplicationsByClusterAndNamespace.set(
-                    cluster.name,
-                    mcAppsInCluster
-                  );
-                }
-                if (
-                  mcApp.metadata &&
-                  mcApp.metadata.name &&
-                  mcApp.metadata.namespace
-                ) {
-                  let mcAppsInNamespace = mcAppsInCluster.get(
-                    mcApp.metadata.namespace
-                  );
-                  if (!mcAppsInNamespace) {
-                    mcAppsInNamespace = new Map<string, any>();
-                    mcAppsInCluster.set(
-                      mcApp.metadata.namespace,
-                      mcAppsInNamespace
-                    );
-                  }
-                  mcAppsInNamespace.set(mcApp.metadata.name, {});
-                }
-              });
-          }
-        });
-        mcComponents.forEach((mcComponent) => {
-          if (
-            mcComponent &&
-            mcComponent.spec &&
-            mcComponent.spec.placement &&
-            mcComponent.spec.placement.clusters &&
-            mcComponent.spec.placement.clusters.length > 0
-          ) {
-            mcComponent.spec.placement.clusters
-              .filter((cluster) => cluster.name !== "local")
-              .forEach((cluster) => {
-                let mcComponentsInCluster = mcComponentsByClusterAndNamespace.get(
-                  cluster.name
-                );
-                if (!mcComponentsInCluster) {
-                  mcComponentsInCluster = new Map<string, Map<string, any>>();
-                  mcComponentsByClusterAndNamespace.set(
-                    cluster.name,
-                    mcComponentsInCluster
-                  );
-                }
-                if (
-                  mcComponent.metadata &&
-                  mcComponent.metadata.name &&
-                  mcComponent.metadata.namespace
-                ) {
-                  let mcComponentsInNamespace = mcComponentsInCluster.get(
-                    mcComponent.metadata.namespace
-                  );
-                  if (!mcComponentsInNamespace) {
-                    mcComponentsInNamespace = new Map<string, any>();
-                    mcComponentsInCluster.set(
-                      mcComponent.metadata.namespace,
-                      mcComponentsInNamespace
-                    );
-                  }
-                  mcComponentsInNamespace.set(mcComponent.metadata.name, {});
-                }
-              });
-          }
-        });
+        const mcApplicationsByClusterAndNamespace = this.collectMulticlusterAppsByClusterAndNamespace(
+          mcApps
+        );
+        const mcComponentsByClusterAndNamespace = this.collectMulticlusterComponentsByClusterAndNamespace(
+          mcComponents
+        );
         return {
           apps,
           components,
@@ -328,15 +245,21 @@ export class VerrazzanoApi {
       }
       for (const [namespace, mcApps] of mcAppsByNamespace) {
         for (const [name] of mcApps) {
-          const resource = await new VerrazzanoApi(
-            cluster
-          ).getKubernetesResource(
-            ResourceType.ApplicationConfiguration,
-            namespace,
-            name
-          );
-          const app = await resource.json();
-          mcApps.set(name, app);
+          try {
+            const resource = await new VerrazzanoApi(
+              cluster
+            ).getKubernetesResource(
+              ResourceType.ApplicationConfiguration,
+              namespace,
+              name
+            );
+            const app = await resource.json();
+            mcApps.set(name, app);
+          } catch (error) {
+            console.log(
+              `Failure retrieving app ${name} from cluster ${cluster}: ${error}`
+            );
+          }
         }
       }
 
@@ -345,11 +268,17 @@ export class VerrazzanoApi {
         mcComponents,
       ] of mcComponentsByClusterAndNamespace.get(cluster)) {
         for (const [name] of mcComponents) {
-          const resource = await new VerrazzanoApi(
-            cluster
-          ).getKubernetesResource(ResourceType.Component, namespace, name);
-          const component = await resource.json();
-          mcComponents.set(name, component);
+          try {
+            const resource = await new VerrazzanoApi(
+              cluster
+            ).getKubernetesResource(ResourceType.Component, namespace, name);
+            const component = await resource.json();
+            mcComponents.set(name, component);
+          } catch (error) {
+            console.log(
+              `Failure retrieving component ${name} from cluster ${cluster}: ${error}`
+            );
+          }
         }
       }
     }
@@ -631,5 +560,106 @@ export class VerrazzanoApi {
     this.listProjects = this.listProjects.bind(this);
     this.getProject = this.getProject.bind(this);
     this.listImageBuildRequests = this.listImageBuildRequests.bind(this);
+  }
+
+  private collectMulticlusterAppsByClusterAndNamespace(
+    mcApps: any
+  ): Map<string, Map<string, Map<string, any>>> {
+    const mcApplicationsByClusterAndNamespace = new Map<
+      string,
+      Map<string, Map<string, any>>
+    >();
+    mcApps.forEach((mcApp) => {
+      if (
+        mcApp &&
+        mcApp.spec.placement &&
+        mcApp.spec.placement.clusters &&
+        mcApp.spec.placement.clusters.length > 0
+      ) {
+        mcApp.spec.placement.clusters
+          .filter((cluster) => cluster.name !== "local")
+          .forEach((cluster) => {
+            let mcAppsInCluster = mcApplicationsByClusterAndNamespace.get(
+              cluster.name
+            );
+            if (!mcAppsInCluster) {
+              mcAppsInCluster = new Map<string, Map<string, any>>();
+              mcApplicationsByClusterAndNamespace.set(
+                cluster.name,
+                mcAppsInCluster
+              );
+            }
+            if (
+              mcApp.metadata &&
+              mcApp.metadata.name &&
+              mcApp.metadata.namespace
+            ) {
+              let mcAppsInNamespace = mcAppsInCluster.get(
+                mcApp.metadata.namespace
+              );
+              if (!mcAppsInNamespace) {
+                mcAppsInNamespace = new Map<string, any>();
+                mcAppsInCluster.set(
+                  mcApp.metadata.namespace,
+                  mcAppsInNamespace
+                );
+              }
+              mcAppsInNamespace.set(mcApp.metadata.name, {});
+            }
+          });
+      }
+    });
+    return mcApplicationsByClusterAndNamespace;
+  }
+
+  private collectMulticlusterComponentsByClusterAndNamespace(
+    mcComponents: any
+  ) {
+    const mcComponentsByClusterAndNamespace = new Map<
+      string,
+      Map<string, Map<string, any>>
+    >();
+    mcComponents.forEach((mcComponent) => {
+      if (
+        mcComponent &&
+        mcComponent.spec &&
+        mcComponent.spec.placement &&
+        mcComponent.spec.placement.clusters &&
+        mcComponent.spec.placement.clusters.length > 0
+      ) {
+        mcComponent.spec.placement.clusters
+          .filter((cluster) => cluster.name !== "local")
+          .forEach((cluster) => {
+            let mcComponentsInCluster = mcComponentsByClusterAndNamespace.get(
+              cluster.name
+            );
+            if (!mcComponentsInCluster) {
+              mcComponentsInCluster = new Map<string, Map<string, any>>();
+              mcComponentsByClusterAndNamespace.set(
+                cluster.name,
+                mcComponentsInCluster
+              );
+            }
+            if (
+              mcComponent.metadata &&
+              mcComponent.metadata.name &&
+              mcComponent.metadata.namespace
+            ) {
+              let mcComponentsInNamespace = mcComponentsInCluster.get(
+                mcComponent.metadata.namespace
+              );
+              if (!mcComponentsInNamespace) {
+                mcComponentsInNamespace = new Map<string, any>();
+                mcComponentsInCluster.set(
+                  mcComponent.metadata.namespace,
+                  mcComponentsInNamespace
+                );
+              }
+              mcComponentsInNamespace.set(mcComponent.metadata.name, {});
+            }
+          });
+      }
+    });
+    return mcComponentsByClusterAndNamespace;
   }
 }
