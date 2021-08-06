@@ -200,7 +200,7 @@ export class VerrazzanoApi {
         continue;
       }
       for (const [namespace, mcApps] of mcAppsByNamespace) {
-        for (const [name] of mcApps) {
+        for (const [name, mcApp] of mcApps) {
           try {
             const resource = await new VerrazzanoApi(
               cluster
@@ -215,6 +215,7 @@ export class VerrazzanoApi {
             console.log(
               `Failure retrieving app ${name} from cluster ${cluster}: ${error}`
             );
+            mcApps.set(name, mcApp.template)
           }
         }
       }
@@ -223,7 +224,7 @@ export class VerrazzanoApi {
         namespace,
         mcComponents,
       ] of mcComponentsByClusterAndNamespace.get(cluster)) {
-        for (const [name] of mcComponents) {
+        for (const [name, mcComp] of mcComponents) {
           try {
             const resource = await new VerrazzanoApi(
               cluster
@@ -234,6 +235,7 @@ export class VerrazzanoApi {
             console.log(
               `Failure retrieving component ${name} from cluster ${cluster}: ${error}`
             );
+            mcComponents.set(name, mcComp.template)
           }
         }
       }
