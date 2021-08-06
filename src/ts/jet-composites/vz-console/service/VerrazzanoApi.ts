@@ -74,7 +74,12 @@ export class VerrazzanoApi {
         ]);
       }
 
-      const [appsObj, componentsObj, mcAppsObj, mcComponentsObj] = await Promise.all([
+      const [
+        appsObj,
+        componentsObj,
+        mcAppsObj,
+        mcComponentsObj,
+      ] = await Promise.all([
         appsResponse.json(),
         compsResponse.json(),
         mcAppsResponse.json ? mcAppsResponse.json() : {},
