@@ -186,27 +186,11 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   }
 
   private handleLatestPSUChanged = (event: CustomEvent) => {
-    if (event.detail.value.length !== 0) {
-      this.updateState({
-        latestPSU: true,
-      });
-    } else {
-      this.updateState({
-        latestPSU: false,
-      });
-    }
+    this.updateState({ latestPSU: event.detail.value.length !== 0 });
   };
 
   private handleRecommendedPatchesChanged = (event: CustomEvent) => {
-    if (event.detail.value.length !== 0) {
-      this.updateState({
-        recommendedPatches: true,
-      });
-    } else {
-      this.updateState({
-        recommendedPatches: false,
-      });
-    }
+    this.updateState({ recommendedPatches: event.detail.value.length !== 0 });
   };
 
   render() {
@@ -238,9 +222,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
           <div class="oj-sm-odd-cols-12 oj-md-odd-cols-4">
             <div class="oj-flex">
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
-                <ConsoleMetadataItem
-                  label={Messages.Labels.imageBuildRequestName()}
-                />
+                <ConsoleMetadataItem label={Messages.Labels.requestName()} />
               </div>
               <div class="oj-flex-item oj-sm-padding-2x-horizontal">
                 <oj-input-text
@@ -391,9 +373,6 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                         webLogicInstaller: this.state.webLogicInstaller,
                         latestPSU: this.state.latestPSU,
                         recommendedPatches: this.state.recommendedPatches,
-                      },
-                      status: {
-                        state: "Not Available",
                       },
                     };
                     const success = await this.createImage(
