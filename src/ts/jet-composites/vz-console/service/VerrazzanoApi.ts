@@ -109,12 +109,11 @@ export class VerrazzanoApi {
         mcComponents
       );
 
-      console.log('listOAMAppsAndComponents done collects');
       await this.populateMCAppsAndComponents(
         mcApplicationsByClusterAndNamespace,
         mcComponentsByClusterAndNamespace
       );
-      console.log('listOAMAppsAndComponents done populateMC');
+
       const applicationsByClusterAndNamespace = new Map<
         string,
         Map<string, Map<string, any>>
@@ -123,16 +122,14 @@ export class VerrazzanoApi {
         string,
         Map<string, Map<string, any>>
       >();
-      console.log(`listOAMAppsAndComponents calling processOAMData with components ${components}`);
-      console.log(JSON.stringify(components));
       const { oamApplications, oamComponents } = processOAMData(
         apps,
         components,
         this.cluster
       );
-      console.log('listOAMAppsAndComponents done processOAMData1');
       applicationsByClusterAndNamespace.set(this.cluster, oamApplications);
       componentsByClusterAndNamespace.set(this.cluster, oamComponents);
+
       mcApplicationsByClusterAndNamespace.forEach(
         (mcAppsByNamespace, cluster) => {
           const mcApps: any[] = [];
@@ -148,13 +145,11 @@ export class VerrazzanoApi {
                 });
             });
           });
-          console.log('listOAMAppsAndComponents calling processOAMData2');
           const { oamApplications, oamComponents } = processOAMData(
             mcApps,
             mcComps,
             cluster
           );
-          console.log('listOAMAppsAndComponents done processOAMData2');
           applicationsByClusterAndNamespace.set(cluster, oamApplications);
           componentsByClusterAndNamespace.set(cluster, oamComponents);
         }
@@ -523,9 +518,7 @@ export class VerrazzanoApi {
       string,
       Map<string, Map<string, any>>
     >();
-    console.log(`collectMulticlusterAppsByClusterAndNamespace, about to foreach on ${mcApps}`);
     mcApps.forEach((mcApp) => {
-      console.log(`collectMulticlusterAppsByClusterAndNamespace inside foreach ${mcApp.metadata.name}`);
       if (
         mcApp &&
         mcApp.spec.placement &&
@@ -565,7 +558,6 @@ export class VerrazzanoApi {
           });
       }
     });
-    console.log(`collectMulticlusterAppsByClusterAndNamespace done foreach`);
     return mcApplicationsByClusterAndNamespace;
   }
 
@@ -576,9 +568,7 @@ export class VerrazzanoApi {
       string,
       Map<string, Map<string, any>>
     >();
-    console.log(`collectMulticlusterComponentsByClusterAndNamespace, about to foreach on ${mcComponents}`);
     mcComponents.forEach((mcComponent) => {
-      console.log(`collectMulticlusterComponentsByClusterAndNamespace inside foreach ${mcComponent.metadata.name}`);
       if (
         mcComponent &&
         mcComponent.spec &&
@@ -619,7 +609,6 @@ export class VerrazzanoApi {
           });
       }
     });
-    console.log(`collectMulticlusterComponentsByClusterAndNamespace done foreach`);
     return mcComponentsByClusterAndNamespace;
   }
 }
