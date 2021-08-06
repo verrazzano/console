@@ -315,7 +315,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                 </div>
                 <oj-list-view
                   id="listview"
-                  ariaLabel="project network policies"
+                  ariaLabel="weblogic images"
                   data={this.dataProvider()}
                   selectionMode="single"
                   class="oj-complete"
