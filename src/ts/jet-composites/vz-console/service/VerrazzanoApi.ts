@@ -215,7 +215,7 @@ export class VerrazzanoApi {
             console.log(
               `Failure retrieving app ${name} from cluster ${cluster}: ${error}`
             );
-            mcApps.set(name, mcApp.template)
+            mcApps.set(name, mcApp.template);
           }
         }
       }
@@ -235,7 +235,7 @@ export class VerrazzanoApi {
             console.log(
               `Failure retrieving component ${name} from cluster ${cluster}: ${error}`
             );
-            mcComponents.set(name, mcComp.template)
+            mcComponents.set(name, mcComp.template);
           }
         }
       }
