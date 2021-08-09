@@ -564,6 +564,8 @@ export class VerrazzanoApi {
                 mcApp.spec.template.metadata.name = mcApp.metadata.name;
                 mcApp.spec.template.metadata.namespace =
                   mcApp.metadata.namespace;
+                mcApp.spec.template.metadata.creationTimestamp =
+                  mcApp.metadata.creationTimestamp;
               }
               mcAppsInNamespace.set(mcApp.metadata.name, mcApp.spec.template);
             }
@@ -622,6 +624,8 @@ export class VerrazzanoApi {
                   mcComponent.metadata.name;
                 mcComponent.spec.template.metadata.namespace =
                   mcComponent.metadata.namespace;
+                mcComponent.spec.template.metadata.creationTimestamp =
+                  mcComponent.metadata.creationTimestamp;
               }
               mcComponentsInNamespace.set(
                 mcComponent.metadata.name,
