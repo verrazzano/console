@@ -215,7 +215,6 @@ export class VerrazzanoApi {
             console.log(
               `Failure retrieving app ${name} from cluster ${cluster}: ${error}`
             );
-            mcApps.set(name, mcApp.template);
           }
         }
       }
