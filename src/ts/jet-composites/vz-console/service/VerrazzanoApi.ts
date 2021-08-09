@@ -223,7 +223,7 @@ export class VerrazzanoApi {
         namespace,
         mcComponents,
       ] of mcComponentsByClusterAndNamespace.get(cluster)) {
-        for (const [name, mcComp] of mcComponents) {
+        for (const [name] of mcComponents) {
           try {
             const resource = await new VerrazzanoApi(
               cluster
@@ -234,7 +234,6 @@ export class VerrazzanoApi {
             console.log(
               `Failure retrieving component ${name} from cluster ${cluster}: ${error}`
             );
-            mcComponents.set(name, mcComp.template);
           }
         }
       }
