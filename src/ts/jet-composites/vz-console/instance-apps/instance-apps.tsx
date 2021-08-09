@@ -369,6 +369,43 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
   }
 
   renderOneApp = (item: any) => {
+    const statusIconClass =
+      item.data.status === "Running"
+        ? "oj-icon-circle-green"
+        : item.data.status === "Terminated"
+        ? "oj-icon-circle-red"
+        : "oj-icon-circle-orange";
+    const detailPageLink =
+      "/oamapps/" +
+      item.data.data.metadata.uid +
+      (item.data.cluster && item.data.cluster.name !== "local"
+        ? "?cluster=" + item.data.cluster.name
+        : "");
+    const showLink = item.data.status !== "Pending";
+
+    let nameContent = item.data.name;
+    if (showLink) {
+      nameContent = `<a href="${detailPageLink}" tabindex="0">${item.data.name}</a>`;
+    }
+
+    let projInfo = "";
+    if (item.data.project) {
+      projInfo = (
+        <div class="carditem">
+          <strong>
+            <span>{Messages.Labels.project()}:&nbsp;</span>
+          </strong>
+
+          <a
+            href={"/projects/" + item.data.project.data.metadata.uid}
+            tabindex={0}
+          >
+            {item.data.project.name}
+          </a>
+        </div>
+      );
+    }
+
     return (
       <oj-list-item-layout class="oj-complete">
         <div class="oj-flex cardmargin">
@@ -377,44 +414,26 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
               <strong>
                 <span>{Messages.Labels.name()}:&nbsp;</span>
               </strong>
-
-              <a
-                data-bind={`attr: {href: '/oamapps/' + item.data.data.metadata.uid + (item.data.cluster && item.data.cluster.name !== 'local' ? ('?cluster=' + item.data.cluster.name) : '')}`}
-                tabindex="0"
-              >
-                <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-              </a>
+              {nameContent}
             </div>
 
             <div class="carditem">
               <strong>
                 <span>{Messages.Labels.ns()}:&nbsp;</span>
               </strong>
-              <span>
-                <oj-bind-text value="[[item.data.namespace]]"></oj-bind-text>
-              </span>
+              <span>{item.data.namespace}</span>
             </div>
 
             <div class="carditem">
               <strong>{Messages.Labels.status()}:&nbsp;</strong>
               <span>
-                <oj-bind-if test="[[item.data.status === 'Running']]">
-                  <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-green">
-                    <span class="oj-icon-circle-inner status-icon"></span>
-                  </span>
-                </oj-bind-if>
-                <oj-bind-if test="[[item.data.status === 'Terminated']]">
-                  <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-red">
-                    <span class="oj-icon-circle-inner status-icon"></span>
-                  </span>
-                </oj-bind-if>
-                <oj-bind-if test="[[item.data.status === 'Pending']]">
-                  <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-orange">
-                    <span class="oj-icon-circle-inner status-icon"></span>
-                  </span>
-                </oj-bind-if>
+                <span
+                  class={`oj-icon-circle oj-icon-circle-sm ${statusIconClass}`}
+                >
+                  <span class="oj-icon-circle-inner status-icon"></span>
+                </span>
                 &nbsp;
-                <oj-bind-text value="[[item.data.status]]"></oj-bind-text>
+                {item.data.status}
               </span>
             </div>
 
@@ -422,9 +441,7 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
               <strong>
                 <span>{Messages.Labels.created()}:&nbsp;</span>
               </strong>
-              <span>
-                <oj-bind-text value="[[item.data.createdOn]]"></oj-bind-text>
-              </span>
+              <span>{item.data.createdOn}</span>
             </div>
           </div>
 
@@ -433,24 +450,9 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
               <strong>
                 <span>{Messages.Labels.cluster()}:&nbsp;</span>
               </strong>
-              <span>
-                <oj-bind-text value="[[item.data.cluster.name]]"></oj-bind-text>
-              </span>
+              <span>{item.data.cluster.name}</span>
             </div>
-            <oj-bind-if test="[[item.data.project]]">
-              <div class="carditem">
-                <strong>
-                  <span>{Messages.Labels.project()}:&nbsp;</span>
-                </strong>
-
-                <a
-                  data-bind={`attr: {href: '/projects/' + item.data.project.data.metadata.uid }`}
-                  tabindex="0"
-                >
-                  <oj-bind-text value="[[item.data.project.name]]"></oj-bind-text>
-                </a>
-              </div>
-            </oj-bind-if>
+            {projInfo}
           </div>
         </div>
       </oj-list-item-layout>
