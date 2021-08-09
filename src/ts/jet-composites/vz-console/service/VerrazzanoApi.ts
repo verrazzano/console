@@ -610,7 +610,10 @@ export class VerrazzanoApi {
                   mcComponentsInNamespace
                 );
               }
-              mcComponentsInNamespace.set(mcComponent.metadata.name, mcComponent.spec.template);
+              mcComponentsInNamespace.set(
+                mcComponent.metadata.name,
+                mcComponent.spec.template
+              );
             }
           });
       }
