@@ -369,27 +369,34 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
   }
 
   renderOneApp = (item: any) => {
+    const itemData = item.data as OAMApplication;
     const statusIconClass =
-      item.data.status === "Running"
+      itemData.status === Status.Running
         ? "oj-icon-circle-green"
-        : item.data.status === "Terminated"
+        : itemData.status === Status.Terminated
         ? "oj-icon-circle-red"
         : "oj-icon-circle-orange";
-    const detailPageLink =
-      "/oamapps/" +
-      item.data.data.metadata.uid +
-      (item.data.cluster && item.data.cluster.name !== "local"
-        ? "?cluster=" + item.data.cluster.name
-        : "");
-    const showLink = item.data.status !== "Pending";
 
-    let nameContent = item.data.name;
+    const showLink = itemData.status !== Status.Pending;
+
+    let nameContent = itemData.name;
     if (showLink) {
-      nameContent = `<a href="${detailPageLink}" tabindex="0">${item.data.name}</a>`;
+      const detailPageLink =
+        "/oamapps/" +
+        itemData.data.metadata.uid +
+        (itemData.cluster && itemData.cluster.name !== "local"
+          ? "?cluster=" + itemData.cluster.name
+          : "");
+
+      nameContent = (
+        <a href={detailPageLink} tabindex="0">
+          {itemData.name}
+        </a>
+      );
     }
 
     let projInfo = "";
-    if (item.data.project) {
+    if (itemData.project) {
       projInfo = (
         <div class="carditem">
           <strong>
@@ -397,10 +404,10 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
           </strong>
 
           <a
-            href={"/projects/" + item.data.project.data.metadata.uid}
+            href={"/projects/" + itemData.project.data.metadata.uid}
             tabindex={0}
           >
-            {item.data.project.name}
+            {itemData.project.name}
           </a>
         </div>
       );
@@ -421,7 +428,7 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
               <strong>
                 <span>{Messages.Labels.ns()}:&nbsp;</span>
               </strong>
-              <span>{item.data.namespace}</span>
+              <span>{itemData.namespace}</span>
             </div>
 
             <div class="carditem">
@@ -433,7 +440,7 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
                   <span class="oj-icon-circle-inner status-icon"></span>
                 </span>
                 &nbsp;
-                {item.data.status}
+                {itemData.status}
               </span>
             </div>
 
@@ -441,7 +448,7 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
               <strong>
                 <span>{Messages.Labels.created()}:&nbsp;</span>
               </strong>
-              <span>{item.data.createdOn}</span>
+              <span>{itemData.createdOn}</span>
             </div>
           </div>
 
@@ -450,7 +457,7 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
               <strong>
                 <span>{Messages.Labels.cluster()}:&nbsp;</span>
               </strong>
-              <span>{item.data.cluster.name}</span>
+              <span>{itemData.cluster.name}</span>
             </div>
             {projInfo}
           </div>
