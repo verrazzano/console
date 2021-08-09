@@ -200,7 +200,7 @@ export class VerrazzanoApi {
         continue;
       }
       for (const [namespace, mcApps] of mcAppsByNamespace) {
-        for (const [name, mcApp] of mcApps) {
+        for (const [name] of mcApps) {
           try {
             const resource = await new VerrazzanoApi(
               cluster
