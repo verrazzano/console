@@ -560,7 +560,7 @@ export class VerrazzanoApi {
                   mcAppsInNamespace
                 );
               }
-              mcAppsInNamespace.set(mcApp.metadata.name, {});
+              mcAppsInNamespace.set(mcApp.metadata.name, mcApp.spec.template);
             }
           });
       }
@@ -611,7 +611,7 @@ export class VerrazzanoApi {
                   mcComponentsInNamespace
                 );
               }
-              mcComponentsInNamespace.set(mcComponent.metadata.name, {});
+              mcComponentsInNamespace.set(mcComponent.metadata.name, mcComponent.spec.template);
             }
           });
       }
