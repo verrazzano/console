@@ -562,7 +562,8 @@ export class VerrazzanoApi {
               // Template might not have a name/namespace - set it from the top level
               if (mcApp?.spec?.template?.metadata) {
                 mcApp.spec.template.metadata.name = mcApp.metadata.name;
-                mcApp.spec.template.metadata.namespace = mcApp.metadata.namespace;
+                mcApp.spec.template.metadata.namespace =
+                  mcApp.metadata.namespace;
               }
               mcAppsInNamespace.set(mcApp.metadata.name, mcApp.spec.template);
             }
@@ -617,8 +618,10 @@ export class VerrazzanoApi {
               }
               // Template might not have a name/namespace - set it from the top level
               if (mcComponent?.spec?.template?.metadata) {
-                mcComponent.spec.template.metadata.name = mcComponent.metadata.name;
-                mcComponent.spec.template.metadata.namespace = mcComponent.metadata.namespace;
+                mcComponent.spec.template.metadata.name =
+                  mcComponent.metadata.name;
+                mcComponent.spec.template.metadata.namespace =
+                  mcComponent.metadata.namespace;
               }
               mcComponentsInNamespace.set(
                 mcComponent.metadata.name,
