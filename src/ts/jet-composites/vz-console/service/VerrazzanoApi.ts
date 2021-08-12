@@ -56,176 +56,132 @@ export class VerrazzanoApi {
     oamApplications: OAMApplication[];
     oamComponents: OAMComponent[];
   }> {
-    return Promise.all([
-      this.getKubernetesResource(ResourceType.ApplicationConfiguration),
-      this.getKubernetesResource(ResourceType.Component),
-    ])
-      .then(([appsResponse, compsResponse]) => {
-        if (this.cluster === "local") {
-          return Promise.all([
-            appsResponse,
-            compsResponse,
-            this.getKubernetesResource(
-              ResourceType.MultiClusterApplicationConfiguration
-            ),
-            this.getKubernetesResource(ResourceType.MultiClusterComponent),
-          ]);
-        } else {
-          return Promise.all([
-            appsResponse,
-            compsResponse,
-            <Response>{},
-            <Response>{},
-          ]);
-        }
-      })
-      .then(
-        ([appsResponse, compsResponse, mcAppsResponse, mcCompsResponse]) => {
-          return Promise.all([
-            appsResponse.json(),
-            compsResponse.json(),
-            mcAppsResponse.json ? mcAppsResponse.json() : {},
-            mcCompsResponse.json ? mcCompsResponse.json() : {},
-          ]);
-        }
-      )
-      .then(([apps, components, mcApps, mcComponents]) => {
-        if (!apps) {
-          throw new Error(Messages.Error.errOAMApplicationsFetchError());
-        }
+    try {
+      const [appsResponse, compsResponse] = await Promise.all([
+        this.getKubernetesResource(ResourceType.ApplicationConfiguration),
+        this.getKubernetesResource(ResourceType.Component),
+      ]);
 
-        if (!components) {
-          throw new Error(Messages.Error.errOAMComponentsFetchError());
-        }
+      let mcAppsResponse = <Response>{};
+      let mcCompsResponse = <Response>{};
 
-        if (!mcApps) {
-          throw new Error(Messages.Error.errMCApplicationsFetchError());
-        }
+      if (this.cluster === "local") {
+        [mcAppsResponse, mcCompsResponse] = await Promise.all([
+          this.getKubernetesResource(
+            ResourceType.MultiClusterApplicationConfiguration
+          ),
+          this.getKubernetesResource(ResourceType.MultiClusterComponent),
+        ]);
+      }
 
-        if (!mcComponents) {
-          throw new Error(Messages.Error.errMCComponentsFetchError());
-        }
-        return [
-          apps.items,
-          components.items,
-          mcApps.items ? mcApps.items : [],
-          mcComponents.items ? mcComponents.items : [],
-        ];
-      })
-      .then(([apps, components, mcApps, mcComponents]) => {
-        const mcApplicationsByClusterAndNamespace = this.collectMulticlusterAppsByClusterAndNamespace(
-          mcApps
-        );
-        const mcComponentsByClusterAndNamespace = this.collectMulticlusterComponentsByClusterAndNamespace(
-          mcComponents
-        );
-        return {
-          apps,
-          components,
-          mcApplicationsByClusterAndNamespace,
-          mcComponentsByClusterAndNamespace,
-        };
-      })
-      .then(
-        ({
-          apps,
-          components,
-          mcApplicationsByClusterAndNamespace,
-          mcComponentsByClusterAndNamespace,
-        }) => {
-          return this.populateMCAppsAndComponents(
-            apps,
-            components,
-            mcApplicationsByClusterAndNamespace,
-            mcComponentsByClusterAndNamespace
-          );
-        }
-      )
-      .then(
-        ({
-          apps,
-          components,
-          mcApplicationsByClusterAndNamespace,
-          mcComponentsByClusterAndNamespace,
-        }) => {
-          const applicationsByClusterAndNamespace = new Map<
-            string,
-            Map<string, Map<string, any>>
-          >();
-          const componentsByClusterAndNamespace = new Map<
-            string,
-            Map<string, Map<string, any>>
-          >();
-          const { oamApplications, oamComponents } = processOAMData(
-            apps,
-            components,
-            this.cluster
-          );
-          applicationsByClusterAndNamespace.set(this.cluster, oamApplications);
-          componentsByClusterAndNamespace.set(this.cluster, oamComponents);
-          mcApplicationsByClusterAndNamespace.forEach(
-            (mcAppsByNamespace, cluster) => {
-              const mcApps: any[] = [];
-              const mcComps: any[] = [];
-              mcAppsByNamespace.forEach((mcAppsByName, namespace) => {
-                mcAppsByName.forEach((mcApp) => {
-                  mcApps.push(mcApp);
-                  mcComponentsByClusterAndNamespace
-                    .get(cluster)
-                    .get(namespace)
-                    .forEach((mcComp) => {
-                      mcComps.push(mcComp);
-                    });
+      const [
+        appsObj,
+        componentsObj,
+        mcAppsObj,
+        mcComponentsObj,
+      ] = await Promise.all([
+        appsResponse.json(),
+        compsResponse.json(),
+        mcAppsResponse.json ? mcAppsResponse.json() : {},
+        mcCompsResponse.json ? mcCompsResponse.json() : {},
+      ]);
+
+      if (!appsObj) {
+        throw new Error(Messages.Error.errOAMApplicationsFetchError());
+      }
+
+      if (!componentsObj) {
+        throw new Error(Messages.Error.errOAMComponentsFetchError());
+      }
+
+      if (!mcAppsObj) {
+        throw new Error(Messages.Error.errMCApplicationsFetchError());
+      }
+
+      if (!mcComponentsObj) {
+        throw new Error(Messages.Error.errMCComponentsFetchError());
+      }
+
+      const mcApps = mcAppsObj.items || [];
+      const mcComponents = mcComponentsObj.items || [];
+      const apps = appsObj.items;
+      const components = componentsObj.items;
+
+      const mcApplicationsByClusterAndNamespace = this.collectMulticlusterAppsByClusterAndNamespace(
+        mcApps
+      );
+      const mcComponentsByClusterAndNamespace = this.collectMulticlusterComponentsByClusterAndNamespace(
+        mcComponents
+      );
+
+      await this.populateMCAppsAndComponents(
+        mcApplicationsByClusterAndNamespace,
+        mcComponentsByClusterAndNamespace
+      );
+
+      const applicationsByClusterAndNamespace = new Map<
+        string,
+        Map<string, Map<string, any>>
+      >();
+      const componentsByClusterAndNamespace = new Map<
+        string,
+        Map<string, Map<string, any>>
+      >();
+      const { oamApplications, oamComponents } = processOAMData(
+        apps,
+        components,
+        this.cluster
+      );
+      applicationsByClusterAndNamespace.set(this.cluster, oamApplications);
+      componentsByClusterAndNamespace.set(this.cluster, oamComponents);
+
+      mcApplicationsByClusterAndNamespace.forEach(
+        (mcAppsByNamespace, cluster) => {
+          const mcApps: any[] = [];
+          const mcComps: any[] = [];
+          mcAppsByNamespace.forEach((mcAppsByName, namespace) => {
+            mcAppsByName.forEach((mcApp) => {
+              mcApps.push(mcApp);
+              mcComponentsByClusterAndNamespace
+                .get(cluster)
+                .get(namespace)
+                .forEach((mcComp) => {
+                  mcComps.push(mcComp);
                 });
-              });
-
-              const { oamApplications, oamComponents } = processOAMData(
-                mcApps,
-                mcComps,
-                cluster
-              );
-              applicationsByClusterAndNamespace.set(cluster, oamApplications);
-              componentsByClusterAndNamespace.set(cluster, oamComponents);
-            }
+            });
+          });
+          const { oamApplications, oamComponents } = processOAMData(
+            mcApps,
+            mcComps,
+            cluster
           );
-          return {
-            applicationsByClusterAndNamespace,
-            componentsByClusterAndNamespace,
-          };
+          applicationsByClusterAndNamespace.set(cluster, oamApplications);
+          componentsByClusterAndNamespace.set(cluster, oamComponents);
         }
-      )
-      .then(
-        ({
-          applicationsByClusterAndNamespace,
-          componentsByClusterAndNamespace,
-        }) => {
-          const applications: OAMApplication[] = [];
-          const comps: OAMComponent[] = [];
-          applicationsByClusterAndNamespace.forEach((element) => {
-            element.forEach((oamApplications) => {
-              oamApplications.forEach((oamApplication) => {
-                applications.push(oamApplication);
-              });
-            });
+      );
+      const applications: OAMApplication[] = [];
+      const comps: OAMComponent[] = [];
+      applicationsByClusterAndNamespace.forEach((element) => {
+        element.forEach((oamApplications) => {
+          oamApplications.forEach((oamApplication) => {
+            applications.push(oamApplication);
           });
-          componentsByClusterAndNamespace.forEach((element) => {
-            element.forEach((oamComponents) => {
-              oamComponents.forEach((oamComponent) => {
-                comps.push(oamComponent);
-              });
-            });
-          });
-          return { oamApplications: applications, oamComponents: comps };
-        }
-      )
-      .catch((error) => {
-        throw new VzError(error);
+        });
       });
+      componentsByClusterAndNamespace.forEach((element) => {
+        element.forEach((oamComponents) => {
+          oamComponents.forEach((oamComponent) => {
+            comps.push(oamComponent);
+          });
+        });
+      });
+      return { oamApplications: applications, oamComponents: comps };
+    } catch (error) {
+      throw new VzError(error);
+    }
   }
 
   private async populateMCAppsAndComponents(
-    apps: any,
-    components: any,
     mcApplicationsByClusterAndNamespace: Map<
       string,
       Map<string, Map<string, any>>
@@ -284,8 +240,6 @@ export class VerrazzanoApi {
     }
 
     return {
-      apps,
-      components,
       mcApplicationsByClusterAndNamespace,
       mcComponentsByClusterAndNamespace,
     };
@@ -604,7 +558,15 @@ export class VerrazzanoApi {
                   mcAppsInNamespace
                 );
               }
-              mcAppsInNamespace.set(mcApp.metadata.name, {});
+              // Template might not have a name/namespace - set it from the top level
+              if (mcApp?.spec?.template?.metadata) {
+                mcApp.spec.template.metadata.name = mcApp.metadata.name;
+                mcApp.spec.template.metadata.namespace =
+                  mcApp.metadata.namespace;
+                mcApp.spec.template.metadata.creationTimestamp =
+                  mcApp.metadata.creationTimestamp;
+              }
+              mcAppsInNamespace.set(mcApp.metadata.name, mcApp.spec.template);
             }
           });
       }
@@ -655,7 +617,19 @@ export class VerrazzanoApi {
                   mcComponentsInNamespace
                 );
               }
-              mcComponentsInNamespace.set(mcComponent.metadata.name, {});
+              // Template might not have a name/namespace - set it from the top level
+              if (mcComponent?.spec?.template?.metadata) {
+                mcComponent.spec.template.metadata.name =
+                  mcComponent.metadata.name;
+                mcComponent.spec.template.metadata.namespace =
+                  mcComponent.metadata.namespace;
+                mcComponent.spec.template.metadata.creationTimestamp =
+                  mcComponent.metadata.creationTimestamp;
+              }
+              mcComponentsInNamespace.set(
+                mcComponent.metadata.name,
+                mcComponent.spec.template
+              );
             }
           });
       }
