@@ -495,7 +495,7 @@ describe("Multi cluster apps and component list test", () => {
       instanceElement
         .querySelector("#applications")
         .querySelector("#listview")
-        .querySelector(" * > a").textContent
-    ).equal(localClusterAppName);
+        .querySelector(".carditem").textContent
+    ).contains(localClusterAppName);
   });
 });

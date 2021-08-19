@@ -15,9 +15,9 @@ import * as Messages from "vz-console/utils/Messages";
 import { Project, RoleBinding } from "vz-console/service/types";
 import { BreadcrumbType } from "vz-console/breadcrumb/loader";
 import { getDefaultRouter } from "vz-console/utils/utils";
+import { ConsoleProjectNetworkPolicies } from "vz-console/project-network-policies/loader";
 import CoreRouter = require("ojs/ojcorerouter");
 import UrlPathAdapter = require("ojs/ojurlpathadapter");
-import { ConsoleProjectNetworkPolicies } from "vz-console/project-network-policies/loader";
 
 class State {
   selectedItem: string;

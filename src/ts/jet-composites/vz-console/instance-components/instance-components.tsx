@@ -305,74 +305,11 @@ export class ConsoleInstanceComponents extends ElementVComponent<Props, State> {
                 class="oj-complete"
                 item={{ selectable: true }}
               >
-                <template slot="itemTemplate" data-oj-as="item">
-                  <oj-list-item-layout class="oj-complete">
-                    <div class="oj-flex cardmargin">
-                      <div class="oj-sm-10 oj-flex-item">
-                        <div class="carditem">
-                          <strong>
-                            <span>{Messages.Labels.name()}:&nbsp;</span>
-                          </strong>
-                          <a
-                            data-bind={`attr: {href: '/oamcomps/' + item.data.data.metadata.uid + (item.data.cluster && item.data.cluster.name !== 'local' ? ('?cluster=' + item.data.cluster.name) : '')}`}
-                          >
-                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                          </a>
-                        </div>
-
-                        <div class="carditem">
-                          <strong>
-                            <span>{Messages.Labels.ns()}:&nbsp;</span>
-                          </strong>
-                          <span>
-                            <oj-bind-text value="[[item.data.namespace]]"></oj-bind-text>
-                          </span>
-                        </div>
-
-                        <div class="carditem">
-                          <strong>
-                            <span>{Messages.Labels.created()}:&nbsp;</span>
-                          </strong>
-                          <span>
-                            <oj-bind-text value="[[item.data.createdOn]]"></oj-bind-text>
-                          </span>
-                        </div>
-                        <div class="carditem">
-                          <strong>
-                            <span>{Messages.Labels.workloadType()}:&nbsp;</span>
-                          </strong>
-                          <span>
-                            <oj-bind-text value="[[item.data.workloadType]]"></oj-bind-text>
-                          </span>
-                        </div>
-                      </div>
-
-                      <div class="oj-sm-2 oj-flex-item">
-                        <div class="carditem">
-                          <strong>
-                            <span>{Messages.Labels.cluster()}:&nbsp;</span>
-                          </strong>
-                          <span>
-                            <oj-bind-text value="[[item.data.cluster.name]]"></oj-bind-text>
-                          </span>
-                        </div>
-                        <oj-bind-if test="[[item.data.project]]">
-                          <div class="carditem">
-                            <strong>
-                              <span>{Messages.Labels.project()}:&nbsp;</span>
-                            </strong>
-
-                            <a
-                              data-bind={`attr: {href: '/projects/' + item.data.project.data.metadata.uid }`}
-                            >
-                              <oj-bind-text value="[[item.data.project.name]]"></oj-bind-text>
-                            </a>
-                          </div>
-                        </oj-bind-if>
-                      </div>
-                    </div>
-                  </oj-list-item-layout>
-                </template>
+                <template
+                  slot="itemTemplate"
+                  data-oj-as="item"
+                  render={this.renderOneComponent}
+                ></template>
               </oj-list-view>
 
               <div class="oj-flex card-border">
@@ -404,4 +341,79 @@ export class ConsoleInstanceComponents extends ElementVComponent<Props, State> {
       </div>
     );
   }
+
+  renderOneComponent = (item: any) => {
+    const itemData = item.data as OAMComponent;
+    const showLink = !!itemData.data?.metadata?.uid;
+
+    let nameContent = itemData.name;
+    if (showLink) {
+      const detailPageLink =
+        "/oamcomps/" +
+        item.data.data.metadata.uid +
+        (item.data.cluster && item.data.cluster.name !== "local"
+          ? "?cluster=" + item.data.cluster.name
+          : "");
+      nameContent = <a href={detailPageLink}>{itemData.name}</a>;
+    }
+    let projInfo = "";
+    if (itemData.project) {
+      projInfo = (
+        <div class="carditem">
+          <strong>
+            <span>{Messages.Labels.project()}:&nbsp;</span>
+          </strong>
+
+          <a href={"/projects/" + itemData.project.data.metadata.uid}>
+            {itemData.project.name}
+          </a>
+        </div>
+      );
+    }
+
+    return (
+      <oj-list-item-layout class="oj-complete">
+        <div class="oj-flex cardmargin">
+          <div class="oj-sm-10 oj-flex-item">
+            <div class="carditem">
+              <strong>
+                <span>{Messages.Labels.name()}:&nbsp;</span>
+              </strong>
+              {nameContent}
+            </div>
+
+            <div class="carditem">
+              <strong>
+                <span>{Messages.Labels.ns()}:&nbsp;</span>
+              </strong>
+              <span>{itemData.namespace}</span>
+            </div>
+
+            <div class="carditem">
+              <strong>
+                <span>{Messages.Labels.created()}:&nbsp;</span>
+              </strong>
+              <span>{itemData.createdOn}</span>
+            </div>
+            <div class="carditem">
+              <strong>
+                <span>{Messages.Labels.workloadType()}:&nbsp;</span>
+              </strong>
+              <span>{itemData.workloadType}</span>
+            </div>
+          </div>
+
+          <div class="oj-sm-2 oj-flex-item">
+            <div class="carditem">
+              <strong>
+                <span>{Messages.Labels.cluster()}:&nbsp;</span>
+              </strong>
+              <span>{itemData.cluster.name}</span>
+            </div>
+            {projInfo}
+          </div>
+        </div>
+      </oj-list-item-layout>
+    );
+  };
 }
