@@ -16,7 +16,7 @@ pipeline {
     environment {
         DOCKER_CI_IMAGE_NAME = 'console-jenkins'
         DOCKER_PUBLISH_IMAGE_NAME = 'console'
-        DOCKER_IMAGE_NAME = "${env.BRANCH_NAME == 'master' ? env.DOCKER_PUBLISH_IMAGE_NAME : env.DOCKER_CI_IMAGE_NAME}"
+        DOCKER_IMAGE_NAME = "${env.BRANCH_NAME ==~ /^release-.*/ || env.BRANCH_NAME == 'master' ? env.DOCKER_PUBLISH_IMAGE_NAME : env.DOCKER_CI_IMAGE_NAME}"
         CREATE_LATEST_TAG = "${env.BRANCH_NAME == 'master' ? '1' : '0'}"
         DOCKER_CREDS = credentials('github-packages-credentials-rw')
         DOCKER_REPO = 'ghcr.io'
