@@ -139,9 +139,13 @@ export class Utils {
     if (Utils.driver) {
       try {
         const imgBase64 = await Utils.driver.takeScreenshot();
-        await fs.promises.writeFile(filename, imgBase64, {encoding: 'base64'});
+        await fs.promises.writeFile(filename, imgBase64, {
+          encoding: "base64",
+        });
       } catch (err) {
-        console.error(`Failed to take screenshot to file ${filename}: ${err.toString()}`)
+        console.error(
+          `Failed to take screenshot to file ${filename}: ${err.toString()}`
+        );
       }
     } else {
       console.warn("Cannot take screenshot - Utils.driver is undefined");
