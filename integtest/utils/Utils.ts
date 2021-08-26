@@ -135,6 +135,19 @@ export class Utils {
     }
   }
 
+  public static async takeScreenshot(filename: string) {
+    if (Utils.driver) {
+      try {
+        const imgBase64 = await Utils.driver.takeScreenshot();
+        await fs.promises.writeFile(filename, imgBase64, {encoding: 'base64'});
+      } catch (err) {
+        console.error(`Failed to take screenshot to file ${filename}: ${err.toString()}`)
+      }
+    } else {
+      console.warn("Cannot take screenshot - Utils.driver is undefined");
+    }
+  }
+
   public static async getDriver(): Promise<WebDriver> {
     if (!Utils.driver) {
       const driverInfo = Utils.getConfig("driverInfo");
