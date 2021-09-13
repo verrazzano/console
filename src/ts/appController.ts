@@ -8,7 +8,6 @@ import * as OffcanvasUtils from "ojs/ojoffcanvas";
 import "ojs/ojknockout";
 import "ojs/ojmodule-element";
 import { ojNavigationList } from "ojs/ojnavigationlist";
-import { KeycloakJet } from "vz-console/auth/loader";
 import * as Messages from "vz-console/utils/Messages";
 import * as Config from "ojs/ojconfig";
 import CoreRouter = require("ojs/ojcorerouter");
@@ -52,14 +51,11 @@ class RootViewModel {
   footerLinks: Array<object>;
   selection: KnockoutRouterAdapter<CoreRouterDetail>;
 
-  oauth: KeycloakJet;
 
   constructor() {
-    // OAuth initialization
-    this.oauth = KeycloakJet.getInstance();
-
-    this.userEmail = ko.observable(this.oauth.getUserEmail());
-    this.userDisplayName = ko.observable(this.oauth.getUsername());
+    // TODO: Get email and username from the token
+    this.userEmail = ko.observable("Email");
+    this.userDisplayName = ko.observable("Username");
 
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
@@ -166,7 +162,8 @@ class RootViewModel {
   };
 
   logout = () => {
-    this.oauth.logout();
+    // TODO: Remove cookies 
+    console.log("Trigger logout, remove cookie authn");
   };
 }
 

@@ -19,7 +19,6 @@ import {
   processProjectsData,
   processRoleBindingsData,
 } from "./common";
-import { KeycloakJet } from "vz-console/auth/KeycloakJet";
 import * as Messages from "vz-console/utils/Messages";
 import { VzError } from "vz-console/utils/error";
 
@@ -383,7 +382,6 @@ export class VerrazzanoApi {
     if (vzInstance.status != null) {
       const instanceURLs = vzInstance.status.instance;
       instance.rancherUrl = instanceURLs.rancherUrl;
-      instance.keyCloakUrl = instanceURLs.keyCloakUrl;
       instance.elasticUrl = instanceURLs.elasticUrl;
       instance.kibanaUrl = instanceURLs.kibanaUrl;
       instance.prometheusUrl = instanceURLs.prometheusUrl;
@@ -503,8 +501,7 @@ export class VerrazzanoApi {
     this.defaultUrl = `${(window as any).vzApiUrl || ""}`;
     this.cluster = cluster;
     this.url = `${this.defaultUrl}/${this.apiVersion}`;
-    this.fetchApi =
-      fetchApi || KeycloakJet.getInstance().getAuthenticatedFetchApi();
+    this.fetchApi = window.fetch.bind(window);
     this.getInstance = this.getInstance.bind(this);
     this.listOAMComponents = this.listOAMComponents.bind(this);
     this.getOAMApplication = this.getOAMApplication.bind(this);
