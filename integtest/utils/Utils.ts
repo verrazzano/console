@@ -35,6 +35,7 @@ export class Utils {
     const loginEnabled = Utils.isLoginEnabled();
     try {
       console.log(`Navigating to: ${url}`);
+      console.log(`Cookies enabled: ${acceptCookies}`);
       await Utils.getJETPage(url, timeout);
 
       if (loginEnabled) {
