@@ -124,9 +124,6 @@ export const Error = {
   errIngressesFetchError: (...args) =>
     Translations.getTranslatedString("error.errIngressesFetchError", args),
 
-  errUserLogoutError: (...args) =>
-    Translations.getTranslatedString("error.errUserLogoutEror", args),
-
   errVzFetchError: (...args) =>
     Translations.getTranslatedString("error.errVzFetchError", args),
 

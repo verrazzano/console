@@ -9,7 +9,6 @@ import "ojs/ojknockout";
 import "ojs/ojmodule-element";
 import { ojNavigationList } from "ojs/ojnavigationlist";
 import * as Messages from "vz-console/utils/Messages";
-import { VerrazzanoApi } from "vz-console/service/loader";
 import * as Config from "ojs/ojconfig";
 import CoreRouter = require("ojs/ojcorerouter");
 import ModuleRouterAdapter = require("ojs/ojmodulerouter-adapter");
@@ -51,15 +50,11 @@ class RootViewModel {
   userEmail: ko.Observable<string>;
   footerLinks: Array<object>;
   selection: KnockoutRouterAdapter<CoreRouterDetail>;
-  verrazzanoApi: VerrazzanoApi;
 
   constructor() {
     // TODO: Get email and username from the token
     this.userEmail = ko.observable("Email");
     this.userDisplayName = ko.observable("Username");
-
-    // VerrazzanoApi instance to handle logout
-    this.verrazzanoApi = new VerrazzanoApi();
 
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
@@ -163,14 +158,6 @@ class RootViewModel {
   // called by navigation drawer toggle button and after selection of nav drawer item
   toggleDrawer = (): Promise<boolean> => {
     return OffcanvasUtils.toggle(this.drawerParams);
-  };
-
-  // logout user from the console
-  logout = (): void => {
-    this.verrazzanoApi
-      .logout()
-      .then(() => console.log("User logged out"))
-      .catch((err) => console.log("Error logging out: " + err));
   };
 }
 

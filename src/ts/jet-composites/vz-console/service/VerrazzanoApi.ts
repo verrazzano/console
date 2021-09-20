@@ -51,11 +51,6 @@ export class VerrazzanoApi {
       });
   }
 
-  public async logout(): Promise<void> {
-    // Handle logout
-    return Promise.resolve();
-  }
-
   public async listOAMAppsAndComponents(): Promise<{
     oamApplications: OAMApplication[];
     oamComponents: OAMComponent[];
