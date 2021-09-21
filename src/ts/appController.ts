@@ -161,9 +161,9 @@ class RootViewModel {
   };
 
   // logout user from the console
-   logout = (): void => {
-     window.location.reload();
-   };
+  logout = (): void => {
+    window.location.reload();
+  };
 }
 
 export default new RootViewModel();
