@@ -4,5 +4,6 @@
   "jetVersion": "^10.1.0",
   "pack": "vz-console",
   "displayName": "Utils resource component.",
-  "description": "Utils resource component."
+  "description": "Utils resource component.",
+  "type": "resource"
 }
