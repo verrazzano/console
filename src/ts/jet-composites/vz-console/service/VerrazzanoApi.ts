@@ -382,6 +382,7 @@ export class VerrazzanoApi {
     if (vzInstance.status != null) {
       const instanceURLs = vzInstance.status.instance;
       instance.rancherUrl = instanceURLs.rancherUrl;
+      instance.keyCloakUrl = instanceURLs.keyCloakUrl;
       instance.elasticUrl = instanceURLs.elasticUrl;
       instance.kibanaUrl = instanceURLs.kibanaUrl;
       instance.prometheusUrl = instanceURLs.prometheusUrl;

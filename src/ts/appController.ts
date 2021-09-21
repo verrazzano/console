@@ -159,6 +159,11 @@ class RootViewModel {
   toggleDrawer = (): Promise<boolean> => {
     return OffcanvasUtils.toggle(this.drawerParams);
   };
+
+  // logout user from the console
+   logout = (): void => {
+     window.location.reload();
+   };
 }
 
 export default new RootViewModel();
