@@ -9,6 +9,7 @@ import "ojs/ojknockout";
 import "ojs/ojmodule-element";
 import { ojNavigationList } from "ojs/ojnavigationlist";
 import * as Messages from "vz-console/utils/Messages";
+import { UserInfoCookie } from "vz-console/service/types";
 import * as Config from "ojs/ojconfig";
 import CoreRouter = require("ojs/ojcorerouter");
 import ModuleRouterAdapter = require("ojs/ojmodulerouter-adapter");
@@ -21,12 +22,6 @@ interface CoreRouterDetail {
   iconClass: string;
 }
 
-interface UserInfoCookie {
-  username: string;
-  email: string;
-  isEmailVerified: string;
-}
-
 function getCookieAsString(name: string): string {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -35,11 +30,15 @@ function getCookieAsString(name: string): string {
 }
 
 function getCookieAsObject(name: string): UserInfoCookie {
-  var result = { username: "", email: "", isEmailVerified: "false" };
-  var cookie = getCookieAsString(name);
-  var decoded = atob(cookie).split(",");
+  const result = <UserInfoCookie>{
+    username: "",
+    email: "",
+    isEmailVerified: "false",
+  };
+  const cookie = getCookieAsString(name);
+  const decoded = atob(cookie).split(",");
   decoded.forEach((pair) => {
-    var arr = pair.split("=");
+    const arr = pair.split("=");
     result[arr[0]] = arr[1];
   });
   return result;
@@ -77,8 +76,7 @@ class RootViewModel {
 
   constructor() {
     // set username and email from cookie
-    var cookie = getCookieAsObject("vz_userinfo");
-    console.log(cookie);
+    const cookie = getCookieAsObject("vz_userinfo");
     this.userDisplayName = ko.observable(cookie.username);
     this.userEmail = ko.observable(cookie.email);
 
