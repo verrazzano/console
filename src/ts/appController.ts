@@ -30,12 +30,12 @@ interface UserInfoCookie {
 function getCookieAsString(name: string): string {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
+  if (parts.length === 2) return parts.pop().split(";").shift();
   return "";
 }
 
 function getCookieAsObject(name: string): UserInfoCookie {
-  var result = {username:"", email: "", isEmailVerified: "false"};
+  var result = { username: "", email: "", isEmailVerified: "false" };
   var cookie = getCookieAsString(name);
   var decoded = atob(cookie).split(",");
   decoded.forEach((pair) => {
@@ -79,8 +79,8 @@ class RootViewModel {
     // set username and email from cookie
     var cookie = getCookieAsObject("vz_userinfo");
     console.log(cookie);
-    this.userDisplayName = ko.observable(cookie["username"]);
-    this.userEmail = ko.observable(cookie["email"]);
+    this.userDisplayName = ko.observable(cookie.username);
+    this.userEmail = ko.observable(cookie.email);
 
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
