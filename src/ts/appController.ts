@@ -33,12 +33,13 @@ function getCookie(name: string): string {
 
 function getValueFromCookie(cookieVal: string, key: string): string {
   // base64 decode the cookie value before searching for the key
-  var decoded = atob(cookieVal).split("=");
-  for (let i = 0; i < decoded.length - 1; i += 2) {
-    if (decoded[i] === key) {
-      return decoded[i + 1];
+  var decoded = atob(cookieVal).split(",");
+  decoded.forEach((pair) => {
+    var arr = pair.split("=");
+    if ((arr[0] = key)) {
+      return arr[1];
     }
-  }
+  });
   return "";
 }
 
