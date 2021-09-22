@@ -21,26 +21,28 @@ interface CoreRouterDetail {
   iconClass: string;
 }
 
-function getCookie(name: string): string {
-  var cookies = document.cookie.split("=");
-  for (let i = 0; i < cookies.length - 1; i += 2) {
-    if (cookies[i] === name) {
-      return cookies[i + 1];
-    }
-  }
+interface UserInfoCookie {
+  username: string;
+  email: string;
+  isEmailVerified: string;
+}
+
+function getCookieAsString(name: string): string {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
   return "";
 }
 
-function getValueFromCookie(cookieVal: string, key: string): string {
-  // base64 decode the cookie value before searching for the key
-  var decoded = atob(cookieVal).split(",");
+function getCookieAsObject(name: string): UserInfoCookie {
+  var result = {username:"", email: "", isEmailVerified: "false"};
+  var cookie = getCookieAsString(name);
+  var decoded = atob(cookie).split(",");
   decoded.forEach((pair) => {
     var arr = pair.split("=");
-    if ((arr[0] = key)) {
-      return arr[1];
-    }
+    result[arr[0]] = arr[1];
   });
-  return "";
+  return result;
 }
 
 class RootViewModel {
@@ -74,12 +76,11 @@ class RootViewModel {
   selection: KnockoutRouterAdapter<CoreRouterDetail>;
 
   constructor() {
-    // get username from cookie
-    var cookieValue = getCookie("vz_userinfo");
-    const username = getValueFromCookie(cookieValue, "username");
-    const email = getValueFromCookie(cookieValue, "email");
-    this.userDisplayName = ko.observable(username);
-    this.userEmail = ko.observable(email);
+    // set username and email from cookie
+    var cookie = getCookieAsObject("vz_userinfo");
+    console.log(cookie);
+    this.userDisplayName = ko.observable(cookie["username"]);
+    this.userEmail = ko.observable(cookie["email"]);
 
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
