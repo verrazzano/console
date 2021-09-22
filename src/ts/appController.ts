@@ -24,9 +24,9 @@ interface CoreRouterDetail {
 
 function getCookie(name: string): string {
   let cookies = document.cookie.split("=");
-  for (let i=0; i<cookies.length-1; i+=2) {
+  for (let i = 0; i < cookies.length - 1; i += 2) {
     if (cookies[i] == name) {
-      return cookies[i+1];
+      return cookies[i + 1];
     }
   }
   return "";
@@ -35,9 +35,9 @@ function getCookie(name: string): string {
 function getValueFromCookie(cookieVal: string, key: string): string {
   // base64 decode the cookie value before searching for the key
   let decoded = atob(cookieVal).split("=");
-  for (let i=0; i<decoded.length-1; i+=2) {
+  for (let i = 0; i < decoded.length - 1; i += 2) {
     if (decoded[i] == key) {
-      return decoded[i+1];
+      return decoded[i + 1];
     }
   }
   return "";
