@@ -142,10 +142,11 @@ export class VerrazzanoApi {
           mcAppsByNamespace.forEach((mcAppsByName, namespace) => {
             mcAppsByName.forEach((mcApp) => {
               mcApps.push(mcApp);
+              // eslint-disable-next-line chai-friendly/no-unused-expressions
               mcComponentsByClusterAndNamespace
                 .get(cluster)
-                .get(namespace)
-                .forEach((mcComp) => {
+                ?.get(namespace)
+                ?.forEach((mcComp) => {
                   mcComps.push(mcComp);
                 });
             });
@@ -222,7 +223,7 @@ export class VerrazzanoApi {
       for (const [
         namespace,
         mcComponents,
-      ] of mcComponentsByClusterAndNamespace.get(cluster)) {
+      ] of mcComponentsByClusterAndNamespace.get(cluster) || []) {
         for (const [name] of mcComponents) {
           try {
             const resource = await new VerrazzanoApi(
