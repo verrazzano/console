@@ -70,7 +70,6 @@ class RootViewModel {
 
   appName: ko.Observable<string>;
   userDisplayName: ko.Observable<string>;
-  userEmail: ko.Observable<string>;
   footerLinks: Array<object>;
   selection: KnockoutRouterAdapter<CoreRouterDetail>;
 
@@ -78,7 +77,6 @@ class RootViewModel {
     // set username and email from cookie
     const cookie = getCookieAsObject("vz_userinfo");
     this.userDisplayName = ko.observable(cookie.username);
-    this.userEmail = ko.observable(cookie.email);
 
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
