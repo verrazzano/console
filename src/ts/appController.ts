@@ -15,7 +15,6 @@ import ModuleRouterAdapter = require("ojs/ojmodulerouter-adapter");
 import KnockoutRouterAdapter = require("ojs/ojknockoutrouteradapter");
 import UrlParamAdapter = require("ojs/ojurlparamadapter");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
-import { Key } from "selenium-webdriver";
 
 interface CoreRouterDetail {
   label: string;
@@ -23,9 +22,9 @@ interface CoreRouterDetail {
 }
 
 function getCookie(name: string): string {
-  let cookies = document.cookie.split("=");
+  var cookies = document.cookie.split("=");
   for (let i = 0; i < cookies.length - 1; i += 2) {
-    if (cookies[i] == name) {
+    if (cookies[i] === name) {
       return cookies[i + 1];
     }
   }
@@ -34,9 +33,9 @@ function getCookie(name: string): string {
 
 function getValueFromCookie(cookieVal: string, key: string): string {
   // base64 decode the cookie value before searching for the key
-  let decoded = atob(cookieVal).split("=");
+  var decoded = atob(cookieVal).split("=");
   for (let i = 0; i < decoded.length - 1; i += 2) {
-    if (decoded[i] == key) {
+    if (decoded[i] === key) {
       return decoded[i + 1];
     }
   }
@@ -74,11 +73,12 @@ class RootViewModel {
   selection: KnockoutRouterAdapter<CoreRouterDetail>;
 
   constructor() {
-    this.userEmail = ko.observable("Email");
     // get username from cookie
-    let cookieValue = getCookie("vz_userinfo");
-    let username = getValueFromCookie(cookieValue, "username");
+    var cookieValue = getCookie("vz_userinfo");
+    const username = getValueFromCookie(cookieValue, "username");
+    const email = "Email;";
     this.userDisplayName = ko.observable(username);
+    this.userEmail = ko.observable(email);
 
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
