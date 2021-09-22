@@ -76,7 +76,7 @@ class RootViewModel {
     // get username from cookie
     var cookieValue = getCookie("vz_userinfo");
     const username = getValueFromCookie(cookieValue, "username");
-    const email = "Email;";
+    const email = getValueFromCookie(cookieValue, "email");
     this.userDisplayName = ko.observable(username);
     this.userEmail = ko.observable(email);
 
