@@ -233,8 +233,6 @@ export interface RoleBinding {
 
 export interface UserInfoCookie {
   username?: string;
-  email?: string;
-  isEmailVerified?: string;
 }
 
 export const ResourceType = {
