@@ -133,7 +133,7 @@ export class VerrazzanoApi {
         this.cluster
       );
       applicationsByClusterAndNamespace.set(this.cluster, oamApplications);
-      componentsByClusterAndNamespace.set(this.cluster, oamComponents);
+      const allOamComponents = oamComponents;
 
       mcApplicationsByClusterAndNamespace.forEach(
         (mcAppsByNamespace, cluster) => {
@@ -142,6 +142,12 @@ export class VerrazzanoApi {
           mcAppsByNamespace.forEach((mcAppsByName, namespace) => {
             mcAppsByName.forEach((mcApp) => {
               mcApps.push(mcApp);
+
+              // Add to mcComps all the OAM components (non MC components), that correspond to this MC app config
+              mcComps.push(this.findComponentsForMcApp(mcApp, components));
+
+              // Get the (legacy, pre v1.1) MultiClusterComponents if they exist for this app's
+              // cluster and namespace.
               // eslint-disable-next-line chai-friendly/no-unused-expressions
               mcComponentsByClusterAndNamespace
                 .get(cluster)
@@ -160,6 +166,19 @@ export class VerrazzanoApi {
           componentsByClusterAndNamespace.set(cluster, oamComponents);
         }
       );
+
+      // Any OAM components that were not part of MC apps targeted at other clusters should be considered as part of
+      // this VerrazzanoApi instance's cluster
+      const oamCompsForThisCluster: OAMComponent[] = [];
+      allOamComponents.forEach((mapOfOAMComps) => {
+        mapOfOAMComps.forEach((oamComp) => {
+          if (!oamComp.cluster || !oamComp.cluster.name) {
+            oamComp.cluster = { name: this.cluster };
+            oamCompsForThisCluster.push(oamComp);
+          }
+        });
+      });
+
       const applications: OAMApplication[] = [];
       const comps: OAMComponent[] = [];
       applicationsByClusterAndNamespace.forEach((element) => {
@@ -176,6 +195,8 @@ export class VerrazzanoApi {
           });
         });
       });
+      comps.push(...oamCompsForThisCluster);
+
       return { oamApplications: applications, oamComponents: comps };
     } catch (error) {
       throw new VzError(error);
@@ -636,5 +657,24 @@ export class VerrazzanoApi {
       }
     });
     return mcComponentsByClusterAndNamespace;
+  }
+
+  private findComponentsForMcApp(mcApp: any, components: any) {
+    const componentsForMcApp: any = [];
+    if (mcApp.spec && mcApp.spec.components) {
+      mcApp.spec.components.forEach((appComponent) => {
+        if (appComponent.componentName) {
+          const matchingComp = components.find(
+            (comp) =>
+              comp.metadata.name === appComponent.componentName &&
+              comp.metadata.namespace === mcApp.metadata.namespace
+          );
+          if (matchingComp) {
+            componentsForMcApp.push(matchingComp);
+          }
+        }
+      });
+    }
+    return componentsForMcApp;
   }
 }
