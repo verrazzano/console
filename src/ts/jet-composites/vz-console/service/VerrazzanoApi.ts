@@ -174,6 +174,8 @@ export class VerrazzanoApi {
         mapOfOAMComps.forEach((oamComp) => {
           if (!oamComp.cluster || !oamComp.cluster.name) {
             oamComp.cluster = { name: this.cluster };
+          }
+          if (oamComp.cluster.name === this.cluster) {
             oamCompsForThisCluster.push(oamComp);
           }
         });
