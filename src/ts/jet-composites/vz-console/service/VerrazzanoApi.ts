@@ -143,8 +143,8 @@ export class VerrazzanoApi {
             mcAppsByName.forEach((mcApp) => {
               mcApps.push(mcApp);
 
-              // Add to mcComps all the OAM components (non MC components), that correspond to this MC app config
-              mcComps.push(this.findComponentsForMcApp(mcApp, components));
+              // Add to mcComps all the regular (i.e. non-MC) components, that correspond to this MC app config
+              mcComps.push(...this.findComponentsForMcApp(mcApp, components));
 
               // Get the (legacy, pre v1.1) MultiClusterComponents if they exist for this app's
               // cluster and namespace.
@@ -659,7 +659,7 @@ export class VerrazzanoApi {
     return mcComponentsByClusterAndNamespace;
   }
 
-  private findComponentsForMcApp(mcApp: any, components: any) {
+  private findComponentsForMcApp(mcApp: any, components: any): any[] {
     const componentsForMcApp: any = [];
     if (mcApp.spec && mcApp.spec.components) {
       mcApp.spec.components.forEach((appComponent) => {
