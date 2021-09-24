@@ -198,7 +198,7 @@ export class VerrazzanoApi {
           });
         });
       });
-      // comps.push(...oamCompsForThisCluster);
+      comps.push(...oamCompsForThisCluster);
 
       return { oamApplications: applications, oamComponents: comps };
     } catch (error) {
