@@ -61,6 +61,9 @@ export = {
     errFetchingKubernetesResource:
       "Error fetching {0} {1}/{2} from the cluster.",
 
+    errResponseStatusCode:
+      " Response status code is {0}.",
+
     errCreatingKubernetesResource:
       "Error creating {0} {1}/{2} in the cluster. {3}",
 

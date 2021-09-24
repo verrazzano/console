@@ -30,7 +30,7 @@ class Props {
 class State {
   oamComponent?: OAMComponent;
   loading?: boolean;
-  error?: string;
+  error?: Error;
   breadcrumbs?: BreadcrumbType[];
   selectedTab?: string;
 }
@@ -58,7 +58,7 @@ export class ConsoleOAMComponent extends ElementVComponent<Props, State> {
 
   protected mounted() {
     if (!this.props.oamCompId) {
-      this.updateState({ error: Messages.Error.errInvalidOamCompId() });
+      this.updateState({ error: new Error(Messages.Error.errInvalidOamCompId()) });
       return;
     }
 
@@ -72,7 +72,7 @@ export class ConsoleOAMComponent extends ElementVComponent<Props, State> {
       const vmc = await this.verrazzanoApi.getVMC(this.props.cluster);
       if (!vmc) {
         this.updateState({
-          error: Messages.Error.errVmcNotExists(this.props.cluster),
+          error: new Error(Messages.Error.errVmcNotExists(this.props.cluster)),
         });
       }
 
@@ -104,11 +104,7 @@ export class ConsoleOAMComponent extends ElementVComponent<Props, State> {
         this.updateState({ loading: false, oamComponent });
       })
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
+        this.updateState({ error: error });
       });
   }
 
