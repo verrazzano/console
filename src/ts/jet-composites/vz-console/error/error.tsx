@@ -37,7 +37,8 @@ export class ConsoleError extends ElementVComponent<Props> {
 
   createMessage(): ojMessage.Message {
     const errCode = this.props.error instanceof VzError ? (this.props.error as VzError).getCode() : "";
-    const detail = `${this.props.error.message} ${Messages.Labels.status()}: ${errCode || "-"}`
+    const statusString = errCode ? `${Messages.Labels.status()}: ${errCode}` : "";
+    const detail = `${this.props.error.message}  ${statusString}`;
     return {
       severity: "error",
       summary: this.props.context,
