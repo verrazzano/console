@@ -36,7 +36,7 @@ function getCookieAsObject(name: string): UserInfoCookie {
   const cookie = getCookieAsString(name);
   const decoded = atob(cookie).split("=");
   if (decoded[0] === "username") {
-    result.username = decoded[1]
+    result.username = decoded[1];
   }
   return result;
 }
