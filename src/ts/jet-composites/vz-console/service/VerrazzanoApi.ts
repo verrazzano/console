@@ -170,7 +170,6 @@ export class VerrazzanoApi {
 
       // Any OAM components that were not part of MC apps targeted at other clusters should be considered as part of
       // this VerrazzanoApi instance's cluster
-      /*
       const oamCompsForThisCluster: OAMComponent[] = [];
       allOamComponents.forEach((mapOfOAMComps) => {
         mapOfOAMComps.forEach((oamComp) => {
@@ -182,7 +181,6 @@ export class VerrazzanoApi {
           }
         });
       });
-      */
 
       const applications: OAMApplication[] = [];
       const comps: OAMComponent[] = [];
