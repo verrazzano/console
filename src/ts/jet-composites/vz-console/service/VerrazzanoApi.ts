@@ -145,7 +145,7 @@ export class VerrazzanoApi {
               mcApps.push(mcApp);
 
               // Add to mcComps all the regular (i.e. non-MC) components, that correspond to this MC app config
-              // mcComps.push(...this.findComponentsForMcApp(mcApp, components));
+              mcComps.push(...this.findComponentsForMcApp(mcApp, components));
 
               // Get the (legacy, pre v1.1) MultiClusterComponents if they exist for this app's
               // cluster and namespace.
