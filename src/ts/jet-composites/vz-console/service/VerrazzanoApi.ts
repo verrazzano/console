@@ -116,7 +116,8 @@ export class VerrazzanoApi {
 
       await this.populateMCAppsAndComponents(
         mcApplicationsByClusterAndNamespace,
-        mcComponentsByClusterAndNamespace
+        mcComponentsByClusterAndNamespace,
+        components
       );
 
       const applicationsByClusterAndNamespace = new Map<
@@ -213,7 +214,8 @@ export class VerrazzanoApi {
     mcComponentsByClusterAndNamespace: Map<
       string,
       Map<string, Map<string, any>>
-    >
+    >,
+    componentsArray: any[]
   ) {
     for (const [
       cluster,
@@ -223,26 +225,8 @@ export class VerrazzanoApi {
       if (!vmc) {
         continue;
       }
-      for (const [namespace, mcApps] of mcAppsByNamespace) {
-        for (const [name] of mcApps) {
-          try {
-            const resource = await new VerrazzanoApi(
-              cluster
-            ).getKubernetesResource(
-              ResourceType.ApplicationConfiguration,
-              namespace,
-              name
-            );
-            const app = await resource.json();
-            mcApps.set(name, app);
-          } catch (error) {
-            console.log(
-              `Failure retrieving app ${name} from cluster ${cluster}: ${error}`
-            );
-          }
-        }
-      }
 
+      // Process any legacy MC component resources and retrieve the corresponding component from target cluster
       for (const [
         namespace,
         mcComponents,
@@ -260,6 +244,50 @@ export class VerrazzanoApi {
             );
           }
         }
+      }
+
+      // Process MC Application configurations - if the corresponding component is not in the list of legacy
+      // MC Components collected above, look for a non-MC component
+      for (const [namespace, mcApps] of mcAppsByNamespace) {
+        const appComponentsPerNS = [];
+        for (const [name] of mcApps) {
+          try {
+            const vzApi = new VerrazzanoApi(cluster);
+            const resource = await vzApi.getKubernetesResource(
+              ResourceType.ApplicationConfiguration,
+              namespace,
+              name
+            );
+            const app = await resource.json();
+            mcApps.set(name, app);
+            const appComponents = this.findComponentsForMcApp(
+              app,
+              componentsArray
+            );
+            if (appComponents) {
+              for (const appComp of appComponents) {
+                const compResource = await vzApi.getKubernetesResource(
+                  ResourceType.Component,
+                  namespace,
+                  appComp.metadata.name
+                );
+                const comp = await compResource?.json();
+                appComponentsPerNS.push(comp);
+              }
+            }
+          } catch (error) {
+            console.log(
+              `Failure retrieving app ${name} from cluster ${cluster}: ${error}`
+            );
+          }
+        }
+        // add these components to the mcComponents for the current cluster and namespace
+        this.addComponentsForClusterAndNamespace(
+          mcComponentsByClusterAndNamespace,
+          cluster,
+          namespace,
+          appComponentsPerNS
+        );
       }
     }
 
@@ -678,5 +706,33 @@ export class VerrazzanoApi {
       });
     }
     return componentsForMcApp;
+  }
+
+  // add the given list of components to the given "by cluster and namespace" map of components
+  private addComponentsForClusterAndNamespace(
+    mcComponentsByClusterAndNamespace: Map<
+      string,
+      Map<string, Map<string, any>>
+    >,
+    cluster: string,
+    namespace: string,
+    compsToAdd: any[]
+  ) {
+    if (compsToAdd.length === 0) {
+      return;
+    }
+    let mcCompsByCluster = mcComponentsByClusterAndNamespace.get(cluster);
+    if (!mcCompsByCluster) {
+      mcCompsByCluster = new Map<string, Map<string, any>>();
+      mcComponentsByClusterAndNamespace.set(cluster, mcCompsByCluster);
+    }
+    let mcCompsForNS = mcCompsByCluster.get(namespace);
+    if (!mcCompsForNS) {
+      mcCompsForNS = new Map<string, any>();
+      mcCompsByCluster.set(namespace, mcCompsForNS);
+    }
+    compsToAdd.forEach((appComp) => {
+      mcCompsForNS.set(appComp.metadata.name, appComp);
+    });
   }
 }
