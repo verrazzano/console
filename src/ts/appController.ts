@@ -34,11 +34,10 @@ function getCookieAsObject(name: string): UserInfoCookie {
     username: "",
   };
   const cookie = getCookieAsString(name);
-  const decoded = atob(cookie).split(",");
-  decoded.forEach((pair) => {
-    const arr = pair.split("=");
-    result[arr[0]] = arr[1];
-  });
+  const decoded = atob(cookie).split("=");
+  if (decoded[0] === "username") {
+    result.username = decoded[1]
+  }
   return result;
 }
 
