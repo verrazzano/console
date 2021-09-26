@@ -231,6 +231,10 @@ export interface RoleBinding {
   createdOn?: string;
 }
 
+export interface UserInfoCookie {
+  username?: string;
+}
+
 export const ResourceType = {
   Cluster: <ResourceTypeType>{
     ApiVersion: "apis/clusters.verrazzano.io/v1alpha1",
