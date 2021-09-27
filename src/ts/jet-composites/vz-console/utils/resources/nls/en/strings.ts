@@ -59,7 +59,7 @@ export = {
     errRenderOAMComponent: "Error displaying OAM Component {0}.",
 
     errFetchingKubernetesResource:
-      "Error fetching {0} {1}/{2} from the cluster.",
+      "Error fetching {0} {1}/{2} from the {3} cluster.",
 
     errResponseStatusCode:
       " Response status code is {0}.",

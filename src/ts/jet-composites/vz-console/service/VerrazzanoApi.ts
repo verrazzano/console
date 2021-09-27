@@ -372,7 +372,8 @@ export class VerrazzanoApi {
           Messages.Error.errFetchingKubernetesResource(
             `${type.ApiVersion}/${type.Kind}`,
             namespace,
-            name
+            name,
+            this.cluster === "local" ? "" : this.cluster
           ),
           response?.status
         );
