@@ -57,7 +57,6 @@
 
 require(["ojs/ojbootstrap", "js-yaml", "root"], function (
   Bootstrap,
-  Jwt,
   JsYaml,
   Root
 ) {
