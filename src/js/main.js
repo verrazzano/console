@@ -55,9 +55,8 @@
   });
 }());
 
-require(["ojs/ojbootstrap", "jwt_decode", "js-yaml", "root"], function (
+require(["ojs/ojbootstrap", "js-yaml", "root"], function (
   Bootstrap,
-  Jwt,
   JsYaml,
   Root
 ) {
