@@ -2,9 +2,9 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By } from "selenium-webdriver";
-import { LoginInfo } from "../utils/Utils";
-import { Wait, PAGE_LOAD_TIMEOUT } from "../utils/Wait";
-import { Actions } from "../utils/Actions";
+import { LoginInfo } from "../../utils/Utils";
+import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
+import { Actions } from "../../utils/Actions";
 
 /**
  * Page Object Model for the Keycloak login page

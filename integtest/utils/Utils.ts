@@ -8,8 +8,11 @@ import {
   Condition,
   WebDriver,
 } from "selenium-webdriver";
-import { MainPage } from "../pageObjects/MainPage.pom";
-import { LoginPage } from "../pageObjects/LoginPage.pom";
+import { LoginPage } from "../pageObjects/keycloak/LoginPage.pom";
+import { ConsoleMainPage } from "../pageObjects/console/ConsoleMainPage.pom";
+import { GrafanaMainPage } from "../pageObjects/grafana/GrafanaMainPage.pom";
+import { KibanaMainPage } from "../pageObjects/kibana/KibanaMainPage.pom";
+import { PrometheusMainPage } from "../pageObjects/prometheus/PrometheusMainPage.pom";
 export interface LoginInfo {
   username: string;
   password: string;
@@ -111,11 +114,44 @@ export class Utils {
     return key ? Utils.config[key] : Utils.config;
   }
 
-  static async gotoMainPage(): Promise<MainPage> {
-    const mainPage = new MainPage();
-    const uiUrl = Utils.getConfig("driverInfo").url;
-    console.log(`Navigating to UI main page at ${uiUrl}`);
-    await Utils.getJETPage(uiUrl);
+  static async gotoConsoleMainPage(): Promise<ConsoleMainPage> {
+    const mainPage = new ConsoleMainPage();
+    const url = Utils.getConfig("driverInfo").url;
+    console.log(`Navigating to Verrazzano Console main page at ${url}`);
+    await Utils.getJETPage(url);
+
+    // Verify MainPage is reachable and loaded
+    await mainPage.isPageLoaded();
+    return mainPage;
+  }
+
+  static async gotoGrafanaMainPage(): Promise<GrafanaMainPage> {
+    const mainPage = new GrafanaMainPage();
+    const url = Utils.getConfig("grafana").url;
+    console.log(`Navigating to Grafana main page at ${url}`);
+    await Utils.getJETPage(url);
+
+    // Verify MainPage is reachable and loaded
+    await mainPage.isPageLoaded();
+    return mainPage;
+  }
+
+  static async gotoKibanaMainPage(): Promise<KibanaMainPage> {
+    const mainPage = new KibanaMainPage();
+    const url = Utils.getConfig("kibana").url;
+    console.log(`Navigating to Kibana main page at ${url}`);
+    await Utils.getJETPage(url);
+
+    // Verify MainPage is reachable and loaded
+    await mainPage.isPageLoaded();
+    return mainPage;
+  }
+
+  static async gotoPrometheusMainPage(): Promise<PrometheusMainPage> {
+    const mainPage = new PrometheusMainPage();
+    const url = Utils.getConfig("prometheus").url;
+    console.log(`Navigating to Prometheus main page at ${url}`);
+    await Utils.getJETPage(url);
 
     // Verify MainPage is reachable and loaded
     await mainPage.isPageLoaded();

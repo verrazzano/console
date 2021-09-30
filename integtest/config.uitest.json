@@ -16,6 +16,15 @@
       ]
     }
   },
+  "grafana": {
+    "url": ""
+  },
+  "kibana": {
+    "url": ""
+  },
+  "prometheus": {
+    "url": ""
+  },
   "loginEnabled": true,
   "loginInfo": {
     "username": "",
