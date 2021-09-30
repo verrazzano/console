@@ -95,13 +95,13 @@ describe("Grafana Home Page", (): void => {
   describe("Access Grafana user menu", (): void => {
     it("Wait for sidebar", async () => {
       await grafanaMainPage.waitForSidemenu();
-    })
+    });
 
-    it("Select user menu", async() => {
+    it("Select user menu", async () => {
       expect(await grafanaSideBar.selectUserMenu()).to.be.true;
     });
 
-    it("Select user menu content", async() => {
+    it("Select user menu content", async () => {
       expect(await grafanaSideBar.selectUserMenuContent()).to.be.true;
     });
   });
@@ -164,9 +164,9 @@ describe("Prometheus Home Page", (): void => {
     it("Main Page should load and contain header", async () => {
       expect(await prometheusMainPage.waitForHeader()).to.be.true;
     });
-    
+
     it("Main Page should contain prometheus panel", async () => {
-        expect(await prometheusMainPage.waitForPrometheusPanel()).to.be.true;
+      expect(await prometheusMainPage.waitForPrometheusPanel()).to.be.true;
     });
 
     it("Main Page should contain add graph button", async () => {

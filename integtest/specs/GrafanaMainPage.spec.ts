@@ -44,13 +44,13 @@ describe("Grafana Home Page", (): void => {
   describe("Access Grafana user menu", (): void => {
     it("Wait for sidebar", async () => {
       await grafanaMainPage.waitForSidemenu();
-    })
+    });
 
-    it("Select user menu", async() => {
+    it("Select user menu", async () => {
       expect(await grafanaSideBar.selectUserMenu()).to.be.true;
     });
 
-    it("Select user menu content", async() => {
+    it("Select user menu content", async () => {
       expect(await grafanaSideBar.selectUserMenuContent()).to.be.true;
     });
   });

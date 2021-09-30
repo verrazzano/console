@@ -21,9 +21,9 @@ describe("Prometheus Home Page", (): void => {
     it("Main Page should load and contain header", async () => {
       expect(await prometheusMainPage.waitForHeader()).to.be.true;
     });
-    
+
     it("Main Page should contain prometheus panel", async () => {
-        expect(await prometheusMainPage.waitForPrometheusPanel()).to.be.true;
+      expect(await prometheusMainPage.waitForPrometheusPanel()).to.be.true;
     });
 
     it("Main Page should contain add graph button", async () => {

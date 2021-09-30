@@ -8,18 +8,11 @@ import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
  * Page Object Model for Grafana main page
  */
 export class GrafanaMainPage {
+  private static readonly HEADER_CONTAINER: By = By.className("navbar");
 
-  private static readonly HEADER_CONTAINER: By = By.className(
-    "navbar"
-  );
+  private static readonly SIDEMENU_CONTAINER: By = By.className("sidemenu");
 
-  private static readonly SIDEMENU_CONTAINER: By = By.className(
-    "sidemenu"
-  );
-
-  private static readonly GRAFANA_PANEL: By = By.css(
-    "grafana-panel"
-  );
+  private static readonly GRAFANA_PANEL: By = By.css("grafana-panel");
 
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = GrafanaMainPage.HEADER_CONTAINER;

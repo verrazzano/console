@@ -8,18 +8,11 @@ import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
  * Page Object Model for Prometheus main page
  */
 export class PrometheusMainPage {
+  private static readonly HEADER_CONTAINER: By = By.className("navbar");
 
-  private static readonly HEADER_CONTAINER: By = By.className(
-    "navbar"
-  );
- 
-  private static readonly PROMETHEUS_PANEL: By = By.id(
-    "graph_container"
-  );
+  private static readonly PROMETHEUS_PANEL: By = By.id("graph_container");
 
-  private static readonly ADD_GRAPH_BUTTON: By = By.id(
-    "add_graph"
-  );
+  private static readonly ADD_GRAPH_BUTTON: By = By.id("add_graph");
 
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = PrometheusMainPage.HEADER_CONTAINER;
@@ -39,24 +32,24 @@ export class PrometheusMainPage {
       return false;
     }
   }
-  
+
   /* Wait for Prometheus panel */
   public async waitForPrometheusPanel(): Promise<boolean> {
-      try {
-          await Wait.waitForPresent(PrometheusMainPage.PROMETHEUS_PANEL);
-          return true;
-        } catch (error) {
-            return false;
-        }
-    }
-    
-    /* Wait for add graph button */
-    public async waitForAddGraphButton(): Promise<boolean> {
     try {
-        await Wait.waitForPresent(PrometheusMainPage.ADD_GRAPH_BUTTON);
-        return true;
+      await Wait.waitForPresent(PrometheusMainPage.PROMETHEUS_PANEL);
+      return true;
     } catch (error) {
-        return false;
+      return false;
     }
+  }
+
+  /* Wait for add graph button */
+  public async waitForAddGraphButton(): Promise<boolean> {
+    try {
+      await Wait.waitForPresent(PrometheusMainPage.ADD_GRAPH_BUTTON);
+      return true;
+    } catch (error) {
+      return false;
     }
+  }
 }

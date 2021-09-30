@@ -8,14 +8,9 @@ import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
  * Page Object Model for Kibana main page
  */
 export class KibanaMainPage {
+  private static readonly HEADER_CONTAINER: By = By.className("euiHeader");
 
-  private static readonly HEADER_CONTAINER: By = By.className(
-    "euiHeader"
-  );
-
-  private static readonly SIDEMENU_CONTAINER: By = By.id(
-    "navDrawerMenu"
-  );
+  private static readonly SIDEMENU_CONTAINER: By = By.id("navDrawerMenu");
 
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = KibanaMainPage.HEADER_CONTAINER;
