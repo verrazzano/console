@@ -79,17 +79,13 @@ Verrazzano installations have a default user `verrazzano` configured in the Verr
    kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode; echo
 ```
 
-The Verrazzano Console accesses the Verrazzano API using [JSON Web Token (JWT)](https://en.wikipedia.org/wiki/JSON_Web_Token)-based authentication enabled by the [Keycloak Authorization Services](https://www.keycloak.org/docs/4.8/authorization_services/). The Console application requests this token from the Keycloak API Server. To access the Keycloak API, the user accessing the Console application must be logged in to Keycloak and have a valid session. When an existing Keycloak user session is expired or upon the expiration of the [refresh token](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/), the browser is redirected to the Keycloak login page, where you can authenticate again using the credentials for user `verrazzano`.
+The Verrazzano Console accesses the Verrazzano API using Verrazzano Auth-Proxy. The Auth-Proxy uses Keycloak to authenticate and authorize the user. Post authentication and authorization, two cookies - vz_authn and vz_userinfo, are set in the browser. The vz_authn cookie is used for the subsequent requests by the Verrazzano Console, while vz_userinfo cookie is consumed by the Verrazzano Console to retrieve information relevant to the logged in user e.g. username.
 
 ### Set up environment variables
 
-Set the following environment variables:
+Set the following environment variable:
 
 ```bash
-  export VZ_AUTH=true
-  export VZ_KEYCLOAK_URL=<your Keycloak URL> e.g. https://keycloak.default.11.22.33.44.xip.io
-  export VZ_UI_URL=http://localhost:8000
-  export VZ_CLIENT_ID=<your client id which allows redirect uri on localhost:8000 or verrazzano-pkce if using default>
   export VZ_API_URL=<your Verrazzano API Server URL> e.g. https://verrazzano.default.11.22.33.44.xip.io
 ```
 
@@ -101,7 +97,7 @@ To run the Console application in a local web server, run following command:
   ojet serve
 ```
 
-This will open a browser at [http://localhost:8000](http://localhost:8000). On first access, you will be required to log in to Keycloak with the `verrazzano` user and password obtained in [Get Verrazzano user credentials](#get-verrazzano-user-credentials).
+This will open a browser at [http://localhost:8000](http://localhost:8000). On first access, it will display a Verrazzano Console home page with a error message. The error message occurs since the console is not allowed to access the Verrazzano Auth-Proxy.
 
 When you make changes to the Console code, the changes are reflected immediately in the browser because the `livereload` option is enabled by default for the `ojet serve` command. For other options supported by the command, see [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9).
 
@@ -121,6 +117,11 @@ To run integration tests for the Console:
 * Run the tests using the following command:
 ```
 npm run integtest
+```
+
+Or maybe -
+```
+make run-ui-test
 ```
 
 ## Building
