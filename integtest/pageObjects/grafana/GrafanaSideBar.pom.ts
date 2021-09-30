@@ -10,9 +10,11 @@ export class GrafanaSideBar {
   /* component locators */
 
   private static readonly LOGO: By = By.className("sidemenu__logo");
+
   private static readonly USER_MENU_BUTTON: By = By.xpath(
     `//a[contains(@href,"/profile")]`
   );
+
   private static readonly USER_MENU_CONTENT: By = By.className(
     "dropdown-menu--sidemenu"
   );
