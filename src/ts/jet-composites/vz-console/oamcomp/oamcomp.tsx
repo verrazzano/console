@@ -58,7 +58,9 @@ export class ConsoleOAMComponent extends ElementVComponent<Props, State> {
 
   protected mounted() {
     if (!this.props.oamCompId) {
-      this.updateState({ error: new Error(Messages.Error.errInvalidOamCompId()) });
+      this.updateState({
+        error: new Error(Messages.Error.errInvalidOamCompId()),
+      });
       return;
     }
 

@@ -98,10 +98,7 @@ export const Error = {
     ),
 
   errResponseStatusCode: (...args) =>
-      Translations.getTranslatedString(
-          "error.errResponseStatusCode",
-          args
-      ),
+    Translations.getTranslatedString("error.errResponseStatusCode", args),
 
   errCreatingKubernetesResource: (...args) =>
     Translations.getTranslatedString(

@@ -75,7 +75,9 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
 
   protected mounted() {
     if (!this.props.oamAppId) {
-      this.updateState({ error: new Error(Messages.Error.errInvalidOamAppId()) });
+      this.updateState({
+        error: new Error(Messages.Error.errInvalidOamAppId()),
+      });
       return;
     }
 
@@ -90,7 +92,9 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
         const vmc = await this.verrazzanoApi.getVMC(this.props.cluster);
         if (!vmc) {
           this.updateState({
-            error: new Error(Messages.Error.errVmcNotExists(this.props.cluster)),
+            error: new Error(
+              Messages.Error.errVmcNotExists(this.props.cluster)
+            ),
           });
         }
 

@@ -11,7 +11,7 @@ import * as Messages from "vz-console/utils/Messages";
 import "ojs/ojmessages";
 import * as ko from "knockout";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
-import {VzError} from "vz-console/utils/error";
+import { VzError } from "vz-console/utils/error";
 
 class Props {
   context?: string;
@@ -36,8 +36,13 @@ export class ConsoleError extends ElementVComponent<Props> {
   }
 
   createMessage(): ojMessage.Message {
-    const errCode = this.props.error instanceof VzError ? (this.props.error as VzError).getCode() : "";
-    const statusString = errCode ? `${Messages.Labels.status()}: ${errCode}` : "";
+    const errCode =
+      this.props.error instanceof VzError
+        ? (this.props.error as VzError).getCode()
+        : "";
+    const statusString = errCode
+      ? `${Messages.Labels.status()}: ${errCode}`
+      : "";
     const detail = `${this.props.error.message}  ${statusString}`;
     return {
       severity: "error",

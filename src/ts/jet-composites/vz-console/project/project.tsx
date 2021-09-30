@@ -64,7 +64,9 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
 
   protected mounted() {
     if (!this.props.projectId) {
-      this.updateState({ error: new Error(Messages.Error.errInvalidProjectId()) });
+      this.updateState({
+        error: new Error(Messages.Error.errInvalidProjectId()),
+      });
       return;
     }
 
