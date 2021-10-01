@@ -48,4 +48,11 @@ export class Actions {
       throw error;
     }
   }
+
+  // Navigate to a given tab index
+  public static async switchToTab(tabIndex: number): Promise<void> {
+    const driver = await Utils.getDriver();
+    const tabs = await driver.getAllWindowHandles();
+    await driver.switchTo().window(tabs[tabIndex]);
+  }
 }

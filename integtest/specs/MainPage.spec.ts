@@ -11,8 +11,9 @@ import { PrometheusMainPage } from "../pageObjects/prometheus/PrometheusMainPage
 import { PrometheusHeaderBar } from "../pageObjects/prometheus/PrometheusHeaderBar.pom";
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
+import { Actions } from "../utils/Actions";
 
-describe("Combined tests for UI Pages (Console, Grafana, Kibana, Prometheus)", (): void => {
+describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): void => {
   let consoleMainPage: ConsoleMainPage;
   let consoleHeaderBar: ConsoleHeaderBar;
 
@@ -51,136 +52,151 @@ describe("Combined tests for UI Pages (Console, Grafana, Kibana, Prometheus)", (
     });
   });
 
-  afterEach(async function () {
-    if (this.currentTest.state === "failed") {
-      const titleNoSpaces = this.currentTest.title.split(" ").join("_");
-      await Utils.takeScreenshot(`Screenshot_${titleNoSpaces}.png`);
-    }
-  });
-});
-
-describe("Grafana Home Page", (): void => {
-  let grafanaMainPage: GrafanaMainPage;
-  let grafanaSideBar: GrafanaSideBar;
-
-  before(async () => {
-    grafanaSideBar = new GrafanaSideBar();
-    grafanaMainPage = await Utils.gotoGrafanaMainPage();
-  });
-
-  describe("Access Grafana header", (): void => {
-    it("Main Page should load and contain header", async () => {
-      expect(await grafanaMainPage.waitForHeader()).to.be.true;
+  describe("Navigate to Grafana home page", (): void => {
+    it("Wait for navigation to Grafana", async () => {
+      await consoleMainPage.navigateToVMI("grafana", 1);
     });
 
-    it("Main Page should contain sidebar", async () => {
-      expect(await grafanaMainPage.waitForSidemenu()).to.be.true;
+    describe("Grafana Home Page", (): void => {
+      let grafanaMainPage: GrafanaMainPage;
+      let grafanaSideBar: GrafanaSideBar;
+
+      before(async () => {
+        grafanaMainPage = new GrafanaMainPage();
+        grafanaSideBar = new GrafanaSideBar();
+        await grafanaMainPage.isPageLoaded();
+      });
+
+      describe("Access Grafana header", (): void => {
+        it("Main Page should load and contain header", async () => {
+          expect(await grafanaMainPage.waitForHeader()).to.be.true;
+        });
+
+        it("Main Page should contain sidebar", async () => {
+          expect(await grafanaMainPage.waitForSidemenu()).to.be.true;
+        });
+
+        it("Main Page should contain grafana panel", async () => {
+          expect(await grafanaMainPage.waitForGrafanaPanel()).to.be.true;
+        });
+      });
+
+      describe("Access Grafana sidebar logo", (): void => {
+        it("Wait for sidebar", async () => {
+          await grafanaMainPage.waitForSidemenu();
+        });
+
+        it("Select logo", async () => {
+          expect(await grafanaSideBar.selectLogo()).to.be.true;
+        });
+      });
+
+      describe("Access Grafana user menu", (): void => {
+        it("Wait for sidebar", async () => {
+          await grafanaMainPage.waitForSidemenu();
+        });
+
+        it("Select user menu", async () => {
+          expect(await grafanaSideBar.selectUserMenu()).to.be.true;
+        });
+
+        it("Select user menu content", async () => {
+          expect(await grafanaSideBar.selectUserMenuContent()).to.be.true;
+        });
+      });
     });
 
-    it("Main Page should contain grafana panel", async () => {
-      expect(await grafanaMainPage.waitForGrafanaPanel()).to.be.true;
-    });
-  });
-
-  describe("Access Grafana sidebar logo", (): void => {
-    it("Wait for sidebar", async () => {
-      await grafanaMainPage.waitForSidemenu();
-    });
-
-    it("Select logo", async () => {
-      expect(await grafanaSideBar.selectLogo()).to.be.true;
-    });
-  });
-
-  describe("Access Grafana user menu", (): void => {
-    it("Wait for sidebar", async () => {
-      await grafanaMainPage.waitForSidemenu();
-    });
-
-    it("Select user menu", async () => {
-      expect(await grafanaSideBar.selectUserMenu()).to.be.true;
-    });
-
-    it("Select user menu content", async () => {
-      expect(await grafanaSideBar.selectUserMenuContent()).to.be.true;
-    });
-  });
-
-  afterEach(async function () {
-    if (this.currentTest.state === "failed") {
-      const titleNoSpaces = this.currentTest.title.split(" ").join("_");
-      await Utils.takeScreenshot(`Screenshot_${titleNoSpaces}.png`);
-    }
-  });
-});
-
-describe("Kibana Home Page", (): void => {
-  let kibanaMainPage: KibanaMainPage;
-  let kibanaSideBar: KibanaHeaderBar;
-
-  before(async () => {
-    kibanaSideBar = new KibanaHeaderBar();
-    kibanaMainPage = await Utils.gotoKibanaMainPage();
-  });
-
-  describe("Access Kibana header", (): void => {
-    it("Main Page should load and contain header", async () => {
-      expect(await kibanaMainPage.waitForHeader()).to.be.true;
-    });
-
-    it("Main Page should contain sidebar", async () => {
-      expect(await kibanaMainPage.waitForSidemenu()).to.be.true;
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
     });
   });
 
-  describe("Access Kibana sidebar logo", (): void => {
-    it("Wait for sidebar", async () => {
-      await kibanaMainPage.waitForSidemenu();
+  describe("Navigate to Kibana home page", (): void => {
+    it("Wait for navigation to Kibana", async () => {
+      await consoleMainPage.navigateToVMI("kibana", 2);
     });
 
-    it("Select logo", async () => {
-      expect(await kibanaSideBar.selectLogo()).to.be.true;
+    describe("Kibana Home Page", (): void => {
+      let kibanaMainPage: KibanaMainPage;
+      let kibanaSideBar: KibanaHeaderBar;
+
+      before(async () => {
+        kibanaMainPage = new KibanaMainPage();
+        kibanaSideBar = new KibanaHeaderBar();
+        await kibanaMainPage.isPageLoaded();
+      });
+
+      describe("Access Kibana header", (): void => {
+        it("Main Page should load and contain header", async () => {
+          expect(await kibanaMainPage.waitForHeader()).to.be.true;
+        });
+
+        it("Main Page should contain sidebar", async () => {
+          expect(await kibanaMainPage.waitForSidemenu()).to.be.true;
+        });
+      });
+
+      describe("Access Kibana sidebar logo", (): void => {
+        it("Wait for sidebar", async () => {
+          await kibanaMainPage.waitForSidemenu();
+        });
+
+        it("Select logo", async () => {
+          expect(await kibanaSideBar.selectLogo()).to.be.true;
+        });
+      });
+    });
+
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
     });
   });
 
-  afterEach(async function () {
-    if (this.currentTest.state === "failed") {
-      const titleNoSpaces = this.currentTest.title.split(" ").join("_");
-      await Utils.takeScreenshot(`Screenshot_${titleNoSpaces}.png`);
-    }
-  });
-});
-
-describe("Prometheus Home Page", (): void => {
-  let prometheusMainPage: PrometheusMainPage;
-  let prometheusSideBar: PrometheusHeaderBar;
-
-  before(async () => {
-    prometheusSideBar = new PrometheusHeaderBar();
-    prometheusMainPage = await Utils.gotoPrometheusMainPage();
-  });
-
-  describe("Access Prometheus header", (): void => {
-    it("Main Page should load and contain header", async () => {
-      expect(await prometheusMainPage.waitForHeader()).to.be.true;
+  describe("Navigate to Prometheus home page", (): void => {
+    it("Wait for navigation to Prometheus", async () => {
+      await consoleMainPage.navigateToVMI("prometheus", 3);
     });
 
-    it("Main Page should contain prometheus panel", async () => {
-      expect(await prometheusMainPage.waitForPrometheusPanel()).to.be.true;
+    describe("Prometheus Home Page", (): void => {
+      let prometheusMainPage: PrometheusMainPage;
+      let prometheusSideBar: PrometheusHeaderBar;
+
+      before(async () => {
+        prometheusMainPage = new PrometheusMainPage();
+        prometheusSideBar = new PrometheusHeaderBar();
+        await prometheusMainPage.isPageLoaded();
+      });
+
+      describe("Access Prometheus header", (): void => {
+        it("Main Page should load and contain header", async () => {
+          expect(await prometheusMainPage.waitForHeader()).to.be.true;
+        });
+
+        it("Main Page should contain prometheus panel", async () => {
+          expect(await prometheusMainPage.waitForPrometheusPanel()).to.be.true;
+        });
+
+        it("Main Page should contain add graph button", async () => {
+          expect(await prometheusMainPage.waitForAddGraphButton()).to.be.true;
+        });
+      });
+
+      describe("Access Prometheus header bar logo", (): void => {
+        it("Wait for header", async () => {
+          await prometheusMainPage.waitForHeader();
+        });
+
+        it("Select logo", async () => {
+          expect(await prometheusSideBar.selectLogo()).to.be.true;
+        });
+      });
     });
 
-    it("Main Page should contain add graph button", async () => {
-      expect(await prometheusMainPage.waitForAddGraphButton()).to.be.true;
-    });
-  });
-
-  describe("Access Prometheus header bar logo", (): void => {
-    it("Wait for header", async () => {
-      await prometheusMainPage.waitForHeader();
-    });
-
-    it("Select logo", async () => {
-      expect(await prometheusSideBar.selectLogo()).to.be.true;
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
     });
   });
 

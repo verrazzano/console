@@ -3,6 +3,7 @@
 
 import { By } from "selenium-webdriver";
 import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
+import { Actions } from "../../utils/Actions";
 
 /**
  * Page Object Model for Verrazzano Console main page
@@ -33,6 +34,21 @@ export class ConsoleMainPage {
   // if this exists, it means the content (i.e. not just header and footer) are rendered
   private static readonly INSTANCE_BODY_OUTER_ELEM = By.css(
     "vz-console-instance"
+  );
+
+  // Link to Grafana console
+  private static readonly GRAFANA_URL_LINK = By.xpath(
+    `//a[contains(@href, "grafana")]`
+  );
+
+  // Link to Kibana console
+  private static readonly KIBANA_URL_LINK = By.xpath(
+    `//a[contains(@href, "kibana")]`
+  );
+
+  // Link to Prometheus console
+  private static readonly PROMETHEUS_URL_LINK = By.xpath(
+    `//a[contains(@href, "prometheus")]`
   );
 
   // vz-console-error is the tag name of the error item
@@ -89,5 +105,23 @@ export class ConsoleMainPage {
     } catch (error) {
       return false;
     }
+  }
+
+  /* Navigate to VMI console */
+  public async navigateToVMI(
+    vmiName: string,
+    tabIndex: number
+  ): Promise<boolean> {
+    if (vmiName === "grafana") {
+      await Actions.doClick(ConsoleMainPage.GRAFANA_URL_LINK);
+    } else if (vmiName === "kibana") {
+      await Actions.doClick(ConsoleMainPage.KIBANA_URL_LINK);
+    } else if (vmiName === "prometheus") {
+      await Actions.doClick(ConsoleMainPage.PROMETHEUS_URL_LINK);
+    } else {
+      return false;
+    }
+    await Actions.switchToTab(tabIndex);
+    return true;
   }
 }
