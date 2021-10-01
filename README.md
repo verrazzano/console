@@ -34,7 +34,7 @@ The Verrazzano Console repository includes:
 
 - An existing Verrazzano environment and access to the Verrazzano API and the Keycloak server URL.
 
-  The Verrazzano Console requires the URL of the Keycloak server (for authentication) and the Verrazzano API Server URL (for fetching environment and application data). The format of the Verrazzano API Server URL typically is `https://verrazzano.v8o-env.v8o-domain.com` and the Keycloak server URL is `https://keycloak.v8o-env.v8o-domain.com` where:
+  The Verrazzano Console requires the URL of the Verrazzano API Server URL (for fetching environment and application data). The format of the Verrazzano API Server URL typically is `https://verrazzano.v8o-env.v8o-domain.com` where:
 
   - `v8o-env` is the name of the Verrazzano environment and `v8o-domain.com` is the domain, when a DNS provider is used.
   - `v8o-env` is replaced by `default` and `v8o-domain.com` is the IP address of load balancer for the Kubernetes cluster, when a "magic" DNS provider like `xip.io` is used.
@@ -115,11 +115,6 @@ To run integration tests for the Console:
 * Set the environment variable `VZ_UI_URL` to the URL of a running instance of the Console UI e.g. `http://localhost:8000`.
 * Set the environment variable `VZ_UITEST_CONFIG` to a UI test configuration file (a sample is provided in `integtest/config.uitest.json`, which you may edit to add login information).
 * Run the tests using the following command:
-```
-npm run integtest
-```
-
-Or maybe -
 ```
 make run-ui-test
 ```
