@@ -8,8 +8,8 @@ import * as OffcanvasUtils from "ojs/ojoffcanvas";
 import "ojs/ojknockout";
 import "ojs/ojmodule-element";
 import { ojNavigationList } from "ojs/ojnavigationlist";
+import { KeycloakJet } from "vz-console/auth/loader";
 import * as Messages from "vz-console/utils/Messages";
-import { UserInfoCookie } from "vz-console/service/types";
 import * as Config from "ojs/ojconfig";
 import CoreRouter = require("ojs/ojcorerouter");
 import ModuleRouterAdapter = require("ojs/ojmodulerouter-adapter");
@@ -20,26 +20,6 @@ import ArrayDataProvider = require("ojs/ojarraydataprovider");
 interface CoreRouterDetail {
   label: string;
   iconClass: string;
-}
-
-function getCookieAsString(name: string): string {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
-  return "";
-}
-
-function getCookieAsObject(name: string): UserInfoCookie {
-  const result = <UserInfoCookie>{
-    username: "",
-  };
-  const cookie = getCookieAsString(name);
-  const decoded = atob(cookie).split(",");
-  decoded.forEach((pair) => {
-    const arr = pair.split("=");
-    result[arr[0]] = arr[1];
-  });
-  return result;
 }
 
 class RootViewModel {
@@ -68,13 +48,18 @@ class RootViewModel {
 
   appName: ko.Observable<string>;
   userDisplayName: ko.Observable<string>;
+  userEmail: ko.Observable<string>;
   footerLinks: Array<object>;
   selection: KnockoutRouterAdapter<CoreRouterDetail>;
 
+  oauth: KeycloakJet;
+
   constructor() {
-    // set username and email from cookie
-    const cookie = getCookieAsObject("vz_userinfo");
-    this.userDisplayName = ko.observable(cookie.username);
+    // OAuth initialization
+    this.oauth = KeycloakJet.getInstance();
+
+    this.userEmail = ko.observable(this.oauth.getUserEmail());
+    this.userDisplayName = ko.observable(this.oauth.getUsername());
 
     // handle announcements sent when pages change, for Accessibility.
     this.manner = ko.observable("polite");
@@ -180,9 +165,8 @@ class RootViewModel {
     return OffcanvasUtils.toggle(this.drawerParams);
   };
 
-  // logout user from the console
-  logout = (): void => {
-    window.location.reload();
+  logout = () => {
+    this.oauth.logout();
   };
 }
 
