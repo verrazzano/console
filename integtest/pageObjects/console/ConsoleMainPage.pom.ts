@@ -9,13 +9,8 @@ import { Actions } from "../../utils/Actions";
  * Page Object Model for Verrazzano Console main page
  */
 export class ConsoleMainPage {
-  // private static readonly HEADER_CONTAINER: By = By.xpath(`//header[@class="oj-web-applayout-header"]`);
   private static readonly FOOTER_CONTAINER: By = By.className(
     "oj-web-applayout-footer-item"
-  );
-
-  private static readonly HEADER_CONTAINER: By = By.className(
-    "oj-web-applayout-header"
   );
 
   private static readonly INSTANCE_STATUS_ITEM: By = By.id(
@@ -51,11 +46,8 @@ export class ConsoleMainPage {
     `//*[@id="instance-vmi-link-prometheus"]/div/a`
   );
 
-  // vz-console-error is the tag name of the error item
-  private static readonly ERROR_ITEM: By = By.css("vz-console-error");
-
   protected pageUrl: string = "/";
-  protected pageLoadedElement: By = ConsoleMainPage.HEADER_CONTAINER;
+  protected pageLoadedElement: By = Wait.HEADER_CONTAINER;
 
   public async isPageLoaded(
     timeOut: number = PAGE_LOAD_TIMEOUT
@@ -65,12 +57,7 @@ export class ConsoleMainPage {
 
   /* Wait for header */
   public async waitForHeader(): Promise<boolean> {
-    try {
-      await Wait.waitForPresent(ConsoleMainPage.HEADER_CONTAINER);
-      return true;
-    } catch (error) {
-      return false;
-    }
+    return Wait.waitForHeader();
   }
 
   /* Wait for footer */
@@ -95,12 +82,11 @@ export class ConsoleMainPage {
     }
   }
 
-  /* Wait for instance General Information */
   public async errorComponentExists(): Promise<boolean> {
     try {
       // wait for body to be rendered and make sure no error component exists
       await Wait.waitForPresent(ConsoleMainPage.INSTANCE_BODY_OUTER_ELEM);
-      const errItem = await Wait.findNow(ConsoleMainPage.ERROR_ITEM);
+      const errItem = await Wait.findNow(Wait.ERROR_ITEM);
       return !!errItem;
     } catch (error) {
       return false;

@@ -8,6 +8,13 @@ export const PAGE_LOAD_TIMEOUT = 10000;
 const DEFAULT_TIMEOUT = 30000;
 
 export class Wait {
+  public static readonly HEADER_CONTAINER: By = By.className(
+    "oj-web-applayout-header"
+  );
+
+  // vz-console-error is the tag name of the error item
+  static readonly ERROR_ITEM: By = By.css("vz-console-error");
+
   public static async waitForPresent(
     by: By,
     timeOut: number = DEFAULT_TIMEOUT
@@ -111,6 +118,15 @@ export class Wait {
     } catch (error) {
       console.log(`Error finding element ${by}`);
       throw error;
+    }
+  }
+
+  public static async waitForHeader(): Promise<boolean> {
+    try {
+      await Wait.waitForPresent(Wait.HEADER_CONTAINER);
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 }
