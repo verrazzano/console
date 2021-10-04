@@ -11,8 +11,7 @@ describe("Instance Details Page", (): void => {
   let consoleHeaderBar: ConsoleHeaderBar;
 
   before(async () => {
-    const acceptCookies = true;
-    await Utils.navigateAndLogin(acceptCookies);
+    await Utils.navigateAndLogin();
     consoleHeaderBar = new ConsoleHeaderBar();
     consoleMainPage = await Utils.gotoConsoleMainPage();
   });

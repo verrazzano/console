@@ -9,16 +9,20 @@ import { Actions } from "../../utils/Actions";
 /**
  * Page Object Model for the Keycloak login page
  */
-export class LoginPage {
+export class KeycloakLoginPage {
   private static readonly LOGIN_FORM_BY: By = By.id("kc-form-login");
   private static readonly USERNAME_BY: By = By.id("username");
   private static readonly PASSWORD_BY: By = By.id("password");
   private static readonly LOGIN_BTN_BY: By = By.id("kc-login");
+  private static readonly INVALID_CREDENTIALS_ERROR: By = By.className(
+    "kc-feedback-text"
+  );
+
   protected pageUrl: string = "/";
-  protected pageLoadedElement: By = LoginPage.LOGIN_FORM_BY;
+  protected pageLoadedElement: By = KeycloakLoginPage.LOGIN_FORM_BY;
 
   public async isCurrentPage(): Promise<boolean> {
-    const elem = await Wait.waitForPresent(LoginPage.LOGIN_FORM_BY);
+    const elem = await Wait.waitForPresent(KeycloakLoginPage.LOGIN_FORM_BY);
     return !!elem;
   }
 
@@ -33,24 +37,37 @@ export class LoginPage {
     }
   }
 
-  public async login(
-    loginInfo: LoginInfo,
-    acceptCookies?: boolean,
-    timeout?: number
-  ) {
+  public async login(loginInfo: LoginInfo, timeout?: number) {
     console.log("Performing Keycloak Login");
-    const isUsernameBoxPresent = await Wait.waitForPresent(
-      LoginPage.USERNAME_BY
-    )
-      .then(() => true)
-      .catch(() => false);
+    const isUsernameBoxPresent = await this.waitForUsernameBox();
 
     if (isUsernameBoxPresent) {
-      await Actions.enterText(LoginPage.USERNAME_BY, loginInfo.username);
-      await Actions.enterText(LoginPage.PASSWORD_BY, loginInfo.password, true);
-      await Actions.doClick(LoginPage.LOGIN_BTN_BY);
+      await Actions.enterText(
+        KeycloakLoginPage.USERNAME_BY,
+        loginInfo.username
+      );
+      await Actions.enterText(
+        KeycloakLoginPage.PASSWORD_BY,
+        loginInfo.password,
+        true
+      );
+      await Actions.doClick(KeycloakLoginPage.LOGIN_BTN_BY);
     } else {
       throw new Error("No username box, could not login");
     }
+  }
+
+  public async waitForUsernameBox(): Promise<boolean> {
+    return await Wait.waitForPresent(KeycloakLoginPage.USERNAME_BY)
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  public async waitForInvalidCredentialsError(): Promise<boolean> {
+    return await Wait.waitForPresent(
+      KeycloakLoginPage.INVALID_CREDENTIALS_ERROR
+    )
+      .then(() => true)
+      .catch(() => false);
   }
 }

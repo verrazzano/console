@@ -8,11 +8,12 @@ import {
   Condition,
   WebDriver,
 } from "selenium-webdriver";
-import { LoginPage } from "../pageObjects/keycloak/LoginPage.pom";
+import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
 import { ConsoleMainPage } from "../pageObjects/console/ConsoleMainPage.pom";
 import { GrafanaMainPage } from "../pageObjects/grafana/GrafanaMainPage.pom";
 import { KibanaMainPage } from "../pageObjects/kibana/KibanaMainPage.pom";
 import { PrometheusMainPage } from "../pageObjects/prometheus/PrometheusMainPage.pom";
+
 export interface LoginInfo {
   username: string;
   password: string;
@@ -32,22 +33,37 @@ export class Utils {
     }
   }
 
-  static async navigateAndLogin(acceptCookies?: boolean, timeout?: number) {
+  static getInvalidLoginInfo(): LoginInfo {
+    // Returns LoginInfo with random username and password
+    return {
+      username: Math.random().toString(36).substr(2, 8),
+      password: Math.random().toString(36).substr(2, 8),
+    };
+  }
+
+  static async navigateAndLogin(
+    useInvalidLoginInfo?: boolean,
+    timeout?: number
+  ) {
     const url = Utils.getConfig("driverInfo").url as string;
-    const loginInfo = Utils.getConfig("loginInfo");
+    const loginInfo = useInvalidLoginInfo
+      ? Utils.getInvalidLoginInfo()
+      : Utils.getConfig("loginInfo");
     const loginEnabled = Utils.isLoginEnabled();
     try {
       console.log(`Navigating to: ${url}`);
-      console.log(`Cookies enabled: ${acceptCookies}`);
+      if (useInvalidLoginInfo) {
+        console.log(`Using invalid login credentials: ${useInvalidLoginInfo}`);
+      }
       await Utils.getJETPage(url, timeout);
 
       if (loginEnabled) {
         Utils.validateConfigLoginInfo();
-        const loginPage = new LoginPage();
-        if (await loginPage.isPageLoaded()) {
+        const keycloakLoginPage = new KeycloakLoginPage();
+        if (await keycloakLoginPage.isPageLoaded()) {
           console.log("Login page is current page");
           console.log(`Performing an initial log in.`);
-          await loginPage.login(loginInfo, acceptCookies, timeout);
+          await keycloakLoginPage.login(loginInfo, timeout);
         } else {
           const driver = await Utils.getDriver();
           console.log(
@@ -156,6 +172,17 @@ export class Utils {
     // Verify MainPage is reachable and loaded
     await mainPage.isPageLoaded();
     return mainPage;
+  }
+
+  public static async gotoInvalidUrl(): Promise<boolean> {
+    const url = Utils.getConfig("driverInfo").url;
+    const invalidUrl = url.replace(
+      "verrazzano",
+      Math.random().toString(36).substr(2, 10)
+    );
+    return await Utils.getJETPage(invalidUrl)
+      .then(() => true)
+      .catch(() => false);
   }
 
   public static releaseDriver() {

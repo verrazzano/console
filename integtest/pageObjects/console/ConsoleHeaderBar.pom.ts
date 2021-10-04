@@ -15,6 +15,10 @@ export class ConsoleHeaderBar {
     "dropmenu__content"
   );
 
+  private static readonly USER_MENU_SIGN_OUT_BUTTON: By = By.xpath(
+    `oj-option[@id="out"]`
+  );
+
   /* Verify if Logo is present */
   public async selectLogo(): Promise<boolean> {
     const logo = await Wait.waitForPresent(ConsoleHeaderBar.LOGO);
@@ -43,5 +47,14 @@ export class ConsoleHeaderBar {
     );
     Actions.scrollIntoView(ConsoleHeaderBar.USER_MENU_CONTENT);
     return !!userMenuContent;
+  }
+
+  /* Click on sign-out button in the usermenu */
+  public async clickSignOut(): Promise<boolean> {
+    await this.clickUserMenu();
+    await Wait.waitForPresent(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON);
+    return await Actions.doClick(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON)
+      .then(() => true)
+      .catch(() => false);
   }
 }

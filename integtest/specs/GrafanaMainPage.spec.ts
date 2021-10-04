@@ -11,8 +11,7 @@ describe("Grafana Home Page", (): void => {
   let grafanaSideBar: GrafanaSideBar;
 
   before(async () => {
-    const acceptCookies = true;
-    await Utils.navigateAndLogin(acceptCookies);
+    await Utils.navigateAndLogin();
     grafanaSideBar = new GrafanaSideBar();
     grafanaMainPage = await Utils.gotoGrafanaMainPage();
   });

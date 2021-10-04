@@ -18,8 +18,7 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): v
   let consoleHeaderBar: ConsoleHeaderBar;
 
   before(async () => {
-    const acceptCookies = true;
-    await Utils.navigateAndLogin(acceptCookies);
+    await Utils.navigateAndLogin();
     consoleHeaderBar = new ConsoleHeaderBar();
     consoleMainPage = await Utils.gotoConsoleMainPage();
   });
@@ -197,6 +196,12 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): v
     after(async () => {
       // Switch back to Console
       await Actions.switchToTab(0);
+    });
+  });
+
+  describe("Signout from the console", (): void => {
+    it("Click on sign-out button", async () => {
+      expect(await consoleHeaderBar.clickSignOut()).to.be.true;
     });
   });
 

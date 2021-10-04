@@ -11,8 +11,7 @@ describe("Prometheus Home Page", (): void => {
   let prometheusSideBar: PrometheusHeaderBar;
 
   before(async () => {
-    const acceptCookies = true;
-    await Utils.navigateAndLogin(acceptCookies);
+    await Utils.navigateAndLogin();
     prometheusSideBar = new PrometheusHeaderBar();
     prometheusMainPage = await Utils.gotoPrometheusMainPage();
   });

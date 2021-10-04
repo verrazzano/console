@@ -11,8 +11,7 @@ describe("Kibana Home Page", (): void => {
   let kibanaSideBar: KibanaHeaderBar;
 
   before(async () => {
-    const acceptCookies = true;
-    await Utils.navigateAndLogin(acceptCookies);
+    await Utils.navigateAndLogin();
     kibanaSideBar = new KibanaHeaderBar();
     kibanaMainPage = await Utils.gotoKibanaMainPage();
   });
