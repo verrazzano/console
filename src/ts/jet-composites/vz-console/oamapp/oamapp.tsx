@@ -41,7 +41,7 @@ class Props {
 class State {
   oamApplication?: OAMApplication;
   loading?: boolean;
-  error?: string;
+  error?: Error;
   breadcrumbs?: BreadcrumbType[];
   selectedTab?: string;
   selectedComponent?: string;
@@ -75,7 +75,9 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
 
   protected mounted() {
     if (!this.props.oamAppId) {
-      this.updateState({ error: Messages.Error.errInvalidOamAppId() });
+      this.updateState({
+        error: new Error(Messages.Error.errInvalidOamAppId()),
+      });
       return;
     }
 
@@ -90,7 +92,9 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
         const vmc = await this.verrazzanoApi.getVMC(this.props.cluster);
         if (!vmc) {
           this.updateState({
-            error: Messages.Error.errVmcNotExists(this.props.cluster),
+            error: new Error(
+              Messages.Error.errVmcNotExists(this.props.cluster)
+            ),
           });
         }
 
@@ -131,11 +135,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
         selectedComponent: this.props.selectedComponent,
       });
     } catch (error) {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      this.updateState({ error: errorMessage });
+      this.updateState({ error: error });
     }
   }
 
@@ -215,11 +215,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
 
         component.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
       } catch (error) {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
+        this.updateState({ error: error });
       }
       component.workloadOpenEventHandler = () => {
         (document.getElementById(`popup_${component.id}`) as any).open(
@@ -335,11 +331,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
           }
         }
       } catch (error) {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
+        this.updateState({ error: error });
       }
     }
   }
@@ -392,11 +384,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
           }
         }
       } catch (error) {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
+        this.updateState({ error: error });
       }
     }
   }

@@ -30,7 +30,7 @@ class Props {
 class State {
   instance?: Instance;
   loading?: boolean;
-  error?: string;
+  error?: Error;
   breadcrumbs?: BreadcrumbType[];
   clusters?: Cluster[];
   oamApplications?: OAMApplication[];
@@ -125,11 +125,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
         }
       )
       .catch((error) => {
-        let errorMessage = error;
-        if (error && error.message) {
-          errorMessage = error.message;
-        }
-        this.updateState({ error: errorMessage });
+        this.updateState({ error: error });
       });
   }
 

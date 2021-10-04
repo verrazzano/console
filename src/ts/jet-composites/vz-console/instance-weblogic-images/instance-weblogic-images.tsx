@@ -20,18 +20,18 @@ import "ojs/ojselectsingle";
 import "ojs/ojpagingcontrol";
 import * as ko from "knockout";
 import * as Messages from "vz-console/utils/Messages";
-import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
-import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 import "ojs/ojinputtext";
 import { ConsoleImageCreate } from "vz-console/image-create/image-create";
 import { ConsoleError } from "vz-console/error/error";
+import PagingDataProviderView = require("ojs/ojpagingdataproviderview");
+import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {}
 
 class State {
   images?: Model.Collection;
   loading?: boolean;
-  error?: string;
+  error?: Error;
   errorContext?: string;
 }
 
@@ -158,7 +158,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
     this.updateState({
       images: new Model.Collection(this.state.images.models),
       loading: false,
-      error: "",
+      error: null,
     });
   };
 
@@ -200,7 +200,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
       this.updateState({
         images: new Model.Collection(this.state.images.models),
         loading: false,
-        error: "",
+        error: null,
       });
     } catch (error) {
       let errorMessage = error;
