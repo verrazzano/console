@@ -364,7 +364,8 @@ export class VerrazzanoApi {
           this.cluster && this.cluster !== "local"
             ? `?cluster=${this.cluster}`
             : ""
-        }`, {credentials: "include"}
+        }`,
+        { credentials: "include" }
       )
     ).then((response) => {
       if (!response || !response.status || response.status >= 400) {
@@ -401,7 +402,7 @@ export class VerrazzanoApi {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-        credentials: "include"
+        credentials: "include",
       }
     );
     if (!response || !response.status || response.status >= 400) {
