@@ -182,7 +182,7 @@ class RootViewModel {
 
   // logout user from the console
   logout = (): void => {
-    window.location.reload();
+    window.location.href = `https://${window.location.hostname}/_logout`;
   };
 }
 

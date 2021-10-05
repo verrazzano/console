@@ -1,4 +1,4 @@
-// Copyright (C) 2020, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as fs from "fs";
@@ -176,13 +176,10 @@ export class Utils {
 
   public static async gotoInvalidUrl(): Promise<boolean> {
     const url = Utils.getConfig("driverInfo").url;
-    const invalidUrl = url.replace(
-      "verrazzano",
-      Math.random().toString(36).substr(2, 10)
-    );
+    const invalidUrl = url.replace("verrazzano", Math.random().toString(36).substr(2, 10));
     return await Utils.getJETPage(invalidUrl)
-      .then(() => true)
-      .catch(() => false);
+           .then(() => true)
+           .catch(() => false);
   }
 
   public static releaseDriver() {

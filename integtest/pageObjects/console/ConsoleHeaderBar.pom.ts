@@ -1,4 +1,4 @@
-// Copyright (C) 2020, Oracle and/or its affiliates.
+// Copyright (C) 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By } from "selenium-webdriver";
@@ -11,13 +11,8 @@ export class ConsoleHeaderBar {
 
   private static readonly LOGO: By = By.className("vz-icon");
   private static readonly USER_MENU_BUTTON: By = By.id("userMenu");
-  private static readonly USER_MENU_CONTENT: By = By.className(
-    "dropmenu__content"
-  );
-
-  private static readonly USER_MENU_SIGN_OUT_BUTTON: By = By.xpath(
-    `oj-option[@id="out"]`
-  );
+  private static readonly USER_MENU_CONTENT: By = By.className("dropmenu__content");
+  private static readonly USER_MENU_SIGN_OUT_BUTTON: By = By.id("out");
 
   /* Verify if Logo is present */
   public async selectLogo(): Promise<boolean> {
@@ -49,12 +44,12 @@ export class ConsoleHeaderBar {
     return !!userMenuContent;
   }
 
-  /* Click on sign-out button in the usermenu */
+  /* Click on sign-out button in the usermenu */ 
   public async clickSignOut(): Promise<boolean> {
     await this.clickUserMenu();
     await Wait.waitForPresent(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON);
     return await Actions.doClick(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON)
-      .then(() => true)
-      .catch(() => false);
+    .then(() => true)
+    .catch(() => false);
   }
 }

@@ -9,7 +9,7 @@ INPUT_CONFIG_FILE=$1
 
 CONSOLE_HOST="$(kubectl get ingress verrazzano-ingress -n verrazzano-system -o jsonpath='{.spec.rules[0].host}')"
 GRAFANA_HOST="$(kubectl get ingress vmi-system-grafana -n verrazzano-system -o jsonpath='{.spec.rules[0].host}')"
-KIBANA_HOST="$(kubectl get ingress vvmi-system-kibana -n verrazzano-system -o jsonpath='{.spec.rules[0].host}')"
+KIBANA_HOST="$(kubectl get ingress vmi-system-kibana -n verrazzano-system -o jsonpath='{.spec.rules[0].host}')"
 PROMETHEUS_HOST="$(kubectl get ingress vmi-system-prometheus -n verrazzano-system -o jsonpath='{.spec.rules[0].host}')"
 CONSOLE_URL="https://${CONSOLE_HOST}"
 GRAFANA_URL="https://${GRAFANA_HOST}"

@@ -160,7 +160,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
               status={Status.Running}
               type={"hexagon"}
               text={"V"}
-              label={Messages.Nav.instance()}
+              label={"Test Instance"}
             />
           </div>
           <div class="oj-sm-10 oj-flex-item">
