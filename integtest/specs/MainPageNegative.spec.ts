@@ -2,7 +2,6 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
-import { ConsoleMainPage } from "../pageObjects/console/ConsoleMainPage.pom";
 import { ErrorPage502 } from "../pageObjects/error/ErrorPage502.pom";
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
@@ -10,7 +9,7 @@ import { Utils } from "../utils/Utils";
 describe("UI Negative Tests for Console Home Page", (): void => {
   describe("Keycloak login with invalid credentials", (): void => {
     let keycloakLoginPage: KeycloakLoginPage;
-    
+
     before("Wait for keycloak login page to load", async () => {
       keycloakLoginPage = new KeycloakLoginPage();
       const useInvalidLoginInfo = true;
@@ -27,14 +26,12 @@ describe("UI Negative Tests for Console Home Page", (): void => {
         .true;
     });
   });
-  
+
   describe("Access an invalid url after loggin in", (): void => {
-    let consoleMainPage: ConsoleMainPage;
     let errorPage502: ErrorPage502;
-  
+
     before(async () => {
       await Utils.navigateAndLogin();
-      consoleMainPage = await Utils.gotoConsoleMainPage();
     });
 
     it("Navigate to an invalid URL", async () => {

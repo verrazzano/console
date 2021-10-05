@@ -74,7 +74,7 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): v
 
     describe("Kibana Home Page", (): void => {
       it("Wait for Kibana home page to be ready", async () => {
-        let kibanaMainPage = new KibanaMainPage();
+        const kibanaMainPage = new KibanaMainPage();
         expect(await kibanaMainPage.isPageLoaded()).to.be.true;
       });
     });
@@ -92,7 +92,7 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): v
 
     describe("Prometheus Home Page", (): void => {
       it("Wait for Prometheus home page to be ready", async () => {
-        let prometheusMainPage = new PrometheusMainPage();
+        const prometheusMainPage = new PrometheusMainPage();
         expect(await prometheusMainPage.isPageLoaded()).to.be.true;
       });
     });
@@ -109,7 +109,7 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): v
     });
 
     it("Wait for Keycloak login page to be ready", async () => {
-      let keycloakLoginPage = new KeycloakLoginPage();
+      const keycloakLoginPage = new KeycloakLoginPage();
       expect(await keycloakLoginPage.isPageLoaded()).to.be.true;
     });
   });

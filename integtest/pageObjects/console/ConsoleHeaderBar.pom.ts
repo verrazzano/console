@@ -11,7 +11,10 @@ export class ConsoleHeaderBar {
 
   private static readonly LOGO: By = By.className("vz-icon");
   private static readonly USER_MENU_BUTTON: By = By.id("userMenu");
-  private static readonly USER_MENU_CONTENT: By = By.className("dropmenu__content");
+  private static readonly USER_MENU_CONTENT: By = By.className(
+    "dropmenu__content"
+  );
+
   private static readonly USER_MENU_SIGN_OUT_BUTTON: By = By.id("out");
 
   /* Verify if Logo is present */
@@ -44,12 +47,12 @@ export class ConsoleHeaderBar {
     return !!userMenuContent;
   }
 
-  /* Click on sign-out button in the usermenu */ 
+  /* Click on sign-out button in the usermenu */
   public async clickSignOut(): Promise<boolean> {
     await this.clickUserMenu();
     await Wait.waitForPresent(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON);
     return await Actions.doClick(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON)
-    .then(() => true)
-    .catch(() => false);
+      .then(() => true)
+      .catch(() => false);
   }
 }

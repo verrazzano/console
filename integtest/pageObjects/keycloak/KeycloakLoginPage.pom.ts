@@ -17,6 +17,7 @@ export class KeycloakLoginPage {
   private static readonly INVALID_CREDENTIALS_ERROR: By = By.className(
     "kc-feedback-text"
   );
+
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = KeycloakLoginPage.LOGIN_FORM_BY;
 
