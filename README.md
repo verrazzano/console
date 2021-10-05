@@ -34,7 +34,7 @@ The Verrazzano Console repository includes:
 
 - An existing Verrazzano environment and access to the Verrazzano API and the Keycloak server URL.
 
-  The Verrazzano Console requires the URL of the Verrazzano API Server URL (for fetching environment and application data). The format of the Verrazzano API Server URL typically is `https://verrazzano.v8o-env.v8o-domain.com` where:
+  The Verrazzano Console requires the URL of the Verrazzano Auth-Proxy Server (for fetching environment and application data). The format of the Verrazzano Auth-Proxy URL typically is `https://verrazzano.v8o-env.v8o-domain.com` where:
 
   - `v8o-env` is the name of the Verrazzano environment and `v8o-domain.com` is the domain, when a DNS provider is used.
   - `v8o-env` is replaced by `default` and `v8o-domain.com` is the IP address of load balancer for the Kubernetes cluster, when a "magic" DNS provider like `xip.io` is used.
@@ -79,7 +79,7 @@ Verrazzano installations have a default user `verrazzano` configured in the Verr
    kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode; echo
 ```
 
-The Verrazzano Console accesses the Verrazzano API using Verrazzano Auth-Proxy. The Auth-Proxy uses Keycloak to authenticate and authorize the user. Post authentication and authorization, two cookies - vz_authn and vz_userinfo, are set in the browser. The vz_authn cookie is used for the subsequent requests by the Verrazzano Console, while vz_userinfo cookie is consumed by the Verrazzano Console to retrieve information relevant to the logged in user e.g. username.
+The Verrazzano Console accesses the Verrazzano API using Verrazzano Auth-Proxy. The Auth-Proxy uses Keycloak to authenticate and authorize the user. Post authentication and authorization, two cookies - vz_authn and vz_userinfo, are set in the browser. The vz_authn cookie is used for the subsequent requests by the Verrazzano Console, while vz_userinfo cookie is consumed by the Verrazzano Console to retrieve information relevant to the logged in user.
 
 ### Set up environment variables
 
@@ -97,7 +97,7 @@ To run the Console application in a local web server, run following command:
   ojet serve
 ```
 
-This will open a browser at [http://localhost:8000](http://localhost:8000). On first access, it will display a Verrazzano Console home page with a error message. The error message occurs since the console is not allowed to access the Verrazzano Auth-Proxy.
+This will open a browser at [http://localhost:8000](http://localhost:8000). On first access, it will display a Verrazzano Console home page with a error message. At this point, additional configuration is required which will be to test the console locally. It will be added soon.
 
 When you make changes to the Console code, the changes are reflected immediately in the browser because the `livereload` option is enabled by default for the `ojet serve` command. For other options supported by the command, see [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9).
 
