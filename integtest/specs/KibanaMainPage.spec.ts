@@ -6,14 +6,15 @@ import { KibanaHeaderBar } from "../pageObjects/kibana/KibanaHeaderBar.pom";
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 
-describe("Kibana Home Page", (): void => {
+describe("Kibana Home Page", async () => {
   let kibanaMainPage: KibanaMainPage;
   let kibanaSideBar: KibanaHeaderBar;
 
   before(async () => {
     await Utils.navigateAndLogin();
+    kibanaMainPage = new KibanaMainPage();
     kibanaSideBar = new KibanaHeaderBar();
-    kibanaMainPage = await Utils.gotoKibanaMainPage();
+    await Utils.gotoKibanaMainPage();
   });
 
   describe("Access Kibana header", (): void => {
@@ -43,7 +44,7 @@ describe("Kibana Home Page", (): void => {
     }
   });
 
-  after(() => {
-    Utils.releaseDriver();
+  after(async () => {
+    await Utils.releaseDriver();
   });
 });

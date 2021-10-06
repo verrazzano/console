@@ -12,8 +12,9 @@ describe("Grafana Home Page", (): void => {
 
   before(async () => {
     await Utils.navigateAndLogin();
+    grafanaMainPage = new GrafanaMainPage();
     grafanaSideBar = new GrafanaSideBar();
-    grafanaMainPage = await Utils.gotoGrafanaMainPage();
+    await Utils.gotoGrafanaMainPage();
   });
 
   describe("Access Grafana header", (): void => {
@@ -61,7 +62,7 @@ describe("Grafana Home Page", (): void => {
     }
   });
 
-  after(() => {
-    Utils.releaseDriver();
+  after(async () => {
+    await Utils.releaseDriver();
   });
 });

@@ -9,10 +9,6 @@ import {
   WebDriver,
 } from "selenium-webdriver";
 import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
-import { ConsoleMainPage } from "../pageObjects/console/ConsoleMainPage.pom";
-import { GrafanaMainPage } from "../pageObjects/grafana/GrafanaMainPage.pom";
-import { KibanaMainPage } from "../pageObjects/kibana/KibanaMainPage.pom";
-import { PrometheusMainPage } from "../pageObjects/prometheus/PrometheusMainPage.pom";
 
 export interface LoginInfo {
   username: string;
@@ -53,7 +49,7 @@ export class Utils {
     try {
       console.log(`Navigating to: ${url}`);
       if (useInvalidLoginInfo) {
-        console.log(`Using invalid login credentials: ${useInvalidLoginInfo}`);
+        console.log("Using invalid login credentials");
       }
       await Utils.getJETPage(url, timeout);
 
@@ -130,48 +126,28 @@ export class Utils {
     return key ? Utils.config[key] : Utils.config;
   }
 
-  static async gotoConsoleMainPage(): Promise<ConsoleMainPage> {
-    const mainPage = new ConsoleMainPage();
+  static async gotoConsoleMainPage() {
     const url = Utils.getConfig("driverInfo").url;
     console.log(`Navigating to Verrazzano Console main page at ${url}`);
     await Utils.getJETPage(url);
-
-    // Verify MainPage is reachable and loaded
-    await mainPage.isPageLoaded();
-    return mainPage;
   }
 
-  static async gotoGrafanaMainPage(): Promise<GrafanaMainPage> {
-    const mainPage = new GrafanaMainPage();
+  static async gotoGrafanaMainPage() {
     const url = Utils.getConfig("grafana").url;
     console.log(`Navigating to Grafana main page at ${url}`);
     await Utils.getJETPage(url);
-
-    // Verify MainPage is reachable and loaded
-    await mainPage.isPageLoaded();
-    return mainPage;
   }
 
-  static async gotoKibanaMainPage(): Promise<KibanaMainPage> {
-    const mainPage = new KibanaMainPage();
+  static async gotoKibanaMainPage() {
     const url = Utils.getConfig("kibana").url;
     console.log(`Navigating to Kibana main page at ${url}`);
     await Utils.getJETPage(url);
-
-    // Verify MainPage is reachable and loaded
-    await mainPage.isPageLoaded();
-    return mainPage;
   }
 
-  static async gotoPrometheusMainPage(): Promise<PrometheusMainPage> {
-    const mainPage = new PrometheusMainPage();
+  static async gotoPrometheusMainPage() {
     const url = Utils.getConfig("prometheus").url;
     console.log(`Navigating to Prometheus main page at ${url}`);
     await Utils.getJETPage(url);
-
-    // Verify MainPage is reachable and loaded
-    await mainPage.isPageLoaded();
-    return mainPage;
   }
 
   public static async gotoInvalidUrl(): Promise<boolean> {
@@ -185,17 +161,15 @@ export class Utils {
       .catch(() => false);
   }
 
-  public static releaseDriver() {
+  public static async releaseDriver() {
     if (Utils.driver) {
-      setTimeout(async () => {
-        try {
-          await Utils.driver.quit();
-        } catch (err) {
-          console.warn(`Failed when releasing driver session: ${err}`);
-        } finally {
-          Utils.driver = null;
-        }
-      }, 500);
+      try {
+        await Utils.driver.quit();
+      } catch (err) {
+        console.warn(`Failed when releasing driver session: ${err}`);
+      } finally {
+        Utils.driver = null;
+      }
     }
   }
 
@@ -219,7 +193,6 @@ export class Utils {
   public static async getDriver(): Promise<WebDriver> {
     if (!Utils.driver) {
       const driverInfo = Utils.getConfig("driverInfo");
-
       const caps = new Capabilities(driverInfo);
       const driver: WebDriver = new Builder().withCapabilities(caps).build();
       Utils.driver = driver;

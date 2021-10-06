@@ -10,7 +10,7 @@ describe("UI Negative Tests for Console Home Page", (): void => {
   describe("Keycloak login with invalid credentials", (): void => {
     let keycloakLoginPage: KeycloakLoginPage;
 
-    before("Wait for keycloak login page to load", async () => {
+    before("Wait for Keycloak login page to load", async () => {
       keycloakLoginPage = new KeycloakLoginPage();
       const useInvalidLoginInfo = true;
       await Utils.navigateAndLogin(useInvalidLoginInfo);
@@ -24,6 +24,45 @@ describe("UI Negative Tests for Console Home Page", (): void => {
     it("Login screen should contain invalid credentials error", async () => {
       expect(await keycloakLoginPage.waitForInvalidCredentialsError()).to.be
         .true;
+    });
+  });
+
+  describe("Access Kibana without login", (): void => {
+    let keycloakLoginPage: KeycloakLoginPage;
+
+    before("Navigate to Kibana main page", async () => {
+      keycloakLoginPage = new KeycloakLoginPage();
+      await Utils.gotoKibanaMainPage();
+    });
+
+    it("Wait for Keycloak login page to load", async () => {
+      await keycloakLoginPage.isPageLoaded();
+    });
+  });
+
+  describe("Access Grafana without login", (): void => {
+    let keycloakLoginPage: KeycloakLoginPage;
+
+    before("Navigate to Grafana main page", async () => {
+      keycloakLoginPage = new KeycloakLoginPage();
+      await Utils.gotoGrafanaMainPage();
+    });
+
+    it("Wait for Keycloak login page to load", async () => {
+      await keycloakLoginPage.isPageLoaded();
+    });
+  });
+
+  describe("Access Prometheus without login", (): void => {
+    let keycloakLoginPage: KeycloakLoginPage;
+
+    before("Navigate to Prometheus main page", async () => {
+      keycloakLoginPage = new KeycloakLoginPage();
+      await Utils.gotoPrometheusMainPage();
+    });
+
+    it("Wait for Keycloak login page to load", async () => {
+      await keycloakLoginPage.isPageLoaded();
     });
   });
 
@@ -51,7 +90,7 @@ describe("UI Negative Tests for Console Home Page", (): void => {
     }
   });
 
-  after(() => {
-    Utils.releaseDriver();
+  after(async () => {
+    await Utils.releaseDriver();
   });
 });

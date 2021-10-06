@@ -17,8 +17,9 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): v
 
   before(async () => {
     await Utils.navigateAndLogin();
+    consoleMainPage = new ConsoleMainPage();
     consoleHeaderBar = new ConsoleHeaderBar();
-    consoleMainPage = await Utils.gotoConsoleMainPage();
+    await Utils.gotoConsoleMainPage();
   });
 
   describe("Access Console header and footer", (): void => {
@@ -121,7 +122,7 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): v
     }
   });
 
-  after(() => {
-    Utils.releaseDriver();
+  after(async () => {
+    await Utils.releaseDriver();
   });
 });
