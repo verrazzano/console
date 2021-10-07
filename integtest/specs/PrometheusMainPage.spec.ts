@@ -12,8 +12,9 @@ describe("Prometheus Home Page", (): void => {
 
   before(async () => {
     await Utils.navigateAndLogin();
+    prometheusMainPage = new PrometheusMainPage();
     prometheusSideBar = new PrometheusHeaderBar();
-    prometheusMainPage = await Utils.gotoPrometheusMainPage();
+    await Utils.gotoPrometheusMainPage();
   });
 
   describe("Access Prometheus header", (): void => {
@@ -47,7 +48,7 @@ describe("Prometheus Home Page", (): void => {
     }
   });
 
-  after(() => {
-    Utils.releaseDriver();
+  after(async () => {
+    await Utils.releaseDriver();
   });
 });

@@ -25,6 +25,7 @@ export class ErrorPage502 {
       console.log(headerText);
       return headerText === "502 Bad Gateway";
     } catch (error) {
+      console.log(error);
       return false;
     }
   }

@@ -29,6 +29,7 @@ export class PrometheusMainPage {
       await Wait.waitForPresent(PrometheusMainPage.HEADER_CONTAINER);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }
@@ -39,6 +40,7 @@ export class PrometheusMainPage {
       await Wait.waitForPresent(PrometheusMainPage.PROMETHEUS_PANEL);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }
@@ -49,6 +51,7 @@ export class PrometheusMainPage {
       await Wait.waitForPresent(PrometheusMainPage.ADD_GRAPH_BUTTON);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }

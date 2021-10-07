@@ -38,17 +38,17 @@ export class ConsoleMainPage {
 
   // Link to Grafana console
   private static readonly GRAFANA_URL_LINK = By.xpath(
-    `//a[contains(@href, "grafana")]`
+    `//*[@id="instance-vmi-link-grafana"]/div/a`
   );
 
   // Link to Kibana console
   private static readonly KIBANA_URL_LINK = By.xpath(
-    `//a[contains(@href, "kibana")]`
+    `//*[@id="instance-vmi-link-kibana"]/div/a`
   );
 
   // Link to Prometheus console
   private static readonly PROMETHEUS_URL_LINK = By.xpath(
-    `//a[contains(@href, "prometheus")]`
+    `//*[@id="instance-vmi-link-prometheus"]/div/a`
   );
 
   // vz-console-error is the tag name of the error item

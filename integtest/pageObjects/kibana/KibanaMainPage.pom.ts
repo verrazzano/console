@@ -27,6 +27,7 @@ export class KibanaMainPage {
       await Wait.waitForPresent(KibanaMainPage.HEADER_CONTAINER);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }
@@ -37,6 +38,7 @@ export class KibanaMainPage {
       await Wait.waitForPresent(KibanaMainPage.SIDEMENU_CONTAINER);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }

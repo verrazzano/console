@@ -29,6 +29,7 @@ export class GrafanaMainPage {
       await Wait.waitForPresent(GrafanaMainPage.HEADER_CONTAINER);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }
@@ -39,6 +40,7 @@ export class GrafanaMainPage {
       await Wait.waitForPresent(GrafanaMainPage.SIDEMENU_CONTAINER);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }
@@ -49,6 +51,7 @@ export class GrafanaMainPage {
       await Wait.waitForPresent(GrafanaMainPage.GRAFANA_PANEL);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }

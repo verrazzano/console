@@ -10,19 +10,19 @@ import { Actions } from "../../utils/Actions";
  * Page Object Model for the Keycloak login page
  */
 export class KeycloakLoginPage {
-  private static readonly LOGIN_FORM_BY: By = By.id("kc-form-login");
-  private static readonly USERNAME_BY: By = By.id("username");
-  private static readonly PASSWORD_BY: By = By.id("password");
-  private static readonly LOGIN_BTN_BY: By = By.id("kc-login");
+  private static readonly LOGIN_FORM: By = By.id("kc-form-login");
+  private static readonly USERNAME: By = By.id("username");
+  private static readonly PASSWORD: By = By.id("password");
+  private static readonly LOGIN_BTN: By = By.id("kc-login");
   private static readonly INVALID_CREDENTIALS_ERROR: By = By.className(
     "kc-feedback-text"
   );
 
   protected pageUrl: string = "/";
-  protected pageLoadedElement: By = KeycloakLoginPage.LOGIN_FORM_BY;
+  protected pageLoadedElement: By = KeycloakLoginPage.LOGIN_FORM;
 
   public async isCurrentPage(): Promise<boolean> {
-    const elem = await Wait.waitForPresent(KeycloakLoginPage.LOGIN_FORM_BY);
+    const elem = await Wait.waitForPresent(KeycloakLoginPage.LOGIN_FORM);
     return !!elem;
   }
 
@@ -33,6 +33,7 @@ export class KeycloakLoginPage {
       await Wait.waitForPresent(this.pageLoadedElement, timeOut);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }
@@ -42,25 +43,25 @@ export class KeycloakLoginPage {
     const isUsernameBoxPresent = await this.waitForUsernameBox();
 
     if (isUsernameBoxPresent) {
+      await Actions.enterText(KeycloakLoginPage.USERNAME, loginInfo.username);
       await Actions.enterText(
-        KeycloakLoginPage.USERNAME_BY,
-        loginInfo.username
-      );
-      await Actions.enterText(
-        KeycloakLoginPage.PASSWORD_BY,
+        KeycloakLoginPage.PASSWORD,
         loginInfo.password,
         true
       );
-      await Actions.doClick(KeycloakLoginPage.LOGIN_BTN_BY);
+      await Actions.doClick(KeycloakLoginPage.LOGIN_BTN);
     } else {
       throw new Error("No username box, could not login");
     }
   }
 
   public async waitForUsernameBox(): Promise<boolean> {
-    return await Wait.waitForPresent(KeycloakLoginPage.USERNAME_BY)
+    return await Wait.waitForPresent(KeycloakLoginPage.USERNAME)
       .then(() => true)
-      .catch(() => false);
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
   }
 
   public async waitForInvalidCredentialsError(): Promise<boolean> {
@@ -68,6 +69,9 @@ export class KeycloakLoginPage {
       KeycloakLoginPage.INVALID_CREDENTIALS_ERROR
     )
       .then(() => true)
-      .catch(() => false);
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
   }
 }

@@ -53,6 +53,9 @@ export class ConsoleHeaderBar {
     await Wait.waitForPresent(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON);
     return await Actions.doClick(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON)
       .then(() => true)
-      .catch(() => false);
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
   }
 }
