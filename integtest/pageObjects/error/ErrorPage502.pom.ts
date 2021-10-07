@@ -8,7 +8,9 @@ import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
  * Page Object Model for NGINX 502 error page
  */
 export class ErrorPage502 {
-  private static readonly ERROR_HEADER_502: By = By.css("h1");
+  private static readonly ERROR_HEADER_502: By = By.xpath(
+    "//h1[normalize-space()='502 Bad Gateway']"
+  );
 
   public async isPageLoaded(
     timeOut: number = PAGE_LOAD_TIMEOUT
@@ -19,11 +21,8 @@ export class ErrorPage502 {
   /* Wait for header */
   public async waitForHeader(): Promise<boolean> {
     try {
-      const headerText = await (
-        await Wait.waitForPresent(ErrorPage502.ERROR_HEADER_502)
-      ).getText();
-      console.log(headerText);
-      return headerText === "502 Bad Gateway";
+      await Wait.waitForPresent(ErrorPage502.ERROR_HEADER_502);
+      return true;
     } catch (error) {
       console.log(error);
       return false;
