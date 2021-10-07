@@ -54,19 +54,6 @@ export const Instance = {
 };
 
 export const Error = {
-  errSendAuthReq: (...args) =>
-    Translations.getTranslatedString("error.errSendAuthReq", args),
-  errAccessToken: (...args) =>
-    Translations.getTranslatedString("error.errAccessToken", args),
-  errRefreshToken: (...args) =>
-    Translations.getTranslatedString("error.errRefreshToken", args),
-  errLoggingOut: (...args) =>
-    Translations.getTranslatedString("error.errLoggingOut", args),
-  errCallKeyCloak: (...args) =>
-    Translations.getTranslatedString("error.errCallKeyCloak", args),
-  errFetchFailed: (...args) =>
-    Translations.getTranslatedString("error.errFetchFailed", args),
-
   errRenderInstance: (...args) =>
     Translations.getTranslatedString("error.errRenderInstance", args),
 
@@ -96,6 +83,9 @@ export const Error = {
       "error.errFetchingKubernetesResource",
       args
     ),
+
+  errResponseStatusCode: (...args) =>
+    Translations.getTranslatedString("error.errResponseStatusCode", args),
 
   errCreatingKubernetesResource: (...args) =>
     Translations.getTranslatedString(
@@ -177,20 +167,6 @@ export const Error = {
 
   errRoleBindingsFetchError: (...args) =>
     Translations.getTranslatedString("error.errRoleBindingsFetchError", args),
-};
-
-export const Auth = {
-  msgAuthInit: () => Translations.getTranslatedString("auth.msgAuthInit"),
-  msgTokenNotInStorage: () =>
-    Translations.getTranslatedString("auth.msgTokenNotInStorage"),
-  msgLogInKeyCloak: () =>
-    Translations.getTranslatedString("auth.msgLogInKeyCloak"),
-  msgGetAccessToken: () =>
-    Translations.getTranslatedString("auth.msgGetAccessToken"),
-  msgAuthEnabled: (...args) =>
-    Translations.getTranslatedString("auth.msgAuthEnabled", args),
-  msgUiUrl: (...args) =>
-    Translations.getTranslatedString("auth.msgUiUrl", args),
 };
 
 export const Labels = {

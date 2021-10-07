@@ -36,7 +36,7 @@ class State {
   projectAdminRoleBindings?: RoleBinding[];
   projectMonitorRoleBindings?: RoleBinding[];
   loading?: boolean;
-  error?: string;
+  error?: Error;
   breadcrumbs?: BreadcrumbType[];
   selectedTab?: string;
 }
@@ -64,7 +64,9 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
 
   protected mounted() {
     if (!this.props.projectId) {
-      this.updateState({ error: Messages.Error.errInvalidProjectId() });
+      this.updateState({
+        error: new Error(Messages.Error.errInvalidProjectId()),
+      });
       return;
     }
 
@@ -96,11 +98,7 @@ export class ConsoleProject extends ElementVComponent<Props, State> {
         projectMonitorRoleBindings,
       });
     } catch (error) {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
-      this.updateState({ error: errorMessage });
+      this.updateState({ error: error });
     }
   }
 

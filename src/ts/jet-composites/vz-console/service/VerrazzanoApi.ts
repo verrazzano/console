@@ -47,7 +47,7 @@ export class VerrazzanoApi {
         return this.populateInstance(vzArray[0], instanceId);
       })
       .catch((error) => {
-        throw new VzError(error);
+        throw this.wrapWithVzError(error);
       });
   }
 
@@ -201,7 +201,7 @@ export class VerrazzanoApi {
 
       return { oamApplications: applications, oamComponents: comps };
     } catch (error) {
-      throw new VzError(error);
+      throw this.wrapWithVzError(error);
     }
   }
 
@@ -305,7 +305,7 @@ export class VerrazzanoApi {
         return processClusterData(clustersResponse.items);
       })
       .catch((error) => {
-        throw new VzError(error);
+        throw this.wrapWithVzError(error);
       });
   }
 
@@ -364,7 +364,8 @@ export class VerrazzanoApi {
           this.cluster && this.cluster !== "local"
             ? `?cluster=${this.cluster}`
             : ""
-        }`
+        }`,
+        { credentials: "include" }
       )
     ).then((response) => {
       if (!response || !response.status || response.status >= 400) {
@@ -372,7 +373,8 @@ export class VerrazzanoApi {
           Messages.Error.errFetchingKubernetesResource(
             `${type.ApiVersion}/${type.Kind}`,
             namespace,
-            name
+            name,
+            this.cluster === "local" ? "" : this.cluster
           ),
           response?.status
         );
@@ -400,6 +402,7 @@ export class VerrazzanoApi {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
       }
     );
     if (!response || !response.status || response.status >= 400) {
@@ -485,7 +488,7 @@ export class VerrazzanoApi {
         ) {
           return "";
         }
-        throw new VzError(error);
+        throw this.wrapWithVzError(error);
       });
   }
 
@@ -502,7 +505,7 @@ export class VerrazzanoApi {
         return processProjectsData(projects.items);
       })
       .catch((error) => {
-        throw new VzError(error);
+        throw this.wrapWithVzError(error);
       });
   }
 
@@ -518,7 +521,7 @@ export class VerrazzanoApi {
         return imageBuildRequests.items;
       })
       .catch((error) => {
-        throw new VzError(error);
+        throw this.wrapWithVzError(error);
       });
   }
 
@@ -535,7 +538,7 @@ export class VerrazzanoApi {
         return processRoleBindingsData(roleBindings.items);
       })
       .catch((error) => {
-        throw new VzError(error);
+        throw this.wrapWithVzError(error);
       });
   }
 
@@ -733,4 +736,8 @@ export class VerrazzanoApi {
       mcCompsForNS.set(appComp.metadata.name, appComp);
     });
   }
+
+  private wrapWithVzError = (error: Error): VzError => {
+    return error instanceof VzError ? error : new VzError(error);
+  };
 }

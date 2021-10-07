@@ -6,14 +6,16 @@ import { ElementVComponent, customElement, h } from "ojs/ojvcomponent-element";
 import { ojMessage } from "ojs/ojmessage";
 // eslint-disable-next-line import/no-duplicates
 import { ojMessages } from "ojs/ojmessages";
+import * as Messages from "vz-console/utils/Messages";
 // eslint-disable-next-line import/no-duplicates
 import "ojs/ojmessages";
 import * as ko from "knockout";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
+import { VzError } from "vz-console/utils/error";
 
 class Props {
   context?: string;
-  error?: string;
+  error?: Error;
 }
 
 /**
@@ -34,10 +36,18 @@ export class ConsoleError extends ElementVComponent<Props> {
   }
 
   createMessage(): ojMessage.Message {
+    const errCode =
+      this.props.error instanceof VzError
+        ? (this.props.error as VzError).getCode()
+        : "";
+    const statusString = errCode
+      ? `${Messages.Labels.status()}: ${errCode}`
+      : "";
+    const detail = `${this.props.error.message}  ${statusString}`;
     return {
       severity: "error",
       summary: this.props.context,
-      detail: this.props.error,
+      detail: detail,
     };
   }
 

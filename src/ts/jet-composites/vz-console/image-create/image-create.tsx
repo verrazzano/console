@@ -19,8 +19,8 @@ import {
 } from "vz-console/service/types";
 import { ojInputTextEventMap } from "ojs/ojinputtext";
 import { ConsoleError } from "vz-console/error/error";
-import ko = require("knockout");
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
+import ko = require("knockout");
 
 class Props {
   createImageHandler: (image: ImageBuildRequest) => Promise<void>;
@@ -29,7 +29,7 @@ class Props {
 
 class State {
   requestName?: string;
-  error?: string;
+  error?: Error;
   errorContext?: string;
   baseImage?: string;
   jdkInstaller?: string;
@@ -51,7 +51,7 @@ const IMAGE_BUILD_REQUEST_NAMESPACE = "verrazzano-system";
 export class ConsoleImageCreate extends ElementVComponent<Props, State> {
   state = {
     requestName: "",
-    error: "",
+    error: undefined,
     errorContext: "",
     baseImage: "",
     jdkInstaller: "",
@@ -102,12 +102,8 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
       await this.props.createImageHandler(image);
       return true;
     } catch (error) {
-      let errorMessage = error;
-      if (error && error.message) {
-        errorMessage = error.message;
-      }
       this.updateState({
-        error: errorMessage,
+        error: error,
         errorContext: Messages.Error.errImageBuildRequestsCreateError(),
       });
       return false;
@@ -202,7 +198,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
               this.props.closeHandler();
               this.updateState({
                 requestName: "",
-                error: "",
+                error: null,
                 errorContext: "",
                 imageName: "",
                 imageRegistry: "",
@@ -382,7 +378,7 @@ export class ConsoleImageCreate extends ElementVComponent<Props, State> {
                       this.props.closeHandler();
                       this.updateState({
                         requestName: "",
-                        error: "",
+                        error: null,
                         errorContext: "",
                         imageName: "",
                         imageRegistry: "",
