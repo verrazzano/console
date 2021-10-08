@@ -88,6 +88,5 @@ run-ui-tests: npm-install
 .PHONY: run-app-page-test
 run-app-page-test: npm-install
 	./integtest/scripts/edit_integ_test_config.sh ${VZ_UITEST_CONFIG_TEMPLATE} > tmp.uitestconfig.json
-	cat tmp.uitestconfig.json
 	export VZ_UITEST_CONFIG=tmp.uitestconfig.json && \
 	npm run app-page-test
