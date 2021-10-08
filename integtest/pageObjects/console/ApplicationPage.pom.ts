@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By } from "selenium-webdriver";
-import { PAGE_LOAD_TIMEOUT, Wait } from "../utils/Wait";
+import { PAGE_LOAD_TIMEOUT, Wait } from "../../utils/Wait";
 
 /*
  Application details page

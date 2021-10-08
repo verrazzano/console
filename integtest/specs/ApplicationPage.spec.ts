@@ -3,7 +3,7 @@
 
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
-import { ApplicationPage } from "../pageObjects/ApplicationPage.pom";
+import { ApplicationPage } from "../pageObjects/console/ApplicationPage.pom";
 import { By } from "selenium-webdriver";
 import { Actions } from "../utils/Actions";
 
