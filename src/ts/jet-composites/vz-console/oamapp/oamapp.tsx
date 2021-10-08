@@ -518,14 +518,17 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
           <ConsoleMetadataItem
             label={Messages.Labels.name()}
             value={this.state.oamApplication.name}
+            id={"app-name-metaitem"}
           />,
           <ConsoleMetadataItem
             label={Messages.Labels.ns()}
             value={this.state.oamApplication.namespace}
+            id={"app-namespace-metaitem"}
           />,
           <ConsoleMetadataItem
             label={Messages.Labels.created()}
             value={this.state.oamApplication.createdOn}
+            id={"app-created-metaitem"}
           />,
         ];
         switch (this.state.oamApplication.status) {
@@ -584,6 +587,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
             <ConsoleMetadataItem
               label={Messages.Labels.cluster()}
               value={this.state.oamApplication.cluster.name}
+              id={"app-cluster-metaitem"}
             />
           );
         }
@@ -592,6 +596,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
             <ConsoleMetadataItem
               label={Messages.Labels.project()}
               value={this.state.oamApplication.project.name}
+              id={"app-project-metaitem"}
               link={true}
               target={`/projects/${this.state.oamApplication.project.data.metadata.uid}`}
             />
