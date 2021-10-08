@@ -12,8 +12,7 @@ describe("Application Details Page", (): void => {
   const appConfig = Utils.getConfig("app");
 
   before(async () => {
-    const acceptCookies = true;
-    await Utils.navigateAndLogin(acceptCookies);
+    await Utils.navigateAndLogin();
     if (!appConfig || !appConfig.name) {
       throw new Error(
         "No app name specified, cannot run application details page test"
