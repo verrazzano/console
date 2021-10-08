@@ -1,4 +1,4 @@
-// Copyright (C) 2020, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By } from "selenium-webdriver";
@@ -47,5 +47,12 @@ export class Actions {
       console.error(`Could not enter text in ${by}`);
       throw error;
     }
+  }
+
+  // Navigate to a given tab index
+  public static async switchToTab(tabIndex: number): Promise<void> {
+    const driver = await Utils.getDriver();
+    const tabs = await driver.getAllWindowHandles();
+    await driver.switchTo().window(tabs[tabIndex]);
   }
 }

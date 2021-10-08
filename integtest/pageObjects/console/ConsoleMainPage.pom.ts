@@ -1,13 +1,14 @@
-// Copyright (C) 2020, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By } from "selenium-webdriver";
-import { Wait, PAGE_LOAD_TIMEOUT } from "../utils/Wait";
+import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
+import { Actions } from "../../utils/Actions";
 
 /**
- * Page Object Model for the main page
+ * Page Object Model for Verrazzano Console main page
  */
-export class MainPage {
+export class ConsoleMainPage {
   // private static readonly HEADER_CONTAINER: By = By.xpath(`//header[@class="oj-web-applayout-header"]`);
   private static readonly FOOTER_CONTAINER: By = By.className(
     "oj-web-applayout-footer-item"
@@ -35,11 +36,26 @@ export class MainPage {
     "vz-console-instance"
   );
 
+  // Link to Grafana console
+  private static readonly GRAFANA_URL_LINK = By.xpath(
+    `//*[@id="instance-vmi-link-grafana"]/div/a`
+  );
+
+  // Link to Kibana console
+  private static readonly KIBANA_URL_LINK = By.xpath(
+    `//*[@id="instance-vmi-link-kibana"]/div/a`
+  );
+
+  // Link to Prometheus console
+  private static readonly PROMETHEUS_URL_LINK = By.xpath(
+    `//*[@id="instance-vmi-link-prometheus"]/div/a`
+  );
+
   // vz-console-error is the tag name of the error item
   private static readonly ERROR_ITEM: By = By.css("vz-console-error");
 
   protected pageUrl: string = "/";
-  protected pageLoadedElement: By = MainPage.HEADER_CONTAINER;
+  protected pageLoadedElement: By = ConsoleMainPage.HEADER_CONTAINER;
 
   public async isPageLoaded(
     timeOut: number = PAGE_LOAD_TIMEOUT
@@ -50,7 +66,7 @@ export class MainPage {
   /* Wait for header */
   public async waitForHeader(): Promise<boolean> {
     try {
-      await Wait.waitForPresent(MainPage.HEADER_CONTAINER);
+      await Wait.waitForPresent(ConsoleMainPage.HEADER_CONTAINER);
       return true;
     } catch (error) {
       return false;
@@ -60,7 +76,7 @@ export class MainPage {
   /* Wait for footer */
   public async waitForFooter(): Promise<boolean> {
     try {
-      await Wait.waitForPresent(MainPage.FOOTER_CONTAINER);
+      await Wait.waitForPresent(ConsoleMainPage.FOOTER_CONTAINER);
       return true;
     } catch (error) {
       return false;
@@ -70,9 +86,9 @@ export class MainPage {
   /* Wait for instance General Information */
   public async waitForInstanceInfo(): Promise<boolean> {
     try {
-      await Wait.waitForPresent(MainPage.INSTANCE_STATUS_ITEM);
-      await Wait.waitForPresent(MainPage.INSTANCE_VERSION_ITEM);
-      await Wait.waitForPresent(MainPage.INSTANCE_PROFILE_ITEM);
+      await Wait.waitForPresent(ConsoleMainPage.INSTANCE_STATUS_ITEM);
+      await Wait.waitForPresent(ConsoleMainPage.INSTANCE_VERSION_ITEM);
+      await Wait.waitForPresent(ConsoleMainPage.INSTANCE_PROFILE_ITEM);
       return true;
     } catch (error) {
       return false;
@@ -83,11 +99,29 @@ export class MainPage {
   public async errorComponentExists(): Promise<boolean> {
     try {
       // wait for body to be rendered and make sure no error component exists
-      await Wait.waitForPresent(MainPage.INSTANCE_BODY_OUTER_ELEM);
-      const errItem = await Wait.findNow(MainPage.ERROR_ITEM);
+      await Wait.waitForPresent(ConsoleMainPage.INSTANCE_BODY_OUTER_ELEM);
+      const errItem = await Wait.findNow(ConsoleMainPage.ERROR_ITEM);
       return !!errItem;
     } catch (error) {
       return false;
     }
+  }
+
+  /* Navigate to VMI console */
+  public async navigateToVMI(
+    vmiName: string,
+    tabIndex: number
+  ): Promise<boolean> {
+    if (vmiName === "grafana") {
+      await Actions.doClick(ConsoleMainPage.GRAFANA_URL_LINK);
+    } else if (vmiName === "kibana") {
+      await Actions.doClick(ConsoleMainPage.KIBANA_URL_LINK);
+    } else if (vmiName === "prometheus") {
+      await Actions.doClick(ConsoleMainPage.PROMETHEUS_URL_LINK);
+    } else {
+      return false;
+    }
+    await Actions.switchToTab(tabIndex);
+    return true;
   }
 }

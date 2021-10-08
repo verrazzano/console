@@ -1,4 +1,4 @@
-// Copyright (C) 2020, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as fs from "fs";
@@ -8,8 +8,8 @@ import {
   Condition,
   WebDriver,
 } from "selenium-webdriver";
-import { MainPage } from "../pageObjects/MainPage.pom";
-import { LoginPage } from "../pageObjects/LoginPage.pom";
+import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
+
 export interface LoginInfo {
   username: string;
   password: string;
@@ -29,22 +29,37 @@ export class Utils {
     }
   }
 
-  static async navigateAndLogin(acceptCookies?: boolean, timeout?: number) {
+  static getInvalidLoginInfo(): LoginInfo {
+    // Returns LoginInfo with random username and password
+    return {
+      username: Math.random().toString(36).substr(2, 8),
+      password: Math.random().toString(36).substr(2, 8),
+    };
+  }
+
+  static async navigateAndLogin(
+    useInvalidLoginInfo?: boolean,
+    timeout?: number
+  ) {
     const url = Utils.getConfig("driverInfo").url as string;
-    const loginInfo = Utils.getConfig("loginInfo");
+    const loginInfo = useInvalidLoginInfo
+      ? Utils.getInvalidLoginInfo()
+      : Utils.getConfig("loginInfo");
     const loginEnabled = Utils.isLoginEnabled();
     try {
       console.log(`Navigating to: ${url}`);
-      console.log(`Cookies enabled: ${acceptCookies}`);
+      if (useInvalidLoginInfo) {
+        console.log("Using invalid login credentials");
+      }
       await Utils.getJETPage(url, timeout);
 
       if (loginEnabled) {
         Utils.validateConfigLoginInfo();
-        const loginPage = new LoginPage();
-        if (await loginPage.isPageLoaded()) {
+        const keycloakLoginPage = new KeycloakLoginPage();
+        if (await keycloakLoginPage.isPageLoaded()) {
           console.log("Login page is current page");
           console.log(`Performing an initial log in.`);
-          await loginPage.login(loginInfo, acceptCookies, timeout);
+          await keycloakLoginPage.login(loginInfo, timeout);
         } else {
           const driver = await Utils.getDriver();
           console.log(
@@ -111,28 +126,50 @@ export class Utils {
     return key ? Utils.config[key] : Utils.config;
   }
 
-  static async gotoMainPage(): Promise<MainPage> {
-    const mainPage = new MainPage();
-    const uiUrl = Utils.getConfig("driverInfo").url;
-    console.log(`Navigating to UI main page at ${uiUrl}`);
-    await Utils.getJETPage(uiUrl);
-
-    // Verify MainPage is reachable and loaded
-    await mainPage.isPageLoaded();
-    return mainPage;
+  static async gotoConsoleMainPage() {
+    const url = Utils.getConfig("driverInfo").url;
+    console.log(`Navigating to Verrazzano Console main page at ${url}`);
+    await Utils.getJETPage(url);
   }
 
-  public static releaseDriver() {
+  static async gotoGrafanaMainPage() {
+    const url = Utils.getConfig("grafana").url;
+    console.log(`Navigating to Grafana main page at ${url}`);
+    await Utils.getJETPage(url);
+  }
+
+  static async gotoKibanaMainPage() {
+    const url = Utils.getConfig("kibana").url;
+    console.log(`Navigating to Kibana main page at ${url}`);
+    await Utils.getJETPage(url);
+  }
+
+  static async gotoPrometheusMainPage() {
+    const url = Utils.getConfig("prometheus").url;
+    console.log(`Navigating to Prometheus main page at ${url}`);
+    await Utils.getJETPage(url);
+  }
+
+  public static async gotoInvalidUrl(): Promise<boolean> {
+    const url = Utils.getConfig("driverInfo").url;
+    const invalidUrl = url.replace(
+      "verrazzano",
+      Math.random().toString(36).substr(2, 10)
+    );
+    return await Utils.getJETPage(invalidUrl)
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  public static async releaseDriver() {
     if (Utils.driver) {
-      setTimeout(async () => {
-        try {
-          await Utils.driver.quit();
-        } catch (err) {
-          console.warn(`Failed when releasing driver session: ${err}`);
-        } finally {
-          Utils.driver = null;
-        }
-      }, 500);
+      try {
+        await Utils.driver.quit();
+      } catch (err) {
+        console.warn(`Failed when releasing driver session: ${err}`);
+      } finally {
+        Utils.driver = null;
+      }
     }
   }
 
@@ -156,7 +193,6 @@ export class Utils {
   public static async getDriver(): Promise<WebDriver> {
     if (!Utils.driver) {
       const driverInfo = Utils.getConfig("driverInfo");
-
       const caps = new Capabilities(driverInfo);
       const driver: WebDriver = new Builder().withCapabilities(caps).build();
       Utils.driver = driver;
