@@ -119,7 +119,7 @@ npm run integtest
 ```
 
 Alternatively, use the following command to run integration tests with default configuration:
-````
+```
 make run-ui-tests
 ```
 
