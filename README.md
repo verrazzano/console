@@ -97,7 +97,40 @@ To run the Console application in a local web server, run following command:
   ojet serve
 ```
 
-This will open a browser at [http://localhost:8000](http://localhost:8000). On first access, it will display a Verrazzano Console home page with an error message. At this point, additional configuration is required to test the console locally, which will be added soon.
+This will open a browser at [http://localhost:8000](http://localhost:8000). On first access, it will display a Verrazzano Console home page with an error message.
+
+In order to make verrazzano use the local console, follow these steps after installing `verrazzano`:
+1. Verify that configmap `verrrazzano-authproxy-config` and replicaset `verrazzano-authproxy-<tag>` are present in the cluster using
+```
+kubectl -n verrazzano-system get cm
+kubectl -n verrazzano-system get replicaset
+```
+
+2. Get the configmap in a yaml file
+```
+kubectl -n verrazzano-system get cm verrazzano-authproxy-config -o yaml > verrazzano-authproxy-config.yaml
+```
+
+3. Edit the function `makeConsoleBackendUrl` in the yaml file generated to return the IP (**NOT** `http://localhost:8000`) of the machine running the local console.
+```
+function makeConsoleBackendUrl(port)
+    return http://<Your-machine-IP-here>:8000
+end
+```
+
+4. Delete and recreate the configmap from the yaml file.
+```
+kubectl -n verrazzano-system delete cm verrazzano-authproxy-config
+kubectl -n verrazzano-system create -f verrazzano-authproxy-config.yaml
+```
+
+5. Rescale the replicaset `verrazzano-authproxy-<tag>` to take up the new configmap
+```
+kubectl -n verrazzano-system scale replicaset verrazzano-authproxy-<tag> --replicas=0
+kubectl -n verrazzano-system scale replicaset verrazzano-authproxy-<tag> --replicas=1
+```
+
+The replicaset may take a minute to scale. After that, the local console will be used by `verrazzano`. 
 
 When you make changes to the Console code, the changes are reflected immediately in the browser because the `livereload` option is enabled by default for the `ojet serve` command. For other options supported by the command, see [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9).
 
@@ -119,7 +152,7 @@ npm run integtest
 ```
 
 Alternatively, use the following command to run integration tests with default configuration:
-````
+```
 make run-ui-tests
 ```
 
