@@ -30,11 +30,6 @@ The Verrazzano Console repository includes:
     npm install -g @oracle/ojet-cli@10.1.0
   ```
 
-  If the above command fails due to `unable to verify the first certificate`, run the following command.
-  ```bash
-    npm config set registry https://artifactory.oci.oraclecorp.com/api/npm/global-dev-npm
-  ```
-
   For more information, see [Getting Started with Oracle JavaScript Extension Toolkit (JET)](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/getting-started-oracle-javascript-extension-toolkit-jet.html).
 
 - An existing Verrazzano environment and access to the Verrazzano API.
