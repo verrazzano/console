@@ -369,15 +369,20 @@ export class VerrazzanoApi {
       )
     ).then((response) => {
       if (!response || !response.status || response.status >= 400) {
-        throw new VzError(
-          Messages.Error.errFetchingKubernetesResource(
-            `${type.ApiVersion}/${type.Kind}`,
-            namespace,
-            name,
-            this.cluster === "local" ? "" : this.cluster
-          ),
-          response?.status
-        );
+        if (response.status === 401) {
+          // Refresh page on 401 response
+          window.location.reload();
+        } else {
+          throw new VzError(
+            Messages.Error.errFetchingKubernetesResource(
+              `${type.ApiVersion}/${type.Kind}`,
+              namespace,
+              name,
+              this.cluster === "local" ? "" : this.cluster
+            ),
+            response?.status
+          );
+        }
       }
       return response;
     });
@@ -406,16 +411,21 @@ export class VerrazzanoApi {
       }
     );
     if (!response || !response.status || response.status >= 400) {
-      const jsonResponse = await response.json();
-      throw new VzError(
-        Messages.Error.errCreatingKubernetesResource(
-          `${type.ApiVersion}/${type.Kind}`,
-          namespace,
-          data.metadata.name,
-          jsonResponse.message
-        ),
-        response?.status
-      );
+      if (response.status === 401) {
+        // Refresh page on 401 response
+        window.location.reload();
+      } else {
+        const jsonResponse = await response.json();
+        throw new VzError(
+          Messages.Error.errCreatingKubernetesResource(
+            `${type.ApiVersion}/${type.Kind}`,
+            namespace,
+            data.metadata.name,
+            jsonResponse.message
+          ),
+          response?.status
+        );
+      }
     }
     return response;
   }
