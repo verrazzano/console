@@ -101,33 +101,33 @@ This will open a browser at [http://localhost:8000](http://localhost:8000). On f
 
 In order to make verrazzano use the local console, follow these steps after installing `verrazzano`:
 1. Verify that configmap `verrrazzano-authproxy-config` and replicaset `verrazzano-authproxy-<tag>` are present in the cluster using
-```
-kubectl -n verrazzano-system get cm
-kubectl -n verrazzano-system get replicaset
+```bash
+  kubectl -n verrazzano-system get cm
+  kubectl -n verrazzano-system get replicaset
 ```
 
 2. Get the configmap in a yaml file
-```
-kubectl -n verrazzano-system get cm verrazzano-authproxy-config -o yaml > verrazzano-authproxy-config.yaml
+```bash
+  kubectl -n verrazzano-system get cm verrazzano-authproxy-config -o yaml > verrazzano-authproxy-config.yaml
 ```
 
-3. Edit the function `makeConsoleBackendUrl` in the yaml file generated to return the IP (**NOT** `http://localhost:8000`) of the machine running the local console.
+3. Edit the function `makeConsoleBackendUrl` in the yaml file generated to return the IP (**NOT** `localhost`) of the machine running the local console.
 ```
-function makeConsoleBackendUrl(port)
-    return http://<Your-machine-IP-here>:8000
-end
+  function makeConsoleBackendUrl(port)
+      return http://<Your-machine-IP-here>:8000
+  end
 ```
 
 4. Delete and recreate the configmap from the yaml file.
-```
-kubectl -n verrazzano-system delete cm verrazzano-authproxy-config
-kubectl -n verrazzano-system create -f verrazzano-authproxy-config.yaml
+```bash
+  kubectl -n verrazzano-system delete cm verrazzano-authproxy-config
+  kubectl -n verrazzano-system create -f verrazzano-authproxy-config.yaml
 ```
 
 5. Rescale the replicaset `verrazzano-authproxy-<tag>` to take up the new configmap
-```
-kubectl -n verrazzano-system scale replicaset verrazzano-authproxy-<tag> --replicas=0
-kubectl -n verrazzano-system scale replicaset verrazzano-authproxy-<tag> --replicas=1
+```bash
+  kubectl -n verrazzano-system scale replicaset verrazzano-authproxy-<tag> --replicas=0
+  kubectl -n verrazzano-system scale replicaset verrazzano-authproxy-<tag> --replicas=1
 ```
 
 The replicaset may take a minute to scale. After that, the local console will be used by `verrazzano`. 
