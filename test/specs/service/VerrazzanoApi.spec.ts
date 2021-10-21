@@ -6,9 +6,9 @@ import { VerrazzanoApi } from "vz-console/service/VerrazzanoApi";
 import { ResourceType, Status } from "vz-console/service/types";
 
 const expect = chai.expect;
-const makeMockResponse = (body = {}) =>
+const makeMockResponse = (body = {}, status?: number) =>
   new window.Response(JSON.stringify(body), {
-    status: 200,
+    status: status || 200,
     headers: { "Content-type": "application/json" },
   });
 
@@ -133,6 +133,19 @@ const makeMockImageBuildRequests = () => {
 };
 
 describe("VerrazzanoApi tests", () => {
+  it("reload window on 401 response code", async () => {
+    const testNs = "listRoleBindingsNs";
+    const status = 401;
+    const mockRoleBindings = makeMockRoleBindings(testNs);
+    const fakeFetch = sinon.fake.returns(
+      makeMockResponse(mockRoleBindings, status)
+    );
+    const vzApi = new VerrazzanoApi("local", fakeFetch);
+    const fakeReload = sinon.stub(vzApi, "reloadWindow").returns(true);
+    await vzApi.listRoleBindings(testNs);
+    expect(fakeReload.calledOnce).to.be.true;
+  });
+
   it("listRoleBindings returns expected data", async () => {
     const testNs = "listRoleBindingsNs";
     const mockRoleBindings = makeMockRoleBindings(testNs);

@@ -371,7 +371,7 @@ export class VerrazzanoApi {
       if (!response || !response.status || response.status >= 400) {
         if (response.status === 401) {
           // Refresh page on 401 response
-          window.location.reload();
+          this.reloadWindow();
         } else {
           throw new VzError(
             Messages.Error.errFetchingKubernetesResource(
@@ -413,7 +413,7 @@ export class VerrazzanoApi {
     if (!response || !response.status || response.status >= 400) {
       if (response.status === 401) {
         // Refresh page on 401 response
-        window.location.reload();
+        this.reloadWindow();
       } else {
         const jsonResponse = await response.json();
         throw new VzError(
@@ -749,5 +749,10 @@ export class VerrazzanoApi {
 
   private wrapWithVzError = (error: Error): VzError => {
     return error instanceof VzError ? error : new VzError(error);
+  };
+
+  reloadWindow = (): boolean => {
+    window.location.reload();
+    return true;
   };
 }

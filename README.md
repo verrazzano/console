@@ -30,9 +30,14 @@ The Verrazzano Console repository includes:
     npm install -g @oracle/ojet-cli@10.1.0
   ```
 
+  If the above command fails due to `unable to verify the first certificate`, run the following command.
+  ```bash
+    npm config set registry https://artifactory.oci.oraclecorp.com/api/npm/global-dev-npm
+  ```
+
   For more information, see [Getting Started with Oracle JavaScript Extension Toolkit (JET)](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/getting-started-oracle-javascript-extension-toolkit-jet.html).
 
-- An existing Verrazzano environment and access to the Verrazzano API and the Keycloak server URL.
+- An existing Verrazzano environment and access to the Verrazzano API.
 
   The Verrazzano Console requires the URL of the Verrazzano Auth-Proxy Server (for fetching environment and application data). The format of the Verrazzano Auth-Proxy URL typically is `https://verrazzano.v8o-env.v8o-domain.com` where:
 
@@ -51,25 +56,6 @@ Clone the `git` repository and install `npm` dependencies:
   nvm use 14.15
   npm install
 ```
-
-### Set up the Keycloak client
-
-[Keycloak](https://github.com/keycloak/keycloak) provides Identity and Access Management in Verrazzano for authentication to various dashboards and the Console application. To run the Verrazzano Console locally, first you need to configure the **verrazzano-pkce** [OpenID Connect client](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) to authenticate the login and API requests originating from the application deployed at `localhost`.
-
-1. Access the Keycloak administration console for your Verrazzano environment: `https://keycloak.v8o-env.v8o-domain.com`
-2. Log in with the Keycloak admin user and password. Typically the Keycloak admin user name is `keycloakadmin` and the password can be obtained from your management cluster:
-
-```bash
-  kubectl get secret --namespace keycloak keycloak-http -o jsonpath={.data.password} | base64 --decode; echo
-```
-
-For more information on accessing Keycloak and other user interfaces in Verrazzano, see [Get console credentials](https://github.com/verrazzano/verrazzano/blob/master/install/README.md#6-get-console-credentials).
-
-3. Navigate to **Clients** and select the client, **verrazzano-pkce**. On the **Settings** page, go to **Valid Redirect URIs** and select the plus (+) sign to add the redirect URL `http://localhost:8000/*`.
-4. On the same page, go to **Web Origins** and select the plus (+) sign to add `http://localhost:8000`.
-5. Click **Save**.
-
-You can also set up a separate Keycloak client for local access using [these](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) instructions.
 
 ### Get Verrazzano user credentials
 
