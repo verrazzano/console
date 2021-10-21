@@ -52,25 +52,6 @@ Clone the `git` repository and install `npm` dependencies:
   npm install
 ```
 
-### Set up the Keycloak client
-
-[Keycloak](https://github.com/keycloak/keycloak) provides Identity and Access Management in Verrazzano for authentication to various dashboards and the Console application. To run the Verrazzano Console locally, first you need to configure the **verrazzano-pkce** [OpenID Connect client](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) to authenticate the login and API requests originating from the application deployed at `localhost`.
-
-1. Access the Keycloak administration console for your Verrazzano environment: `https://keycloak.v8o-env.v8o-domain.com`
-2. Log in with the Keycloak admin user and password. Typically the Keycloak admin user name is `keycloakadmin` and the password can be obtained from your management cluster:
-
-```bash
-  kubectl get secret --namespace keycloak keycloak-http -o jsonpath={.data.password} | base64 --decode; echo
-```
-
-For more information on accessing Keycloak and other user interfaces in Verrazzano, see [Get console credentials](https://github.com/verrazzano/verrazzano/blob/master/install/README.md#6-get-console-credentials).
-
-3. Navigate to **Clients** and select the client, **verrazzano-pkce**. On the **Settings** page, go to **Valid Redirect URIs** and select the plus (+) sign to add the redirect URL `http://localhost:8000/*`.
-4. On the same page, go to **Web Origins** and select the plus (+) sign to add `http://localhost:8000`.
-5. Click **Save**.
-
-You can also set up a separate Keycloak client for local access using [these](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients) instructions.
-
 ### Get Verrazzano user credentials
 
 Verrazzano installations have a default user `verrazzano` configured in the Verrazzano Keycloak server which can be used for authentication for accessing the Console. To get the password for the `verrazzano` user from the management cluster, run:
