@@ -70,7 +70,7 @@ h4 {
 }
 
 .vz-icon:before {
-  content: url("images/Verrazzano_logo_white.svg");
+  content: url("images/Verrazzano-Logo-Horiz-WHT_A_2.5.svg");
 }
 html:not([dir="rtl"]) .vz-icon {
   padding-right: 4px;
