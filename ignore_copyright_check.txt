@@ -2,3 +2,4 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 src/css/images/Verrazzano-Logo-Horiz-WHT_A_2.5.svg
 src/css/images/favico.svg
+src/css/images/Verrazzano_logo_white.svg
