@@ -369,7 +369,7 @@ export class VerrazzanoApi {
       )
     ).then((response) => {
       if (!response || !response.status || response.status >= 400) {
-        if (response.status === 401) {
+        if (response && response.status === 401) {
           // Refresh page on 401 response
           this.reloadWindow();
         } else {
@@ -411,7 +411,7 @@ export class VerrazzanoApi {
       }
     );
     if (!response || !response.status || response.status >= 400) {
-      if (response.status === 401) {
+      if (response && response.status === 401) {
         // Refresh page on 401 response
         this.reloadWindow();
       } else {
