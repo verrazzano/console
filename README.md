@@ -78,9 +78,9 @@ To run the Console application in a local web server, run following command:
   ojet serve
 ```
 
-This will open two tabs in a window in the default browser - first one to Verrazzano API Server URL and second to [http://localhost:8000](http://localhost:8000).
+This will open a tab with Verrazzano API Server URL. 
 
-To start using the console, authentication using Verrazzano user credentials is required on the Verrazzano API Server tab. Post authentication, refresh the localhost page to view the local console.
+To start using the console, authenticate using Verrazzano user credentials in the Verrazzano API tab. Post authentication, open/refresh the [http://localhost:8000](http://localhost:8000) page to view the local console.
 
 After some time, the cookie expires and console throws a prompt to reload. In that case, open Verrazzano API Server URL in a separate tab **in the same window (so that the cookies can be used by localhost for API calls)** and follow the steps described in the above paragraph.
 
