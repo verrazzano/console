@@ -370,8 +370,13 @@ export class VerrazzanoApi {
     ).then((response) => {
       if (!response || !response.status || response.status >= 400) {
         if (response && response.status === 401) {
-          // Refresh page on 401 response
-          this.reloadWindow();
+          // Prompt the user to confirm refreshing page
+          const shouldRefreshPage = window.confirm("Refresh page?")
+          if (shouldRefreshPage) {
+            this.reloadWindow();
+          } else {
+            window.stop();
+          }
         } else {
           throw new VzError(
             Messages.Error.errFetchingKubernetesResource(

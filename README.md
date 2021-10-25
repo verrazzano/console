@@ -78,7 +78,11 @@ To run the Console application in a local web server, run following command:
   ojet serve
 ```
 
-This will open a browser at [http://localhost:8000](http://localhost:8000). On first access, it will display a Verrazzano Console home page with an error message.
+This will open two tabs in a window in the default browser - first one to Verrazzano API Server URL and second to [http://localhost:8000](http://localhost:8000).
+
+To start using the console, authentication using Verrazzano user credentials is required on the Verrazzano API Server tab. Post authentication, refresh the localhost page to view the local console.
+
+After some time, the cookie expires and console throws a prompt to reload. In that case, open Verrazzano API Server URL in a separate tab **in the same window (so that the cookie is shared by localhost for API calls)** and follow the steps described in the above paragraph.
 
 When you make changes to the Console code, the changes are reflected immediately in the browser because the `livereload` option is enabled by default for the `ojet serve` command. For other options supported by the command, see [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9).
 
