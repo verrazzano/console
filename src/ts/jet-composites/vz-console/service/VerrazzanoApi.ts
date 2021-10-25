@@ -370,13 +370,8 @@ export class VerrazzanoApi {
     ).then((response) => {
       if (!response || !response.status || response.status >= 400) {
         if (response && response.status === 401) {
-          // Prompt the user to confirm refreshing page
-          const shouldRefreshPage = window.confirm("Refresh page?");
-          if (shouldRefreshPage) {
-            this.reloadWindow();
-          } else {
-            window.stop();
-          }
+          // Reload page after raising a confirmation prompt
+          this.refreshPageWithPrompt();
         } else {
           throw new VzError(
             Messages.Error.errFetchingKubernetesResource(
@@ -417,13 +412,8 @@ export class VerrazzanoApi {
     );
     if (!response || !response.status || response.status >= 400) {
       if (response && response.status === 401) {
-        // Prompt the user to confirm refreshing page
-        const shouldRefreshPage = window.confirm("Refresh page?");
-        if (shouldRefreshPage) {
-          this.reloadWindow();
-        } else {
-          window.stop();
-        }
+        // Reload page after raising a confirmation prompt
+        this.refreshPageWithPrompt();
       } else {
         const jsonResponse = await response.json();
         throw new VzError(
@@ -761,7 +751,12 @@ export class VerrazzanoApi {
     return error instanceof VzError ? error : new VzError(error);
   };
 
-  reloadWindow = () => {
-    window.location.reload();
+  refreshPageWithPrompt = () => {
+    const shouldRefreshPage = window.confirm("Refresh page?");
+    if (shouldRefreshPage) {
+      window.location.reload();
+    } else {
+      window.stop();
+    }
   };
 }
