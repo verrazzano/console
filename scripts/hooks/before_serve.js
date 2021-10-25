@@ -143,8 +143,18 @@ function rewriteUrls() {
       `/?ojr=project&projectId=${req.params.id}&selectedItem=networkPolicies`
     );
   });
+  app.get("/", (req, res, next) => {
+    if (redirectOnce && process.env.VZ_API_URL) {
+      redirectOnce = false;
+      req.res.redirect(process.env.VZ_API_URL);
+    } else {
+      next();
+    }
+  });
   return app;
 }
+
+var redirectOnce = true;
 
 module.exports = function (configObj) {
   return new Promise((resolve, reject) => {
