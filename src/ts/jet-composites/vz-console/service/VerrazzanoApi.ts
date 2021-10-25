@@ -761,8 +761,7 @@ export class VerrazzanoApi {
     return error instanceof VzError ? error : new VzError(error);
   };
 
-  reloadWindow = (): boolean => {
+  reloadWindow = () => {
     window.location.reload();
-    return true;
   };
 }

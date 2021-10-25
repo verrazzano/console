@@ -141,7 +141,7 @@ describe("VerrazzanoApi tests", () => {
       makeMockResponse(mockRoleBindings, status)
     );
     const vzApi = new VerrazzanoApi("local", fakeFetch);
-    const fakeReload = sinon.stub(vzApi, "reloadWindow").returns(true);
+    const fakeReload = sinon.stub(vzApi, "reloadWindow");
     await vzApi.listRoleBindings(testNs);
     expect(fakeReload.calledOnce).to.be.true;
   });
