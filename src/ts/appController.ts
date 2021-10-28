@@ -7,6 +7,7 @@ import * as ResponsiveKnockoutUtils from "ojs/ojresponsiveknockoututils";
 import * as OffcanvasUtils from "ojs/ojoffcanvas";
 import "ojs/ojknockout";
 import "ojs/ojmodule-element";
+import "ojs/ojdialog";
 import { ojNavigationList } from "ojs/ojnavigationlist";
 import * as Messages from "vz-console/utils/Messages";
 import { UserInfoCookie } from "vz-console/service/types";
@@ -183,6 +184,18 @@ class RootViewModel {
   // logout user from the console
   logout = (): void => {
     window.location.href = `https://${window.location.hostname}/_logout`;
+  };
+
+  showRefreshPageDialog = (): void => {
+    (document.getElementById("refreshPageDialog") as any).open();
+  };
+
+  cancelRefreshPageDialog = (): void => {
+    (document.getElementById("refreshPageDialog") as any).close();
+  };
+
+  okRefreshPageDialog = (): void => {
+    window.location.reload();
   };
 }
 
