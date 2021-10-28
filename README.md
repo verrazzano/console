@@ -86,6 +86,14 @@ After some time, the cookie expires and console throws a prompt to reload. In th
 
 When you make changes to the Console code, the changes are reflected immediately in the browser because the `livereload` option is enabled by default for the `ojet serve` command. For other options supported by the command, see [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9).
 
+### Using Google Chrome for development
+
+Newer versions of Google Chrome (>= 91), do not have the support for disabling [SameSite-by-default-cookies](https://www.chromium.org/updates/same-site/test-debug). This is required for testing the console locally. To disable this feature, [start chrome with the following flag](https://www.chromium.org/developers/how-tos/run-chromium-with-flags) -
+
+```
+–disable-features=SameSiteByDefaultCookies
+```
+
 ## Testing
 
 Unit tests for the Verrazzano Console use [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/). For running the tests, you need the [Chrome](https://www.google.com/chrome/) browser. To run tests for the Console, run:
