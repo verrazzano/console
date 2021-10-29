@@ -78,17 +78,17 @@ To run the Console application in a local web server, run following command:
   ojet serve
 ```
 
-This will open a tab with Verrazzano API Server URL. 
+This will open a tab with the Verrazzano API Server URL. 
 
-To start using the console, authenticate using Verrazzano user credentials in the Verrazzano API tab. Post authentication, open the [http://localhost:8000](http://localhost:8000) page **in the same window (so that the cookies can be used by localhost for API calls)** to view the local console.
+To start using the Console, authenticate using Verrazzano user credentials in the Verrazzano API tab. Post authentication, open the [http://localhost:8000](http://localhost:8000) page **in the same window** (so that the cookies can be used by localhost for API calls) to view the local Console.
 
-After some time, the cookie expires and console throws a prompt to reload. In that case, repeat the steps described in the above paragraph.
+After some time, the cookie expires and the Console prompts you to reload. In that case, navigate to the Verrazzano API URL and reauthenticate with the Verrazzano credentials.
 
 When you make changes to the Console code, the changes are reflected immediately in the browser because the `livereload` option is enabled by default for the `ojet serve` command. For other options supported by the command, see [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9).
 
 ### Using Google Chrome for development
 
-Newer versions of Google Chrome (>= 91), do not have the support for disabling [samesite-by-default-cookies](https://www.chromium.org/updates/same-site/test-debug). This is required for testing the console locally. To disable this feature, [start chrome with the following flag](https://www.chromium.org/developers/how-tos/run-chromium-with-flags) -
+Newer versions of Google Chrome (>= 91), do not have the support for disabling [samesite-by-default-cookies](https://www.chromium.org/updates/same-site/test-debug). This is required for testing the Console locally. To disable this feature, [start chrome with the following flag](https://www.chromium.org/developers/how-tos/run-chromium-with-flags):
 
 ```
 –disable-features=SameSiteByDefaultCookies
