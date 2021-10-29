@@ -76,6 +76,21 @@
             </div>
           </header>
         </div>
+        <div id="refreshDialogWrapper" hidden="true">
+          <oj-dialog id="refreshPageDialog" dialog-title="Refresh Page?">
+            <div slot="body">
+              The current session has expired. Click OK to refresh the page.
+            </div>
+            <div slot="footer">
+              <oj-button id="cancelRefreshPageDialogButton" on-oj-action="[[cancelRefreshPageDialog]]">Cancel
+              </oj-button>
+              <oj-button id="okRefreshPageDialogButton" on-oj-action="[[okRefreshPageDialog]]">OK
+              </oj-button>
+            </div>
+          </oj-dialog>
+          <oj-button id="showRefreshPageDialogButton" on-oj-action="[[showRefreshPageDialog]]">
+          </oj-button>
+        </div>
         <oj-module
           role="main"
           class="oj-web-applayout-max-width oj-web-applayout-content bg"

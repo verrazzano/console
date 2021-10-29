@@ -369,15 +369,20 @@ export class VerrazzanoApi {
       )
     ).then((response) => {
       if (!response || !response.status || response.status >= 400) {
-        throw new VzError(
-          Messages.Error.errFetchingKubernetesResource(
-            `${type.ApiVersion}/${type.Kind}`,
-            namespace,
-            name,
-            this.cluster === "local" ? "" : this.cluster
-          ),
-          response?.status
-        );
+        if (response && response.status === 401) {
+          // Display refresh page dialog
+          this.showRefreshPageDialog();
+        } else {
+          throw new VzError(
+            Messages.Error.errFetchingKubernetesResource(
+              `${type.ApiVersion}/${type.Kind}`,
+              namespace,
+              name,
+              this.cluster === "local" ? "" : this.cluster
+            ),
+            response?.status
+          );
+        }
       }
       return response;
     });
@@ -406,16 +411,21 @@ export class VerrazzanoApi {
       }
     );
     if (!response || !response.status || response.status >= 400) {
-      const jsonResponse = await response.json();
-      throw new VzError(
-        Messages.Error.errCreatingKubernetesResource(
-          `${type.ApiVersion}/${type.Kind}`,
-          namespace,
-          data.metadata.name,
-          jsonResponse.message
-        ),
-        response?.status
-      );
+      if (response && response.status === 401) {
+        // Display refresh page dialog
+        this.showRefreshPageDialog();
+      } else {
+        const jsonResponse = await response.json();
+        throw new VzError(
+          Messages.Error.errCreatingKubernetesResource(
+            `${type.ApiVersion}/${type.Kind}`,
+            namespace,
+            data.metadata.name,
+            jsonResponse.message
+          ),
+          response?.status
+        );
+      }
     }
     return response;
   }
@@ -739,5 +749,9 @@ export class VerrazzanoApi {
 
   private wrapWithVzError = (error: Error): VzError => {
     return error instanceof VzError ? error : new VzError(error);
+  };
+
+  showRefreshPageDialog = () => {
+    document.getElementById("showRefreshPageDialogButton").click();
   };
 }
