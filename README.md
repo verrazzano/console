@@ -60,7 +60,7 @@ Verrazzano installations have a default user `verrazzano` configured in the Verr
    kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode; echo
 ```
 
-The Verrazzano Console accesses the Verrazzano API using Verrazzano Auth-Proxy. The Auth-Proxy uses Keycloak to authenticate and authorize the user. Post authentication and authorization, two cookies - vz_authn and vz_userinfo, are set in the browser. The vz_authn cookie is used for the subsequent requests by the Verrazzano Console, while vz_userinfo cookie is consumed by the Verrazzano Console to retrieve information relevant to the logged in user.
+The Verrazzano Console accesses the Verrazzano API using Verrazzano Auth-Proxy. The Auth-Proxy uses Keycloak to authenticate and authorize the user. Post authentication and authorization, two cookies - `vz_authn` and `vz_userinfo`, are set in the browser. The `vz_authn` cookie is used for the subsequent requests by the Verrazzano Console, while `vz_userinfo` cookie is consumed by the Verrazzano Console to retrieve information relevant to the logged in user.
 
 ### Set up environment variables
 
@@ -80,15 +80,15 @@ To run the Console application in a local web server, run following command:
 
 This will open a tab with Verrazzano API Server URL. 
 
-To start using the console, authenticate using Verrazzano user credentials in the Verrazzano API tab. Post authentication, open/refresh the [http://localhost:8000](http://localhost:8000) page to view the local console.
+To start using the console, authenticate using Verrazzano user credentials in the Verrazzano API tab. Post authentication, open the [http://localhost:8000](http://localhost:8000) page **in the same window (so that the cookies can be used by localhost for API calls)** to view the local console.
 
-After some time, the cookie expires and console throws a prompt to reload. In that case, open Verrazzano API Server URL in a separate tab **in the same window (so that the cookies can be used by localhost for API calls)** and follow the steps described in the above paragraph.
+After some time, the cookie expires and console throws a prompt to reload. In that case, repeat the steps described in the above paragraph.
 
 When you make changes to the Console code, the changes are reflected immediately in the browser because the `livereload` option is enabled by default for the `ojet serve` command. For other options supported by the command, see [Serve a Web Application](https://docs.oracle.com/en/middleware/developer-tools/jet/9.1/develop/serve-web-application.html#GUID-75032B22-6365-426D-A63C-33B37B1575D9).
 
 ### Using Google Chrome for development
 
-Newer versions of Google Chrome (>= 91), do not have the support for disabling [SameSite-by-default-cookies](https://www.chromium.org/updates/same-site/test-debug). This is required for testing the console locally. To disable this feature, [start chrome with the following flag](https://www.chromium.org/developers/how-tos/run-chromium-with-flags) -
+Newer versions of Google Chrome (>= 91), do not have the support for disabling [samesite-by-default-cookies](https://www.chromium.org/updates/same-site/test-debug). This is required for testing the console locally. To disable this feature, [start chrome with the following flag](https://www.chromium.org/developers/how-tos/run-chromium-with-flags) -
 
 ```
 –disable-features=SameSiteByDefaultCookies
