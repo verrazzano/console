@@ -7,44 +7,44 @@ import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 
 describe("Kiali Home Page", async () => {
-    let kialiMainPage: KialiMainPage;
-    let kialiHeaderBar: KialiHeaderBar;
+  let kialiMainPage: KialiMainPage;
+  let kialiHeaderBar: KialiHeaderBar;
 
-    before(async () => {
-        await Utils.navigateAndLogin();
-        kialiMainPage = new KialiMainPage();
-        kialiHeaderBar = new KialiHeaderBar();
-        await Utils.gotoKibanaMainPage();
+  before(async () => {
+    await Utils.navigateAndLogin();
+    kialiMainPage = new KialiMainPage();
+    kialiHeaderBar = new KialiHeaderBar();
+    await Utils.gotoKibanaMainPage();
+  });
+
+  describe("Access Kiali header", (): void => {
+    it("Main Page should load and contain header", async () => {
+      expect(await kialiMainPage.waitForHeader()).to.be.true;
     });
 
-    describe("Access Kiali header", (): void => {
-        it("Main Page should load and contain header", async () => {
-            expect(await kialiMainPage.waitForHeader()).to.be.true;
-        });
+    it("Main Page should contain sidebar", async () => {
+      expect(await kialiMainPage.waitForSidemenu()).to.be.true;
+    });
+  });
 
-        it("Main Page should contain sidebar", async () => {
-            expect(await kialiMainPage.waitForSidemenu()).to.be.true;
-        });
+  describe("Access Kiali header logo", (): void => {
+    it("Wait for sidebar", async () => {
+      await kialiMainPage.waitForSidemenu();
     });
 
-    describe("Access Kiali header logo", (): void => {
-        it("Wait for sidebar", async () => {
-            await kialiMainPage.waitForSidemenu();
-        });
-
-        it("Select logo", async () => {
-            expect(await kialiHeaderBar.selectLogo()).to.be.true;
-        });
+    it("Select logo", async () => {
+      expect(await kialiHeaderBar.selectLogo()).to.be.true;
     });
+  });
 
-    afterEach(async function () {
-        if (this.currentTest.state === "failed") {
-            const titleNoSpaces = this.currentTest.title.split(" ").join("_");
-            await Utils.takeScreenshot(`Screenshot_${titleNoSpaces}.png`);
-        }
-    });
+  afterEach(async function () {
+    if (this.currentTest.state === "failed") {
+      const titleNoSpaces = this.currentTest.title.split(" ").join("_");
+      await Utils.takeScreenshot(`Screenshot_${titleNoSpaces}.png`);
+    }
+  });
 
-    after(async () => {
-        await Utils.releaseDriver();
-    });
+  after(async () => {
+    await Utils.releaseDriver();
+  });
 });

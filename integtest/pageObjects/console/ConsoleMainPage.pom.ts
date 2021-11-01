@@ -48,7 +48,7 @@ export class ConsoleMainPage {
 
   // Link to Kiali console
   private static readonly KIALI_URL_LINK = By.xpath(
-      `//*[@id="instance-vmi-link-kiali"]/div/a`
+    `//*[@id="instance-vmi-link-kiali"]/div/a`
   );
 
   protected pageUrl: string = "/";

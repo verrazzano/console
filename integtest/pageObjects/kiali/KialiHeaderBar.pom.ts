@@ -7,14 +7,13 @@ import { Actions } from "../../utils/Actions";
 
 /* Kibana HeaderBar Page Object Model */
 export class KialiHeaderBar {
-    /* component locators */
+  /* component locators */
+  private static readonly LOGO: By = By.className("pf-c-brand");
 
-    private static readonly LOGO: By = By.className("pf-c-brand");
-
-    /* Verify if Logo is present */
-    public async selectLogo(): Promise<boolean> {
-        const logo = await Wait.waitForPresent(KialiHeaderBar.LOGO);
-        Actions.scrollIntoView(KialiHeaderBar.LOGO);
-        return !!logo;
-    }
+  /* Verify if Logo is present */
+  public async selectLogo(): Promise<boolean> {
+    const logo = await Wait.waitForPresent(KialiHeaderBar.LOGO);
+    Actions.scrollIntoView(KialiHeaderBar.LOGO);
+    return !!logo;
+  }
 }
