@@ -10,6 +10,7 @@ export enum VMIType {
   Prometheus = "Prometheus",
   // eslint-disable-next-line no-unused-vars
   ElasticSearch = "Elasticsearch",
+  // eslint-disable-next-line no-unused-vars
   Kiali = "Kiali",
 }
 
