@@ -5,13 +5,13 @@ import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom
 import { ConsoleMainPage } from "../pageObjects/console/ConsoleMainPage.pom";
 import { ConsoleHeaderBar } from "../pageObjects/console/ConsoleHeaderBar.pom";
 import { GrafanaMainPage } from "../pageObjects/grafana/GrafanaMainPage.pom";
-import { KibanaMainPage } from "../pageObjects/kibana/KibanaMainPage.pom";
+import { KialiMainPage } from "../pageObjects/kiali/KialiMainPage.pom";
 import { PrometheusMainPage } from "../pageObjects/prometheus/PrometheusMainPage.pom";
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 import { Actions } from "../utils/Actions";
 
-describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): void => {
+describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus, Kiali)", (): void => {
   let consoleMainPage: ConsoleMainPage;
   let consoleHeaderBar: ConsoleHeaderBar;
 
@@ -75,7 +75,7 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): v
 
     describe("Kibana Home Page", (): void => {
       it("Wait for Kibana home page to be ready", async () => {
-        const kibanaMainPage = new KibanaMainPage();
+        const kibanaMainPage = new KialiMainPage();
         expect(await kibanaMainPage.isPageLoaded()).to.be.true;
       });
     });
@@ -95,6 +95,24 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus)", (): v
       it("Wait for Prometheus home page to be ready", async () => {
         const prometheusMainPage = new PrometheusMainPage();
         expect(await prometheusMainPage.isPageLoaded()).to.be.true;
+      });
+    });
+
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
+    });
+  });
+
+  describe("Navigate to Kiali home page", (): void => {
+    it("Wait for navigation to Kiali", async () => {
+      await consoleMainPage.navigateToVMI("kiali", 3);
+    });
+
+    describe("Kiali Home Page", (): void => {
+      it("Wait for Kiali home page to be ready", async () => {
+        const kialiHomePage = new KialiMainPage();
+        expect(await kialiHomePage.isPageLoaded()).to.be.true;
       });
     });
 

@@ -146,6 +146,7 @@ export = {
     grafana: "Grafana",
     prom: "Prometheus",
     es: "Elasticsearch",
+    kiali: "Kiali",
     version: "Version",
     profile: "Install Profile",
     mgmtCluster: "Admin Cluster",

@@ -237,6 +237,15 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                         VMIType.ElasticSearch.toLocaleLowerCase()
                       }
                     />
+                    <ConsoleMetadataItem
+                        label={Messages.Labels.kiali()}
+                        value={this.state.instance.kialiUrl}
+                        link={true}
+                        id={
+                          "instance-vmi-link-" +
+                          VMIType.Kiali.toLocaleLowerCase()
+                        }
+                    />
                   </div>
                 </div>
               </div>

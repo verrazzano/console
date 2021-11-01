@@ -10,6 +10,7 @@ export enum VMIType {
   Prometheus = "Prometheus",
   // eslint-disable-next-line no-unused-vars
   ElasticSearch = "Elasticsearch",
+  Kiali = "Kiali",
 }
 
 export enum Status {
@@ -58,6 +59,7 @@ export interface Instance {
   grafanaUrl?: string;
   prometheusUrl?: string;
   elasticUrl?: string;
+  kialiUrl?: string;
   isUsingSharedVMI?: boolean;
 }
 

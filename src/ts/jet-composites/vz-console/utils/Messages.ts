@@ -200,6 +200,7 @@ export const Labels = {
   grafana: () => Translations.getTranslatedString("labels.grafana"),
   prom: () => Translations.getTranslatedString("labels.prom"),
   es: () => Translations.getTranslatedString("labels.es"),
+  kiali: () => Translations.getTranslatedString("labels.kiali"),
   newWeblogicImage: () =>
     Translations.getTranslatedString("New Weblogic Image"),
   version: () => Translations.getTranslatedString("labels.version"),

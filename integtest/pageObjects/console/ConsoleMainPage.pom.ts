@@ -46,6 +46,11 @@ export class ConsoleMainPage {
     `//*[@id="instance-vmi-link-prometheus"]/div/a`
   );
 
+  // Link to Kiali console
+  private static readonly KIALI_URL_LINK = By.xpath(
+      `//*[@id="instance-vmi-link-kiali"]/div/a`
+  );
+
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = Wait.HEADER_CONTAINER;
 
@@ -104,6 +109,8 @@ export class ConsoleMainPage {
       await Actions.doClick(ConsoleMainPage.KIBANA_URL_LINK);
     } else if (vmiName === "prometheus") {
       await Actions.doClick(ConsoleMainPage.PROMETHEUS_URL_LINK);
+    } else if (vmiName === "kiali") {
+      await Actions.doClick(ConsoleMainPage.KIALI_URL_LINK);
     } else {
       return false;
     }
