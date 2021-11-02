@@ -452,6 +452,7 @@ export class VerrazzanoApi {
       instance.kibanaUrl = instanceURLs.kibanaUrl;
       instance.prometheusUrl = instanceURLs.prometheusUrl;
       instance.grafanaUrl = instanceURLs.grafanaUrl;
+      instance.kialiUrl = instanceURLs.kialiUrl;
     }
     instance.isUsingSharedVMI = true;
     return instance;
