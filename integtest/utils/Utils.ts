@@ -150,6 +150,12 @@ export class Utils {
     await Utils.getJETPage(url);
   }
 
+  static async gotoKialiMainPage() {
+    const url = Utils.getConfig("kiali").url;
+    console.log(`Navigating to Kiali main page at ${url}`);
+    await Utils.getJETPage(url);
+  }
+
   public static async gotoInvalidUrl(): Promise<boolean> {
     const url = Utils.getConfig("driverInfo").url;
     const invalidUrl = url.replace(

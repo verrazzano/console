@@ -25,6 +25,9 @@
   "prometheus": {
     "url": ""
   },
+  "kiali": {
+    "url": ""
+  },
   "loginEnabled": true,
   "loginInfo": {
     "username": "",

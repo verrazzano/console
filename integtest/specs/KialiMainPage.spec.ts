@@ -14,7 +14,7 @@ describe("Kiali Home Page", async () => {
     await Utils.navigateAndLogin();
     kialiMainPage = new KialiMainPage();
     kialiHeaderBar = new KialiHeaderBar();
-    await Utils.gotoKibanaMainPage();
+    await Utils.gotoKialiMainPage();
   });
 
   describe("Access Kiali header", (): void => {
