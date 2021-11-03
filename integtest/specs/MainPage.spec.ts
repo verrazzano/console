@@ -10,7 +10,7 @@ import { PrometheusMainPage } from "../pageObjects/prometheus/PrometheusMainPage
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 import { Actions } from "../utils/Actions";
-import {KibanaMainPage} from "../pageObjects/kibana/KibanaMainPage.pom";
+import { KibanaMainPage } from "../pageObjects/kibana/KibanaMainPage.pom";
 
 describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus, Kiali)", (): void => {
   let consoleMainPage: ConsoleMainPage;
