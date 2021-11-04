@@ -6,7 +6,7 @@ import { KialiHeaderBar } from "../pageObjects/kiali/KialiHeaderBar.pom";
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 
-describe("Kiali Home Page", async () => {
+xdescribe("Kiali Home Page", async () => {
   let kialiMainPage: KialiMainPage;
   let kialiHeaderBar: KialiHeaderBar;
 
