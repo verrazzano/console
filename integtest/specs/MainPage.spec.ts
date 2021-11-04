@@ -10,6 +10,7 @@ import { PrometheusMainPage } from "../pageObjects/prometheus/PrometheusMainPage
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 import { Actions } from "../utils/Actions";
+import { KibanaMainPage } from "../pageObjects/kibana/KibanaMainPage.pom";
 
 describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus, Kiali)", (): void => {
   let consoleMainPage: ConsoleMainPage;
@@ -75,7 +76,7 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus, Kiali)"
 
     describe("Kibana Home Page", (): void => {
       it("Wait for Kibana home page to be ready", async () => {
-        const kibanaMainPage = new KialiMainPage();
+        const kibanaMainPage = new KibanaMainPage();
         expect(await kibanaMainPage.isPageLoaded()).to.be.true;
       });
     });
@@ -106,7 +107,7 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus, Kiali)"
 
   describe("Navigate to Kiali home page", (): void => {
     it("Wait for navigation to Kiali", async () => {
-      await consoleMainPage.navigateToVMI("kiali", 3);
+      await consoleMainPage.navigateToVMI("kiali", 4);
     });
 
     describe("Kiali Home Page", (): void => {

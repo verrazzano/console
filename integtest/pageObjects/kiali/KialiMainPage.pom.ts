@@ -8,9 +8,7 @@ import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
  * Page Object Model for Kiali main page
  */
 export class KialiMainPage {
-  private static readonly HEADER_CONTAINER: By = By.className(
-    "pf-c-page__header"
-  );
+  private static readonly HEADER_CONTAINER: By = By.id("nav-toggle");
 
   private static readonly SIDEMENU_CONTAINER: By = By.id("page-sidebar");
 
