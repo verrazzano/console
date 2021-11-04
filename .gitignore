@@ -23,6 +23,5 @@ hybrid/plugins/*
 .DS_Store
 .idea
 Thumbs.db
-package-lock.json
 thirdparty_licenses
 tmp.uitestconfig.json
