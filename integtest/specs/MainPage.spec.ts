@@ -107,7 +107,7 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus, Kiali)"
 
   describe("Navigate to Kiali home page", (): void => {
     it("Wait for navigation to Kiali", async () => {
-      await consoleMainPage.navigateToVMI("kiali", 3);
+      await consoleMainPage.navigateToVMI("kiali", 4);
     });
 
     describe("Kiali Home Page", (): void => {
