@@ -4,17 +4,19 @@
 FROM ghcr.io/oracle/oraclelinux:7-slim
 
 RUN yum install -y krb5-libs \
+    && yum-config-manager --enable ol7_u8_security_validation \
     && yum update -y python curl openssl-libs glibc openldap nss nss-sysinit nss-tools glib2 \
     && yum update -y libxml2 libxml2-python \
     && yum install -y oracle-nodejs-release-el7 \
     && yum install -y nodejs \
     && yum install -y openssl \
     && mkdir /verrazzano \
-    && mkdir /license \
+    && mkdir /licenses \
     && yum clean all \
     && rm -rf /var/cache/yum
-COPY LICENSE.txt /license/
-COPY THIRD_PARTY_LICENSES.txt /license/
+
+COPY LICENSE.txt README.md THIRD_PARTY_LICENSES.txt SECURITY.md /licenses/
+
 COPY web /verrazzano/web
 COPY livenessProbe.sh /verrazzano/
 COPY start.sh /verrazzano/
@@ -29,7 +31,7 @@ HEALTHCHECK --interval=1m --timeout=10s \
 RUN groupadd -r verrazzano \
     && useradd --no-log-init -r -g verrazzano -u 1000 verrazzano \
     && chown -R 1000:verrazzano /verrazzano \
-    && chown -R 1000:verrazzano /license
+    && chown -R 1000:verrazzano /licenses
 
 USER 1000
 WORKDIR /verrazzano/
