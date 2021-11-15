@@ -148,17 +148,6 @@ export class ConsoleOAMComponent extends ElementVComponent<Props, State> {
           links.push(
             <div class="oj-panel applistitem bg">
               <a
-                onClick={() => {
-                  window.open(
-                    `/oamapps/${application.data.metadata.uid}${
-                      application.cluster &&
-                      application.cluster.name !== "local"
-                        ? "?cluster=" + application.cluster.name
-                        : ""
-                    }`,
-                    "_blank"
-                  );
-                }}
                 href={`/oamapps/${application.data.metadata.uid}${
                   application.cluster && application.cluster.name !== "local"
                     ? "?cluster=" + application.cluster.name
