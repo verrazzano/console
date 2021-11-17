@@ -31,9 +31,9 @@ all: build
 .PHONY: npm-install
 npm-install:
 	echo NodeJS version is $(shell node --version)
-	npm install
+	npm ci
 ifndef JENKINS_URL
-	npm install @oracle/ojet-cli@${JET_CLI_VERSION}
+	npm ci @oracle/ojet-cli@${JET_CLI_VERSION}
 endif
 
 .PHONY: check-formatting
