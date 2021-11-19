@@ -22,9 +22,10 @@ describe("Kibana Home Page", async () => {
       expect(await kibanaMainPage.waitForHeader()).to.be.true;
     });
 
-    it("Main Page should contain sidebar", async () => {
-      expect(await kibanaMainPage.waitForSidemenu()).to.be.true;
-    });
+    // no longer valid with 7.10.2
+    //it("Main Page should contain sidebar", async () => {
+    //  expect(await kibanaMainPage.waitForSidemenu()).to.be.true;
+    //});
   });
 
   describe("Access Kibana sidebar logo", (): void => {
