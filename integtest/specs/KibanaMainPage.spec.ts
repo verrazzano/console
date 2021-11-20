@@ -28,15 +28,15 @@ describe("Kibana Home Page", async () => {
     //});
   });
 
-  describe("Access Kibana sidebar logo", (): void => {
-    it("Wait for sidebar", async () => {
-      await kibanaMainPage.waitForSidemenu();
-    });
-
-    it("Select logo", async () => {
-      expect(await kibanaSideBar.selectLogo()).to.be.true;
-    });
-  });
+  //describe("Access Kibana sidebar logo", (): void => {
+  //  it("Wait for sidebar", async () => {
+  //    await kibanaMainPage.waitForSidemenu();
+  //  });
+  //
+  //  it("Select logo", async () => {
+  //    expect(await kibanaSideBar.selectLogo()).to.be.true;
+  //  });
+  //});
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
