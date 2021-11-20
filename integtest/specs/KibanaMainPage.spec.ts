@@ -18,7 +18,6 @@ describe("Kibana Home Page", async () => {
     it("Main Page should load and contain header", async () => {
       expect(await kibanaMainPage.waitForHeader()).to.be.true;
     });
-
   });
 
   afterEach(async function () {
