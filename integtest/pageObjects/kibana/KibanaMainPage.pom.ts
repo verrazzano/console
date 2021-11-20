@@ -32,14 +32,4 @@ export class KibanaMainPage {
     }
   }
 
-  /* Wait for sidemenu */
-  //public async waitForSidemenu(): Promise<boolean> {
-  //  try {
-  //    await Wait.waitForPresent(KibanaMainPage.SIDEMENU_CONTAINER);
-  //    return true;
-  //  } catch (error) {
-  //    console.log(error);
-  //    return false;
-  //  }
-  //}
 }
