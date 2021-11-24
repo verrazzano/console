@@ -4,7 +4,6 @@
 FROM ghcr.io/oracle/oraclelinux:7-slim
 
 RUN yum install -y krb5-libs \
-    && yum-config-manager --enable ol7_u8_security_validation \
     && yum update -y python curl openssl-libs glibc openldap nss nss-sysinit nss-tools glib2 \
     && yum update -y libxml2 libxml2-python \
     && yum install -y oracle-nodejs-release-el7 \
