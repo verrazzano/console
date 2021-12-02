@@ -39,6 +39,19 @@ export const getStatusForOAMResource = (resourceStatus: string): string => {
   return status;
 };
 
+export const getStatusStateForOAMResource = (resourceStatus: string): string => {
+  let status = Status.Pending;
+  switch (resourceStatus) {
+    case "Active":
+      status = Status.Running;
+      break;
+    case "InActive":
+      status = Status.Terminated;
+      break;
+  }
+  return status;
+};
+
 export const filtersEqual = (
   leftFilter: Element,
   rightFilter: Element

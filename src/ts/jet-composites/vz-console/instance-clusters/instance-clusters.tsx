@@ -234,6 +234,15 @@ export class ConsoleInstanceClusters extends ElementVComponent<Props, State> {
                             <oj-bind-text value="[[item.data.createdOn]]"></oj-bind-text>
                           </span>
                         </div>
+
+                        <div class="carditem">
+                          <strong>
+                            <span>{Messages.Labels.lastConnectedTime()}:&nbsp;</span>
+                          </strong>
+                          <span>
+                            <oj-bind-text value="[[item.data.lastAgentConnectTime]]"></oj-bind-text>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </oj-list-item-layout>
