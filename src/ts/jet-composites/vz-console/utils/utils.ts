@@ -39,7 +39,9 @@ export const getStatusForOAMResource = (resourceStatus: string): string => {
   return status;
 };
 
-export const getStatusStateForOAMResource = (resourceStatus: string): string => {
+export const getStatusStateForOAMResource = (
+  resourceStatus: string
+): string => {
   let status = Status.Pending;
   switch (resourceStatus) {
     case "Active":
