@@ -211,12 +211,12 @@ describe("VerrazzanoApi tests", () => {
           status: {
             apiUrl: "apiUrl1",
             conditions: [{ name: "Ready", status: "True" }],
-            state: "Active",
+            state: "Active"
           },
         },
         {
           metadata: { name: "cluster2" },
-          status: { apiUrl: "apiUrl2", conditions: [], state: "InActive" },
+          status: { apiUrl: "apiUrl2", conditions: [], state: "InActive"},
         },
         {
           // this test case is missing apiUrl to make sure that case is handled
@@ -260,7 +260,7 @@ describe("VerrazzanoApi tests", () => {
         console.log(
           `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions}`
         );
-        expect(cluster.status).to.eq(Status.Pending);
+        expect(cluster.status).to.eq(Status.Terminated);
       }
     });
   });
