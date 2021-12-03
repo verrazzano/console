@@ -211,11 +211,12 @@ describe("VerrazzanoApi tests", () => {
           status: {
             apiUrl: "apiUrl1",
             conditions: [{ name: "Ready", status: "True" }],
+            state: "Active"
           },
         },
         {
           metadata: { name: "cluster2" },
-          status: { apiUrl: "apiUrl2", conditions: [] },
+          status: { apiUrl: "apiUrl2", conditions: [], state: "InActive"},
         },
         {
           // this test case is missing apiUrl to make sure that case is handled
@@ -251,7 +252,7 @@ describe("VerrazzanoApi tests", () => {
           `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions[0].name} = ${matchingMockCluster.status.conditions[0].status}`
         );
         expect(cluster.status).to.eq(
-          matchingMockCluster.status.conditions[0].status === "True"
+          matchingMockCluster.status.state === "Active"
             ? Status.Running
             : Status.Terminated
         );
