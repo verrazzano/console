@@ -211,17 +211,20 @@ describe("VerrazzanoApi tests", () => {
           status: {
             apiUrl: "apiUrl1",
             conditions: [{ name: "Ready", status: "True" }],
-            state: "Active"
+            state: "Active",
           },
         },
         {
           metadata: { name: "cluster2" },
-          status: { apiUrl: "apiUrl2", conditions: [], state: ""},
+          status: { apiUrl: "apiUrl2", conditions: [], state: "" },
         },
         {
           // this test case is missing apiUrl to make sure that case is handled
           metadata: { name: "cluster3" },
-          status: { conditions: [{ name: "Ready", status: "False" }], state: "InActive" },
+          status: {
+            conditions: [{ name: "Ready", status: "False" }],
+            state: "InActive",
+          },
         },
       ],
     };
@@ -246,22 +249,23 @@ describe("VerrazzanoApi tests", () => {
       expect(cluster.apiUrl).to.eq(matchingMockCluster.status.apiUrl);
       if (
         matchingMockCluster.status.conditions &&
-        matchingMockCluster.status.conditions.length > 0 && matchingMockCluster.status.state === "Active"
+        matchingMockCluster.status.conditions.length > 0 &&
+        matchingMockCluster.status.state === "Active"
       ) {
         console.log(
           `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions[0].name} = ${matchingMockCluster.status.conditions[0].status}`
         );
         expect(cluster.status).to.eq(Status.Running);
-      }  else if (
+      } else if (
         matchingMockCluster.status.conditions &&
-        matchingMockCluster.status.conditions.length > 0 && matchingMockCluster.status.state === "InActive"
+        matchingMockCluster.status.conditions.length > 0 &&
+        matchingMockCluster.status.state === "InActive"
       ) {
         console.log(
           `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions[0].name} = ${matchingMockCluster.status.conditions[0].status} and `
         );
         expect(cluster.status).to.eq(Status.Terminated);
-      }
-      else {
+      } else {
         console.log(
           `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions}`
         );
