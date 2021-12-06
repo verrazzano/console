@@ -5,7 +5,7 @@ import { By } from "selenium-webdriver";
 import { Wait } from "../../utils/Wait";
 import { Actions } from "../../utils/Actions";
 
-/* Kibana HeaderBar Page Object Model */
+/* Kiali HeaderBar Page Object Model */
 export class KialiHeaderBar {
   /* component locators */
   private static readonly LOGO: By = By.className("pf-c-brand");

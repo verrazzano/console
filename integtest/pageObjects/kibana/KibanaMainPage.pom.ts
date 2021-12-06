@@ -8,23 +8,23 @@ import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
  * Page Object Model for Kibana main page
  */
 export class KibanaMainPage {
-  private static readonly HEADER_CONTAINER: By = By.className("euiHeader");
+  private static readonly PAGE_BODY: By = By.id("opensearch-dashboards-body");
 
   private static readonly SIDEMENU_CONTAINER: By = By.id("navDrawerMenu");
 
   protected pageUrl: string = "/";
-  protected pageLoadedElement: By = KibanaMainPage.HEADER_CONTAINER;
+  protected pageLoadedElement: By = KibanaMainPage.PAGE_BODY;
 
   public async isPageLoaded(
     timeOut: number = PAGE_LOAD_TIMEOUT
   ): Promise<boolean> {
-    return this.waitForHeader();
+    return this.waitForPageLoad();
   }
 
-  /* Wait for header */
-  public async waitForHeader(): Promise<boolean> {
+  /* Wait for page to load */
+  public async waitForPageLoad(): Promise<boolean> {
     try {
-      await Wait.waitForPresent(KibanaMainPage.HEADER_CONTAINER);
+      await Wait.waitForPresent(KibanaMainPage.PAGE_BODY);
       return true;
     } catch (error) {
       console.log(error);
