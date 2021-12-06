@@ -253,7 +253,7 @@ describe("VerrazzanoApi tests", () => {
         matchingMockCluster.status.state === "Active"
       ) {
         console.log(
-          `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions[0].name} = ${matchingMockCluster.status.conditions[0].status}`
+          `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions[0].name} = ${matchingMockCluster.status.conditions[0].status} and state is: ${matchingMockCluster.status.state}`
         );
         expect(cluster.status).to.eq(Status.Running);
       } else if (
@@ -262,12 +262,12 @@ describe("VerrazzanoApi tests", () => {
         matchingMockCluster.status.state === "InActive"
       ) {
         console.log(
-          `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions[0].name} = ${matchingMockCluster.status.conditions[0].status} and `
+          `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions[0].name} = ${matchingMockCluster.status.conditions[0].status} and state is: ${matchingMockCluster.status.state} `
         );
         expect(cluster.status).to.eq(Status.Terminated);
       } else {
         console.log(
-          `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions}`
+          `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions} and state is : ${matchingMockCluster.status.state}`
         );
         expect(cluster.status).to.eq(Status.Pending);
       }
