@@ -197,12 +197,12 @@ export class ConsoleInstanceClusters extends ElementVComponent<Props, State> {
                         <div class="carditem">
                           <strong>{Messages.Labels.status()}:&nbsp;</strong>
                           <span>
-                            <oj-bind-if test="[[item.data.status === 'Running']]">
+                            <oj-bind-if test="[[item.data.status === 'Active']]">
                               <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-green">
                                 <span class="oj-icon-circle-inner status-icon"></span>
                               </span>
                             </oj-bind-if>
-                            <oj-bind-if test="[[item.data.status === 'Terminated']]">
+                            <oj-bind-if test="[[item.data.status === 'Inactive']]">
                               <span class="oj-icon-circle oj-icon-circle-sm oj-icon-circle-red">
                                 <span class="oj-icon-circle-inner status-icon"></span>
                               </span>

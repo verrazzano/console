@@ -211,7 +211,7 @@ describe("VerrazzanoApi tests", () => {
           status: {
             apiUrl: "apiUrl1",
             conditions: [{ name: "Ready", status: "True" }],
-            state: "Active",
+            state: Status.Active,
           },
         },
         {
@@ -223,7 +223,7 @@ describe("VerrazzanoApi tests", () => {
           metadata: { name: "cluster3" },
           status: {
             conditions: [{ name: "Ready", status: "False" }],
-            state: "InActive",
+            state: Status.Inactive,
           },
         },
       ],
@@ -250,21 +250,21 @@ describe("VerrazzanoApi tests", () => {
       if (
         matchingMockCluster.status.conditions &&
         matchingMockCluster.status.conditions.length > 0 &&
-        matchingMockCluster.status.state === "Active"
+        matchingMockCluster.status.state === Status.Active
       ) {
         console.log(
           `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions[0].name} = ${matchingMockCluster.status.conditions[0].status} and state is: ${matchingMockCluster.status.state}`
         );
-        expect(cluster.status).to.eq(Status.Running);
+        expect(cluster.status).to.eq(Status.Active);
       } else if (
         matchingMockCluster.status.conditions &&
         matchingMockCluster.status.conditions.length > 0 &&
-        matchingMockCluster.status.state === "InActive"
+        matchingMockCluster.status.state === Status.Inactive
       ) {
         console.log(
           `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions[0].name} = ${matchingMockCluster.status.conditions[0].status} and state is: ${matchingMockCluster.status.state} `
         );
-        expect(cluster.status).to.eq(Status.Terminated);
+        expect(cluster.status).to.eq(Status.Inactive);
       } else {
         console.log(
           `cluster name ${cluster.name} has status ${cluster.status} and condition in mock is: ${matchingMockCluster.status.conditions} and state is : ${matchingMockCluster.status.state}`

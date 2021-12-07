@@ -18,7 +18,7 @@ import {
 import * as DateTimeConverter from "ojs/ojconverter-datetime";
 import {
   getStatusForOAMResource,
-  getStatusStateForOAMResource,
+  getStatusStateForCluster,
 } from "vz-console/utils/utils";
 
 export const extractInstances = (instances: any[]): Instance[] => {
@@ -52,7 +52,7 @@ export const processClusterData = (clustersData: any[]): Cluster[] => {
         apiUrl: clusterData.status ? clusterData.status.apiUrl : undefined,
         status:
           clusterData.status && clusterData.status.state
-            ? getStatusStateForOAMResource(clusterData.status.state)
+            ? getStatusStateForCluster(clusterData.status.state)
             : Status.Pending,
         lastAgentConnectTime: convertDate(
           clusterData.status.lastAgentConnectTime
