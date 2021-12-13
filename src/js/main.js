@@ -14,6 +14,7 @@
 
   // eslint-disable-next-line no-undef
   requirejs.config({
+    waitSeconds: 25,
     baseUrl: "/js",
 
     paths:
