@@ -6,7 +6,7 @@ def DOCKER_IMAGE_TAG
 pipeline {
     agent {
        docker {
-            image "${RUNNER_DOCKER_IMAGE_1_0}"
+            image "1.1.19"
             args "${RUNNER_DOCKER_ARGS_1_0}"
             registryUrl "${RUNNER_DOCKER_REGISTRY_URL}"
             registryCredentialsId 'ocir-pull-and-push-account'
