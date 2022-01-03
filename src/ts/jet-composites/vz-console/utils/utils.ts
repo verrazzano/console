@@ -39,6 +39,19 @@ export const getStatusForOAMResource = (resourceStatus: string): string => {
   return status;
 };
 
+export const getStatusStateForCluster = (resourceStatus: string): string => {
+  let status = Status.Pending;
+  switch (resourceStatus) {
+    case "Active":
+      status = Status.Active;
+      break;
+    case "Inactive":
+      status = Status.Inactive;
+      break;
+  }
+  return status;
+};
+
 export const filtersEqual = (
   leftFilter: Element,
   rightFilter: Element

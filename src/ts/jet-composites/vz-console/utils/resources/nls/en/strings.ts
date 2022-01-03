@@ -200,6 +200,7 @@ export = {
     subjectAccess: "Access",
     security: "Security",
     apiUrl: "API URL",
+    lastConnectedTime: "Last Connected Time",
   },
 
   pagination: {

@@ -31,6 +31,10 @@ export enum Status {
   Unbound = "Unbound",
   // eslint-disable-next-line no-unused-vars
   Pending = "Pending",
+  // eslint-disable-next-line no-unused-vars
+  Active = "Active",
+  // eslint-disable-next-line no-unused-vars
+  Inactive = "Inactive",
 }
 
 export interface FetchApiSignature {

@@ -245,6 +245,8 @@ export const Labels = {
   projectSpec: () => Translations.getTranslatedString("labels.projectSpec"),
   security: () => Translations.getTranslatedString("labels.security"),
   apiUrl: () => Translations.getTranslatedString("labels.apiUrl"),
+  lastConnectedTime: () =>
+    Translations.getTranslatedString("labels.lastConnectedTime"),
 };
 
 export const Pagination = {
