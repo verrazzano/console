@@ -207,7 +207,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       link={true}
                       id={
                         "instance-vmi-link-" +
-                        VMIType.Kibana.toLocaleLowerCase()
+                        VMIType.OpensearchDashboards.toLocaleLowerCase()
                       }
                     />
                     <ConsoleMetadataItem
@@ -234,7 +234,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       link={true}
                       id={
                         "instance-vmi-link-" +
-                        VMIType.ElasticSearch.toLocaleLowerCase()
+                        VMIType.Opensearch.toLocaleLowerCase()
                       }
                     />
                     <ConsoleMetadataItem
