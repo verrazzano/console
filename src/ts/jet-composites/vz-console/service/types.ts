@@ -3,13 +3,13 @@
 
 export enum VMIType {
   // eslint-disable-next-line no-unused-vars
-  OpensearchDashboards = "Opensearch Dashboards",
+  OpensearchDashboards = "OpenSearch-Dashboards",
   // eslint-disable-next-line no-unused-vars
   Grafana = "Grafana",
   // eslint-disable-next-line no-unused-vars
   Prometheus = "Prometheus",
   // eslint-disable-next-line no-unused-vars
-  Opensearch = "Opensearch",
+  Opensearch = "OpenSearch",
   // eslint-disable-next-line no-unused-vars
   Kiali = "Kiali",
 }
