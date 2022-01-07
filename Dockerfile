@@ -22,7 +22,7 @@ COPY start.sh /verrazzano/
 COPY server.js /verrazzano/
 COPY generate-env.js /verrazzano/
 COPY package.json /verrazzano/
-RUN cd /verrazzano/
+WORKDIR /verrazzano/
 RUN npm install --save express express-http-proxy
 HEALTHCHECK --interval=1m --timeout=10s \
   CMD /verrazzano/livenessProbe.sh
