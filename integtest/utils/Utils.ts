@@ -1,4 +1,4 @@
-// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as fs from "fs";
@@ -138,9 +138,9 @@ export class Utils {
     await Utils.getJETPage(url);
   }
 
-  static async gotoKibanaMainPage() {
-    const url = Utils.getConfig("kibana").url;
-    console.log(`Navigating to Kibana main page at ${url}`);
+  static async gotoOSDMainPage() {
+    const url = Utils.getConfig("osd").url;
+    console.log(`Navigating to OSD main page at ${url}`);
     await Utils.getJETPage(url);
   }
 

@@ -1,22 +1,22 @@
 // Copyright (C) 2021, 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-import { KibanaMainPage } from "../pageObjects/kibana/KibanaMainPage.pom";
+import { OSDMainPage } from "../pageObjects/osd/OSDMainPage.pom";
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 
-describe("Kibana Home Page", async () => {
-  let kibanaMainPage: KibanaMainPage;
+describe("OSD Home Page", async () => {
+  let osdMainPage: OSDMainPage;
 
   before(async () => {
     await Utils.navigateAndLogin();
-    kibanaMainPage = new KibanaMainPage();
-    await Utils.gotoKibanaMainPage();
+    osdMainPage = new OSDMainPage();
+    await Utils.gotoOSDMainPage();
   });
 
-  describe("Access Kibana header", (): void => {
-    it("Main Page should load and contain header", async () => {
-      expect(await kibanaMainPage.waitForPageLoad()).to.be.true;
+  describe("Access OSD Page", (): void => {
+    it("Main Page should load contain body", async () => {
+      expect(await osdMainPage.waitForPageLoad()).to.be.true;
     });
   });
 

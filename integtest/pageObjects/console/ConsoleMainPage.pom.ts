@@ -1,4 +1,4 @@
-// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By } from "selenium-webdriver";
@@ -36,9 +36,9 @@ export class ConsoleMainPage {
     `//*[@id="instance-vmi-link-grafana"]/div/a`
   );
 
-  // Link to Kibana console
-  private static readonly KIBANA_URL_LINK = By.xpath(
-    `//*[@id="instance-vmi-link-kibana"]/div/a`
+  // Link to OSD console
+  private static readonly OSD_URL_LINK = By.xpath(
+    `//*[@id="instance-vmi-link-opensearch-dashboards"]/div/a`
   );
 
   // Link to Prometheus console
@@ -105,8 +105,8 @@ export class ConsoleMainPage {
   ): Promise<boolean> {
     if (vmiName === "grafana") {
       await Actions.doClick(ConsoleMainPage.GRAFANA_URL_LINK);
-    } else if (vmiName === "kibana") {
-      await Actions.doClick(ConsoleMainPage.KIBANA_URL_LINK);
+    } else if (vmiName === "osd") {
+      await Actions.doClick(ConsoleMainPage.OSD_URL_LINK);
     } else if (vmiName === "prometheus") {
       await Actions.doClick(ConsoleMainPage.PROMETHEUS_URL_LINK);
     } else if (vmiName === "kiali") {

@@ -5,15 +5,12 @@ import { By } from "selenium-webdriver";
 import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
 
 /**
- * Page Object Model for Kibana main page
+ * Page Object Model for OSD main page
  */
-export class KibanaMainPage {
+export class OSDMainPage {
   private static readonly PAGE_BODY: By = By.id("opensearch-dashboards-body");
-
-  private static readonly SIDEMENU_CONTAINER: By = By.id("navDrawerMenu");
-
   protected pageUrl: string = "/";
-  protected pageLoadedElement: By = KibanaMainPage.PAGE_BODY;
+  protected pageLoadedElement: By = OSDMainPage.PAGE_BODY;
 
   public async isPageLoaded(
     timeOut: number = PAGE_LOAD_TIMEOUT
@@ -24,7 +21,7 @@ export class KibanaMainPage {
   /* Wait for page to load */
   public async waitForPageLoad(): Promise<boolean> {
     try {
-      await Wait.waitForPresent(KibanaMainPage.PAGE_BODY);
+      await Wait.waitForPresent(OSDMainPage.PAGE_BODY);
       return true;
     } catch (error) {
       console.log(error);
