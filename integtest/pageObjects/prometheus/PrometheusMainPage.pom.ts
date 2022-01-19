@@ -1,4 +1,4 @@
-// Copyright (C) 2021, Oracle and/or its affiliates.
+// Copyright (C) 2021, 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By } from "selenium-webdriver";
@@ -31,12 +31,13 @@ export class PrometheusMainPage {
   public async waitForHeader(): Promise<boolean> {
     try {
       await Wait.waitForPresent(PrometheusMainPage.HEADER_CONTAINER);
-      // if navbar has "Classic UI", click on it, and wait for header again
+      // If navbar has "Classic UI" link, means it is 2.3.1, click on it, and wait for header again
+      // else, it is older version
       try {
         await Actions.doClick(PrometheusMainPage.CLASSIC_UI_LINK)
         await Wait.waitForPresent(PrometheusMainPage.HEADER_CONTAINER);
       } catch (error) {
-        console.log("No Classic UI link")
+        console.log("No Classic UI link in older version of Prometheus")
       }
       return true;
     } catch (error) {
