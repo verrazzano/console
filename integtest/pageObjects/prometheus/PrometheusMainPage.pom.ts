@@ -3,7 +3,7 @@
 
 import { By } from "selenium-webdriver";
 import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
-import {Actions} from "../../utils/Actions";
+import { Actions } from "../../utils/Actions";
 
 /**
  * Page Object Model for Prometheus main page
@@ -34,10 +34,10 @@ export class PrometheusMainPage {
       // If navbar has "Classic UI" link, means it is 2.3.1, click on it, and wait for header again
       // else, it is older version
       try {
-        await Actions.doClick(PrometheusMainPage.CLASSIC_UI_LINK)
+        await Actions.doClick(PrometheusMainPage.CLASSIC_UI_LINK);
         await Wait.waitForPresent(PrometheusMainPage.HEADER_CONTAINER);
       } catch (error) {
-        console.log("No Classic UI link in older version of Prometheus")
+        console.log("No Classic UI link in older version of Prometheus");
       }
       return true;
     } catch (error) {
