@@ -3,6 +3,7 @@
 
 import { By } from "selenium-webdriver";
 import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
+import {Actions} from "../../utils/Actions";
 
 /**
  * Page Object Model for Prometheus main page
@@ -13,6 +14,9 @@ export class PrometheusMainPage {
   private static readonly PROMETHEUS_PANEL: By = By.id("graph_container");
 
   private static readonly ADD_GRAPH_BUTTON: By = By.id("add_graph");
+
+  // Link to Classic UI
+  private static readonly CLASSIC_UI_LINK = By.linkText("Classic UI");
 
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = PrometheusMainPage.HEADER_CONTAINER;
@@ -27,6 +31,13 @@ export class PrometheusMainPage {
   public async waitForHeader(): Promise<boolean> {
     try {
       await Wait.waitForPresent(PrometheusMainPage.HEADER_CONTAINER);
+      // if navbar has "Classic UI", click on it, and wait for header again
+      try {
+        await Actions.doClick(PrometheusMainPage.CLASSIC_UI_LINK)
+        await Wait.waitForPresent(PrometheusMainPage.HEADER_CONTAINER);
+      } catch (error) {
+        console.log("No Classic UI link")
+      }
       return true;
     } catch (error) {
       console.log(error);
