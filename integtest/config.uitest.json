@@ -19,13 +19,13 @@
   "grafana": {
     "url": ""
   },
-  "kibana": {
+  "osd": {
     "url": ""
   },
   "prometheus": {
     "url": ""
   },
-  "osd": {
+  "kiali": {
     "url": ""
   },
   "loginEnabled": true,
