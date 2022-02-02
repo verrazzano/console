@@ -139,6 +139,7 @@ export = {
     state: "State",
     sortBy: "Sort by:",
     status: "Status",
+    statusMessage: "Status Message",
     ns: "Namespace",
     resources: "Resources",
     components: "Components",

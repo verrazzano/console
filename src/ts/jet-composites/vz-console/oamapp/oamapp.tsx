@@ -579,6 +579,15 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
             );
             break;
         }
+        if (this.state.oamApplication.statusMessage) {
+          tabContents.push(
+              <ConsoleMetadataItem
+                  label={Messages.Labels.statusMessage()}
+                  value={this.state.oamApplication.statusMessage}
+                  id={"app-statusdetail-metaitem"}
+              />
+          );
+        }
         if (
           this.state.oamApplication.cluster &&
           this.state.oamApplication.cluster.name !== "local"
