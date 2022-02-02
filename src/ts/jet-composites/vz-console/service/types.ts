@@ -149,7 +149,7 @@ export interface OAMApplication {
   namespace?: string;
   data?: any;
   status?: Status;
-  statusDetail: string;
+  statusMessage: string;
   // eslint-disable-next-line no-use-before-define
   componentInstances?: OAMComponentInstance[];
   createdOn?: string;

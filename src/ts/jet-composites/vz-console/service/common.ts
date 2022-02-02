@@ -133,7 +133,7 @@ export const processOAMData = (
         namespace: application.metadata.namespace,
         data: application,
         status: appStatus,
-        statusDetail: appStatusDetail,
+        statusMessage: appStatusDetail,
         createdOn: convertDate(application.metadata.creationTimestamp),
         cluster: { name: clusterName },
       };

@@ -584,7 +584,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
             <ConsoleMetadataItem
               label={Messages.Labels.statusMessage()}
               value={this.state.oamApplication.statusMessage}
-              id={"app-statusdetail-metaitem"}
+              id={"app-statusmessage-metaitem"}
             />
           );
         }
