@@ -581,11 +581,11 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
         }
         if (this.state.oamApplication.statusMessage) {
           tabContents.push(
-              <ConsoleMetadataItem
-                  label={Messages.Labels.statusMessage()}
-                  value={this.state.oamApplication.statusMessage}
-                  id={"app-statusdetail-metaitem"}
-              />
+            <ConsoleMetadataItem
+              label={Messages.Labels.statusMessage()}
+              value={this.state.oamApplication.statusMessage}
+              id={"app-statusdetail-metaitem"}
+            />
           );
         }
         if (

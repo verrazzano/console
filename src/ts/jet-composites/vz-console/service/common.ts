@@ -114,15 +114,19 @@ export const processOAMData = (
       application.metadata.namespace &&
       application.metadata.name
     ) {
-      const appStatus = (application.status &&
-          application.status.conditions &&
-          application.status.conditions.length > 0) ?
-          getStatusForOAMResource(application.status.conditions[0].status) : Status.Pending;
+      const appStatus =
+        application.status &&
+        application.status.conditions &&
+        application.status.conditions.length > 0
+          ? getStatusForOAMResource(application.status.conditions[0].status)
+          : Status.Pending;
 
-      const appStatusDetail = (appStatus !== Status.Running &&
-          appStatus !== Status.Pending &&
-          application.status?.conditions?.length > 0) ?
-          application.status.conditions[0].message : "";
+      const appStatusDetail =
+        appStatus !== Status.Running &&
+        appStatus !== Status.Pending &&
+        application.status?.conditions?.length > 0
+          ? application.status.conditions[0].message
+          : "";
 
       const oamApplication = <OAMApplication>{
         name: application.metadata.name,
