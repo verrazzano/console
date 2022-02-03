@@ -34,7 +34,7 @@ export const getStatusForOAMApplication = (application: any): string => {
     application.status.conditions.length > 0
   ) {
     // Find the condition of type "Synced" - True means OAM sync succeeded, False means it failed.
-    const syncedCondition = application.conditions.find(
+    const syncedCondition = application.status.conditions.find(
       (cond) => cond.type === "Synced"
     );
     const appSyncedStatus = syncedCondition ? syncedCondition.status : "False";
