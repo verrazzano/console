@@ -116,19 +116,12 @@ export const processOAMData = (
     ) {
       const appStatus = getStatusForOAMApplication(application);
 
-      const appStatusDetail =
-        appStatus !== Status.Running &&
-        appStatus !== Status.Pending &&
-        application.status?.conditions?.length > 0
-          ? application.status.conditions[0].message
-          : "";
-
       const oamApplication = <OAMApplication>{
         name: application.metadata.name,
         namespace: application.metadata.namespace,
         data: application,
-        status: appStatus,
-        statusMessage: appStatusDetail,
+        status: appStatus.status,
+        statusMessage: appStatus.message,
         createdOn: convertDate(application.metadata.creationTimestamp),
         cluster: { name: clusterName },
       };

@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as ko from "knockout";
-import { Status } from "vz-console/service/types";
+import { OAMAppStatusInfo, Status } from "vz-console/service/types";
 import CoreRouter = require("ojs/ojcorerouter");
 
 export const getQueryParam = (paramName: string): string => {
@@ -26,8 +26,11 @@ export const getDefaultRouter = (): CoreRouter => {
 export const isIterable = (object) =>
   object != null && typeof object[Symbol.iterator] === "function";
 
-export const getStatusForOAMApplication = (application: any): string => {
+export const getStatusForOAMApplication = (
+  application: any
+): OAMAppStatusInfo => {
   let status = Status.Pending;
+  let message;
   if (
     application.status &&
     application.status.conditions &&
@@ -38,6 +41,7 @@ export const getStatusForOAMApplication = (application: any): string => {
       (cond) => cond.type === "Synced"
     );
     const appSyncedStatus = syncedCondition ? syncedCondition.status : "False";
+    message = syncedCondition ? syncedCondition.message : "";
     switch (appSyncedStatus) {
       case "True":
         status = Status.Running;
@@ -47,7 +51,7 @@ export const getStatusForOAMApplication = (application: any): string => {
         break;
     }
   }
-  return status;
+  return <OAMAppStatusInfo>{ status, message };
 };
 
 export const getStatusStateForCluster = (resourceStatus: string): string => {
