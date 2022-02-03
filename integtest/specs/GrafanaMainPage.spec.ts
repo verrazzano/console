@@ -27,7 +27,7 @@ describe("Grafana Home Page", (): void => {
     });
 
     it("Main Page should contain grafana panel", async () => {
-      expect(await grafanaMainPage.waitForGrafanaPanel()).to.be.true;
+      expect(await grafanaMainPage.waitForDashboardContainer()).to.be.true;
     });
   });
 
