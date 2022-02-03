@@ -26,15 +26,26 @@ export const getDefaultRouter = (): CoreRouter => {
 export const isIterable = (object) =>
   object != null && typeof object[Symbol.iterator] === "function";
 
-export const getStatusForOAMResource = (resourceStatus: string): string => {
+export const getStatusForOAMApplication = (application: any): string => {
   let status = Status.Pending;
-  switch (resourceStatus) {
-    case "True":
-      status = Status.Running;
-      break;
-    case "False":
-      status = Status.Terminated;
-      break;
+  if (
+    application.status &&
+    application.status.conditions &&
+    application.status.conditions.length > 0
+  ) {
+    // Find the condition of type "Synced" - True means OAM sync succeeded, False means it failed.
+    const syncedCondition = application.conditions.find(
+      (cond) => cond.type === "Synced"
+    );
+    const appSyncedStatus = syncedCondition ? syncedCondition.status : "False";
+    switch (appSyncedStatus) {
+      case "True":
+        status = Status.Running;
+        break;
+      case "False":
+        status = Status.Terminated;
+        break;
+    }
   }
   return status;
 };

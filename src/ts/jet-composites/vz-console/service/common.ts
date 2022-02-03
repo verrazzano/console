@@ -17,7 +17,7 @@ import {
 } from "../service/types";
 import * as DateTimeConverter from "ojs/ojconverter-datetime";
 import {
-  getStatusForOAMResource,
+  getStatusForOAMApplication,
   getStatusStateForCluster,
 } from "vz-console/utils/utils";
 
@@ -114,12 +114,7 @@ export const processOAMData = (
       application.metadata.namespace &&
       application.metadata.name
     ) {
-      const appStatus =
-        application.status &&
-        application.status.conditions &&
-        application.status.conditions.length > 0
-          ? getStatusForOAMResource(application.status.conditions[0].status)
-          : Status.Pending;
+      const appStatus = getStatusForOAMApplication(application);
 
       const appStatusDetail =
         appStatus !== Status.Running &&
