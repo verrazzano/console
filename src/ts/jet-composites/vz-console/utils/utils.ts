@@ -2,7 +2,7 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as ko from "knockout";
-import { Status } from "vz-console/service/types";
+import { OAMAppStatusInfo, Status } from "vz-console/service/types";
 import CoreRouter = require("ojs/ojcorerouter");
 
 export const getQueryParam = (paramName: string): string => {
@@ -26,17 +26,32 @@ export const getDefaultRouter = (): CoreRouter => {
 export const isIterable = (object) =>
   object != null && typeof object[Symbol.iterator] === "function";
 
-export const getStatusForOAMResource = (resourceStatus: string): string => {
+export const getStatusForOAMApplication = (
+  application: any
+): OAMAppStatusInfo => {
   let status = Status.Pending;
-  switch (resourceStatus) {
-    case "True":
-      status = Status.Running;
-      break;
-    case "False":
-      status = Status.Terminated;
-      break;
+  let message;
+  if (
+    application.status &&
+    application.status.conditions &&
+    application.status.conditions.length > 0
+  ) {
+    // Find the condition of type "Synced" - True means OAM sync succeeded, False means it failed.
+    const syncedCondition = application.status.conditions.find(
+      (cond) => cond.type === "Synced"
+    );
+    const appSyncedStatus = syncedCondition ? syncedCondition.status : "False";
+    message = syncedCondition ? syncedCondition.message : "";
+    switch (appSyncedStatus) {
+      case "True":
+        status = Status.Running;
+        break;
+      case "False":
+        status = Status.Terminated;
+        break;
+    }
   }
-  return status;
+  return <OAMAppStatusInfo>{ status, message };
 };
 
 export const getStatusStateForCluster = (resourceStatus: string): string => {
