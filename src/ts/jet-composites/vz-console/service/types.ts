@@ -37,6 +37,11 @@ export enum Status {
   Inactive = "Inactive",
 }
 
+export interface OAMAppStatusInfo {
+  status: string;
+  message?: string;
+}
+
 export interface FetchApiSignature {
   // eslint-disable-next-line no-undef
   (input: string | Request, init?: RequestInit): Promise<Response>;
@@ -149,6 +154,7 @@ export interface OAMApplication {
   namespace?: string;
   data?: any;
   status?: Status;
+  statusMessage: string;
   // eslint-disable-next-line no-use-before-define
   componentInstances?: OAMComponentInstance[];
   createdOn?: string;

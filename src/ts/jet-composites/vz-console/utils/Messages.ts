@@ -193,6 +193,7 @@ export const Labels = {
   state: () => Translations.getTranslatedString("labels.state"),
   sortBy: () => Translations.getTranslatedString("labels.sortBy"),
   status: () => Translations.getTranslatedString("labels.status"),
+  statusMessage: () => Translations.getTranslatedString("labels.statusMessage"),
   ns: () => Translations.getTranslatedString("labels.ns"),
   resources: () => Translations.getTranslatedString("labels.resources"),
   components: () => Translations.getTranslatedString("labels.components"),
