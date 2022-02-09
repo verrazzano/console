@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
@@ -207,7 +207,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       link={true}
                       id={
                         "instance-vmi-link-" +
-                        VMIType.Kibana.toLocaleLowerCase()
+                        VMIType.OpensearchDashboards.toLocaleLowerCase()
                       }
                     />
                     <ConsoleMetadataItem
@@ -234,7 +234,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       link={true}
                       id={
                         "instance-vmi-link-" +
-                        VMIType.ElasticSearch.toLocaleLowerCase()
+                        VMIType.Opensearch.toLocaleLowerCase()
                       }
                     />
                     <ConsoleMetadataItem

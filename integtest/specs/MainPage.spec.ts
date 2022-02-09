@@ -1,4 +1,4 @@
-// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
@@ -10,9 +10,9 @@ import { PrometheusMainPage } from "../pageObjects/prometheus/PrometheusMainPage
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 import { Actions } from "../utils/Actions";
-import { KibanaMainPage } from "../pageObjects/kibana/KibanaMainPage.pom";
+import { OSDMainPage } from "../pageObjects/osd/OSDMainPage.pom";
 
-describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus, Kiali)", (): void => {
+describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali)", (): void => {
   let consoleMainPage: ConsoleMainPage;
   let consoleHeaderBar: ConsoleHeaderBar;
 
@@ -69,15 +69,15 @@ describe("UI Tests for Home Pages (Console, Grafana, Kibana, Prometheus, Kiali)"
     });
   });
 
-  describe("Navigate to Kibana home page", (): void => {
-    it("Wait for navigation to Kibana", async () => {
-      await consoleMainPage.navigateToVMI("kibana", 2);
+  describe("Navigate to OSD home page", (): void => {
+    it("Wait for navigation to OSD", async () => {
+      await consoleMainPage.navigateToVMI("osd", 2);
     });
 
-    describe("Kibana Home Page", (): void => {
-      it("Wait for Kibana home page to be ready", async () => {
-        const kibanaMainPage = new KibanaMainPage();
-        expect(await kibanaMainPage.isPageLoaded()).to.be.true;
+    describe("OSD Home Page", (): void => {
+      it("Wait for OSD home page to be ready", async () => {
+        const osdMainPage = new OSDMainPage();
+        expect(await osdMainPage.isPageLoaded()).to.be.true;
       });
     });
 

@@ -1,4 +1,4 @@
-// Copyright (C) 2020, 2021, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
@@ -90,12 +90,12 @@ describe("instance panel screen tests", () => {
 
   it("renders the vmi links correctly.", async () => {
     const elasticSearchLink = instanceElement.querySelector(
-      `#instance-vmi-link-${VMIType.ElasticSearch.toLocaleLowerCase()}`
+      `#instance-vmi-link-${VMIType.Opensearch.toLocaleLowerCase()}`
     );
     expect(elasticSearchLink).not.to.be.null;
 
     const kibanaLink = instanceElement.querySelector(
-      `#instance-vmi-link-${VMIType.Kibana.toLocaleLowerCase()}`
+      `#instance-vmi-link-${VMIType.OpensearchDashboards.toLocaleLowerCase()}`
     );
     expect(kibanaLink).not.to.be.null;
 

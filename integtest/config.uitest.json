@@ -19,7 +19,7 @@
   "grafana": {
     "url": ""
   },
-  "kibana": {
+  "osd": {
     "url": ""
   },
   "prometheus": {

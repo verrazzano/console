@@ -1,4 +1,4 @@
-// Copyright (C) 2021, Oracle and/or its affiliates.
+// Copyright (C) 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
@@ -27,12 +27,12 @@ describe("UI Negative Tests for Console Home Page", (): void => {
     });
   });
 
-  describe("Access Kibana without login", (): void => {
+  describe("Access OSD without login", (): void => {
     let keycloakLoginPage: KeycloakLoginPage;
 
-    before("Navigate to Kibana main page", async () => {
+    before("Navigate to OSD main page", async () => {
       keycloakLoginPage = new KeycloakLoginPage();
-      await Utils.gotoKibanaMainPage();
+      await Utils.gotoOSDMainPage();
     });
 
     it("Wait for Keycloak login page to load", async () => {
