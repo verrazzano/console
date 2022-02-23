@@ -9,6 +9,7 @@ RUN yum install -y krb5-libs \
     && yum install -y oracle-nodejs-release-el7 \
     && yum install -y nodejs \
     && yum install -y openssl \
+    && npm install -g npm@latest \
     && mkdir /verrazzano \
     && mkdir /licenses \
     && yum clean all \
