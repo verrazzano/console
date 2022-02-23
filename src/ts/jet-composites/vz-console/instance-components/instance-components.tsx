@@ -8,7 +8,7 @@ import {
   h,
   listener,
 } from "ojs/ojvcomponent-element";
-import { OAMComponent } from "vz-console/service/loader";
+import { OAMComponent, Status } from "vz-console/service/loader";
 import * as ArrayDataProvider from "ojs/ojarraydataprovider";
 import * as Model from "ojs/ojmodel";
 import "ojs/ojtable";
@@ -344,7 +344,23 @@ export class ConsoleInstanceComponents extends ElementVComponent<Props, State> {
 
   renderOneComponent = (item: any) => {
     const itemData = item.data as OAMComponent;
-    const showLink = !!itemData.data?.metadata?.uid;
+    const nonPendingApp = itemData.applications.find(
+      (a) => a.status !== Status.Pending
+    );
+
+    // show link if item data has uid and is either on local cluster OR has at least one app in non-pending state
+    // if it's local cluster, we will definitely be able to view the component. If it is remote cluster, then
+    // we know the cluster is active if at least one non-pending app exists.
+    const showLink =
+      !!itemData.data?.metadata?.uid &&
+      (itemData.cluster.name === "local" || !!nonPendingApp);
+
+    let componentStatus: Status;
+    let statusIconClass: string;
+    if (!nonPendingApp) {
+      componentStatus = Status.Pending;
+      statusIconClass = "oj-icon-circle-orange";
+    }
 
     let nameContent = itemData.name;
     if (showLink) {
@@ -367,6 +383,26 @@ export class ConsoleInstanceComponents extends ElementVComponent<Props, State> {
           <a href={"/projects/" + itemData.project.data.metadata.uid}>
             {itemData.project.name}
           </a>
+        </div>
+      );
+    }
+
+    // Only show component status info if Pending
+    let statusInfo = "";
+    if (componentStatus === Status.Pending) {
+      statusInfo = (
+        <div class="oj-sm-2 oj-flex-item">
+          <div class="carditem">
+            <strong>
+              <span>{Messages.Labels.status()}:&nbsp;</span>
+            </strong>
+            <span class={`oj-icon-circle oj-icon-circle-sm ${statusIconClass}`}>
+              <span class="oj-icon-circle-inner status-icon"></span>
+            </span>
+            &nbsp;
+            {componentStatus}
+          </div>
+          {projInfo}
         </div>
       );
     }
@@ -401,6 +437,7 @@ export class ConsoleInstanceComponents extends ElementVComponent<Props, State> {
               </strong>
               <span>{itemData.workloadType}</span>
             </div>
+            {statusInfo}
           </div>
 
           <div class="oj-sm-2 oj-flex-item">
