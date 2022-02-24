@@ -9,7 +9,6 @@ RUN yum install -y krb5-libs \
     && yum install -y oracle-nodejs-release-el7 \
     && yum install -y nodejs \
     && yum install -y openssl \
-    && npm install -g npm@latest \
     && mkdir /verrazzano \
     && mkdir /licenses \
     && yum clean all \
@@ -24,7 +23,10 @@ COPY server.js /verrazzano/
 COPY generate-env.js /verrazzano/
 COPY package.json /verrazzano/
 WORKDIR /verrazzano/
-RUN npm install --save express express-http-proxy
+
+RUN npm install --save express express-http-proxy \
+    && rm -rf /usr/bin/npm /usr/lib/node_modules/npm
+
 HEALTHCHECK --interval=1m --timeout=10s \
   CMD /verrazzano/livenessProbe.sh
 
