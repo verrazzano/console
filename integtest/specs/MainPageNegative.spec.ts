@@ -66,23 +66,6 @@ describe("UI Negative Tests for Console Home Page", (): void => {
     });
   });
 
-  describe("Access an invalid url after loggin in", (): void => {
-    let errorPage502: ErrorPage502;
-
-    before(async () => {
-      await Utils.navigateAndLogin();
-    });
-
-    it("Navigate to an invalid URL", async () => {
-      expect(await Utils.gotoInvalidUrl()).to.be.true;
-    });
-
-    it("Wait for HTTP 502 header", async () => {
-      errorPage502 = new ErrorPage502();
-      expect(await errorPage502.waitForHeader()).to.be.true;
-    });
-  });
-
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
       const titleNoSpaces = this.currentTest.title.split(" ").join("_");
