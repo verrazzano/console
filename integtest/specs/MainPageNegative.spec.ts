@@ -2,7 +2,6 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
-import { ErrorPage502 } from "../pageObjects/error/ErrorPage502.pom";
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 
