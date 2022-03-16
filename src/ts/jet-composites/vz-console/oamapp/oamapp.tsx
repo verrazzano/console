@@ -232,6 +232,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
     workload: any,
     componentMetadata: any
   ): { name: string; namespace: string } {
+    console.log(`WORKLOAD: ${JSON.stringify(workload)}`);
     if (workload.kind.toLowerCase().startsWith("verrazzano")) {
       let name = "";
       let namespace = "";
