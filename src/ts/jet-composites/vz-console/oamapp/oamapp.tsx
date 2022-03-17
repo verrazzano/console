@@ -278,6 +278,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
   }
 
   async populateTraits(component: OAMComponentInstance) {
+    console.log(`POPULATE TRAITS: ${JSON.stringify(component)}`);
     component.traits = [];
     if (component.data.traits) {
       try {
