@@ -325,11 +325,6 @@ export class ConsoleOAMApplicationResources extends ElementVComponent<
             return element.id === this.state.selectedComponent;
           }
         )[0];
-        console.log(
-          `SELECTED COMPONENT TRAITS: ${JSON.stringify(
-            selectedComponent.traits
-          )}`
-        );
         ResourceList = (
           <ConsoleOamApplicationComponentTraits
             traits={selectedComponent.traits}
