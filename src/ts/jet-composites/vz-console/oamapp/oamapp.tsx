@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Oracle and/or its affiliates.
+// Copyright (c) 2021, 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
@@ -267,10 +267,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
       };
     }
 
-    if (
-      workload.metadata &&
-      workload.metadata.name
-    ) {
+    if (workload.metadata && workload.metadata.name) {
       return {
         name: workload.metadata.name,
         namespace: workload.metadata.namespace || componentMetadata.namespace,
