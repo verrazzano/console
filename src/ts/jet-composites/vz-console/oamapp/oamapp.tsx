@@ -267,14 +267,10 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
       };
     }
 
-    if (
-      workload.metadata &&
-      workload.metadata.name &&
-      workload.metadata.namespace
-    ) {
+    if (workload.metadata && workload.metadata.name) {
       return {
         name: workload.metadata.name,
-        namespace: workload.metadata.namespace,
+        namespace: workload.metadata.namespace || componentMetadata.namespace,
       };
     }
 
