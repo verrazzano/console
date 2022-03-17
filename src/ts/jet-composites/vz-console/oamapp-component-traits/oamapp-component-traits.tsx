@@ -36,7 +36,6 @@ export class ConsoleOamApplicationComponentTraits extends ElementVComponent<
 
   constructor() {
     super(new Props());
-    console.log(`CONSTRUCTOR TRAITS: ${JSON.stringify(this.props.traits)}`);
   }
 
   protected mounted() {
