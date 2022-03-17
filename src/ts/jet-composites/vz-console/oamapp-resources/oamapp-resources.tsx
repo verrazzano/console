@@ -325,6 +325,7 @@ export class ConsoleOAMApplicationResources extends ElementVComponent<
             return element.id === this.state.selectedComponent;
           }
         )[0];
+
         ResourceList = (
           <ConsoleOamApplicationComponentTraits
             traits={selectedComponent.traits}

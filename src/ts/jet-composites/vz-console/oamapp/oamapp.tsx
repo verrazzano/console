@@ -302,6 +302,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
                     traitData.metadata ? traitData.metadata.name : ""
                   }`,
           };
+          console.log(`TRAITS: ${JSON.stringify(trait)}`);
           if (trait.name && trait.namespace && trait.kind) {
             const response = await this.verrazzanoApi.getKubernetesResource(
               {
