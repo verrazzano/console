@@ -107,7 +107,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
       );
       if (oamApplication.componentInstances) {
         for (const component of oamApplication.componentInstances) {
-          await this.populateComponent(component);
+          await this.populateComponent(component, oamApplication);
         }
       }
 
@@ -182,9 +182,12 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
     return tabTitle;
   }
 
-  async populateComponent(component: OAMComponentInstance) {
+  async populateComponent(
+    component: OAMComponentInstance,
+    oamApplication: OAMApplication
+  ) {
     await this.populateWorkload(component);
-    await this.populateTraits(component);
+    await this.populateTraits(component, oamApplication);
     await this.populateScopes(component);
     this.populateParams(component);
   }
@@ -277,29 +280,37 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
     throw new Error(Messages.Error.errInvalidWorkload());
   }
 
-  async populateTraits(component: OAMComponentInstance) {
+  async populateTraits(
+    component: OAMComponentInstance,
+    oamApplication: OAMApplication
+  ) {
     component.traits = [];
-    if (component.data.traits) {
+
+    const componentStatus = this.state.oamApplication.data.status.workloads.find(
+      (workloadStatus) => workloadStatus.componentName === component.name
+    );
+
+    console.log(`COMPONENT STATUS: ${JSON.stringify(componentStatus)}`);
+
+    if (componentStatus.traits) {
       try {
-        for (const componentInstanceTrait of component.data.traits) {
-          const traitData = componentInstanceTrait.trait
-            ? componentInstanceTrait.trait
+        for (const componentInstanceTrait of componentStatus.traits) {
+          const traitData = componentInstanceTrait.traitRef
+            ? componentInstanceTrait.traitRef
             : componentInstanceTrait;
           const trait: OAMTrait = {
-            name: traitData.metadata ? traitData.metadata.name : "",
+            name: traitData.name ? traitData.name : "",
             kind: traitData.kind,
             apiVersion: traitData.apiVersion,
             descriptor: traitData,
-            namespace:
-              traitData.metadata && traitData.metadata.namespace
-                ? traitData.metadata.namespace
-                : component.oamComponent.namespace,
-            id:
-              traitData.metadata && traitData.metadata.uid
-                ? traitData.metadata.uid
-                : `${component.id}_trait_${traitData.kind}_${
-                    traitData.metadata ? traitData.metadata.name : ""
-                  }`,
+            namespace: traitData.namespace
+              ? traitData.namespace
+              : component.oamComponent.namespace,
+            id: traitData.uid
+              ? traitData.uid
+              : `${component.id}_trait_${traitData.kind}_${
+                  traitData.name ? traitData.name : ""
+                }`,
           };
           console.log(`TRAITS: ${JSON.stringify(trait)}`);
           if (trait.name && trait.namespace && trait.kind) {
