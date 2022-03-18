@@ -290,8 +290,6 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
       (workloadStatus) => workloadStatus.componentName === component.name
     );
 
-    console.log(`COMPONENT STATUS: ${JSON.stringify(componentStatus)}`);
-
     if (componentStatus.traits) {
       try {
         for (const componentInstanceTrait of componentStatus.traits) {
@@ -312,7 +310,6 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
                   traitData.name ? traitData.name : ""
                 }`,
           };
-          console.log(`TRAITS: ${JSON.stringify(trait)}`);
           if (trait.name && trait.namespace && trait.kind) {
             const response = await this.verrazzanoApi.getKubernetesResource(
               {
