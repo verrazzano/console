@@ -286,7 +286,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
   ) {
     component.traits = [];
 
-    const componentStatus = this.state.oamApplication.data.status.workloads.find(
+    const componentStatus = oamApplication.data.status.workloads.find(
       (workloadStatus) => workloadStatus.componentName === component.name
     );
 
