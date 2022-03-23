@@ -5,7 +5,6 @@ NAME:=console
 DOCKER_IMAGE_NAME ?= ${NAME}-dev
 DOCKER_IMAGE_TAG ?= local-$(shell git rev-parse --short HEAD)
 KIND_KUBECONFIG ?= ${HOME}/.kube/config
-GOOGLE_CHROME_VERSION=90.0.4430.93-1
 CREATE_LATEST_TAG=0
 JET_CLI_VERSION=10.1.0
 CLUSTER_NAME ?= console-integ
@@ -46,10 +45,6 @@ lint-code: check-formatting
 
 .PHONY: unit-test
 unit-test: npm-install
-ifndef JENKINS_URL
-	curl -o google-chrome.rpm "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-${GOOGLE_CHROME_VERSION}.x86_64.rpm"
-	sudo yum install -y ./google-chrome.rpm
-endif
 	export PATH=./node_modules/.bin:${PATH} && \
 	ojet build && \
 	pwd && \
