@@ -485,9 +485,9 @@ export class VerrazzanoApi {
         }
 
         if (!vmc.status || !vmc.status.apiUrl) {
-          throw new Error(
-            Messages.Error.errFetchApiURLFromVMCError(clusterName)
-          );
+          // the cluster for this VMC is likely not yet fully registered. Return an empty string
+          // so that we don't try to fetch from the cluster
+          return "";
         }
 
         return vmc.metadata.name;
