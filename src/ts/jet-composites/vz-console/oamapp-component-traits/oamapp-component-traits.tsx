@@ -93,53 +93,11 @@ export class ConsoleOamApplicationComponentTraits extends ElementVComponent<
                 selectionMode="single"
                 class="oj-complete"
               >
-                <template slot="itemTemplate" data-oj-as="item">
-                  <oj-list-item-layout>
-                    <div class="oj-flex">
-                      <div class="oj-sm-12 oj-flex-item">
-                        <strong>
-                          <span>{Messages.Labels.name()}:&nbsp;</span>
-                        </strong>
-                        <span data-bind="attr: { id: item.data.id+'_name' }">
-                          <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="oj-sm-12 oj-flex-item">
-                      <strong>
-                        <span>{Messages.Labels.kind()}:&nbsp;</span>
-                      </strong>
-                      <a data-bind="event: { click: () => {item.data.traitOpenEventHandler()} }, attr: {id: 'trait_' + item.data.id}">
-                        <oj-bind-text value="[[item.data.kind]]"></oj-bind-text>
-                      </a>
-                      <oj-popup
-                        data-bind={`attr: {id: 'popup_' + item.data.id}`}
-                        modality="modal"
-                        {...{ "position.my.horizontal": "center" }}
-                        {...{ "position.my.vertical": "bottom" }}
-                        {...{ "position.at.horizontal": "center" }}
-                        {...{ "position.at.vertical": "bottom" }}
-                        {...{ "position.offset.y": "-10" }}
-                        tail="none"
-                        class="popup"
-                      >
-                        <div class="popupbody">
-                          <div>
-                            <a
-                              data-bind="event: { click: () => {item.data.traitCloseEventHandler()} }"
-                              class="closelink"
-                            >
-                              Close
-                            </a>
-                          </div>
-                          <pre class="popupcontent">
-                            <oj-bind-text value="[[item.data.descriptor]]"></oj-bind-text>
-                          </pre>
-                        </div>
-                      </oj-popup>
-                    </div>
-                  </oj-list-item-layout>
-                </template>
+                <template
+                  slot="itemTemplate"
+                  data-oj-as="item"
+                  render={this.renderOneTrait}
+                />
               </oj-list-view>
 
               <div class="oj-flex card-border">
@@ -171,4 +129,67 @@ export class ConsoleOamApplicationComponentTraits extends ElementVComponent<
       </div>
     );
   }
+
+  renderOneTrait = (item: any) => {
+    const trait = item.data as OAMTrait;
+    const traitErrorDisplay = !trait.error ? (
+      ""
+    ) : (
+      <div>
+        <strong>
+          <span>{Messages.Labels.error()}:&nbsp;</span>
+        </strong>
+        <span id={`${trait.id}_error`}>{trait.error}</span>
+      </div>
+    );
+
+    // If no error, show a link on trait.kind for the popup
+    const traitKindDisplay = trait.error ? (
+      trait.kind
+    ) : (
+      <a onClick={trait.traitOpenEventHandler} id={`trait_${trait.id}`}>
+        {trait.kind}
+      </a>
+    );
+
+    return (
+      <oj-list-item-layout>
+        <div className="oj-flex">
+          <div className="oj-sm-12 oj-flex-item">
+            <strong>
+              <span>{Messages.Labels.name()}:&nbsp;</span>
+            </strong>
+            <span id={`${trait.id}_name`}>{trait.name}</span>
+          </div>
+        </div>
+        <div className="oj-sm-12 oj-flex-item">
+          <strong>
+            <span>{Messages.Labels.kind()}:&nbsp;</span>
+          </strong>
+          {traitKindDisplay}
+          <oj-popup
+            id={`popup_${trait.id}`}
+            modality="modal"
+            {...{ "position.my.horizontal": "center" }}
+            {...{ "position.my.vertical": "bottom" }}
+            {...{ "position.at.horizontal": "center" }}
+            {...{ "position.at.vertical": "bottom" }}
+            {...{ "position.offset.y": "-10" }}
+            tail="none"
+            className="popup"
+          >
+            <div className="popupbody">
+              <div>
+                <a onClick={trait.traitCloseEventHandler} className="closelink">
+                  Close
+                </a>
+              </div>
+              <pre className="popupcontent">{trait.descriptor}</pre>
+            </div>
+          </oj-popup>
+        </div>
+        {traitErrorDisplay}
+      </oj-list-item-layout>
+    );
+  };
 }

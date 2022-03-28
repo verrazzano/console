@@ -181,6 +181,7 @@ export interface OAMTrait {
   kind?: string;
   descriptor?: any;
   id?: string;
+  error?: string;
   traitOpenEventHandler?: () => void;
   traitCloseEventHandler?: () => void;
 }
