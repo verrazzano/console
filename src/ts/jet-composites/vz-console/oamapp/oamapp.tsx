@@ -29,6 +29,7 @@ import { ConsoleOAMAppComponentView } from "vz-console/oamapp-component-view/loa
 import * as ko from "knockout";
 import * as Model from "ojs/ojmodel";
 import * as yaml from "js-yaml";
+import { VzError } from "vz-console/utils/error";
 import CollectionDataProvider = require("ojs/ojcollectiondataprovider");
 
 class Props {
@@ -314,27 +315,17 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
             console.log(
               `Fetching trait ${trait.namespace}/${trait.name} of kind ${trait.kind} for component ${component?.oamComponent?.name}`
             );
-            const response = await this.verrazzanoApi.getKubernetesResource(
-              {
-                ApiVersion:
-                  trait.apiVersion === "v1"
-                    ? `api/${trait.apiVersion}`
-                    : `apis/${trait.apiVersion}`,
-                Kind: trait.kind,
-              },
-              trait.namespace,
-              trait.name
-            );
-            const resource = await response.json();
-            trait.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
-            trait.traitOpenEventHandler = () => {
-              (document.getElementById(`popup_${trait.id}`) as any).open(
-                `#trait_${trait.id}`
-              );
-            };
-            trait.traitCloseEventHandler = () => {
-              (document.getElementById(`popup_${trait.id}`) as any).close();
-            };
+            await this.fetchTraitResource(trait);
+            if (trait.descriptor) {
+              trait.traitOpenEventHandler = () => {
+                (document.getElementById(`popup_${trait.id}`) as any).open(
+                  `#trait_${trait.id}`
+                );
+              };
+              trait.traitCloseEventHandler = () => {
+                (document.getElementById(`popup_${trait.id}`) as any).close();
+              };
+            }
             component.traits.push(trait);
           } else {
             console.log(
@@ -345,6 +336,36 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
       } catch (error) {
         this.updateState({ error: error });
       }
+    }
+  }
+
+  /**
+   * Fetches the trait resource specified by the given OAMTrait, from the cluster, and populates it in the descriptor
+   * field of the given trait. If it cannot be fetched, sets the error message info on the trait object
+   * @param trait
+   */
+  async fetchTraitResource(trait: OAMTrait): Promise<void> {
+    try {
+      const response = await this.verrazzanoApi.getKubernetesResource(
+        {
+          ApiVersion:
+            trait.apiVersion === "v1"
+              ? `api/${trait.apiVersion}`
+              : `apis/${trait.apiVersion}`,
+          Kind: trait.kind,
+        },
+        trait.namespace,
+        trait.name
+      );
+      const resource = await response.json();
+      trait.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
+    } catch (e) {
+      const additionalMessage =
+        e instanceof VzError
+          ? `Cluster returned ${(e as VzError).getCode()}`
+          : e.message;
+      trait.error = `Failed to fetch trait ${trait.name}. ${additionalMessage}`;
+      trait.descriptor = "";
     }
   }
 
