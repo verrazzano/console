@@ -324,10 +324,6 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
               };
             }
             component.traits.push(trait);
-          } else {
-            console.log(
-              `NOT fetching trait ${trait.namespace}/${trait.name} of kind ${trait.kind} for component ${component?.oamComponent?.name}`
-            );
           }
         }
       } catch (error) {
