@@ -312,9 +312,6 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
                 }`,
           };
           if (trait.name && trait.namespace && trait.kind) {
-            console.log(
-              `Fetching trait ${trait.namespace}/${trait.name} of kind ${trait.kind} for component ${component?.oamComponent?.name}`
-            );
             await this.fetchTraitResource(trait);
             if (trait.descriptor) {
               trait.traitOpenEventHandler = () => {

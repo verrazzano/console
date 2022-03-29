@@ -369,16 +369,10 @@ export class VerrazzanoApi {
       )
     ).then((response) => {
       if (!response || !response.status || response.status >= 400) {
-        console.log(
-          `getK8SResource Response status > 400 - it is ${response.status}`
-        );
         if (response && response.status === 401) {
           // Display refresh page dialog
           this.showRefreshPageDialog();
         } else {
-          console.log(
-            `getK8SResource Throwing error for response status ${response.status}`
-          );
           throw new VzError(
             Messages.Error.errFetchingKubernetesResource(
               `${type.ApiVersion}/${type.Kind}`,
