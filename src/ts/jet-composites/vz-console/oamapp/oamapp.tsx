@@ -361,10 +361,11 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
       trait.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
     } catch (e) {
       const responseCode =
-        e instanceof VzError
-          ? (e as VzError).getCode()
-          : 'unknown';
-      trait.error = Messages.Error.errFailedFetchTrait(trait.name, responseCode);
+        e instanceof VzError ? (e as VzError).getCode() : "unknown";
+      trait.error = Messages.Error.errFailedFetchTrait(
+        trait.name,
+        responseCode
+      );
       trait.descriptor = "";
     }
   }

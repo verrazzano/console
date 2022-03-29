@@ -169,7 +169,7 @@ export const Error = {
     Translations.getTranslatedString("error.errRoleBindingsFetchError", args),
 
   errFailedFetchTrait: (...args) =>
-      Translations.getTranslatedString("error.errFailedFetchTrait", args),
+    Translations.getTranslatedString("error.errFailedFetchTrait", args),
 };
 
 export const Labels = {

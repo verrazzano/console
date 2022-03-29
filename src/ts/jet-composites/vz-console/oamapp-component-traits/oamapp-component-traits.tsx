@@ -132,19 +132,25 @@ export class ConsoleOamApplicationComponentTraits extends ElementVComponent<
 
   renderOneTrait = (item: any) => {
     const trait = item.data as OAMTrait;
-    const traitErrorDisplay = !trait.error ? '' :
-        <div>
-          <strong>
-            <span>{Messages.Labels.error()}:&nbsp;</span>
-          </strong>
-          <span id={`${trait.id}_error`}>{trait.error}</span>
-        </div>;
+    const traitErrorDisplay = !trait.error ? (
+      ""
+    ) : (
+      <div>
+        <strong>
+          <span>{Messages.Labels.error()}:&nbsp;</span>
+        </strong>
+        <span id={`${trait.id}_error`}>{trait.error}</span>
+      </div>
+    );
 
     // If no error, show a link on trait.kind for the popup
-    const traitKindDisplay = trait.error ? trait.kind :
-        <a onClick={trait.traitOpenEventHandler} id={`trait_${trait.id}`}>
-          {trait.kind}
-        </a>;
+    const traitKindDisplay = trait.error ? (
+      trait.kind
+    ) : (
+      <a onClick={trait.traitOpenEventHandler} id={`trait_${trait.id}`}>
+        {trait.kind}
+      </a>
+    );
 
     return (
       <oj-list-item-layout>
@@ -178,9 +184,7 @@ export class ConsoleOamApplicationComponentTraits extends ElementVComponent<
                   Close
                 </a>
               </div>
-              <pre className="popupcontent">
-                {trait.descriptor}
-              </pre>
+              <pre className="popupcontent">{trait.descriptor}</pre>
             </div>
           </oj-popup>
         </div>
