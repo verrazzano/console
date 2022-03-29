@@ -132,6 +132,20 @@ export class ConsoleOamApplicationComponentTraits extends ElementVComponent<
 
   renderOneTrait = (item: any) => {
     const trait = item.data as OAMTrait;
+    const traitErrorDisplay = !trait.error ? '' :
+        <div>
+          <strong>
+            <span>{Messages.Labels.error()}:&nbsp;</span>
+          </strong>
+          <span id={`${trait.id}_error`}>{trait.error}</span>
+        </div>;
+
+    // If no error, show a link on trait.kind for the popup
+    const traitKindDisplay = trait.error ? trait.kind :
+        <a onClick={trait.traitOpenEventHandler} id={`trait_${trait.id}`}>
+          {trait.kind}
+        </a>;
+
     return (
       <oj-list-item-layout>
         <div className="oj-flex">
@@ -146,9 +160,7 @@ export class ConsoleOamApplicationComponentTraits extends ElementVComponent<
           <strong>
             <span>{Messages.Labels.kind()}:&nbsp;</span>
           </strong>
-          <a onClick={trait.traitOpenEventHandler} id={`trait_${trait.id}`}>
-            {trait.kind}
-          </a>
+          {traitKindDisplay}
           <oj-popup
             id={`popup_${trait.id}`}
             modality="modal"
@@ -167,11 +179,12 @@ export class ConsoleOamApplicationComponentTraits extends ElementVComponent<
                 </a>
               </div>
               <pre className="popupcontent">
-                {trait.descriptor || trait.error}
+                {trait.descriptor}
               </pre>
             </div>
           </oj-popup>
         </div>
+        {traitErrorDisplay}
       </oj-list-item-layout>
     );
   };

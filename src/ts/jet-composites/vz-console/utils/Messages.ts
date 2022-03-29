@@ -167,6 +167,9 @@ export const Error = {
 
   errRoleBindingsFetchError: (...args) =>
     Translations.getTranslatedString("error.errRoleBindingsFetchError", args),
+
+  errFailedFetchTrait: (...args) =>
+      Translations.getTranslatedString("error.errFailedFetchTrait", args),
 };
 
 export const Labels = {
@@ -200,6 +203,7 @@ export const Labels = {
   kibana: () => Translations.getTranslatedString("labels.kibana"),
   grafana: () => Translations.getTranslatedString("labels.grafana"),
   prom: () => Translations.getTranslatedString("labels.prom"),
+  error: () => Translations.getTranslatedString("labels.error"),
   es: () => Translations.getTranslatedString("labels.es"),
   kiali: () => Translations.getTranslatedString("labels.kiali"),
   newWeblogicImage: () =>

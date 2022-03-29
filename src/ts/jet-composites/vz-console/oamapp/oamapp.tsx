@@ -360,11 +360,11 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
       const resource = await response.json();
       trait.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
     } catch (e) {
-      const additionalMessage =
+      const responseCode =
         e instanceof VzError
-          ? `Cluster returned ${(e as VzError).getCode()}`
-          : e.message;
-      trait.error = `Failed to fetch trait ${trait.name}. ${additionalMessage}`;
+          ? (e as VzError).getCode()
+          : 'unknown';
+      trait.error = Messages.Error.errFailedFetchTrait(trait.name, responseCode);
       trait.descriptor = "";
     }
   }
