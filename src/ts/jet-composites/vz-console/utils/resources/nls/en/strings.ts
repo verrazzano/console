@@ -107,6 +107,8 @@ export = {
     errRenderProject: "Error displaying Project {0}.",
     errVmcNotExists:
       "VerrazzanoManagedCluster {0} does not exist/is not registered yet.",
+    errFailedFetchTrait:
+      "Failed to fetch trait {0}. Cluster returned response status {1}",
   },
   auth: {
     msgAuthInit: "KeycloakJet auth initialized",
@@ -146,6 +148,7 @@ export = {
     kibana: "OpenSearch Dashboards",
     grafana: "Grafana",
     prom: "Prometheus",
+    error: "Error",
     es: "OpenSearch",
     kiali: "Kiali",
     version: "Version",
