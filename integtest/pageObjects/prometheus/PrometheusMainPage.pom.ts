@@ -3,7 +3,6 @@
 
 import { By } from "selenium-webdriver";
 import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
-import { Actions } from "../../utils/Actions";
 
 /**
  * Page Object Model for Prometheus main page
