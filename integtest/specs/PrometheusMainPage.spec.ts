@@ -26,8 +26,8 @@ describe("Prometheus Home Page", (): void => {
       expect(await prometheusMainPage.waitForPrometheusPanel()).to.be.true;
     });
 
-    it("Main Page should contain add graph button", async () => {
-      expect(await prometheusMainPage.waitForAddGraphButton()).to.be.true;
+    it("Main Page should contain add panel button", async () => {
+      expect(await prometheusMainPage.waitForAddPanelButton()).to.be.true;
     });
   });
 
