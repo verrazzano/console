@@ -11,9 +11,11 @@ import { Actions } from "../../utils/Actions";
 export class PrometheusMainPage {
   private static readonly HEADER_CONTAINER: By = By.className("navbar");
 
-  private static readonly PROMETHEUS_PANEL: By =  By.className("panel");
+  private static readonly PROMETHEUS_PANEL: By = By.className("panel");
 
-  private static readonly ADD_PANEL_BUTTON: By = By.xpath("//button[contains(text(),'Add Panel')]");
+  private static readonly ADD_PANEL_BUTTON: By = By.xpath(
+    "//button[contains(text(),'Add Panel')]"
+  );
 
   // Link to Classic UI
   private static readonly CLASSIC_UI_LINK = By.linkText("Classic UI");
