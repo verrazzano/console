@@ -207,7 +207,7 @@ export class Utils {
   public static async saveFailedTestInfo(specName: string, title: string) {
     const titleNoSpaces = title.split(" ").join("_");
     await Utils.takeScreenshot(`Screenshot_${specName}_${titleNoSpaces}.png`);
-    await Utils.saveBrowserLogs(`${specName}_${titleNoSpaces}.log`)
+    await Utils.saveBrowserLogs(`ConsoleLog_${specName}_${titleNoSpaces}.log`)
   }
 
   public static async getDriver(): Promise<WebDriver> {
