@@ -67,8 +67,7 @@ describe("UI Negative Tests for Console Home Page", (): void => {
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
-      const titleNoSpaces = this.currentTest.title.split(" ").join("_");
-      await Utils.takeScreenshot(`Screenshot_${titleNoSpaces}.png`);
+      await Utils.saveFailedTestInfo('MainPageNeg', this.currentTest.title);
     }
   });
 
