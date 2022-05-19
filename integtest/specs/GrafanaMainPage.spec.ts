@@ -57,7 +57,7 @@ describe("Grafana Home Page", (): void => {
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
-      await Utils.saveFailedTestInfo('Grafana', this.currentTest.title);
+      await Utils.saveFailedTestInfo("Grafana", this.currentTest.title);
     }
   });
 

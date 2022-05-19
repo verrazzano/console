@@ -43,7 +43,7 @@ describe("Prometheus Home Page", (): void => {
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
-      await Utils.saveFailedTestInfo('Prometheus', this.currentTest.title);
+      await Utils.saveFailedTestInfo("Prometheus", this.currentTest.title);
     }
   });
 

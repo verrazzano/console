@@ -39,7 +39,7 @@ xdescribe("Kiali Home Page", async () => {
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
-      await Utils.saveFailedTestInfo('Kiali', this.currentTest.title);
+      await Utils.saveFailedTestInfo("Kiali", this.currentTest.title);
     }
   });
 

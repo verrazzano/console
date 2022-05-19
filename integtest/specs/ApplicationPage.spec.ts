@@ -60,7 +60,7 @@ describe("Application Details Page", (): void => {
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
-      await Utils.saveFailedTestInfo('AppPage', this.currentTest.title);
+      await Utils.saveFailedTestInfo("AppPage", this.currentTest.title);
     }
   });
 

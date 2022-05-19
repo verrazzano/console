@@ -67,7 +67,7 @@ describe("UI Negative Tests for Console Home Page", (): void => {
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
-      await Utils.saveFailedTestInfo('MainPageNeg', this.currentTest.title);
+      await Utils.saveFailedTestInfo("MainPageNeg", this.currentTest.title);
     }
   });
 

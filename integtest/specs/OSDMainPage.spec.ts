@@ -22,7 +22,7 @@ describe("OSD Home Page", async () => {
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
-      await Utils.saveFailedTestInfo('OSD', this.currentTest.title);
+      await Utils.saveFailedTestInfo("OSD", this.currentTest.title);
     }
   });
 

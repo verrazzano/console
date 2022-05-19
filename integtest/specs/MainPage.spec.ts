@@ -136,7 +136,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali)", (
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
-      await Utils.saveFailedTestInfo('MainPage', this.currentTest.title);
+      await Utils.saveFailedTestInfo("MainPage", this.currentTest.title);
     }
   });
 
