@@ -369,7 +369,7 @@ describe("Multi cluster apps and component list test", () => {
       "apiVersion": "clusters.verrazzano.io/v1alpha1",
       "kind": "MultiClusterApplicationConfiguration",
       "metadata": {
-        "name": "hello-helidon-appconf",
+        "name": "hello-helidon",
         "namespace": "hello-helidon",
         "uid": "b8c77a58-a09d-4c43-986a-315a8040ab97"
       },
