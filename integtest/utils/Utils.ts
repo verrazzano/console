@@ -156,6 +156,12 @@ export class Utils {
     await Utils.getJETPage(url);
   }
 
+  static async gotoJaegerMainPage() {
+    const url = Utils.getConfig("jaeger").url;
+    console.log(`Navigating to Jaeger main page at ${url}`);
+    await Utils.getJETPage(url);
+  }
+
   public static async gotoInvalidUrl(): Promise<boolean> {
     const url = Utils.getConfig("driverInfo").url;
     const invalidUrl = url.replace(

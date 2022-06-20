@@ -25,3 +25,4 @@ hybrid/plugins/*
 Thumbs.db
 thirdparty_licenses
 tmp.uitestconfig.json
+*.iml

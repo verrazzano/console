@@ -206,6 +206,7 @@ export const Labels = {
   error: () => Translations.getTranslatedString("labels.error"),
   es: () => Translations.getTranslatedString("labels.es"),
   kiali: () => Translations.getTranslatedString("labels.kiali"),
+  jaeger: () => Translations.getTranslatedString("labels.jaeger"),
   newWeblogicImage: () =>
     Translations.getTranslatedString("New Weblogic Image"),
   version: () => Translations.getTranslatedString("labels.version"),
