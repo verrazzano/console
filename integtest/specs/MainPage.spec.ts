@@ -11,6 +11,7 @@ import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 import { Actions } from "../utils/Actions";
 import { OSDMainPage } from "../pageObjects/osd/OSDMainPage.pom";
+import {JaegerMainPage} from "../pageObjects/jaeger/JaegerMainPage.pom";
 
 describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jaeger)", (): void => {
   let consoleMainPage: ConsoleMainPage;
@@ -124,13 +125,13 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jae
   });
 
   xdescribe("Navigate to Jaeger home page", (): void => {
-    it("Wait for navigation to Kiali", async () => {
+    it("Wait for navigation to Jaeger", async () => {
       await consoleMainPage.navigateToVMI("jaeger", 4);
     });
 
     describe("Jaeger Home Page", (): void => {
       it("Wait for Jaeger home page to be ready", async () => {
-        const jaegerHomePage = new KialiMainPage();
+        const jaegerHomePage = new JaegerMainPage();
         expect(await jaegerHomePage.isPageLoaded()).to.be.true;
       });
     });
