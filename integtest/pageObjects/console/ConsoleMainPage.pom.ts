@@ -51,7 +51,7 @@ export class ConsoleMainPage {
     `//*[@id="instance-vmi-link-kiali"]/div/a`
   );
 
-  // Link to Kiali console
+  // Link to Jaeger console
   private static readonly JAEGER_URL_LINK = By.xpath(
     `//*[@id="instance-jaeger-link"]/div/a`
   );
