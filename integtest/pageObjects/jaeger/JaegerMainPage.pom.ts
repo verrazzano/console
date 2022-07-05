@@ -8,8 +8,9 @@ import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
  * Page Object Model for Jaeger main page
  */
 export class JaegerMainPage {
-  private static readonly HEADER_CONTAINER: By = By.className("ant-layout-header")
-
+  private static readonly HEADER_CONTAINER: By = By.className(
+    "ant-layout-header"
+  );
 
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = JaegerMainPage.HEADER_CONTAINER;
@@ -30,6 +31,4 @@ export class JaegerMainPage {
       return false;
     }
   }
-
-
 }

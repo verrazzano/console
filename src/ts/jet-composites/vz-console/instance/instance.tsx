@@ -246,10 +246,10 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       }
                     />
                     <ConsoleMetadataItem
-                        label={Messages.Labels.jaeger()}
-                        value={this.state.instance.jaegerUrl}
-                        link={true}
-                        id={"instance-jaeger-link"}
+                      label={Messages.Labels.jaeger()}
+                      value={this.state.instance.jaegerUrl}
+                      link={true}
+                      id={"instance-jaeger-link"}
                     />
                   </div>
                 </div>

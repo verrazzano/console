@@ -53,7 +53,7 @@ export class ConsoleMainPage {
 
   // Link to Kiali console
   private static readonly JAEGER_URL_LINK = By.xpath(
-      `//*[@id="instance-jaeger-link"]/div/a`
+    `//*[@id="instance-jaeger-link"]/div/a`
   );
 
   protected pageUrl: string = "/";

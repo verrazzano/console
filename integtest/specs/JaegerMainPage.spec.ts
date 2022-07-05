@@ -37,15 +37,14 @@ xdescribe("Jaeger Home Page", async () => {
     });
 
     it("Click trace diff and wait for trace diff selectors", async () => {
-      await jaegerHeaderBar.clickCompareTracesTab()
+      await jaegerHeaderBar.clickCompareTracesTab();
       await jaegerHeaderBar.waitForTraceDiffSelector();
     });
 
     it("Click system architecture tab and wait for architecture contents", async () => {
-      await jaegerHeaderBar.clickArchitectureTab()
+      await jaegerHeaderBar.clickArchitectureTab();
       await jaegerHeaderBar.waitForArchitectureContent();
     });
-
   });
 
   afterEach(async function () {
