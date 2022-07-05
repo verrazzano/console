@@ -11,7 +11,7 @@ import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 import { Actions } from "../utils/Actions";
 import { OSDMainPage } from "../pageObjects/osd/OSDMainPage.pom";
-import {JaegerMainPage} from "../pageObjects/jaeger/JaegerMainPage.pom";
+import { JaegerMainPage } from "../pageObjects/jaeger/JaegerMainPage.pom";
 
 describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jaeger)", (): void => {
   let consoleMainPage: ConsoleMainPage;
