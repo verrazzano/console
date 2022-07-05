@@ -9,24 +9,30 @@ import { Actions } from "../../utils/Actions";
 export class JaegerHeaderBar {
   /* component locators */
   private static readonly SEARCH_LEFT_SIDEBAR: By = By.className(
-    "SearchTracePage--find"
+    "ant-tabs-tab-active"
   );
 
   private static readonly SEARCH_RIGHT_COLUMN: By = By.className(
     "SearchTracePage--column"
   );
 
-  private static readonly SEARCH_LINK: By = By.href("/search");
-  private static readonly COMPARE_LINK: By = By.href("/trace/...");
-  private static readonly ARCHITECTURE_LINK: By = By.href("/dependencies");
+  private static readonly SEARCH_LINK: By = By.xpath(
+    `//a[contains(@href,"/search")]`
+  );
+
+  private static readonly COMPARE_LINK: By = By.xpath(
+    `//a[contains(@href,"/trace/...")]`
+  );
+
+  private static readonly MONITOR_LINK: By = By.xpath(
+    `//a[contains(@href,"/monitor")]`
+  );
 
   private static readonly TRACE_DIFF_HEADER: By = By.className(
-    "TraecDiffHeader--traceHeader"
+    "TraecDiffHeader"
   );
 
-  private static readonly ARCHITECTURE_CONTENT: By = By.className(
-    "Page--content--no-embedded"
-  );
+  private static readonly MONITOR_CONTENT: By = By.className("ant-row");
 
   /* Wait for search left sidebar */
   public async waitForSearchSidebar(): Promise<boolean> {
@@ -61,10 +67,10 @@ export class JaegerHeaderBar {
     }
   }
 
-  /* Wait for Architecture content */
-  public async waitForArchitectureContent(): Promise<boolean> {
+  /* Wait for Monitor content */
+  public async waitForMonitorContent(): Promise<boolean> {
     try {
-      await Wait.waitForPresent(JaegerHeaderBar.ARCHITECTURE_CONTENT);
+      await Wait.waitForPresent(JaegerHeaderBar.MONITOR_CONTENT);
       return true;
     } catch (error) {
       console.log(error);
@@ -82,8 +88,8 @@ export class JaegerHeaderBar {
     await Actions.doClick(JaegerHeaderBar.COMPARE_LINK);
   }
 
-  /* Click the compare traces tab */
-  public async clickArchitectureTab(): Promise<void> {
-    await Actions.doClick(JaegerHeaderBar.ARCHITECTURE_LINK);
+  /* Click the compare monitor tab */
+  public async clickMonitorTab(): Promise<void> {
+    await Actions.doClick(JaegerHeaderBar.MONITOR_LINK);
   }
 }

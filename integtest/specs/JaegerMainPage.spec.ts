@@ -41,9 +41,9 @@ xdescribe("Jaeger Home Page", async () => {
       await jaegerHeaderBar.waitForTraceDiffSelector();
     });
 
-    it("Click system architecture tab and wait for architecture contents", async () => {
-      await jaegerHeaderBar.clickArchitectureTab();
-      await jaegerHeaderBar.waitForArchitectureContent();
+    it("Click monitor tab and wait for default monitor page contents", async () => {
+      await jaegerHeaderBar.clickMonitorTab();
+      await jaegerHeaderBar.waitForMonitorContent();
     });
   });
 
