@@ -11,9 +11,11 @@ export class JaegerHeaderBar {
   private static readonly SEARCH_LEFT_SIDEBAR: By = By.className(
     "SearchTracePage--find"
   );
+
   private static readonly SEARCH_RIGHT_COLUMN: By = By.className(
     "SearchTracePage--column"
   );
+
   private static readonly SEARCH_LINK: By = By.href("/search");
   private static readonly COMPARE_LINK: By = By.href("/trace/...");
   private static readonly ARCHITECTURE_LINK: By = By.href("/dependencies");
@@ -21,6 +23,7 @@ export class JaegerHeaderBar {
   private static readonly TRACE_DIFF_HEADER: By = By.className(
     "TraecDiffHeader--traceHeader"
   );
+
   private static readonly ARCHITECTURE_CONTENT: By = By.className(
     "Page--content--no-embedded"
   );
