@@ -230,14 +230,10 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
     );
 
     if (this.props.filterCallback) {
-      const clusterOptions: Map<
-        string,
-        { label: string; value: string }
-      > = new Map();
-      const projectOptions: Map<
-        string,
-        { label: string; value: string }
-      > = new Map();
+      const clusterOptions: Map<string, { label: string; value: string }> =
+        new Map();
+      const projectOptions: Map<string, { label: string; value: string }> =
+        new Map();
       if (this.props.applications) {
         this.props.applications.forEach((application) => {
           if (application.cluster) {

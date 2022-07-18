@@ -28,9 +28,8 @@ export class JaegerHeaderBar {
     `//a[contains(@href,"/monitor")]`
   );
 
-  private static readonly TRACE_DIFF_HEADER: By = By.className(
-    "TraecDiffHeader"
-  );
+  private static readonly TRACE_DIFF_HEADER: By =
+    By.className("TraecDiffHeader");
 
   private static readonly MONITOR_CONTENT: By = By.className("ant-row");
 

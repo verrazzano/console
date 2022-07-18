@@ -212,14 +212,10 @@ export class ConsoleInstanceComponents extends ElementVComponent<Props, State> {
     );
 
     if (this.props.filterCallback) {
-      const clusterOptions: Map<
-        string,
-        { label: string; value: string }
-      > = new Map();
-      const projectOptions: Map<
-        string,
-        { label: string; value: string }
-      > = new Map();
+      const clusterOptions: Map<string, { label: string; value: string }> =
+        new Map();
+      const projectOptions: Map<string, { label: string; value: string }> =
+        new Map();
       if (this.props.components) {
         this.props.components.forEach((component) => {
           if (component.cluster) {

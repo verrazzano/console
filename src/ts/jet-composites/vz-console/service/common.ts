@@ -135,9 +135,8 @@ export const processOAMData = (
               application.metadata.namespace
             );
             if (oamComponentsForApplicationNS) {
-              const oamComponentForApplicationComponent = oamComponentsForApplicationNS.get(
-                appComponent.componentName
-              );
+              const oamComponentForApplicationComponent =
+                oamComponentsForApplicationNS.get(appComponent.componentName);
               if (oamComponentForApplicationComponent) {
                 if (
                   oamComponentForApplicationComponent.applications.findIndex(

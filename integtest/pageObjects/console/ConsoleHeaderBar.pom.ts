@@ -11,9 +11,8 @@ export class ConsoleHeaderBar {
 
   private static readonly LOGO: By = By.className("vz-icon");
   private static readonly USER_MENU_BUTTON: By = By.id("userMenu");
-  private static readonly USER_MENU_CONTENT: By = By.className(
-    "dropmenu__content"
-  );
+  private static readonly USER_MENU_CONTENT: By =
+    By.className("dropmenu__content");
 
   private static readonly USER_MENU_SIGN_OUT_BUTTON: By = By.id("out");
 

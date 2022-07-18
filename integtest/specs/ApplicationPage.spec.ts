@@ -23,10 +23,10 @@ describe("Application Details Page", (): void => {
     //await Actions.scrollIntoView(linkBy);
     //await Actions.doClick(linkBy);
     try {
-    await Actions.doClick(linkBy);
+      await Actions.doClick(linkBy);
     } catch (error) {
-    await Utils.saveFailedTestInfo("AppPage", "before");
-    throw error;
+      await Utils.saveFailedTestInfo("AppPage", "before");
+      throw error;
     }
     appPage = new ApplicationPage();
   });
