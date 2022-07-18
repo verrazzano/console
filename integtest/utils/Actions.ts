@@ -21,9 +21,15 @@ export class Actions {
 
   // Waits until the web element is visible and then clicks on it
   public static async doClick(by: By): Promise<void> {
-    const element = await Wait.waitForEnable(by);
+    //const element = await Wait.waitForEnable(by);
     console.log(`Clicking an element "${by}"`);
-    await element.click();
+    //await element.click();
+    const element = await Wait.waitForPresent(by);
+    const driver = await Utils.getDriver();
+    await driver.executeScript(
+      `arguments[0].click()`,
+        element
+    );
   }
 
   // Wait until the web element is visible then enter the given text in HTMLInputElement using javascript executor
