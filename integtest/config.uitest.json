@@ -28,6 +28,9 @@
   "kiali": {
     "url": ""
   },
+  "jaeger": {
+    "url": ""
+  },
   "loginEnabled": true,
   "loginInfo": {
     "username": "",

@@ -11,8 +11,9 @@ import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 import { Actions } from "../utils/Actions";
 import { OSDMainPage } from "../pageObjects/osd/OSDMainPage.pom";
+import { JaegerMainPage } from "../pageObjects/jaeger/JaegerMainPage.pom";
 
-describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali)", (): void => {
+describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jaeger)", (): void => {
   let consoleMainPage: ConsoleMainPage;
   let consoleHeaderBar: ConsoleHeaderBar;
 
@@ -114,6 +115,24 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali)", (
       it("Wait for Kiali home page to be ready", async () => {
         const kialiHomePage = new KialiMainPage();
         expect(await kialiHomePage.isPageLoaded()).to.be.true;
+      });
+    });
+
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
+    });
+  });
+
+  xdescribe("Navigate to Jaeger home page", (): void => {
+    it("Wait for navigation to Jaeger", async () => {
+      await consoleMainPage.navigateToVMI("jaeger", 5);
+    });
+
+    describe("Jaeger Home Page", (): void => {
+      it("Wait for Jaeger home page to be ready", async () => {
+        const jaegerHomePage = new JaegerMainPage();
+        expect(await jaegerHomePage.isPageLoaded()).to.be.true;
       });
     });
 

@@ -71,6 +71,7 @@ export interface Instance {
   elasticUrl?: string;
   kialiUrl?: string;
   isUsingSharedVMI?: boolean;
+  jaegerUrl?: string;
 }
 
 export interface VMI {

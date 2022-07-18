@@ -151,6 +151,7 @@ export = {
     error: "Error",
     es: "OpenSearch",
     kiali: "Kiali",
+    jaeger: "Jaeger",
     version: "Version",
     profile: "Install Profile",
     mgmtCluster: "Admin Cluster",

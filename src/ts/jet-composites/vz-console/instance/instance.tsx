@@ -245,6 +245,12 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                         "instance-vmi-link-" + VMIType.Kiali.toLocaleLowerCase()
                       }
                     />
+                    <ConsoleMetadataItem
+                      label={Messages.Labels.jaeger()}
+                      value={this.state.instance.jaegerUrl}
+                      link={true}
+                      id={"instance-jaeger-link"}
+                    />
                   </div>
                 </div>
               </div>
