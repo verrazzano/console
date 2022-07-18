@@ -124,7 +124,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jae
     });
   });
 
-  xdescribe("Navigate to Jaeger home page", (): void => {
+  describe("Navigate to Jaeger home page", (): void => {
     it("Wait for navigation to Jaeger", async () => {
       await consoleMainPage.navigateToVMI("jaeger", 4);
     });

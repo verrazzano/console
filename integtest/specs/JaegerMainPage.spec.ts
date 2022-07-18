@@ -6,7 +6,7 @@ import { JaegerHeaderBar } from "../pageObjects/jaeger/JaegerHeaderBar.pom";
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 
-xdescribe("Jaeger Home Page", async () => {
+describe("Jaeger Home Page", async () => {
   let jaegerMainPage: JaegerMainPage;
   let jaegerHeaderBar: JaegerHeaderBar;
 
