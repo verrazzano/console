@@ -323,11 +323,9 @@ export class ConsoleProjectNetworkPolicies extends ElementVComponent<
                 id={`netPolLink_${item.data.name}`}
                 onClick={(evt) => {
                   evt.preventDefault();
-                  (
-                    document.getElementById(
-                      `netpolYaml_${item.data.name}`
-                    ) as any
-                  ).open(`#netPolLink_${item.data.name}`);
+                  (document.getElementById(
+                    `netpolYaml_${item.data.name}`
+                  ) as any).open(`#netPolLink_${item.data.name}`);
                 }}
               >
                 {Messages.Project.netPolViewYaml()}

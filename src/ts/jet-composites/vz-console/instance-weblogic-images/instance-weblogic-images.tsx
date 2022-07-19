@@ -110,13 +110,13 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
 
   private handleImageAdded = async (image: ImageBuildRequest) => {
     let apiVersionValue = ResourceType.VerrazzanoImageBuildRequest.ApiVersion;
-    const slashIndex =
-      ResourceType.VerrazzanoImageBuildRequest.ApiVersion.indexOf("/");
+    const slashIndex = ResourceType.VerrazzanoImageBuildRequest.ApiVersion.indexOf(
+      "/"
+    );
     if (slashIndex > -1) {
-      apiVersionValue =
-        ResourceType.VerrazzanoImageBuildRequest.ApiVersion.substring(
-          slashIndex + 1
-        );
+      apiVersionValue = ResourceType.VerrazzanoImageBuildRequest.ApiVersion.substring(
+        slashIndex + 1
+      );
     }
     const jdkInstallerVersion = this.getInstallerVersion(
       "-",
@@ -193,8 +193,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
   async getData() {
     this.updateState({ loading: true });
     try {
-      const imageBuildRequests =
-        await this.verrazzanoApi.listImageBuildRequests();
+      const imageBuildRequests = await this.verrazzanoApi.listImageBuildRequests();
       imageBuildRequests.forEach((request) => {
         this.state.images.push(new Model.Model(request));
       });
@@ -306,8 +305,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                             type: "numbers",
                           }}
                           translations={{
-                            fullMsgItemRange:
-                              Messages.Pagination.msgItemRange(),
+                            fullMsgItemRange: Messages.Pagination.msgItemRange(),
                             fullMsgItem: Messages.Pagination.msgItem(),
                           }}
                         ></oj-paging-control>
@@ -344,8 +342,7 @@ export class ConsoleInstanceWeblogicImages extends ElementVComponent<
                             type: "numbers",
                           }}
                           translations={{
-                            fullMsgItemRange:
-                              Messages.Pagination.msgItemRange(),
+                            fullMsgItemRange: Messages.Pagination.msgItemRange(),
                             fullMsgItem: Messages.Pagination.msgItem(),
                           }}
                         ></oj-paging-control>

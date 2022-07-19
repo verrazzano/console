@@ -10,8 +10,9 @@ import { PAGE_LOAD_TIMEOUT, Wait } from "../../utils/Wait";
 export class ApplicationPage {
   // vz-console-oamapp is the outer envelope of the "body" of the application details page
   // if this exists, it means the content (i.e. not just header and footer) are rendered
-  private static readonly APPLICATION_PAGE_OUTER_ELEM =
-    By.css("vz-console-oamapp");
+  private static readonly APPLICATION_PAGE_OUTER_ELEM = By.css(
+    "vz-console-oamapp"
+  );
 
   private static readonly APP_NAME_METAITEM = By.id("app-name-metaitem");
 

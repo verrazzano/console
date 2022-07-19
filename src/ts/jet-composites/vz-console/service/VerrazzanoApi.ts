@@ -73,13 +73,17 @@ export class VerrazzanoApi {
         ]);
       }
 
-      const [appsObj, componentsObj, mcAppsObj, mcComponentsObj] =
-        await Promise.all([
-          appsResponse.json(),
-          compsResponse.json(),
-          mcAppsResponse.json ? mcAppsResponse.json() : {},
-          mcCompsResponse.json ? mcCompsResponse.json() : {},
-        ]);
+      const [
+        appsObj,
+        componentsObj,
+        mcAppsObj,
+        mcComponentsObj,
+      ] = await Promise.all([
+        appsResponse.json(),
+        compsResponse.json(),
+        mcAppsResponse.json ? mcAppsResponse.json() : {},
+        mcCompsResponse.json ? mcCompsResponse.json() : {},
+      ]);
 
       if (!appsObj) {
         throw new Error(Messages.Error.errOAMApplicationsFetchError());
@@ -102,10 +106,12 @@ export class VerrazzanoApi {
       const apps = appsObj.items;
       const components = componentsObj.items;
 
-      const mcApplicationsByClusterAndNamespace =
-        this.collectMulticlusterAppsByClusterAndNamespace(mcApps);
-      const mcComponentsByClusterAndNamespace =
-        this.collectMulticlusterComponentsByClusterAndNamespace(mcComponents);
+      const mcApplicationsByClusterAndNamespace = this.collectMulticlusterAppsByClusterAndNamespace(
+        mcApps
+      );
+      const mcComponentsByClusterAndNamespace = this.collectMulticlusterComponentsByClusterAndNamespace(
+        mcComponents
+      );
 
       await this.populateMCAppsAndComponents(
         mcApplicationsByClusterAndNamespace,

@@ -14,8 +14,9 @@ export class KeycloakLoginPage {
   private static readonly USERNAME: By = By.id("username");
   private static readonly PASSWORD: By = By.id("password");
   private static readonly LOGIN_BTN: By = By.id("kc-login");
-  private static readonly INVALID_CREDENTIALS_ERROR: By =
-    By.className("kc-feedback-text");
+  private static readonly INVALID_CREDENTIALS_ERROR: By = By.className(
+    "kc-feedback-text"
+  );
 
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = KeycloakLoginPage.LOGIN_FORM;

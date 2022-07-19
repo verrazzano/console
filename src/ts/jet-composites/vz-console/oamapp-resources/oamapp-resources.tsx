@@ -209,11 +209,9 @@ export class ConsoleOAMApplicationResources extends ElementVComponent<
                 });
 
                 if (this.state.selectedComponent) {
-                  const selectedComponentInstance =
-                    this.props.oamApplication.componentInstances.find(
-                      (component) =>
-                        component.id === this.state.selectedComponent
-                    );
+                  const selectedComponentInstance = this.props.oamApplication.componentInstances.find(
+                    (component) => component.id === this.state.selectedComponent
+                  );
                   if (selectedComponentInstance) {
                     breadcrumbs.push({ label: selectedComponentInstance.name });
                   }
@@ -322,10 +320,11 @@ export class ConsoleOAMApplicationResources extends ElementVComponent<
       }
 
       case "traits": {
-        const selectedComponent =
-          this.props.oamApplication.componentInstances.filter((element) => {
+        const selectedComponent = this.props.oamApplication.componentInstances.filter(
+          (element) => {
             return element.id === this.state.selectedComponent;
-          })[0];
+          }
+        )[0];
 
         ResourceList = (
           <ConsoleOamApplicationComponentTraits
@@ -340,10 +339,11 @@ export class ConsoleOAMApplicationResources extends ElementVComponent<
       }
 
       case "scopes": {
-        const selectedComponent =
-          this.props.oamApplication.componentInstances.filter((element) => {
+        const selectedComponent = this.props.oamApplication.componentInstances.filter(
+          (element) => {
             return element.id === this.state.selectedComponent;
-          })[0];
+          }
+        )[0];
 
         ResourceList = (
           <ConsoleOamApplicationComponentScopes
@@ -358,10 +358,11 @@ export class ConsoleOAMApplicationResources extends ElementVComponent<
       }
 
       case "params": {
-        const selectedComponent =
-          this.props.oamApplication.componentInstances.filter((element) => {
+        const selectedComponent = this.props.oamApplication.componentInstances.filter(
+          (element) => {
             return element.id === this.state.selectedComponent;
-          })[0];
+          }
+        )[0];
         ResourceList = (
           <ConsoleOamApplicationComponentParams
             params={selectedComponent.params}

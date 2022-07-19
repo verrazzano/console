@@ -86,14 +86,16 @@ class RootViewModel {
     // media queries for repsonsive layouts
     const smQuery: string | null = ResponsiveUtils.getFrameworkQuery("sm-only");
     if (smQuery) {
-      this.smScreen =
-        ResponsiveKnockoutUtils.createMediaQueryObservable(smQuery);
+      this.smScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(
+        smQuery
+      );
     }
 
     const mdQuery: string | null = ResponsiveUtils.getFrameworkQuery("md-up");
     if (mdQuery) {
-      this.mdScreen =
-        ResponsiveKnockoutUtils.createMediaQueryObservable(mdQuery);
+      this.mdScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(
+        mdQuery
+      );
     }
 
     const navData = [
