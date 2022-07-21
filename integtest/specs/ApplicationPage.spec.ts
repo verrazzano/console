@@ -20,8 +20,8 @@ describe("Application Details Page", (): void => {
     }
     console.log(`Testing application details for app ${appConfig.name}`);
     const linkBy = By.id(`appname-${appConfig.name}-ns-${appConfig.namespace}`);
-    await Actions.scrollIntoView(linkBy);
     try {
+      await Actions.scrollIntoView(linkBy);
       await Actions.doClick(linkBy);
     } catch (error) {
       await Utils.saveFailedTestInfo("AppPage", "before");
