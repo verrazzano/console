@@ -5,7 +5,7 @@ import { By, until, WebElement } from "selenium-webdriver";
 import { Utils } from "./Utils";
 
 export const PAGE_LOAD_TIMEOUT = 10000;
-const DEFAULT_TIMEOUT = 60000;
+const DEFAULT_TIMEOUT = 30000;
 
 export class Wait {
   public static readonly HEADER_CONTAINER: By = By.className(
@@ -22,7 +22,7 @@ export class Wait {
     try {
       console.log(`Waiting for the element to locate "${by}"`);
       const driver = await Utils.getDriver();
-      const e = driver.wait(
+      const e = await driver.wait(
         until.elementLocated(by),
         timeOut,
         `Unable to locate element: ${by}`
