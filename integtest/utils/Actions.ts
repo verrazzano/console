@@ -19,8 +19,8 @@ export class Actions {
     );
   }
 
-  /*Click the specified button */
-  public static async doClickButton(by: By): Promise<void>{
+  /* Click the specified button */
+  public static async doClickButton(by: By): Promise<void> {
     const element = await Wait.waitForEnable(by);
     console.log(`Clicking an element "${by}"`);
     await element.click();
