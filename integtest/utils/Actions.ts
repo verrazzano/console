@@ -26,6 +26,8 @@ export class Actions {
     await element.click();
     // const driver = await Utils.getDriver();
     // await driver.executeScript(`arguments[0].click()`, element);
+    // driver.executeScript(`arguments[0].click()`, element);
+    // driver.executeScript("arguments[0].click();", driver.wait(element.click()));
   }
 
   // Wait until the web element is visible then enter the given text in HTMLInputElement using javascript executor

@@ -5,7 +5,7 @@ import { By, until, WebElement } from "selenium-webdriver";
 import { Utils } from "./Utils";
 
 export const PAGE_LOAD_TIMEOUT = 10000;
-const DEFAULT_TIMEOUT = 30000;
+const DEFAULT_TIMEOUT = 60000;
 
 export class Wait {
   public static readonly HEADER_CONTAINER: By = By.className(
