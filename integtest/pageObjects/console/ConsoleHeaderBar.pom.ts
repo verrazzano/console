@@ -35,7 +35,7 @@ export class ConsoleHeaderBar {
 
   /* Click the user menu button */
   public async clickUserMenu(): Promise<void> {
-    await Actions.doClick(ConsoleHeaderBar.USER_MENU_BUTTON);
+    await Actions.doClickButton(ConsoleHeaderBar.USER_MENU_BUTTON);
   }
 
   /* Verify if user menu  content is present */
@@ -51,7 +51,9 @@ export class ConsoleHeaderBar {
   public async clickSignOut(): Promise<boolean> {
     await this.clickUserMenu();
     await Wait.waitForPresent(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON);
-    return await Actions.doClick(ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON)
+    return await Actions.doClickButton(
+      ConsoleHeaderBar.USER_MENU_SIGN_OUT_BUTTON
+    )
       .then(() => true)
       .catch((error) => {
         console.log(error);
