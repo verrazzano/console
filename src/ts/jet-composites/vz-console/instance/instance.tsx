@@ -134,12 +134,10 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
   };
 
   renderInstanceLinkElement(id, label, url) {
-    if (url !== "") {
-      return (
-        <ConsoleMetadataItem id={id} label={label} value={url} link={true} />
-      );
-    }
-    return null;
+    if (url == null || typeof url === "undefined") return null;
+    return (
+      <ConsoleMetadataItem id={id} label={label} value={url} link={true} />
+    );
   }
 
   protected render() {
