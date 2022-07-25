@@ -133,6 +133,34 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
     this.updateState({ breadcrumbs });
   };
 
+  renderKialiLinkElement() {
+    if (this.state.instance.jaegerUrl != "") {
+      return (
+        <ConsoleMetadataItem
+          label={Messages.Labels.kiali()}
+          value={this.state.instance.kialiUrl}
+          link={true}
+          id={"instance-vmi-link-" + VMIType.Kiali.toLocaleLowerCase()}
+        />
+      );
+    }
+    return null;
+  }
+
+  renderJaegerLinkElement() {
+    if (this.state.instance.jaegerUrl != "") {
+      return (
+        <ConsoleMetadataItem
+          label={Messages.Labels.jaeger()}
+          value={this.state.instance.jaegerUrl}
+          link={true}
+          id={"instance-jaeger-link"}
+        />
+      );
+    }
+    return null;
+  }
+
   protected render() {
     if (this.state.error) {
       return (
@@ -237,20 +265,8 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                         VMIType.Opensearch.toLocaleLowerCase()
                       }
                     />
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.kiali()}
-                      value={this.state.instance.kialiUrl}
-                      link={true}
-                      id={
-                        "instance-vmi-link-" + VMIType.Kiali.toLocaleLowerCase()
-                      }
-                    />
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.jaeger()}
-                      value={this.state.instance.jaegerUrl}
-                      link={true}
-                      id={"instance-jaeger-link"}
-                    />
+                    {this.renderKialiLinkElement()}
+                    {this.renderJaegerLinkElement()}
                   </div>
                 </div>
               </div>
