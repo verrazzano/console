@@ -237,7 +237,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       this.state.instance.kialiUrl
                     )}
                     {this.renderInstanceLinkElement(
-                      "instance-jaeger-link-",
+                      "instance-jaeger-link",
                       Messages.Labels.jaeger(),
                       this.state.instance.jaegerUrl
                     )}
