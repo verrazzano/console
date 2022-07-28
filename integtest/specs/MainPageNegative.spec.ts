@@ -2,7 +2,6 @@
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
-import { ErrorPage502 } from "../pageObjects/error/ErrorPage502.pom";
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 
@@ -63,23 +62,6 @@ describe("UI Negative Tests for Console Home Page", (): void => {
 
     it("Wait for Keycloak login page to load", async () => {
       await keycloakLoginPage.isPageLoaded();
-    });
-  });
-
-  describe("Access an invalid url after loggin in", (): void => {
-    let errorPage502: ErrorPage502;
-
-    before(async () => {
-      await Utils.navigateAndLogin();
-    });
-
-    it("Navigate to an invalid URL", async () => {
-      expect(await Utils.gotoInvalidUrl()).to.be.true;
-    });
-
-    it("Wait for HTTP 502 header", async () => {
-      errorPage502 = new ErrorPage502();
-      expect(await errorPage502.waitForHeader()).to.be.true;
     });
   });
 
