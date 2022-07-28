@@ -32,6 +32,17 @@ const instance = <Instance>{
   status: "OK",
   profile: "Production",
 };
+
+const instanceWithAllDisabledComponents = <Instance>{
+  id: "0",
+  keyCloakUrl: null,
+  rancherUrl: ``,
+  mgmtCluster: "test",
+  version: "1.0",
+  status: "OK",
+  profile: "Production",
+};
+
 const sandbox = sinon.createSandbox();
 
 async function setup(selectedItem?: string) {
@@ -62,6 +73,7 @@ async function setup(selectedItem?: string) {
       chai.assert.fail(err);
     });
 }
+
 describe("instance panel screen tests", () => {
   before(async () => {
     sandbox
@@ -225,6 +237,98 @@ describe("instance panel screen tests", () => {
     expect(
       rancherMetaItem.querySelector("* > a").getAttribute("href")
     ).to.equal(instance.rancherUrl);
+  });
+
+  it("renders the status badge correctly.", async () => {
+    const badge = instanceElement.querySelector(`.badge-hexagon`);
+    expect(badge).not.to.be.null;
+
+    const badgeLabel = instanceElement.querySelector(
+      `.status-badge-status-label`
+    );
+    expect(badgeLabel).not.to.be.null;
+    expect(badgeLabel.textContent).to.equal(Messages.Nav.instance());
+  });
+});
+
+describe("instance panel screen tests with components disabled", () => {
+  before(async () => {
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"getInstance")
+      .returns(Promise.resolve(instanceWithAllDisabledComponents));
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"listOAMAppsAndComponents")
+      .returns(Promise.resolve({}));
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"listClusters")
+      .returns(Promise.resolve({}));
+    sandbox
+      .stub(VerrazzanoApi.prototype, <any>"listProjects")
+      .returns(Promise.resolve({}));
+    await setup()
+      .then(() => console.log("Instance view rendered"))
+      .catch((err) => {
+        chai.assert.fail(err);
+      });
+  });
+
+  after(() => {
+    fixture.cleanup();
+    sandbox.restore();
+  });
+
+  it("renders the vmi links correctly.", async () => {
+    const elasticSearchLink = instanceElement.querySelector(
+      `#instance-vmi-link-${VMIType.Opensearch.toLocaleLowerCase()}`
+    );
+    expect(elasticSearchLink).to.be.null;
+
+    const kibanaLink = instanceElement.querySelector(
+      `#instance-vmi-link-${VMIType.OpensearchDashboards.toLocaleLowerCase()}`
+    );
+    expect(kibanaLink).to.be.null;
+
+    const grafanaLink = instanceElement.querySelector(
+      `#instance-vmi-link-${VMIType.Grafana.toLocaleLowerCase()}`
+    );
+    expect(grafanaLink).to.be.null;
+
+    const prometheusLink = instanceElement.querySelector(
+      `#instance-vmi-link-${VMIType.Prometheus.toLocaleLowerCase()}`
+    );
+    expect(prometheusLink).to.be.null;
+  });
+
+  it("renders the general details and links correctly.", async () => {
+    const statusMetaItem = instanceElement.querySelector(
+      `#instance-status-metaitem`
+    );
+    expect(statusMetaItem).not.to.be.null;
+
+    const versionMetaItem = instanceElement.querySelector(
+      `#instance-version-metaitem`
+    );
+    expect(versionMetaItem).not.to.be.null;
+
+    const mgmtClusterMetaItem = instanceElement.querySelector(
+      `#instance-mgmtcluster-metaitem`
+    );
+    expect(mgmtClusterMetaItem).not.to.be.null;
+
+    const keycloakMetaItem = instanceElement.querySelector(
+      `#instance-keycloak-link`
+    );
+    expect(keycloakMetaItem).to.be.null;
+
+    const rancherMetaItem = instanceElement.querySelector(
+      `#instance-rancher-link`
+    );
+    expect(rancherMetaItem).to.be.null;
+
+    const profileMetaItem = instanceElement.querySelector(
+      `#instance-profile-metaitem`
+    );
+    expect(profileMetaItem).not.to.be.null;
   });
 
   it("renders the status badge correctly.", async () => {

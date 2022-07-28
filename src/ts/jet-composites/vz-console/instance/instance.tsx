@@ -133,6 +133,14 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
     this.updateState({ breadcrumbs });
   };
 
+  renderInstanceLinkElement(id, label, url) {
+    if (url) {
+      return (
+        <ConsoleMetadataItem id={id} label={label} value={url} link={true} />
+      );
+    }
+  }
+
   protected render() {
     if (this.state.error) {
       return (
@@ -186,71 +194,53 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       value={this.state.instance.mgmtCluster}
                       id={"instance-mgmtcluster-metaitem"}
                     />
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.rancher()}
-                      value={this.state.instance.rancherUrl}
-                      link={true}
-                      id={"instance-rancher-link"}
-                    />
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.keycloak()}
-                      value={this.state.instance.keyCloakUrl}
-                      link={true}
-                      id={"instance-keycloak-link"}
-                    />
+                    {this.renderInstanceLinkElement(
+                      "instance-rancher-link",
+                      Messages.Labels.rancher(),
+                      this.state.instance.rancherUrl
+                    )}
+                    {this.renderInstanceLinkElement(
+                      "instance-keycloak-link",
+                      Messages.Labels.keycloak(),
+                      this.state.instance.keyCloakUrl
+                    )}
                   </div>
                   <div class="oj-sm-6 oj-flex-item">
                     <h3>System Telemetry</h3>
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.kibana()}
-                      value={this.state.instance.kibanaUrl}
-                      link={true}
-                      id={
-                        "instance-vmi-link-" +
-                        VMIType.OpensearchDashboards.toLocaleLowerCase()
-                      }
-                    />
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.grafana()}
-                      value={this.state.instance.grafanaUrl}
-                      link={true}
-                      id={
-                        "instance-vmi-link-" +
-                        VMIType.Grafana.toLocaleLowerCase()
-                      }
-                    />
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.prom()}
-                      value={this.state.instance.prometheusUrl}
-                      link={true}
-                      id={
-                        "instance-vmi-link-" +
-                        VMIType.Prometheus.toLocaleLowerCase()
-                      }
-                    />
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.es()}
-                      value={this.state.instance.elasticUrl}
-                      link={true}
-                      id={
-                        "instance-vmi-link-" +
-                        VMIType.Opensearch.toLocaleLowerCase()
-                      }
-                    />
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.kiali()}
-                      value={this.state.instance.kialiUrl}
-                      link={true}
-                      id={
-                        "instance-vmi-link-" + VMIType.Kiali.toLocaleLowerCase()
-                      }
-                    />
-                    <ConsoleMetadataItem
-                      label={Messages.Labels.jaeger()}
-                      value={this.state.instance.jaegerUrl}
-                      link={true}
-                      id={"instance-jaeger-link"}
-                    />
+                    {this.renderInstanceLinkElement(
+                      "instance-vmi-link-" +
+                        VMIType.OpensearchDashboards.toLocaleLowerCase(),
+                      Messages.Labels.kibana(),
+                      this.state.instance.kibanaUrl
+                    )}
+                    {this.renderInstanceLinkElement(
+                      "instance-vmi-link-" +
+                        VMIType.Grafana.toLocaleLowerCase(),
+                      Messages.Labels.grafana(),
+                      this.state.instance.grafanaUrl
+                    )}
+                    {this.renderInstanceLinkElement(
+                      "instance-vmi-link-" +
+                        VMIType.Prometheus.toLocaleLowerCase(),
+                      Messages.Labels.prom(),
+                      this.state.instance.prometheusUrl
+                    )}
+                    {this.renderInstanceLinkElement(
+                      "instance-vmi-link-" +
+                        VMIType.Opensearch.toLocaleLowerCase(),
+                      Messages.Labels.es(),
+                      this.state.instance.elasticUrl
+                    )}
+                    {this.renderInstanceLinkElement(
+                      "instance-vmi-link-" + VMIType.Kiali.toLocaleLowerCase(),
+                      Messages.Labels.kiali(),
+                      this.state.instance.kialiUrl
+                    )}
+                    {this.renderInstanceLinkElement(
+                      "instance-jaeger-link",
+                      Messages.Labels.jaeger(),
+                      this.state.instance.jaegerUrl
+                    )}
                   </div>
                 </div>
               </div>
