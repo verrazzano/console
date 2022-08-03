@@ -387,9 +387,9 @@ export class ConsoleInstanceApps extends ElementVComponent<Props, State> {
         (itemData.cluster && itemData.cluster.name !== "local"
           ? "?cluster=" + itemData.cluster.name
           : "");
-
+      const appName = `appname-${itemData.name}-ns-${itemData.namespace}`;
       nameContent = (
-        <a href={detailPageLink} tabindex="0">
+        <a id={appName} href={detailPageLink} tabindex="0">
           {itemData.name}
         </a>
       );

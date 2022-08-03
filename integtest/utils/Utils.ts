@@ -179,6 +179,14 @@ export class Utils {
     }
   }
 
+  public static async saveBrowserLogs(filename: string) {
+    const logEntries = await Utils.driver.manage().logs().get("browser");
+    const writeStream = fs.createWriteStream(filename);
+    logEntries.forEach((entry) => {
+      writeStream.write(JSON.stringify(entry.toJSON()) + "\n");
+    });
+  }
+
   public static async takeScreenshot(filename: string) {
     if (Utils.driver) {
       try {
@@ -194,6 +202,12 @@ export class Utils {
     } else {
       console.warn("Cannot take screenshot - Utils.driver is undefined");
     }
+  }
+
+  public static async saveFailedTestInfo(specName: string, title: string) {
+    const titleNoSpaces = title.split(" ").join("_");
+    await Utils.takeScreenshot(`Screenshot_${specName}_${titleNoSpaces}.png`);
+    await Utils.saveBrowserLogs(`ConsoleLog_${specName}_${titleNoSpaces}.log`);
   }
 
   public static async getDriver(): Promise<WebDriver> {

@@ -22,13 +22,14 @@ export class Wait {
     try {
       console.log(`Waiting for the element to locate "${by}"`);
       const driver = await Utils.getDriver();
-      const e = driver.wait(
+      const e = await driver.wait(
         until.elementLocated(by),
         timeOut,
         `Unable to locate element: ${by}`
       );
       return e;
     } catch (error) {
+      await Utils.saveFailedTestInfo("ErrorWaitingPresent", `${by}`);
       console.log(`Error waiting for element ${by} to be present!`);
       throw error;
     }
@@ -50,6 +51,7 @@ export class Wait {
         timeOut
       );
     } catch (error) {
+      await Utils.saveFailedTestInfo("ErrorWaitingVisible", `${by}`);
       console.log(`Error waiting for element ${by} to be visible!`);
       throw error;
     }
@@ -72,6 +74,7 @@ export class Wait {
         timeOut
       );
     } catch (error) {
+      await Utils.saveFailedTestInfo("ErrorWaitingEnable", `${by}`);
       console.log(`Error waiting for element ${by} to be enabled!`);
       throw error;
     }
