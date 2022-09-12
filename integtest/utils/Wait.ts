@@ -29,7 +29,6 @@ export class Wait {
       );
       return e;
     } catch (error) {
-      await Utils.saveFailedTestInfo("ErrorWaitingPresent", `${by}`);
       console.log(`Error waiting for element ${by} to be present!`);
       throw error;
     }
@@ -51,7 +50,6 @@ export class Wait {
         timeOut
       );
     } catch (error) {
-      await Utils.saveFailedTestInfo("ErrorWaitingVisible", `${by}`);
       console.log(`Error waiting for element ${by} to be visible!`);
       throw error;
     }
@@ -74,7 +72,6 @@ export class Wait {
         timeOut
       );
     } catch (error) {
-      await Utils.saveFailedTestInfo("ErrorWaitingEnable", `${by}`);
       console.log(`Error waiting for element ${by} to be enabled!`);
       throw error;
     }
