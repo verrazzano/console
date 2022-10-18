@@ -8,7 +8,7 @@ import { Actions } from "../../utils/Actions";
 /* Kiali HeaderBar Page Object Model */
 export class KialiHeaderBar {
   /* component locators */
-  private static readonly LOGO: By = By.className("pf-c-brand");
+  private static readonly LOGO: By = By.className("pf-c-masthead__brand");
 
   /* Verify if Logo is present */
   public async selectLogo(): Promise<boolean> {
