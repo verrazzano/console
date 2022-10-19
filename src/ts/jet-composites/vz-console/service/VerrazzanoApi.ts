@@ -344,8 +344,18 @@ export class VerrazzanoApi {
     );
     return oamComponent;
   }
-
   public async getKubernetesResource(
+      type: ResourceTypeType,
+      namespace?: string,
+      name?: string
+  ): Promise<Response> {
+    let r1 = this.checkgetKubernetesResource(type,namespace,name);
+    if (!r1 || !(await r1).status || (await r1).status >= 400) {
+       this.checkgetKubernetesResource(type, namespace, name);
+    } else
+      return this.checkgetKubernetesResource(type, namespace, name);
+  }
+  public async checkgetKubernetesResource(
     type: ResourceTypeType,
     namespace?: string,
     name?: string
@@ -429,6 +439,7 @@ export class VerrazzanoApi {
     }
     return response;
   }
+
 
   populateInstance(vzInstance, instanceId): Instance {
     const instance = <Instance>{
@@ -575,6 +586,7 @@ export class VerrazzanoApi {
     this.getOAMApplication = this.getOAMApplication.bind(this);
     this.getOAMComponent = this.getOAMComponent.bind(this);
     this.getKubernetesResource = this.getKubernetesResource.bind(this);
+    this.checkgetKubernetesResource = this.checkgetKubernetesResource.bind(this);
     this.getVMC = this.getVMC.bind(this);
     this.listProjects = this.listProjects.bind(this);
     this.getProject = this.getProject.bind(this);
