@@ -33,7 +33,14 @@ export class VerrazzanoApi {
   private cluster: string = "local";
 
   public async getInstance(instanceId: string): Promise<Instance> {
-    return Promise.all([this.getKubernetesResource(ResourceType.Verrazzano,undefined,undefined,5)])
+    return Promise.all([
+      this.getKubernetesResource(
+        ResourceType.Verrazzano,
+        undefined,
+        undefined,
+        5
+      ),
+    ])
       .then(([vzResponse]) => {
         return Promise.all([vzResponse.json()]);
       })
@@ -57,8 +64,18 @@ export class VerrazzanoApi {
   }> {
     try {
       const [appsResponse, compsResponse] = await Promise.all([
-        this.getKubernetesResource(ResourceType.ApplicationConfiguration,undefined,undefined,5),
-        this.getKubernetesResource(ResourceType.Component,undefined,undefined,5),
+        this.getKubernetesResource(
+          ResourceType.ApplicationConfiguration,
+          undefined,
+          undefined,
+          5
+        ),
+        this.getKubernetesResource(
+          ResourceType.Component,
+          undefined,
+          undefined,
+          5
+        ),
       ]);
 
       let mcAppsResponse = <Response>{};
@@ -67,9 +84,17 @@ export class VerrazzanoApi {
       if (this.cluster === "local") {
         [mcAppsResponse, mcCompsResponse] = await Promise.all([
           this.getKubernetesResource(
-            ResourceType.MultiClusterApplicationConfiguration,undefined,undefined,5
+            ResourceType.MultiClusterApplicationConfiguration,
+            undefined,
+            undefined,
+            5
           ),
-          this.getKubernetesResource(ResourceType.MultiClusterComponent,undefined,undefined,5),
+          this.getKubernetesResource(
+            ResourceType.MultiClusterComponent,
+            undefined,
+            undefined,
+            5
+          ),
         ]);
       }
 
@@ -234,7 +259,7 @@ export class VerrazzanoApi {
           try {
             const resource = await new VerrazzanoApi(
               cluster
-            ).getKubernetesResource(ResourceType.Component, namespace, name,5);
+            ).getKubernetesResource(ResourceType.Component, namespace, name, 5);
             const component = await resource.json();
             mcComponents.set(name, component);
           } catch (error) {
@@ -255,7 +280,8 @@ export class VerrazzanoApi {
             const resource = await vzApi.getKubernetesResource(
               ResourceType.ApplicationConfiguration,
               namespace,
-              name, 5
+              name,
+              5
             );
             const app = await resource.json();
             mcApps.set(name, app);
@@ -269,7 +295,7 @@ export class VerrazzanoApi {
                   ResourceType.Component,
                   namespace,
                   appComp.metadata.name,
-                    5
+                  5
                 );
                 const comp = await compResource?.json();
                 appComponentsPerNS.push(comp);
@@ -298,7 +324,12 @@ export class VerrazzanoApi {
   }
 
   public async listClusters(): Promise<Cluster[]> {
-    return this.getKubernetesResource(ResourceType.Cluster,undefined,undefined,5)
+    return this.getKubernetesResource(
+      ResourceType.Cluster,
+      undefined,
+      undefined,
+      5
+    )
       .then((clusterResponse) => {
         return clusterResponse.json();
       })
@@ -350,47 +381,55 @@ export class VerrazzanoApi {
     type: ResourceTypeType,
     namespace?: string,
     name?: string,
-    retryleft=5
-
+    retryleft = 5
   ): Promise<Response> {
     const retryInterval = 1000;
-    return Promise.resolve(this.fetchApi(
+    return Promise.resolve(
+      this.fetchApi(
         `${this.url}/${type.ApiVersion}/${
-            namespace
-                ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
-                    type.Kind.endsWith("s") ? "es" : "s"
-                }`
-                : `${type.Kind.toLowerCase()}${
-                    type.Kind.endsWith("s") ? "es" : "s"
-                }`
+          namespace
+            ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
+            : `${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
         }${name ? `/${name}` : ""}${
-            this.cluster && this.cluster !== "local"
-                ? `?cluster=${this.cluster}`
-                : ""
+          this.cluster && this.cluster !== "local"
+            ? `?cluster=${this.cluster}`
+            : ""
         }`,
         { credentials: "include" }
-    ))
-  .then((response) => {
-    if ((!response || !response.status || response.status === 400 || response.status>401)) {
-      setTimeout(function () {
-        if(retryleft===1)
-        return this.checkgetKubernetesResource(type, namespace, name);
-        else
-          return this.getKubernetesResource(type, namespace, name,retryleft-1);
-      }, retryInterval);
-    }
-    else if(response && response.status===401)
-    {
-      this.showRefreshPageDialog();
-      return response;
-    }
-    else return response;})
+      )
+    ).then((response) => {
+      if (
+        !response ||
+        !response.status ||
+        response.status === 400 ||
+        response.status > 401
+      ) {
+        setTimeout(function () {
+          if (retryleft === 1)
+            return this.checkgetKubernetesResource(type, namespace, name);
+          else
+            return this.getKubernetesResource(
+              type,
+              namespace,
+              name,
+              retryleft - 1
+            );
+        }, retryInterval);
+      } else if (response && response.status === 401) {
+        this.showRefreshPageDialog();
+        return response;
+      } else return response;
+    });
   }
 
   public async checkgetKubernetesResource(
     type: ResourceTypeType,
     namespace?: string,
-    name?: string,
+    name?: string
   ): Promise<Response> {
     return Promise.resolve(
       this.fetchApi(
@@ -518,7 +557,7 @@ export class VerrazzanoApi {
       ResourceType.VerrazzanoManagedCluster,
       "verrazzano-mc",
       clusterName,
-        5
+      5
     )
       .then((vmcResponse) => {
         return vmcResponse.json();
@@ -548,7 +587,12 @@ export class VerrazzanoApi {
   }
 
   public async listProjects(): Promise<Project[]> {
-    return this.getKubernetesResource(ResourceType.VerrazzanoProject,undefined,undefined,5)
+    return this.getKubernetesResource(
+      ResourceType.VerrazzanoProject,
+      undefined,
+      undefined,
+      5
+    )
       .then((projectsResponse) => {
         return projectsResponse.json();
       })
@@ -565,7 +609,12 @@ export class VerrazzanoApi {
   }
 
   public async listImageBuildRequests(): Promise<ImageBuildRequest[]> {
-    return this.getKubernetesResource(ResourceType.VerrazzanoImageBuildRequest,undefined,undefined,5)
+    return this.getKubernetesResource(
+      ResourceType.VerrazzanoImageBuildRequest,
+      undefined,
+      undefined,
+      5
+    )
       .then((buildRequestResponse) => {
         return buildRequestResponse.json();
       })
@@ -581,7 +630,12 @@ export class VerrazzanoApi {
   }
 
   public async listRoleBindings(namespace: string): Promise<RoleBinding[]> {
-    return this.getKubernetesResource(ResourceType.RoleBinding, namespace, undefined,5)
+    return this.getKubernetesResource(
+      ResourceType.RoleBinding,
+      namespace,
+      undefined,
+      5
+    )
       .then((rbResponse) => {
         return rbResponse.json();
       })

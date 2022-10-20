@@ -214,7 +214,7 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
           },
           workloadMetadata.namespace,
           workloadMetadata.name,
-            5
+          5
         );
         const resource = await response.json();
 
@@ -349,7 +349,8 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
           Kind: trait.kind,
         },
         trait.namespace,
-        trait.name,5
+        trait.name,
+        5
       );
       const resource = await response.json();
       trait.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
@@ -396,7 +397,8 @@ export class ConsoleOAMApplication extends ElementVComponent<Props, State> {
                 Kind: scope.kind,
               },
               scope.namespace,
-              scope.name,5
+              scope.name,
+              5
             );
             const resource = await response.json();
             scope.descriptor = yaml.dump(yaml.load(JSON.stringify(resource)));
