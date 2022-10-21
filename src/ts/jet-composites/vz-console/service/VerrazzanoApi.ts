@@ -351,7 +351,7 @@ export class VerrazzanoApi {
     name?: string
   ): Promise<Response> {
     for (let i = 0; i < 5; i++) {
-      console.log("This is" + i +"attempt");
+      console.log("This is" + i + "attempt");
       return Promise.resolve(
         this.fetchApi(
           `${this.url}/${type.ApiVersion}/${
