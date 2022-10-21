@@ -373,9 +373,11 @@ export class VerrazzanoApi {
         if (!response || !response.status || response.status >= 400) {
           if (response && response.status === 401) {
             // Display refresh page dialog
+            console.log("refresh page");
             this.showRefreshPageDialog();
             return response;
           } else if (i === 4) {
+            console.log("Throwing error");
             throw new VzError(
               Messages.Error.errFetchingKubernetesResource(
                 `${type.ApiVersion}/${type.Kind}`,
@@ -386,7 +388,10 @@ export class VerrazzanoApi {
               response?.status
             );
           }
-        } else return response;
+        } else {
+          console.log("All taken");
+          return response;
+        }
       });
     }
   }
