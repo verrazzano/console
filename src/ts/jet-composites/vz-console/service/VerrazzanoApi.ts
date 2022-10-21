@@ -1,7 +1,4 @@
-// Copyright (c) 2022, Oracle and/or its affiliates.
-// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
-
-// Copyright (c) 2022, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
@@ -26,6 +23,7 @@ import * as Messages from "vz-console/utils/Messages";
 import { VzError } from "vz-console/utils/error";
 
 export const ServicePrefix = "instances";
+
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
 
@@ -350,50 +348,46 @@ export class VerrazzanoApi {
   public async getKubernetesResource(
     type: ResourceTypeType,
     namespace?: string,
-    name?: string,
-    retryleft = 5
+    name?: string
   ): Promise<Response> {
-    const retryInterval = 1000;
-    return Promise.resolve(
-      this.fetchApi(
-        `${this.url}/${type.ApiVersion}/${
-          namespace
-            ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
-                type.Kind.endsWith("s") ? "es" : "s"
-              }`
-            : `${type.Kind.toLowerCase()}${
-                type.Kind.endsWith("s") ? "es" : "s"
-              }`
-        }${name ? `/${name}` : ""}${
-          this.cluster && this.cluster !== "local"
-            ? `?cluster=${this.cluster}`
-            : ""
-        }`,
-        { credentials: "include" }
-      )
-    ).then((response) => {
-      if (!response || !response.status || response.status >= 400) {
-        if (response && response.status === 401) {
-          this.showRefreshPageDialog();
-          return response;
-        } else {
-          setTimeout(function () {
-            if (retryleft === 0) {
-              throw new VzError(
-                Messages.Error.errFetchingKubernetesResource(
-                  `${type.ApiVersion}/${type.Kind}`,
-                  namespace,
-                  name,
-                  this.cluster === "local" ? "" : this.cluster
-                ),
-                response?.status
-              );
-            } else return this.getKubernetesResource(type, namespace, name, retryleft - 1);
-          }, retryInterval);
-        }
-      }
-      return response;
-    });
+    for (let i = 0; i < 5; i++) {
+      return Promise.resolve(
+        this.fetchApi(
+          `${this.url}/${type.ApiVersion}/${
+            namespace
+              ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
+                  type.Kind.endsWith("s") ? "es" : "s"
+                }`
+              : `${type.Kind.toLowerCase()}${
+                  type.Kind.endsWith("s") ? "es" : "s"
+                }`
+          }${name ? `/${name}` : ""}${
+            this.cluster && this.cluster !== "local"
+              ? `?cluster=${this.cluster}`
+              : ""
+          }`,
+          { credentials: "include" }
+        )
+      ).then((response) => {
+        if (!response || !response.status || response.status >= 400) {
+          if (response && response.status === 401) {
+            // Display refresh page dialog
+            this.showRefreshPageDialog();
+            return response;
+          } else if (i === 4) {
+            throw new VzError(
+              Messages.Error.errFetchingKubernetesResource(
+                `${type.ApiVersion}/${type.Kind}`,
+                namespace,
+                name,
+                this.cluster === "local" ? "" : this.cluster
+              ),
+              response?.status
+            );
+          }
+        } else return response;
+      });
+    }
   }
 
   public async postKubernetesResource(
