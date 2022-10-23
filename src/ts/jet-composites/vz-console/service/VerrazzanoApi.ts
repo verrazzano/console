@@ -345,56 +345,66 @@ export class VerrazzanoApi {
     return oamComponent;
   }
 
+  public async getPromise(
+    type: ResourceTypeType,
+    namespace?: string,
+    name?: string
+  ): Promise<Response> {
+    return Promise.resolve(
+      this.fetchApi(
+        `${this.url}/${type.ApiVersion}/${
+          namespace
+            ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
+            : `${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
+        }${name ? `/${name}` : ""}${
+          this.cluster && this.cluster !== "local"
+            ? `?cluster=${this.cluster}`
+            : ""
+        }`,
+        { credentials: "include" }
+      )
+    ).then((response) => {
+      return response;
+    });
+  }
+
   public async getKubernetesResource(
     type: ResourceTypeType,
     namespace?: string,
     name?: string
   ): Promise<Response> {
     for (let i = 0; i < 5; i++) {
-      console.log("This is" + i + "attempt");
-      return Promise.resolve(
-        this.fetchApi(
-          `${this.url}/${type.ApiVersion}/${
-            namespace
-              ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
-                  type.Kind.endsWith("s") ? "es" : "s"
-                }`
-              : `${type.Kind.toLowerCase()}${
-                  type.Kind.endsWith("s") ? "es" : "s"
-                }`
-          }${name ? `/${name}` : ""}${
-            this.cluster && this.cluster !== "local"
-              ? `?cluster=${this.cluster}`
-              : ""
-          }`,
-          { credentials: "include" }
-        )
-      ).then((response) => {
-        if (!response || !response.status || response.status >= 400) {
-          if (response && response.status === 401) {
-            // Display refresh page dialog
-            console.log("refresh page");
-            this.showRefreshPageDialog();
-            return response;
-          } else if (i === 4) {
-            console.log("Throwing error");
-            throw new VzError(
-              Messages.Error.errFetchingKubernetesResource(
-                `${type.ApiVersion}/${type.Kind}`,
-                namespace,
-                name,
-                this.cluster === "local" ? "" : this.cluster
-              ),
-              response?.status
-            );
-          }
-        } else if (i > 1) {
-          console.log(response);
-          console.log(response.status);
-          console.log("All taken");
-          return response;
+      let r1 = this.getPromise(type, namespace, name);
+
+      if (!r1 || !(await r1).status || (await r1).status >= 400) {
+        if (r1 && (await r1).status === 401) {
+          // Display refresh page dialog
+          console.log("refresh page");
+          this.showRefreshPageDialog();
+          return r1;
+        } else if (i === 4) {
+          console.log("Throwing error");
+          throw new VzError(
+            Messages.Error.errFetchingKubernetesResource(
+              `${type.ApiVersion}/${type.Kind}`,
+              namespace,
+              name,
+              this.cluster === "local" ? "" : this.cluster
+            ),
+            (await r1)?.status
+          );
         }
-      });
+      } else {
+        console.log(r1);
+        console.log((await r1).status);
+        console.log("All taken");
+        return r1;
+      }
+      r1 = null;
     }
   }
 
