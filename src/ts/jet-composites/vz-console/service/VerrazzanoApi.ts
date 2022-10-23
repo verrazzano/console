@@ -388,7 +388,9 @@ export class VerrazzanoApi {
               response?.status
             );
           }
-        } else {
+        } else if (i <= 2) {
+          console.log(response);
+          console.log(response.status);
           console.log("All taken");
           return response;
         }
