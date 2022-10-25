@@ -399,7 +399,7 @@ export class VerrazzanoApi {
             (await r1)?.status
           );
         }
-      } else if (i === 1) {
+      } else {
         console.log(r1);
         console.log((await r1).status);
         console.log("All taken");
