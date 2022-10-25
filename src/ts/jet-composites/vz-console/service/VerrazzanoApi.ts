@@ -378,7 +378,7 @@ export class VerrazzanoApi {
     name?: string
   ): Promise<Response> {
     for (let i = 0; i < 5; i++) {
-      console.log("This is "+i+" attempt");
+      console.log("This is " + i + " attempt");
       let r1 = this.getPromise(type, namespace, name);
 
       if (!r1 || !(await r1).status || (await r1).status >= 400) {
@@ -399,7 +399,7 @@ export class VerrazzanoApi {
             (await r1)?.status
           );
         }
-      } else if(i===1){
+      } else if (i === 1) {
         console.log(r1);
         console.log((await r1).status);
         console.log("All taken");
