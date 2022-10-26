@@ -380,7 +380,10 @@ export class VerrazzanoApi {
     for (let i = 0; i < 5; i++) {
       console.log("This is " + i + " attempt");
       let r1 = this.getPromise(type, namespace, name);
-
+      if (i === 0) {
+        r1 = null;
+        return r1;
+      }
       if (!r1 || !(await r1).status || (await r1).status >= 400) {
         if (r1 && (await r1).status === 401) {
           // Display refresh page dialog
