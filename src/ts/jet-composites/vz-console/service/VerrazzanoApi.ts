@@ -378,20 +378,13 @@ export class VerrazzanoApi {
     name?: string
   ): Promise<Response> {
     for (let i = 0; i < 5; i++) {
-      console.log("This is " + i + " attempt");
       let r1 = this.getPromise(type, namespace, name);
-      if (i === 0) {
-        r1 = null;
-        return r1;
-      }
       if (!r1 || !(await r1).status || (await r1).status >= 400) {
         if (r1 && (await r1).status === 401) {
           // Display refresh page dialog
-          console.log("refresh page");
           this.showRefreshPageDialog();
           return r1;
         } else if (i === 4) {
-          console.log("Throwing error");
           throw new VzError(
             Messages.Error.errFetchingKubernetesResource(
               `${type.ApiVersion}/${type.Kind}`,
@@ -403,9 +396,6 @@ export class VerrazzanoApi {
           );
         }
       } else {
-        console.log(r1);
-        console.log((await r1).status);
-        console.log("All taken");
         return r1;
       }
       r1 = null;
