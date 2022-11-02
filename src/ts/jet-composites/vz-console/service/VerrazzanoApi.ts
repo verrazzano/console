@@ -378,30 +378,32 @@ export class VerrazzanoApi {
     name?: string,
     retry = 5
   ): Promise<Response> {
-    let r1 = this.callFetchAPI(type, namespace, name);
     const interval = 1000;
-    if (!r1 || !(await r1).status || (await r1).status >= 400) {
-      if (r1 && (await r1).status === 401) {
-        // Display refresh page dialog
-        this.showRefreshPageDialog();
-        return r1;
-      } else if (retry === 0) {
-        throw new VzError(
-          Messages.Error.errFetchingKubernetesResource(
-            `${type.ApiVersion}/${type.Kind}`,
-            namespace,
-            name,
-            this.cluster === "local" ? "" : this.cluster
-          ),
-          (await r1)?.status
-        );
-      } else {
-        setTimeout(() => {
-          return this.getKubernetesResource(type, namespace, name, retry - 1);
-        }, interval);
-      }
-    } else return r1;
-    r1 = null;
+    const response = await this.callFetchAPI(type, namespace, name);
+    if (retry === 0) {
+      throw new VzError(
+        Messages.Error.errFetchingKubernetesResource(
+          `${type.ApiVersion}/${type.Kind}`,
+          namespace,
+          name,
+          this.cluster === "local" ? "" : this.cluster
+        ),
+        response?.status
+      );
+    }
+
+    if (response && response.status === 401) {
+      this.showRefreshPageDialog();
+      return response;
+    }
+
+    if (!response || response.status >= 400) {
+      setTimeout(() => {
+        return this.getKubernetesResource(type, namespace, name, retry - 1);
+      }, interval);
+    }
+
+    return response;
   }
 
   public async postKubernetesResource(
