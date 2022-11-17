@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2022, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import {
@@ -345,7 +345,7 @@ export class VerrazzanoApi {
     return oamComponent;
   }
 
-  public async getKubernetesResource(
+  public async callFetchAPI(
     type: ResourceTypeType,
     namespace?: string,
     name?: string
@@ -368,24 +368,42 @@ export class VerrazzanoApi {
         { credentials: "include" }
       )
     ).then((response) => {
-      if (!response || !response.status || response.status >= 400) {
-        if (response && response.status === 401) {
-          // Display refresh page dialog
-          this.showRefreshPageDialog();
-        } else {
-          throw new VzError(
-            Messages.Error.errFetchingKubernetesResource(
-              `${type.ApiVersion}/${type.Kind}`,
-              namespace,
-              name,
-              this.cluster === "local" ? "" : this.cluster
-            ),
-            response?.status
-          );
-        }
-      }
       return response;
     });
+  }
+
+  public async getKubernetesResource(
+    type: ResourceTypeType,
+    namespace?: string,
+    name?: string,
+    retry = 5
+  ): Promise<Response> {
+    const interval = 1000;
+    const response = await this.callFetchAPI(type, namespace, name);
+    if (retry === 0) {
+      throw new VzError(
+        Messages.Error.errFetchingKubernetesResource(
+          `${type.ApiVersion}/${type.Kind}`,
+          namespace,
+          name,
+          this.cluster === "local" ? "" : this.cluster
+        ),
+        response?.status
+      );
+    }
+
+    if (response && response.status === 401) {
+      this.showRefreshPageDialog();
+      return response;
+    }
+
+    if (!response || response.status >= 400) {
+      setTimeout(() => {
+        return this.getKubernetesResource(type, namespace, name, retry - 1);
+      }, interval);
+    }
+
+    return response;
   }
 
   public async postKubernetesResource(
