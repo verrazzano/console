@@ -212,6 +212,7 @@ export const Labels = {
   version: () => Translations.getTranslatedString("labels.version"),
   profile: () => Translations.getTranslatedString("labels.profile"),
   mgmtCluster: () => Translations.getTranslatedString("labels.mgmtCluster"),
+  argoCD: () => Translations.getTranslatedString("labels.argoCD"),
   rancher: () => Translations.getTranslatedString("labels.rancher"),
   keycloak: () => Translations.getTranslatedString("labels.keycloak"),
   created: () => Translations.getTranslatedString("labels.created"),

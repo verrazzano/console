@@ -464,6 +464,7 @@ export class VerrazzanoApi {
 
     if (vzInstance.status != null) {
       const instanceURLs = vzInstance.status.instance;
+      instance.argoCDUrl = instanceURLs.argoCDUrl;
       instance.rancherUrl = instanceURLs.rancherUrl;
       instance.keyCloakUrl = instanceURLs.keyCloakUrl;
       instance.elasticUrl = instanceURLs.elasticUrl;

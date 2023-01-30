@@ -32,6 +32,7 @@ export const extractInstances = (instances: any[]): Instance[] => {
       status: instance.status,
       version: instance.version,
       profile: instance.profile,
+      argoCDUrl: instance.argoCDUrl,
       keyCloakUrl: instance.keyCloakUrl,
       rancherUrl: instance.rancherUrl,
       vzApiUri: instance.vzApiUri,
