@@ -63,7 +63,7 @@ export interface Instance {
   version: string;
   profile: string;
   vzApiUri: string;
-  argoCDUrl: string;
+  argoCDUrl?: string;
   rancherUrl?: string;
   keyCloakUrl?: string;
   kibanaUrl?: string;

@@ -249,9 +249,9 @@ describe("instance panel screen tests", () => {
     expect(
       rancherMetaItem.querySelector("* > a").getAttribute("href")
     ).to.equal(instance.rancherUrl);
-    expect(argoCDMetaItem.querySelector("* > a").getAttribute("href")).to.equal(
-      instance.argoCDUrl
-    );
+    expect(
+      argoCDMetaItem.querySelector("* > a").getAttribute("href")
+    ).to.equal(instance.argoCDUrl);
   });
 
   it("renders the status badge correctly.", async () => {
