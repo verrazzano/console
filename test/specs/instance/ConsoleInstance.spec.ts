@@ -199,7 +199,7 @@ describe("instance panel screen tests", () => {
     expect(rancherMetaItem).not.to.be.null;
 
     const argoCDMetaItem = instanceElement.querySelector(
-        `#instance-argoCD-link`
+      `#instance-argoCD-link`
     );
     expect(argoCDMetaItem).not.to.be.null;
 
@@ -234,9 +234,9 @@ describe("instance panel screen tests", () => {
       instance.rancherUrl
     );
     checkMetaItemLabelValue(
-        argoCDMetaItem.textContent,
-        Messages.Labels.argoCD(),
-        instance.argoCDUrl
+      argoCDMetaItem.textContent,
+      Messages.Labels.argoCD(),
+      instance.argoCDUrl
     );
     checkMetaItemLabelValue(
       profileMetaItem.textContent,
@@ -249,9 +249,9 @@ describe("instance panel screen tests", () => {
     expect(
       rancherMetaItem.querySelector("* > a").getAttribute("href")
     ).to.equal(instance.rancherUrl);
-    expect(
-      argoCDMetaItem.querySelector("* > a").getAttribute("href")
-    ).to.equal(instance.argoCDUrl);
+    expect(argoCDMetaItem.querySelector("* > a").getAttribute("href")).to.equal(
+      instance.argoCDUrl
+    );
   });
 
   it("renders the status badge correctly.", async () => {
@@ -341,7 +341,7 @@ describe("instance panel screen tests with components disabled", () => {
     expect(rancherMetaItem).to.be.null;
 
     const argoCDMetaItem = instanceElement.querySelector(
-        `#instance-argoCD-link`
+      `#instance-argoCD-link`
     );
     expect(argoCDMetaItem).to.be.null;
 

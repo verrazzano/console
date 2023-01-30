@@ -200,14 +200,14 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       this.state.instance.rancherUrl
                     )}
                     {this.renderInstanceLinkElement(
-                        "instance-keycloak-link",
-                        Messages.Labels.keycloak(),
-                        this.state.instance.keyCloakUrl
+                      "instance-keycloak-link",
+                      Messages.Labels.keycloak(),
+                      this.state.instance.keyCloakUrl
                     )}
                     {this.renderInstanceLinkElement(
-                        "instance-argocd-link",
-                        Messages.Labels.argoCD(),
-                        this.state.instance.argoCDUrl
+                      "instance-argocd-link",
+                      Messages.Labels.argoCD(),
+                      this.state.instance.argoCDUrl
                     )}
                   </div>
                   <div class="oj-sm-6 oj-flex-item">
