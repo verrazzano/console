@@ -201,6 +201,7 @@ describe("instance panel screen tests", () => {
     const argoCDMetaItem = instanceElement.querySelector(
       `#instance-argoCD-link`
     );
+    console.log(argoCDMetaItem);
     expect(argoCDMetaItem).not.to.be.null;
 
     const profileMetaItem = instanceElement.querySelector(
