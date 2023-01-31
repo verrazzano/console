@@ -205,7 +205,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       this.state.instance.keyCloakUrl
                     )}
                     {this.renderInstanceLinkElement(
-                      "instance-argocd-link",
+                      "instance-argoCD-link",
                       Messages.Labels.argoCD(),
                       this.state.instance.argoCDUrl
                     )}
