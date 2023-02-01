@@ -157,6 +157,7 @@ export = {
     mgmtCluster: "Admin Cluster",
     rancher: "Rancher",
     keycloak: "Keycloak",
+    argoCD: "Argo CD",
     created: "Created",
     newWeblogicImage: "New Weblogic Image",
     selectOption: "Please select an option ...",

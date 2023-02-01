@@ -27,6 +27,7 @@ const instance = <Instance>{
   prometheusUrl: `https://prometheus.vmi.system.default.${instanceUrlSuffix}`,
   keyCloakUrl: `https://keycloak.${instanceUrlSuffix}`,
   rancherUrl: `https://rancher.${instanceUrlSuffix}`,
+  argoCDUrl: `https://argocd.${instanceUrlSuffix}`,
   mgmtCluster: "test",
   version: "1.0",
   status: "OK",
@@ -37,6 +38,7 @@ const instanceWithAllDisabledComponents = <Instance>{
   id: "0",
   keyCloakUrl: null,
   rancherUrl: ``,
+  argoCDUrl: ``,
   mgmtCluster: "test",
   version: "1.0",
   status: "OK",
@@ -196,6 +198,12 @@ describe("instance panel screen tests", () => {
     );
     expect(rancherMetaItem).not.to.be.null;
 
+    const argoCDMetaItem = instanceElement.querySelector(
+      `#instance-argoCD-link`
+    );
+    console.log(argoCDMetaItem);
+    expect(argoCDMetaItem).not.to.be.null;
+
     const profileMetaItem = instanceElement.querySelector(
       `#instance-profile-metaitem`
     );
@@ -227,6 +235,11 @@ describe("instance panel screen tests", () => {
       instance.rancherUrl
     );
     checkMetaItemLabelValue(
+      argoCDMetaItem.textContent,
+      Messages.Labels.argoCD(),
+      instance.argoCDUrl
+    );
+    checkMetaItemLabelValue(
       profileMetaItem.textContent,
       Messages.Labels.profile(),
       instance.profile
@@ -237,6 +250,9 @@ describe("instance panel screen tests", () => {
     expect(
       rancherMetaItem.querySelector("* > a").getAttribute("href")
     ).to.equal(instance.rancherUrl);
+    expect(argoCDMetaItem.querySelector("* > a").getAttribute("href")).to.equal(
+      instance.argoCDUrl
+    );
   });
 
   it("renders the status badge correctly.", async () => {
@@ -324,6 +340,11 @@ describe("instance panel screen tests with components disabled", () => {
       `#instance-rancher-link`
     );
     expect(rancherMetaItem).to.be.null;
+
+    const argoCDMetaItem = instanceElement.querySelector(
+      `#instance-argoCD-link`
+    );
+    expect(argoCDMetaItem).to.be.null;
 
     const profileMetaItem = instanceElement.querySelector(
       `#instance-profile-metaitem`

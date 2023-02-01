@@ -204,6 +204,11 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       Messages.Labels.keycloak(),
                       this.state.instance.keyCloakUrl
                     )}
+                    {this.renderInstanceLinkElement(
+                      "instance-argoCD-link",
+                      Messages.Labels.argoCD(),
+                      this.state.instance.argoCDUrl
+                    )}
                   </div>
                   <div class="oj-sm-6 oj-flex-item">
                     <h3>System Telemetry</h3>
