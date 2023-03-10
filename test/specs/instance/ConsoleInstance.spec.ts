@@ -28,6 +28,7 @@ const instance = <Instance>{
   keyCloakUrl: `https://keycloak.${instanceUrlSuffix}`,
   rancherUrl: `https://rancher.${instanceUrlSuffix}`,
   argoCDUrl: `https://argocd.${instanceUrlSuffix}`,
+  thanosUrl: `https://thanos.${instanceUrlSuffix}`,
   mgmtCluster: "test",
   version: "1.0",
   status: "OK",
@@ -39,6 +40,7 @@ const instanceWithAllDisabledComponents = <Instance>{
   keyCloakUrl: null,
   rancherUrl: ``,
   argoCDUrl: ``,
+  thanosUrl: ``,
   mgmtCluster: "test",
   version: "1.0",
   status: "OK",
@@ -204,6 +206,12 @@ describe("instance panel screen tests", () => {
     console.log(argoCDMetaItem);
     expect(argoCDMetaItem).not.to.be.null;
 
+    const thanosMetaItem = instanceElement.querySelector(
+        `#instance-thanos-link`
+    );
+    console.log(thanosMetaItem);
+    expect(thanosMetaItem).not.to.be.null;
+
     const profileMetaItem = instanceElement.querySelector(
       `#instance-profile-metaitem`
     );
@@ -240,6 +248,11 @@ describe("instance panel screen tests", () => {
       instance.argoCDUrl
     );
     checkMetaItemLabelValue(
+        argoCDMetaItem.textContent,
+        Messages.Labels.thanos(),
+        instance.argoCDUrl
+    );
+    checkMetaItemLabelValue(
       profileMetaItem.textContent,
       Messages.Labels.profile(),
       instance.profile
@@ -252,6 +265,9 @@ describe("instance panel screen tests", () => {
     ).to.equal(instance.rancherUrl);
     expect(argoCDMetaItem.querySelector("* > a").getAttribute("href")).to.equal(
       instance.argoCDUrl
+    );
+    expect(thanosMetaItem.querySelector("* > a").getAttribute("href")).to.equal(
+        instance.thanosUrl
     );
   });
 
@@ -345,6 +361,11 @@ describe("instance panel screen tests with components disabled", () => {
       `#instance-argoCD-link`
     );
     expect(argoCDMetaItem).to.be.null;
+
+    const thanosMetaItem = instanceElement.querySelector(
+        `#instance-thanos-link`
+    );
+    expect(thanosMetaItem).to.be.null;
 
     const profileMetaItem = instanceElement.querySelector(
       `#instance-profile-metaitem`
