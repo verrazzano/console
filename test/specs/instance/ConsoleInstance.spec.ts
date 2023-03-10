@@ -28,7 +28,7 @@ const instance = <Instance>{
   keyCloakUrl: `https://keycloak.${instanceUrlSuffix}`,
   rancherUrl: `https://rancher.${instanceUrlSuffix}`,
   argoCDUrl: `https://argocd.${instanceUrlSuffix}`,
-  thanosUrl: `https://thanos-query-frontend.${instanceUrlSuffix}`,
+  thanosQueryFrontendURL: `https://thanos-query-frontend.${instanceUrlSuffix}`,
   mgmtCluster: "test",
   version: "1.0",
   status: "OK",
@@ -40,7 +40,7 @@ const instanceWithAllDisabledComponents = <Instance>{
   keyCloakUrl: null,
   rancherUrl: ``,
   argoCDUrl: ``,
-  thanosUrl: ``,
+  thanosQueryFrontendURL: ``,
   mgmtCluster: "test",
   version: "1.0",
   status: "OK",
@@ -250,7 +250,7 @@ describe("instance panel screen tests", () => {
     checkMetaItemLabelValue(
       thanosMetaItem.textContent,
       Messages.Labels.thanos(),
-      instance.thanosUrl
+      instance.thanosQueryFrontendURL
     );
     checkMetaItemLabelValue(
       profileMetaItem.textContent,
@@ -267,7 +267,7 @@ describe("instance panel screen tests", () => {
       instance.argoCDUrl
     );
     expect(thanosMetaItem.querySelector("* > a").getAttribute("href")).to.equal(
-      instance.thanosUrl
+      instance.thanosQueryFrontendURL
     );
   });
 

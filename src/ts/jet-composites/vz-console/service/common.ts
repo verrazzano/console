@@ -36,7 +36,7 @@ export const extractInstances = (instances: any[]): Instance[] => {
       keyCloakUrl: instance.keyCloakUrl,
       rancherUrl: instance.rancherUrl,
       vzApiUri: instance.vzApiUri,
-      thanosUrl: instance.thanosUrl,
+      thanosQueryFrontendURL: instance.thanosQueryFrontendURL,
     });
   });
   return result;

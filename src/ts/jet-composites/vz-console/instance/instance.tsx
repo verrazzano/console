@@ -212,7 +212,7 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                     {this.renderInstanceLinkElement(
                       "instance-thanos-link",
                       Messages.Labels.thanos(),
-                      this.state.instance.thanosUrl
+                      this.state.instance.thanosQueryFrontendURL
                     )}
                   </div>
                   <div class="oj-sm-6 oj-flex-item">
