@@ -158,6 +158,7 @@ export = {
     rancher: "Rancher",
     keycloak: "Keycloak",
     argoCD: "Argo CD",
+    thanos: "Thanos Query Frontend",
     created: "Created",
     newWeblogicImage: "New Weblogic Image",
     selectOption: "Please select an option ...",

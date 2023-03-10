@@ -215,6 +215,7 @@ export const Labels = {
   argoCD: () => Translations.getTranslatedString("labels.argoCD"),
   rancher: () => Translations.getTranslatedString("labels.rancher"),
   keycloak: () => Translations.getTranslatedString("labels.keycloak"),
+  thanos: () => Translations.getTranslatedString("labels.thanos"),
   created: () => Translations.getTranslatedString("labels.created"),
   selectOption: () => Translations.getTranslatedString("labels.selectOption"),
   workloadType: () => Translations.getTranslatedString("labels.workloadType"),

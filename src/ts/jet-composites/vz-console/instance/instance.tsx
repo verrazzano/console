@@ -246,6 +246,11 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       Messages.Labels.jaeger(),
                       this.state.instance.jaegerUrl
                     )}
+                    {this.renderInstanceLinkElement(
+                      "instance-thanos-link",
+                      Messages.Labels.thanos(),
+                      this.state.instance.thanosQueryFrontendURL
+                    )}
                   </div>
                 </div>
               </div>
