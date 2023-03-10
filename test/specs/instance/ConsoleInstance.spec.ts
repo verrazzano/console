@@ -28,7 +28,7 @@ const instance = <Instance>{
   keyCloakUrl: `https://keycloak.${instanceUrlSuffix}`,
   rancherUrl: `https://rancher.${instanceUrlSuffix}`,
   argoCDUrl: `https://argocd.${instanceUrlSuffix}`,
-  thanosUrl: `https://thanos.${instanceUrlSuffix}`,
+  thanosUrl: `https://thanos-query-frontend.${instanceUrlSuffix}`,
   mgmtCluster: "test",
   version: "1.0",
   status: "OK",
@@ -248,7 +248,7 @@ describe("instance panel screen tests", () => {
       instance.argoCDUrl
     );
     checkMetaItemLabelValue(
-      argoCDMetaItem.textContent,
+      thanosMetaItem.textContent,
       Messages.Labels.thanos(),
       instance.thanosUrl
     );
