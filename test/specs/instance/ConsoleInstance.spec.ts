@@ -207,7 +207,7 @@ describe("instance panel screen tests", () => {
     expect(argoCDMetaItem).not.to.be.null;
 
     const thanosMetaItem = instanceElement.querySelector(
-        `#instance-thanos-link`
+      `#instance-thanos-link`
     );
     console.log(thanosMetaItem);
     expect(thanosMetaItem).not.to.be.null;
@@ -248,9 +248,9 @@ describe("instance panel screen tests", () => {
       instance.argoCDUrl
     );
     checkMetaItemLabelValue(
-        argoCDMetaItem.textContent,
-        Messages.Labels.thanos(),
-        instance.argoCDUrl
+      argoCDMetaItem.textContent,
+      Messages.Labels.thanos(),
+      instance.thanosUrl
     );
     checkMetaItemLabelValue(
       profileMetaItem.textContent,
@@ -267,7 +267,7 @@ describe("instance panel screen tests", () => {
       instance.argoCDUrl
     );
     expect(thanosMetaItem.querySelector("* > a").getAttribute("href")).to.equal(
-        instance.thanosUrl
+      instance.thanosUrl
     );
   });
 
@@ -363,7 +363,7 @@ describe("instance panel screen tests with components disabled", () => {
     expect(argoCDMetaItem).to.be.null;
 
     const thanosMetaItem = instanceElement.querySelector(
-        `#instance-thanos-link`
+      `#instance-thanos-link`
     );
     expect(thanosMetaItem).to.be.null;
 

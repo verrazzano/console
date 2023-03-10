@@ -210,9 +210,9 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       this.state.instance.argoCDUrl
                     )}
                     {this.renderInstanceLinkElement(
-                        "instance-thanos-link",
-                        Messages.Labels.thanos(),
-                        this.state.instance.thanosUrl
+                      "instance-thanos-link",
+                      Messages.Labels.thanos(),
+                      this.state.instance.thanosUrl
                     )}
                   </div>
                   <div class="oj-sm-6 oj-flex-item">
