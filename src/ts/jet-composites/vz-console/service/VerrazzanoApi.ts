@@ -473,7 +473,7 @@ export class VerrazzanoApi {
       instance.grafanaUrl = instanceURLs.grafanaUrl;
       instance.kialiUrl = instanceURLs.kialiUrl;
       instance.jaegerUrl = instanceURLs.jaegerUrl;
-      instance.thanosQueryFrontendURL = instanceURLs.thanosQueryFrontendURL;
+      instance.thanosQueryFrontendUrl = instanceURLs.thanosQueryFrontendUrl;
     }
     instance.isUsingSharedVMI = true;
     return instance;
