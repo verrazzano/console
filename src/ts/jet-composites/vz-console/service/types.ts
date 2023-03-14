@@ -71,7 +71,7 @@ export interface Instance {
   prometheusUrl?: string;
   elasticUrl?: string;
   kialiUrl?: string;
-  thanosQueryFrontendUrl?: string;
+  thanosQueryUrl?: string;
   isUsingSharedVMI?: boolean;
   jaegerUrl?: string;
 }
