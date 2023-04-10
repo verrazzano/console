@@ -12,6 +12,7 @@ import { Utils } from "../utils/Utils";
 import { Actions } from "../utils/Actions";
 import { OSDMainPage } from "../pageObjects/osd/OSDMainPage.pom";
 import { JaegerMainPage } from "../pageObjects/jaeger/JaegerMainPage.pom";
+import { ThanosQueryMainPage } from "../pageObjects/thanos/ThanosQueryMainPage.pom";
 
 describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jaeger)", (): void => {
   let consoleMainPage: ConsoleMainPage;
@@ -106,6 +107,12 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jae
     });
   });
 
+  if (Utils.shouldTestThanos()) {
+    runThanosTests()
+  } else {
+    console.log("Thanos testing not needed, skipping it")
+  }
+
   describe("Navigate to Kiali home page", (): void => {
     it("Wait for navigation to Kiali", async () => {
       await consoleMainPage.navigateToVMI("kiali", 4);
@@ -152,6 +159,26 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jae
       expect(await keycloakLoginPage.isPageLoaded()).to.be.true;
     });
   });
+
+  function runThanosTests() {
+    describe("Navigate to Thanos Query home page", (): void => {
+      it("Wait for navigation to Thanos Query", async () => {
+        await consoleMainPage.navigateToVMI("thanos-query", 3);
+      });
+
+      describe("Thanos Home Page", (): void => {
+        it("Wait for Thanos home page to be ready", async () => {
+          const thanosQueryMainPage = new ThanosQueryMainPage();
+          expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
+        });
+      });
+
+      after(async () => {
+        // Switch back to Console
+        await Actions.switchToTab(0);
+      });
+    });
+  }
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {

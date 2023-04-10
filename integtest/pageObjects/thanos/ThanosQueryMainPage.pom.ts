@@ -7,14 +7,20 @@ import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
 /**
  * Page Object Model for Prometheus main page
  */
-export class PrometheusMainPage {
+export class ThanosQueryMainPage {
   private static readonly HEADER_CONTAINER: By = By.className("navbar");
 
-  private static readonly PROMETHEUS_PANEL: By = By.className("panel");
+  private static readonly THANOS_QUERY_PANEL: By = By.className("panel");
 
   private static readonly ADD_PANEL_BUTTON: By = By.xpath(
     "//button[contains(text(),'Add Panel')]"
   );
+
+  // Link to Classic UI
+  private static readonly CLASSIC_UI_LINK = By.linkText("Classic UI");
+
+  protected pageUrl: string = "/";
+  protected pageLoadedElement: By = ThanosQueryMainPage.HEADER_CONTAINER;
 
   public async isPageLoaded(
     timeOut: number = PAGE_LOAD_TIMEOUT
@@ -25,7 +31,7 @@ export class PrometheusMainPage {
   /* Wait for header */
   public async waitForHeader(): Promise<boolean> {
     try {
-      await Wait.waitForPresent(PrometheusMainPage.HEADER_CONTAINER);
+      await Wait.waitForPresent(ThanosQueryMainPage.HEADER_CONTAINER);
       return true;
     } catch (error) {
       console.log(error);
@@ -33,10 +39,10 @@ export class PrometheusMainPage {
     }
   }
 
-  /* Wait for Prometheus panel */
-  public async waitForPrometheusPanel(): Promise<boolean> {
+  /* Wait for Thanos Query panel */
+  public async waitForThanosQueryPanel(): Promise<boolean> {
     try {
-      await Wait.waitForPresent(PrometheusMainPage.PROMETHEUS_PANEL);
+      await Wait.waitForPresent(ThanosQueryMainPage.THANOS_QUERY_PANEL);
       return true;
     } catch (error) {
       console.log(error);
@@ -47,7 +53,7 @@ export class PrometheusMainPage {
   /* Wait for Add Panel button */
   public async waitForAddPanelButton(): Promise<boolean> {
     try {
-      await Wait.waitForPresent(PrometheusMainPage.ADD_PANEL_BUTTON);
+      await Wait.waitForPresent(ThanosQueryMainPage.ADD_PANEL_BUTTON);
       return true;
     } catch (error) {
       console.log(error);
