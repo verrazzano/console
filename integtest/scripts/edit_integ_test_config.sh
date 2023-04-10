@@ -14,7 +14,7 @@ PROMETHEUS_HOST="$(kubectl get ingress vmi-system-prometheus -n verrazzano-syste
 KIALI_HOST="$(kubectl get ingress vmi-system-kiali -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
 JAEGER_HOST="$(kubectl get ingress verrazzano-jaeger -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
 THANOS_QUERY_HOST="$(kubectl get ingress thanos-query-frontend -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
-echo "Thanos query host is $THANOS_QUERY_HOST"
+
 if [ ! -z "$CONSOLE_HOST" ]; then
   CONSOLE_URL="https://${CONSOLE_HOST}"
 fi
