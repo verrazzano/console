@@ -12,6 +12,7 @@ describe("Thanos Query Home Page", (): void => {
 
   before(async () => {
     if (!Utils.isComponentEnabledInTestConfig("thanosquery")) {
+      // @ts-ignore
       this.skip();
     }
     await Utils.navigateAndLogin();
