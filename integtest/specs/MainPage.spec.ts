@@ -127,7 +127,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
     });
   // }
 
-  if (Utils.shouldTestKiali()) {
+  // if (Utils.shouldTestKiali()) {
     describe("Navigate to Kiali home page", (): void => {
       it("Wait for navigation to Kiali", async () => {
         await consoleMainPage.navigateToVMI("kiali", 4);
@@ -145,7 +145,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
         await Actions.switchToTab(0);
       });
     });
-  }
+  // }
 
   if (Utils.shouldTestJaeger()) {
     xdescribe("Navigate to Jaeger home page", (): void => {
