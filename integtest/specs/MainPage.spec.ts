@@ -131,23 +131,25 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jae
     });
   });
 
-  xdescribe("Navigate to Jaeger home page", (): void => {
-    it("Wait for navigation to Jaeger", async () => {
-      await consoleMainPage.navigateToVMI("jaeger", 5);
-    });
+  if (Utils.shouldTestJaeger()) {
+    xdescribe("Navigate to Jaeger home page", (): void => {
+      it("Wait for navigation to Jaeger", async () => {
+        await consoleMainPage.navigateToVMI("jaeger", 5);
+      });
 
-    describe("Jaeger Home Page", (): void => {
-      it("Wait for Jaeger home page to be ready", async () => {
-        const jaegerHomePage = new JaegerMainPage();
-        expect(await jaegerHomePage.isPageLoaded()).to.be.true;
+      describe("Jaeger Home Page", (): void => {
+        it("Wait for Jaeger home page to be ready", async () => {
+          const jaegerHomePage = new JaegerMainPage();
+          expect(await jaegerHomePage.isPageLoaded()).to.be.true;
+        });
+      });
+
+      after(async () => {
+        // Switch back to Console
+        await Actions.switchToTab(0);
       });
     });
-
-    after(async () => {
-      // Switch back to Console
-      await Actions.switchToTab(0);
-    });
-  });
+  }
 
   describe("Signout from the console", (): void => {
     it("Click on sign-out button", async () => {
@@ -163,7 +165,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jae
   function runThanosTests() {
     describe("Navigate to Thanos Query home page", (): void => {
       it("Wait for navigation to Thanos Query", async () => {
-        await consoleMainPage.navigateToVMI("thanos-query", 3);
+        await consoleMainPage.navigateToVMI("thanosquery", 3);
       });
 
       describe("Thanos Home Page", (): void => {

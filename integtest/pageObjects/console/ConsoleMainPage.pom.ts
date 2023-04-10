@@ -123,7 +123,7 @@ export class ConsoleMainPage {
       await Actions.doClick(ConsoleMainPage.KIALI_URL_LINK);
     } else if (vmiName === "jaeger") {
       await Actions.doClick(ConsoleMainPage.JAEGER_URL_LINK);
-    } else if (vmiName === "thanos-query") {
+    } else if (vmiName === "thanosquery") {
       await Actions.doClick(ConsoleMainPage.THANOS_QUERY_URL_LINK);
     } else {
       return false;

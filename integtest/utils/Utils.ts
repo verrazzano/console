@@ -151,7 +151,7 @@ export class Utils {
   }
 
   static async gotoThanosQueryMainPage() {
-    const url = Utils.getConfig("thanos-query").url;
+    const url = Utils.getConfig("thanosquery").url;
     console.log(`Navigating to Thanos Query main page at ${url}`);
     await Utils.getJETPage(url);
   }
@@ -168,9 +168,14 @@ export class Utils {
     await Utils.getJETPage(url);
   }
 
+  static shouldTestJaeger(): boolean {
+    const jaeger = Utils.getConfig("jaeger")
+    return !!jaeger?.url
+  }
+
   static shouldTestThanos(): boolean {
-    const url = Utils.getConfig("thanos-query")
-    return !!url
+    const thanosQuery = Utils.getConfig("thanosquery")
+    return !!thanosQuery?.url
   }
 
   public static async gotoInvalidUrl(): Promise<boolean> {
