@@ -39,7 +39,7 @@ fi
 CONSOLE_PWD="$(kubectl get secret --namespace verrazzano-system verrazzano -o jsonpath={.data.password} | base64 --decode)"
 cat "${INPUT_CONFIG_FILE}" | jq  --arg console_url "${CONSOLE_URL}" --arg grafana_url "${GRAFANA_URL}" \
   --arg osd_url "${OSD_URL}" --arg prometheus_url "${PROMETHEUS_URL}" --arg kiali_url "${KIALI_URL}" \
-  --arg thanos_query_url "${THANOS_QUERY_URL}"
+  --arg thanos_query_url "${THANOS_QUERY_URL}" \
   --arg jaeger_url "${JAEGER_URL}" \
   --arg user "verrazzano" --arg pwd "${CONSOLE_PWD}" \
   --arg app "${CONSOLE_APP_NAME}" --arg ns "${CONSOLE_APP_NAMESPACE}" \
