@@ -107,14 +107,44 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
     });
   });
 
-  if (Utils.shouldTestThanos()) {
-    runThanosTests(consoleMainPage)
-  } else {
-    console.log("Thanos testing not needed, skipping it")
-  }
+  // if (Utils.shouldTestThanos()) {
+    describe("Navigate to Thanos Query home page", (): void => {
+      it("Wait for navigation to Thanos Query", async () => {
+        await consoleMainPage.navigateToVMI("thanosquery", 3);
+      });
+
+      describe("Thanos Home Page", (): void => {
+        it("Wait for Thanos home page to be ready", async () => {
+          const thanosQueryMainPage = new ThanosQueryMainPage();
+          expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
+        });
+      });
+
+      after(async () => {
+        // Switch back to Console
+        await Actions.switchToTab(0);
+      });
+    });
+  // }
 
   if (Utils.shouldTestKiali()) {
-    runKialiTests(consoleMainPage)
+    describe("Navigate to Kiali home page", (): void => {
+      it("Wait for navigation to Kiali", async () => {
+        await consoleMainPage.navigateToVMI("kiali", 4);
+      });
+
+      describe("Kiali Home Page", (): void => {
+        it("Wait for Kiali home page to be ready", async () => {
+          const kialiHomePage = new KialiMainPage();
+          expect(await kialiHomePage.isPageLoaded()).to.be.true;
+        });
+      });
+
+      after(async () => {
+        // Switch back to Console
+        await Actions.switchToTab(0);
+      });
+    });
   }
 
   if (Utils.shouldTestJaeger()) {
@@ -158,44 +188,3 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
     await Utils.releaseDriver();
   });
 });
-
-
-function runKialiTests(consoleMainPage: ConsoleMainPage) {
-  describe("Navigate to Kiali home page", (): void => {
-    it("Wait for navigation to Kiali", async () => {
-      await consoleMainPage.navigateToVMI("kiali", 4);
-    });
-
-    describe("Kiali Home Page", (): void => {
-      it("Wait for Kiali home page to be ready", async () => {
-        const kialiHomePage = new KialiMainPage();
-        expect(await kialiHomePage.isPageLoaded()).to.be.true;
-      });
-    });
-
-    after(async () => {
-      // Switch back to Console
-      await Actions.switchToTab(0);
-    });
-  });
-}
-
-function runThanosTests(consoleMainPage: ConsoleMainPage) {
-  describe("Navigate to Thanos Query home page", (): void => {
-    it("Wait for navigation to Thanos Query", async () => {
-      await consoleMainPage.navigateToVMI("thanosquery", 3);
-    });
-
-    describe("Thanos Home Page", (): void => {
-      it("Wait for Thanos home page to be ready", async () => {
-        const thanosQueryMainPage = new ThanosQueryMainPage();
-        expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
-      });
-    });
-
-    after(async () => {
-      // Switch back to Console
-      await Actions.switchToTab(0);
-    });
-  });
-}

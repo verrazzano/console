@@ -4,6 +4,7 @@
 require("./specs/OSDMainPage.spec");
 require("./specs/GrafanaMainPage.spec");
 require("./specs/PrometheusMainPage.spec");
+require("./specs/ThanosQueryMainPage.spec");
 require("./specs/KialiMainPage.spec");
 require("./specs/JaegerMainPage.spec");
 require("./specs/MainPage.spec");
