@@ -11,6 +11,9 @@ describe("Thanos Query Home Page", (): void => {
   let thanosQueryHeaderBar: ThanosQueryHeaderBar;
 
   before(async () => {
+    if (!Utils.isComponentEnabledInTestConfig("thanosquery")) {
+      this.skip();
+    }
     await Utils.navigateAndLogin();
     thanosQueryMainPage = new ThanosQueryMainPage();
     thanosQueryHeaderBar = new ThanosQueryHeaderBar();
