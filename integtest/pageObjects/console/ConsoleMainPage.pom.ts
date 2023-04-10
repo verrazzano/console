@@ -48,7 +48,7 @@ export class ConsoleMainPage {
 
   // Link to Thanos Query console
   private static readonly THANOS_QUERY_URL_LINK = By.xpath(
-      `//*[@id="instance-thanos-link"]/div/a`
+    `//*[@id="instance-thanos-link"]/div/a`
   );
 
   // Link to Kiali console

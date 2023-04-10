@@ -272,5 +272,4 @@ export class Utils {
     await driver.get(url);
     await driver.wait(Utils.ojetPageReady(), timeout);
   }
-
 }

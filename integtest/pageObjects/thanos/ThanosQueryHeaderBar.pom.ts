@@ -11,14 +11,16 @@ export class ThanosQueryHeaderBar {
 
   private static readonly LOGO: By = By.className("navbar-brand");
   private static readonly THANOS_QUERY_TITLE_LINK: By = By.xpath(
-      "//a[contains(.,'Thanos - Query')]"
+    "//a[contains(.,'Thanos - Query')]"
   );
 
   /* Verify if Logo is present and has the title text link */
   public async selectLogo(): Promise<boolean> {
     const logo = await Wait.waitForPresent(ThanosQueryHeaderBar.LOGO);
     Actions.scrollIntoView(ThanosQueryHeaderBar.LOGO);
-    const titleLink = await Wait.waitForPresent(ThanosQueryHeaderBar.THANOS_QUERY_TITLE_LINK)
-    return !!logo && !! titleLink;
+    const titleLink = await Wait.waitForPresent(
+      ThanosQueryHeaderBar.THANOS_QUERY_TITLE_LINK
+    );
+    return !!logo && !!titleLink;
   }
 }
