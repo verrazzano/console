@@ -1,4 +1,4 @@
-// Copyright (C) 2020, 2022, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2023, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
@@ -107,65 +107,59 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
     });
   });
 
-  // if (Utils.shouldTestThanos()) {
-    describe("Navigate to Thanos Query home page", (): void => {
-      it("Wait for navigation to Thanos Query", async () => {
-        await consoleMainPage.navigateToVMI("thanosquery", 3);
-      });
+  describe("Navigate to Thanos Query home page", (): void => {
+    it("Wait for navigation to Thanos Query", async () => {
+      await consoleMainPage.navigateToVMI("thanosquery", 3);
+    });
 
-      describe("Thanos Home Page", (): void => {
-        it("Wait for Thanos home page to be ready", async () => {
-          const thanosQueryMainPage = new ThanosQueryMainPage();
-          expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
-        });
-      });
-
-      after(async () => {
-        // Switch back to Console
-        await Actions.switchToTab(0);
+    describe("Thanos Home Page", (): void => {
+      it("Wait for Thanos home page to be ready", async () => {
+        const thanosQueryMainPage = new ThanosQueryMainPage();
+        expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
       });
     });
-  // }
 
-  // if (Utils.shouldTestKiali()) {
-    describe("Navigate to Kiali home page", (): void => {
-      it("Wait for navigation to Kiali", async () => {
-        await consoleMainPage.navigateToVMI("kiali", 4);
-      });
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
+    });
+  });
 
-      describe("Kiali Home Page", (): void => {
-        it("Wait for Kiali home page to be ready", async () => {
-          const kialiHomePage = new KialiMainPage();
-          expect(await kialiHomePage.isPageLoaded()).to.be.true;
-        });
-      });
+  describe("Navigate to Kiali home page", (): void => {
+    it("Wait for navigation to Kiali", async () => {
+      await consoleMainPage.navigateToVMI("kiali", 4);
+    });
 
-      after(async () => {
-        // Switch back to Console
-        await Actions.switchToTab(0);
+    describe("Kiali Home Page", (): void => {
+      it("Wait for Kiali home page to be ready", async () => {
+        const kialiHomePage = new KialiMainPage();
+        expect(await kialiHomePage.isPageLoaded()).to.be.true;
       });
     });
-  // }
 
-  if (Utils.shouldTestJaeger()) {
-    xdescribe("Navigate to Jaeger home page", (): void => {
-      it("Wait for navigation to Jaeger", async () => {
-        await consoleMainPage.navigateToVMI("jaeger", 5);
-      });
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
+    });
+  });
 
-      describe("Jaeger Home Page", (): void => {
-        it("Wait for Jaeger home page to be ready", async () => {
-          const jaegerHomePage = new JaegerMainPage();
-          expect(await jaegerHomePage.isPageLoaded()).to.be.true;
-        });
-      });
+  xdescribe("Navigate to Jaeger home page", (): void => {
+    it("Wait for navigation to Jaeger", async () => {
+      await consoleMainPage.navigateToVMI("jaeger", 5);
+    });
 
-      after(async () => {
-        // Switch back to Console
-        await Actions.switchToTab(0);
+    describe("Jaeger Home Page", (): void => {
+      it("Wait for Jaeger home page to be ready", async () => {
+        const jaegerHomePage = new JaegerMainPage();
+        expect(await jaegerHomePage.isPageLoaded()).to.be.true;
       });
     });
-  }
+
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
+    });
+  });
 
   describe("Signout from the console", (): void => {
     it("Click on sign-out button", async () => {

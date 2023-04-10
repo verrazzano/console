@@ -1,4 +1,4 @@
-// Copyright (C) 2021, Oracle and/or its affiliates.
+// Copyright (C) 2023, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { expect } from "chai";
@@ -31,7 +31,7 @@ describe("Thanos Query Home Page", (): void => {
     });
   });
 
-  describe("Access Prometheus header bar logo", (): void => {
+  describe("Access Thanos Query header bar and logo", (): void => {
     it("Wait for header", async () => {
       await thanosQueryMainPage.waitForHeader();
     });
@@ -43,7 +43,7 @@ describe("Thanos Query Home Page", (): void => {
 
   afterEach(async function () {
     if (this.currentTest.state === "failed") {
-      await Utils.saveFailedTestInfo("Prometheus", this.currentTest.title);
+      await Utils.saveFailedTestInfo("Thanos", this.currentTest.title);
     }
   });
 

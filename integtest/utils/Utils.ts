@@ -168,21 +168,6 @@ export class Utils {
     await Utils.getJETPage(url);
   }
 
-  static shouldTestJaeger(): boolean {
-    const jaeger = Utils.getConfig("jaeger")
-    return !!jaeger?.url
-  }
-
-  static shouldTestKiali() {
-    const kiali = Utils.getConfig("kiali")
-    return !!kiali?.url
-  }
-
-  static shouldTestThanos(): boolean {
-    const thanosQuery = Utils.getConfig("thanosquery")
-    return !!thanosQuery?.url
-  }
-
   public static async gotoInvalidUrl(): Promise<boolean> {
     const url = Utils.getConfig("driverInfo").url;
     const invalidUrl = url.replace(
