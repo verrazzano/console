@@ -11,7 +11,7 @@ export class ThanosQueryHeaderBar {
 
   private static readonly LOGO: By = By.className("navbar-brand");
   private static readonly THANOS_QUERY_TITLE_LINK: By = By.xpath(
-      "//a[class='navbar-brand'][contains(text(),'Thanos - Query')]"
+      "//a[class='navbar-brand'][contains(text(),'Thanos')]"
   );
 
   /* Verify if Logo is present and has the title text link */
