@@ -107,24 +107,6 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
     });
   });
 
-  describe("Navigate to Thanos Query home page", (): void => {
-    it("Wait for navigation to Thanos Query", async () => {
-      await consoleMainPage.navigateToVMI("thanosquery", 3);
-    });
-
-    describe("Thanos Home Page", (): void => {
-      it("Wait for Thanos home page to be ready", async () => {
-        const thanosQueryMainPage = new ThanosQueryMainPage();
-        expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
-      });
-    });
-
-    after(async () => {
-      // Switch back to Console
-      await Actions.switchToTab(0);
-    });
-  });
-
   describe("Navigate to Kiali home page", (): void => {
     it("Wait for navigation to Kiali", async () => {
       await consoleMainPage.navigateToVMI("kiali", 4);
@@ -152,6 +134,24 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
       it("Wait for Jaeger home page to be ready", async () => {
         const jaegerHomePage = new JaegerMainPage();
         expect(await jaegerHomePage.isPageLoaded()).to.be.true;
+      });
+    });
+
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
+    });
+  });
+
+  describe("Navigate to Thanos Query home page", (): void => {
+    it("Wait for navigation to Thanos Query", async () => {
+      await consoleMainPage.navigateToVMI("thanosquery", 3);
+    });
+
+    describe("Thanos Home Page", (): void => {
+      it("Wait for Thanos home page to be ready", async () => {
+        const thanosQueryMainPage = new ThanosQueryMainPage();
+        expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
       });
     });
 
