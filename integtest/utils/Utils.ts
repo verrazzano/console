@@ -179,6 +179,11 @@ export class Utils {
       .catch(() => false);
   }
 
+  public static isComponentEnabledInTestConfig(name: string): boolean {
+    const comp = Utils.getConfig(name)
+    return !!(comp?.url)
+  }
+
   public static async releaseDriver() {
     if (Utils.driver) {
       try {

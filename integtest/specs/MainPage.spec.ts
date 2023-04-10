@@ -144,6 +144,10 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
   });
 
   describe("Navigate to Thanos Query home page", (): void => {
+    if (!Utils.isComponentEnabledInTestConfig("thanosquery")) {
+      console.log("Thanos Query is not enabled in test configuration, skipping these tests");
+      return;
+    }
     it("Wait for navigation to Thanos Query", async () => {
       await consoleMainPage.navigateToVMI("thanosquery", 3);
     });
