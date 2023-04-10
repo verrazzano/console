@@ -173,6 +173,11 @@ export class Utils {
     return !!jaeger?.url
   }
 
+  static shouldTestKiali() {
+    const kiali = Utils.getConfig("kiali")
+    return !!kiali?.url
+  }
+
   static shouldTestThanos(): boolean {
     const thanosQuery = Utils.getConfig("thanosquery")
     return !!thanosQuery?.url
@@ -282,4 +287,5 @@ export class Utils {
     await driver.get(url);
     await driver.wait(Utils.ojetPageReady(), timeout);
   }
+
 }
