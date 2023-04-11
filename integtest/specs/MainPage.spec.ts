@@ -1,4 +1,4 @@
-// Copyright (C) 2020, 2022, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2023, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { KeycloakLoginPage } from "../pageObjects/keycloak/KeycloakLoginPage.pom";
@@ -12,8 +12,9 @@ import { Utils } from "../utils/Utils";
 import { Actions } from "../utils/Actions";
 import { OSDMainPage } from "../pageObjects/osd/OSDMainPage.pom";
 import { JaegerMainPage } from "../pageObjects/jaeger/JaegerMainPage.pom";
+import { ThanosQueryMainPage } from "../pageObjects/thanos/ThanosQueryMainPage.pom";
 
-describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jaeger)", (): void => {
+describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Kiali, Jaeger)", (): void => {
   let consoleMainPage: ConsoleMainPage;
   let consoleHeaderBar: ConsoleHeaderBar;
 
@@ -133,6 +134,30 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Kiali, Jae
       it("Wait for Jaeger home page to be ready", async () => {
         const jaegerHomePage = new JaegerMainPage();
         expect(await jaegerHomePage.isPageLoaded()).to.be.true;
+      });
+    });
+
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
+    });
+  });
+
+  describe("Navigate to Thanos Query home page", (): void => {
+    if (!Utils.isComponentEnabledInTestConfig("thanosquery")) {
+      console.log(
+        "Thanos Query is not enabled in test configuration, skipping Thanos Query tests in MainPage test spec"
+      );
+      return;
+    }
+    it("Wait for navigation to Thanos Query", async () => {
+      await consoleMainPage.navigateToVMI("thanosquery", 3);
+    });
+
+    describe("Thanos Home Page", (): void => {
+      it("Wait for Thanos home page to be ready", async () => {
+        const thanosQueryMainPage = new ThanosQueryMainPage();
+        expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
       });
     });
 

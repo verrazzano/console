@@ -31,6 +31,9 @@
   "jaeger": {
     "url": ""
   },
+  "thanosquery": {
+    "url": ""
+  },
   "loginEnabled": true,
   "loginInfo": {
     "username": "",

@@ -1,4 +1,4 @@
-// Copyright (C) 2020, 2022, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2023, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import { By } from "selenium-webdriver";
@@ -44,6 +44,11 @@ export class ConsoleMainPage {
   // Link to Prometheus console
   private static readonly PROMETHEUS_URL_LINK = By.xpath(
     `//*[@id="instance-vmi-link-prometheus"]/div/a`
+  );
+
+  // Link to Thanos Query console
+  private static readonly THANOS_QUERY_URL_LINK = By.xpath(
+    `//*[@id="instance-thanos-link"]/div/a`
   );
 
   // Link to Kiali console
@@ -118,6 +123,8 @@ export class ConsoleMainPage {
       await Actions.doClick(ConsoleMainPage.KIALI_URL_LINK);
     } else if (vmiName === "jaeger") {
       await Actions.doClick(ConsoleMainPage.JAEGER_URL_LINK);
+    } else if (vmiName === "thanosquery") {
+      await Actions.doClick(ConsoleMainPage.THANOS_QUERY_URL_LINK);
     } else {
       return false;
     }

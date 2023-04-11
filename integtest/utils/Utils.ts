@@ -150,6 +150,12 @@ export class Utils {
     await Utils.getJETPage(url);
   }
 
+  static async gotoThanosQueryMainPage() {
+    const url = Utils.getConfig("thanosquery").url;
+    console.log(`Navigating to Thanos Query main page at ${url}`);
+    await Utils.getJETPage(url);
+  }
+
   static async gotoKialiMainPage() {
     const url = Utils.getConfig("kiali").url;
     console.log(`Navigating to Kiali main page at ${url}`);
@@ -171,6 +177,11 @@ export class Utils {
     return await Utils.getJETPage(invalidUrl)
       .then(() => true)
       .catch(() => false);
+  }
+
+  public static isComponentEnabledInTestConfig(name: string): boolean {
+    const comp = Utils.getConfig(name);
+    return !!comp?.url;
   }
 
   public static async releaseDriver() {
