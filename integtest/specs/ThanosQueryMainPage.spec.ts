@@ -11,7 +11,9 @@ describe("Thanos Query Home Page", (): void => {
   let thanosQueryHeaderBar: ThanosQueryHeaderBar;
 
   if (!Utils.isComponentEnabledInTestConfig("thanosquery")) {
-    console.log("Thanos Query is not enabled in test configuration, skipping the ThanosQueryMainPageSpec tests");
+    console.log(
+      "Thanos Query is not enabled in test configuration, skipping the ThanosQueryMainPageSpec tests"
+    );
     return;
   }
   before(async () => {

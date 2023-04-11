@@ -180,8 +180,8 @@ export class Utils {
   }
 
   public static isComponentEnabledInTestConfig(name: string): boolean {
-    const comp = Utils.getConfig(name)
-    return !!(comp?.url)
+    const comp = Utils.getConfig(name);
+    return !!comp?.url;
   }
 
   public static async releaseDriver() {
