@@ -45,7 +45,7 @@
     "karma-typescript": "^5.1.0",
     "mocha": "^8.1.2",
     "prettier": "2.1.2",
-    "selenium-webdriver": "^3.6.0",
+    "selenium-webdriver": "^4.9.0",
     "sinon": "^9.0.3",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.2"
