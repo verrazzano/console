@@ -25,6 +25,7 @@ COPY package.json /verrazzano/
 WORKDIR /verrazzano/
 
 RUN npm install --save express express-http-proxy \
+    && npm prune --production \
     && rm -rf /usr/bin/npm /usr/lib/node_modules/npm
 
 HEALTHCHECK --interval=1m --timeout=10s \
