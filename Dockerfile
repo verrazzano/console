@@ -24,7 +24,7 @@ COPY generate-env.js /verrazzano/
 COPY package.json /verrazzano/
 WORKDIR /verrazzano/
 
-RUN npm install --save express express-http-proxy \
+RUN npm install --production --save express express-http-proxy \
     && rm -rf /usr/bin/npm /usr/lib/node_modules/npm
 
 HEALTHCHECK --interval=1m --timeout=10s \
