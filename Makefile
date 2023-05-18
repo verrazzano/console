@@ -59,8 +59,12 @@ ojet-build: npm-install
 	ojet build --release
 	./calc_integrity_hash.sh
 
+.PHONY: npm-prune
+npm-prune:
+	npm prune --production
+
 .PHONY: build
-build: ojet-build
+build: ojet-build npm-prune
 	docker build --pull \
 		-t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
 
