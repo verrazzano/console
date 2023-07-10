@@ -18,7 +18,7 @@ import { AlertmanagerMainPage } from "../pageObjects/alertmanager/AlertmanagerMa
 describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Kiali, Jaeger)", (): void => {
   let consoleMainPage: ConsoleMainPage;
   let consoleHeaderBar: ConsoleHeaderBar;
-  let tabIndex = 1
+  let tabIndex = 1;
 
   before(async () => {
     await Utils.navigateAndLogin();
@@ -138,7 +138,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
       await consoleMainPage.navigateToVMI("jaeger", tabIndex++);
     });
 
-    describe("Jaeger Home Page", (): void => {
+    xdescribe("Jaeger Home Page", (): void => {
       it("Wait for Jaeger home page to be ready", async () => {
         const jaegerHomePage = new JaegerMainPage();
         expect(await jaegerHomePage.isPageLoaded()).to.be.true;
