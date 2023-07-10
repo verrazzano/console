@@ -13,6 +13,7 @@ import { Actions } from "../utils/Actions";
 import { OSDMainPage } from "../pageObjects/osd/OSDMainPage.pom";
 import { JaegerMainPage } from "../pageObjects/jaeger/JaegerMainPage.pom";
 import { ThanosQueryMainPage } from "../pageObjects/thanos/ThanosQueryMainPage.pom";
+import { AlertmanagerMainPage } from "../pageObjects/alertmanager/AlertmanagerMainPage.pom";
 
 describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Kiali, Jaeger)", (): void => {
   let consoleMainPage: ConsoleMainPage;
@@ -158,6 +159,30 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
       it("Wait for Thanos home page to be ready", async () => {
         const thanosQueryMainPage = new ThanosQueryMainPage();
         expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
+      });
+    });
+
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
+    });
+  });
+
+  describe("Navigate to Alertmanager home page", (): void => {
+    if (!Utils.isComponentEnabledInTestConfig("alertmanager")) {
+      console.log(
+        "Alertmanager is not enabled in test configuration, skipping Alertmanager tests in MainPage test spec"
+      );
+      return;
+    }
+    it("Wait for navigation to Alertmanager", async () => {
+      await consoleMainPage.navigateToVMI("alertmanager", 3);
+    });
+
+    describe("Alertmanager Home Page", (): void => {
+      it("Wait for Alertmanager home page to be ready", async () => {
+        const alertmanagerMainPage = new AlertmanagerMainPage();
+        expect(await alertmanagerMainPage.isPageLoaded()).to.be.true;
       });
     });
 

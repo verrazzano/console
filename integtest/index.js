@@ -7,5 +7,6 @@ require("./specs/PrometheusMainPage.spec");
 require("./specs/ThanosQueryMainPage.spec");
 require("./specs/KialiMainPage.spec");
 require("./specs/JaegerMainPage.spec");
+require("./specs/AlertmanagerMainPage.spec");
 require("./specs/MainPage.spec");
 require("./specs/MainPageNegative.spec");

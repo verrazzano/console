@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2021, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2023, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 /* eslint-disable import/no-webpack-loader-syntax */
@@ -207,6 +207,7 @@ export const Labels = {
   es: () => Translations.getTranslatedString("labels.es"),
   kiali: () => Translations.getTranslatedString("labels.kiali"),
   jaeger: () => Translations.getTranslatedString("labels.jaeger"),
+  alertmanager: () => Translations.getTranslatedString("labels.alertmanager"),
   newWeblogicImage: () =>
     Translations.getTranslatedString("New Weblogic Image"),
   version: () => Translations.getTranslatedString("labels.version"),
