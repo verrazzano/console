@@ -8,7 +8,9 @@ import { Wait, PAGE_LOAD_TIMEOUT } from "../../utils/Wait";
  * Page Object Model for Alertymanager main page
  */
 export class AlertmanagerMainPage {
-  private static readonly FILTER_MATCHER: By = By.id("filter-bar-matcher");
+  private static readonly FILTER_MATCHER: By = By.xpath(
+    `//input[@id="filter-bar-matcher"]`
+  );
 
   private static readonly ALERTS_MAIN_PAGE_EXPAND_BUTTON: By = By.className(
     "fa-plus"

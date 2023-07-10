@@ -18,6 +18,7 @@ import { AlertmanagerMainPage } from "../pageObjects/alertmanager/AlertmanagerMa
 describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Kiali, Jaeger)", (): void => {
   let consoleMainPage: ConsoleMainPage;
   let consoleHeaderBar: ConsoleHeaderBar;
+  let tabIndex = 1
 
   before(async () => {
     await Utils.navigateAndLogin();
@@ -56,7 +57,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
 
   describe("Navigate to Grafana home page", (): void => {
     it("Wait for navigation to Grafana", async () => {
-      await consoleMainPage.navigateToVMI("grafana", 1);
+      await consoleMainPage.navigateToVMI("grafana", tabIndex++);
     });
 
     describe("Grafana Home Page", (): void => {
@@ -74,7 +75,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
 
   describe("Navigate to OSD home page", (): void => {
     it("Wait for navigation to OSD", async () => {
-      await consoleMainPage.navigateToVMI("osd", 2);
+      await consoleMainPage.navigateToVMI("osd", tabIndex++);
     });
 
     describe("OSD Home Page", (): void => {
@@ -92,7 +93,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
 
   describe("Navigate to Prometheus home page", (): void => {
     it("Wait for navigation to Prometheus", async () => {
-      await consoleMainPage.navigateToVMI("prometheus", 3);
+      await consoleMainPage.navigateToVMI("prometheus", tabIndex++);
     });
 
     describe("Prometheus Home Page", (): void => {
@@ -110,7 +111,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
 
   describe("Navigate to Kiali home page", (): void => {
     it("Wait for navigation to Kiali", async () => {
-      await consoleMainPage.navigateToVMI("kiali", 4);
+      await consoleMainPage.navigateToVMI("kiali", tabIndex++);
     });
 
     describe("Kiali Home Page", (): void => {
@@ -126,9 +127,15 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
     });
   });
 
-  xdescribe("Navigate to Jaeger home page", (): void => {
+  describe("Navigate to Jaeger home page", (): void => {
+    if (!Utils.isComponentEnabledInTestConfig("jaeger")) {
+      console.log(
+        "Jaeger is not enabled in test configuration, skipping Jaeger tests in MainPage test spec"
+      );
+      return;
+    }
     it("Wait for navigation to Jaeger", async () => {
-      await consoleMainPage.navigateToVMI("jaeger", 5);
+      await consoleMainPage.navigateToVMI("jaeger", tabIndex++);
     });
 
     describe("Jaeger Home Page", (): void => {
@@ -152,7 +159,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
       return;
     }
     it("Wait for navigation to Thanos Query", async () => {
-      await consoleMainPage.navigateToVMI("thanosquery", 3);
+      await consoleMainPage.navigateToVMI("thanosquery", tabIndex++);
     });
 
     describe("Thanos Home Page", (): void => {
@@ -176,7 +183,7 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
       return;
     }
     it("Wait for navigation to Alertmanager", async () => {
-      await consoleMainPage.navigateToVMI("alertmanager", 3);
+      await consoleMainPage.navigateToVMI("alertmanager", tabIndex++);
     });
 
     describe("Alertmanager Home Page", (): void => {
