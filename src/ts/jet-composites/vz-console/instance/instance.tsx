@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2022, Oracle and/or its affiliates.
+// Copyright (c) 2020, 2023, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 // eslint-disable-next-line no-unused-vars
@@ -250,6 +250,11 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       "instance-thanos-link",
                       Messages.Labels.thanos(),
                       this.state.instance.thanosQueryUrl
+                    )}
+                    {this.renderInstanceLinkElement(
+                      "instance-alertmanager-link",
+                      Messages.Labels.alertmanager(),
+                      this.state.instance.alertmanagerUrl
                     )}
                   </div>
                 </div>

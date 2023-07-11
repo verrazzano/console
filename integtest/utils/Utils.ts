@@ -1,4 +1,4 @@
-// Copyright (C) 2020, 2022, Oracle and/or its affiliates.
+// Copyright (C) 2020, 2023, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 import * as fs from "fs";
@@ -165,6 +165,12 @@ export class Utils {
   static async gotoJaegerMainPage() {
     const url = Utils.getConfig("jaeger").url;
     console.log(`Navigating to Jaeger main page at ${url}`);
+    await Utils.getJETPage(url);
+  }
+
+  static async gotoAlertmanagerMainPage() {
+    const url = Utils.getConfig("alertmanager").url;
+    console.log(`Navigating to Alertmanager main page at ${url}`);
     await Utils.getJETPage(url);
   }
 

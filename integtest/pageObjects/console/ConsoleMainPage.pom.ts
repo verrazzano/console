@@ -61,6 +61,11 @@ export class ConsoleMainPage {
     `//*[@id="instance-jaeger-link"]/div/a`
   );
 
+  // Link to Alertmanager console
+  private static readonly ALERTMANAGER_URL_LINK = By.xpath(
+    `//*[@id="instance-alertmanager-link"]/div/a`
+  );
+
   protected pageUrl: string = "/";
   protected pageLoadedElement: By = Wait.HEADER_CONTAINER;
 
@@ -125,6 +130,8 @@ export class ConsoleMainPage {
       await Actions.doClick(ConsoleMainPage.JAEGER_URL_LINK);
     } else if (vmiName === "thanosquery") {
       await Actions.doClick(ConsoleMainPage.THANOS_QUERY_URL_LINK);
+    } else if (vmiName === "alertmanager") {
+      await Actions.doClick(ConsoleMainPage.ALERTMANAGER_URL_LINK);
     } else {
       return false;
     }

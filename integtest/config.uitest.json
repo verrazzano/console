@@ -34,6 +34,9 @@
   "thanosquery": {
     "url": ""
   },
+  "alertmanager": {
+    "url": ""
+  },
   "loginEnabled": true,
   "loginInfo": {
     "username": "",
