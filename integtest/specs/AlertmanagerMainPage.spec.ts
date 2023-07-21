@@ -6,7 +6,14 @@ import { AlertmanagerHeaderBar } from "../pageObjects/alertmanager/AlertmanagerH
 import { expect } from "chai";
 import { Utils } from "../utils/Utils";
 
-xdescribe("Alertmanager Home Page", async () => {
+describe("Alertmanager Home Page", async () => {
+  if (!Utils.isComponentEnabledInTestConfig("alertmanager")) {
+    console.log(
+      "Alertmanager is not enabled in test configuration, skipping Alertmanager tests"
+    );
+    return;
+  }
+
   let alertmanagerMainPage: AlertmanagerMainPage;
   let alertmanagerHeaderBar: AlertmanagerHeaderBar;
 
@@ -14,7 +21,7 @@ xdescribe("Alertmanager Home Page", async () => {
     await Utils.navigateAndLogin();
     alertmanagerMainPage = new AlertmanagerMainPage();
     alertmanagerHeaderBar = new AlertmanagerHeaderBar();
-    await Utils.gotoJaegerMainPage();
+    await Utils.gotoAlertmanagerMainPage();
   });
 
   describe("Access Alertmanager navigation bar", (): void => {
