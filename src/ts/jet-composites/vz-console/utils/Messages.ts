@@ -217,6 +217,7 @@ export const Labels = {
   rancher: () => Translations.getTranslatedString("labels.rancher"),
   keycloak: () => Translations.getTranslatedString("labels.keycloak"),
   thanos: () => Translations.getTranslatedString("labels.thanos"),
+  thanosRuler: () => Translations.getTranslatedString("labels.thanosRuler"),
   created: () => Translations.getTranslatedString("labels.created"),
   selectOption: () => Translations.getTranslatedString("labels.selectOption"),
   workloadType: () => Translations.getTranslatedString("labels.workloadType"),

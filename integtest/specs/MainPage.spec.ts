@@ -13,6 +13,7 @@ import { Actions } from "../utils/Actions";
 import { OSDMainPage } from "../pageObjects/osd/OSDMainPage.pom";
 import { JaegerMainPage } from "../pageObjects/jaeger/JaegerMainPage.pom";
 import { ThanosQueryMainPage } from "../pageObjects/thanos/ThanosQueryMainPage.pom";
+import { ThanosRulerMainPage } from "../pageObjects/thanos/ThanosRulerMainPage.pom";
 import { AlertmanagerMainPage } from "../pageObjects/alertmanager/AlertmanagerMainPage.pom";
 
 describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Kiali, Jaeger)", (): void => {
@@ -166,6 +167,30 @@ describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Ki
       it("Wait for Thanos home page to be ready", async () => {
         const thanosQueryMainPage = new ThanosQueryMainPage();
         expect(await thanosQueryMainPage.isPageLoaded()).to.be.true;
+      });
+    });
+
+    after(async () => {
+      // Switch back to Console
+      await Actions.switchToTab(0);
+    });
+  });
+
+  describe("Navigate to Thanos Ruler home page", (): void => {
+    if (!Utils.isComponentEnabledInTestConfig("thanosruler")) {
+      console.log(
+        "Thanos Ruler is not enabled in test configuration, skipping Thanos Ruler tests in MainPage test spec"
+      );
+      return;
+    }
+    it("Wait for navigation to Thanos Ruler", async () => {
+      await consoleMainPage.navigateToVMI("thanosruler", tabIndex++);
+    });
+
+    describe("Thanos Ruler Home Page", (): void => {
+      it("Wait for Thanos Ruler home page to be ready", async () => {
+        const thanosRulerMainPage = new ThanosRulerMainPage();
+        expect(await thanosRulerMainPage.isPageLoaded()).to.be.true;
       });
     });
 

@@ -252,6 +252,11 @@ export class ConsoleInstance extends ElementVComponent<Props, State> {
                       this.state.instance.thanosQueryUrl
                     )}
                     {this.renderInstanceLinkElement(
+                      "instance-thanos-ruler-link",
+                      Messages.Labels.thanosRuler(),
+                      this.state.instance.thanosRulerUrl
+                    )}
+                    {this.renderInstanceLinkElement(
                       "instance-alertmanager-link",
                       Messages.Labels.alertmanager(),
                       this.state.instance.alertmanagerUrl

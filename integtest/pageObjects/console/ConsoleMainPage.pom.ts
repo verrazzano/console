@@ -51,6 +51,11 @@ export class ConsoleMainPage {
     `//*[@id="instance-thanos-link"]/div/a`
   );
 
+  // Link to Thanos Ruler console
+  private static readonly THANOS_RULER_URL_LINK = By.xpath(
+    `//*[@id="instance-thanos-ruler-link"]/div/a`
+  );
+
   // Link to Kiali console
   private static readonly KIALI_URL_LINK = By.xpath(
     `//*[@id="instance-vmi-link-kiali"]/div/a`
@@ -130,6 +135,8 @@ export class ConsoleMainPage {
       await Actions.doClick(ConsoleMainPage.JAEGER_URL_LINK);
     } else if (vmiName === "thanosquery") {
       await Actions.doClick(ConsoleMainPage.THANOS_QUERY_URL_LINK);
+    } else if (vmiName === "thanosruler") {
+      await Actions.doClick(ConsoleMainPage.THANOS_RULER_URL_LINK);
     } else if (vmiName === "alertmanager") {
       await Actions.doClick(ConsoleMainPage.ALERTMANAGER_URL_LINK);
     } else {

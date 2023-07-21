@@ -156,6 +156,12 @@ export class Utils {
     await Utils.getJETPage(url);
   }
 
+  static async gotoThanosRulerMainPage() {
+    const url = Utils.getConfig("thanosruler").url;
+    console.log(`Navigating to Thanos Ruler main page at ${url}`);
+    await Utils.getJETPage(url);
+  }
+
   static async gotoKialiMainPage() {
     const url = Utils.getConfig("kiali").url;
     console.log(`Navigating to Kiali main page at ${url}`);

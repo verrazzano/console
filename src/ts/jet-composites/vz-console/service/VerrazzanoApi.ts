@@ -474,6 +474,7 @@ export class VerrazzanoApi {
       instance.kialiUrl = instanceURLs.kialiUrl;
       instance.jaegerUrl = instanceURLs.jaegerUrl;
       instance.thanosQueryUrl = instanceURLs.thanosQueryUrl;
+      instance.thanosRulerUrl = instanceURLs.thanosRulerUrl;
       instance.alertmanagerUrl = instanceURLs.alertmanagerUrl;
     }
     instance.isUsingSharedVMI = true;
