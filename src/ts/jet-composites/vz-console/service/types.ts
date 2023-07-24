@@ -72,6 +72,7 @@ export interface Instance {
   elasticUrl?: string;
   kialiUrl?: string;
   thanosQueryUrl?: string;
+  thanosRulerUrl?: string;
   isUsingSharedVMI?: boolean;
   jaegerUrl?: string;
   alertmanagerUrl?: string;

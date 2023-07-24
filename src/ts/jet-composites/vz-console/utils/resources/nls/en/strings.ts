@@ -160,6 +160,7 @@ export = {
     keycloak: "Keycloak",
     argoCD: "Argo CD",
     thanos: "Thanos Query",
+    thanosRuler: "Thanos Ruler",
     created: "Created",
     newWeblogicImage: "New Weblogic Image",
     selectOption: "Please select an option ...",
