@@ -10,10 +10,12 @@ export class ThanosRulerHeaderBar {
   /* component locators */
 
   private static readonly LOGO: By = By.className("navbar-brand");
+
   private static readonly THANOS_RULER_TITLE_LINK: By = By.xpath(
     /* For some odd reason, the navbar link content is split across 3 lines, so only look for the first line */
     "//a[contains(.,'Thanos -')]"
   );
+
   private static readonly THANOS_RULER_RULES_LINK: By = By.xpath(
     "//a[contains(.,'Rules')]"
   );
