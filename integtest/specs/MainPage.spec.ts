@@ -15,7 +15,7 @@ import { JaegerMainPage } from "../pageObjects/jaeger/JaegerMainPage.pom";
 import { ThanosQueryMainPage } from "../pageObjects/thanos/ThanosQueryMainPage.pom";
 import { AlertmanagerMainPage } from "../pageObjects/alertmanager/AlertmanagerMainPage.pom";
 
-describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Kiali, Jaeger)", (): void => {
+describe("UI Tests for Home Pages (Console, Grafana, OSD, Prometheus, Thanos, Kiali, Jaeger, Alertmanager)", (): void => {
   let consoleMainPage: ConsoleMainPage;
   let consoleHeaderBar: ConsoleHeaderBar;
   let tabIndex = 1;
