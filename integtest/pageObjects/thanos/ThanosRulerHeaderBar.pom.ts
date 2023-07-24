@@ -14,7 +14,9 @@ export class ThanosRulerHeaderBar {
     /* For some odd reason, the navbar link content is split across 3 lines, so only look for the first line */
     "//a[contains(.,'Thanos -')]"
   );
-  private static readonly THANOS_RULER_RULES_LINK: By = By.xpath("//a[contains(.,'Rules')]")
+  private static readonly THANOS_RULER_RULES_LINK: By = By.xpath(
+    "//a[contains(.,'Rules')]"
+  );
 
   /* Verify if Logo is present and has the title text link and rules link */
   public async selectLogo(): Promise<boolean> {
