@@ -9,7 +9,7 @@ INPUT_CONFIG_FILE=$1
 
 CONSOLE_HOST="$(kubectl get ingress verrazzano-ingress -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
 GRAFANA_HOST="$(kubectl get ingress vmi-system-grafana -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
-OSD_HOST="$(kubectl get ingress vmi-system-osd -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
+OSD_HOST="$(kubectl get ingress opensearch-dashboards -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
 PROMETHEUS_HOST="$(kubectl get ingress vmi-system-prometheus -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
 KIALI_HOST="$(kubectl get ingress vmi-system-kiali -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
 JAEGER_HOST="$(kubectl get ingress verrazzano-jaeger -n verrazzano-system -o jsonpath='{.spec.rules[0].host}' || echo)"
