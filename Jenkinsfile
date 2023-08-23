@@ -28,7 +28,7 @@ pipeline {
             when { not { buildingTag() } }
             steps {
                 sh """
-                    sudo rm -rf jet_components node_modules bower_components coverage dist web staged-themes themes .trivyignore
+                    sudo rm -rf jet_components node_modules bower_components coverage dist web staged-themes themes .trivyignore scanning-report-grype.json scanning-report-trivy.json
                 """
             }
         }
