@@ -24,6 +24,15 @@ pipeline {
     }
 
     stages {
+        stage('Cleanup') {
+            when { not { buildingTag() } }
+            steps {
+                sh """
+                    sudo rm -rf jet_components node_modules bower_components coverage dist web staged-themes themes .trivyignore
+                """
+            }
+        }
+
         stage('Copyright Compliance Check') {
             when { not { buildingTag() } }
             steps {
