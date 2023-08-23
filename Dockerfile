@@ -5,7 +5,8 @@ FROM ghcr.io/oracle/oraclelinux:8-slim
 
 RUN microdnf install -y krb5-libs \
     && microdnf update -y \
-    && microdnf install -y oracle-nodejs-release-el8 nodejs openssl \
+    && microdnf module enable nodejs:16 \
+    && microdnf install -y nodejs openssl \
     && mkdir /verrazzano \
     && mkdir /licenses \
     && groupadd -r verrazzano \
