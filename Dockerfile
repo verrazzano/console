@@ -3,18 +3,18 @@
 
 FROM ghcr.io/oracle/oraclelinux:8-slim
 
-RUN microdnf install -y krb5-libs \
-    && microdnf update -y \
+RUN microdnf update -y \
     && microdnf module enable nodejs:16 \
-    && microdnf install -y nodejs openssl \
+    && microdnf install --nodocs -y krb5-libs nodejs openssl \
+    && microdnf clean all \
+    && rm -rf /var/cache/yum /var/lib/rpm/* /var/lib/dnf/* \
     && mkdir /verrazzano \
     && mkdir /licenses \
     && groupadd -r verrazzano \
     && useradd --no-log-init -r -g verrazzano -u 1000 verrazzano \
     && chown -R 1000:verrazzano /verrazzano \
-    && chown -R 1000:verrazzano /licenses \
-    && microdnf clean all \
-    && rm -rf /var/cache/yum
+    && chown -R 1000:verrazzano /licenses
+
 
 COPY LICENSE.txt README.md THIRD_PARTY_LICENSES.txt SECURITY.md /licenses/
 
