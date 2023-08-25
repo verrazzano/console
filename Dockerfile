@@ -27,6 +27,7 @@ COPY package.json /verrazzano/
 WORKDIR /verrazzano/
 
 RUN npm install --production --save express express-http-proxy \
+    && npm prune --production \
     && npm cache clean --force \
     && rm -rf /usr/bin/npm /usr/lib/node_modules/npm
 
