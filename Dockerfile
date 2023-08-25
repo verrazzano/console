@@ -26,8 +26,8 @@ COPY generate-env.js /verrazzano/
 COPY package.json /verrazzano/
 WORKDIR /verrazzano/
 
-RUN npm install --production --save express express-http-proxy \
-    && npm cache clean --force \
+RUN yarn install --production --save express express-http-proxy \
+    && yarn cache clean \
     && rm -rf /usr/bin/npm /usr/lib/node_modules/npm
 
 HEALTHCHECK --interval=1m --timeout=10s \
