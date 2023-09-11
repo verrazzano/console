@@ -23,6 +23,7 @@ import * as Messages from "vz-console/utils/Messages";
 import { VzError } from "vz-console/utils/error";
 
 export const ServicePrefix = "instances";
+var empty: Object = {}
 
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
@@ -35,7 +36,7 @@ export class VerrazzanoApi {
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([this.getKubernetesResource(ResourceType.Verrazzano)])
       .then(([vzResponse]) => {
-        return Promise.all([vzResponse.json()]);
+        return Promise.all([vzResponse.json ? vzResponse.json() : [empty]]);
       })
       .then(([vzs]) => {
         // There can be only one installed Verrazzano instance, but we don't know
@@ -61,8 +62,8 @@ export class VerrazzanoApi {
         this.getKubernetesResource(ResourceType.Component),
       ]);
 
-      let mcAppsResponse = <Response>{};
-      let mcCompsResponse = <Response>{};
+      let mcAppsResponse = <Response>empty;
+      let mcCompsResponse = <Response>empty;
 
       if (this.cluster === "local") {
         [mcAppsResponse, mcCompsResponse] = await Promise.all([
@@ -79,10 +80,10 @@ export class VerrazzanoApi {
         mcAppsObj,
         mcComponentsObj,
       ] = await Promise.all([
-        appsResponse.json(),
-        compsResponse.json(),
-        mcAppsResponse.json ? mcAppsResponse.json() : {},
-        mcCompsResponse.json ? mcCompsResponse.json() : {},
+        appsResponse.json ? appsResponse.json() : [empty],
+        compsResponse.json ? compsResponse.json() : [empty],
+        mcAppsResponse.json ? mcAppsResponse.json() : [empty],
+        mcCompsResponse.json ? mcCompsResponse.json() : [empty],
       ]);
 
       if (!appsObj) {
@@ -257,7 +258,7 @@ export class VerrazzanoApi {
               namespace,
               name
             );
-            const app = await resource.json();
+            const app = await resource?.json();
             mcApps.set(name, app);
             const appComponents = this.findComponentsForMcApp(
               app,
@@ -299,7 +300,7 @@ export class VerrazzanoApi {
   public async listClusters(): Promise<Cluster[]> {
     return this.getKubernetesResource(ResourceType.Cluster)
       .then((clusterResponse) => {
-        return clusterResponse.json();
+        return clusterResponse.json ? clusterResponse.json() : [empty];
       })
       .then((clustersResponse) => {
         return processClusterData(clustersResponse.items);
@@ -352,18 +353,14 @@ export class VerrazzanoApi {
   ): Promise<Response> {
     return Promise.resolve(
       this.fetchApi(
-        `${this.url}/${type.ApiVersion}/${
-          namespace
-            ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
-                type.Kind.endsWith("s") ? "es" : "s"
-              }`
-            : `${type.Kind.toLowerCase()}${
-                type.Kind.endsWith("s") ? "es" : "s"
-              }`
-        }${name ? `/${name}` : ""}${
-          this.cluster && this.cluster !== "local"
-            ? `?cluster=${this.cluster}`
-            : ""
+        `${this.url}/${type.ApiVersion}/${namespace
+          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
+          }`
+          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
+          }`
+        }${name ? `/${name}` : ""}${this.cluster && this.cluster !== "local"
+          ? `?cluster=${this.cluster}`
+          : ""
         }`,
         { credentials: "include" }
       )
@@ -412,12 +409,10 @@ export class VerrazzanoApi {
     namespace?: string
   ): Promise<Response> {
     const response = await this.fetchApi(
-      `${this.url}/${type.ApiVersion}/${
-        namespace
-          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
-              type.Kind.endsWith("s") ? "es" : "s"
-            }`
-          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"}`
+      `${this.url}/${type.ApiVersion}/${namespace
+        ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
+        }`
+        : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"}`
       }`,
       {
         method: "POST",
@@ -500,7 +495,7 @@ export class VerrazzanoApi {
       clusterName
     )
       .then((vmcResponse) => {
-        return vmcResponse.json();
+        return vmcResponse.json ? vmcResponse.json() : Object;
       })
       .then((vmc) => {
         if (!vmc) {
@@ -529,7 +524,7 @@ export class VerrazzanoApi {
   public async listProjects(): Promise<Project[]> {
     return this.getKubernetesResource(ResourceType.VerrazzanoProject)
       .then((projectsResponse) => {
-        return projectsResponse.json();
+        return projectsResponse.json ? projectsResponse.json() : [empty];
       })
       .then((projects) => {
         if (!projects) {
