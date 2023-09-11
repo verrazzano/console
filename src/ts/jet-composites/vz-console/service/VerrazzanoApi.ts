@@ -402,11 +402,13 @@ export class VerrazzanoApi {
     }
 
     if (!response || response.status >= 400) {
+      console.log("coming here");
       setTimeout(() => {
         return this.getKubernetesResource(type, namespace, name, retry - 1);
       }, interval);
     }
 
+    console.log("coming here first");
     return response;
   }
 
