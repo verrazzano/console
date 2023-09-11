@@ -406,10 +406,9 @@ export class VerrazzanoApi {
       setTimeout(() => {
         return this.getKubernetesResource(type, namespace, name, retry - 1);
       }, interval);
+    } else {
+      return response;
     }
-
-    console.log("coming here first");
-    return response;
   }
 
   public async postKubernetesResource(
