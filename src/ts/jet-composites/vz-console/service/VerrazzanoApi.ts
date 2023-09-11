@@ -31,6 +31,7 @@ export class VerrazzanoApi {
   private defaultUrl: string;
   private url: string;
   private cluster: string = "local";
+  private delay = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([this.getKubernetesResource(ResourceType.Verrazzano)])
@@ -378,9 +379,9 @@ export class VerrazzanoApi {
     name?: string,
     retry = 5
   ): Promise<Response> {
-    const interval = 1000;
     const response = await this.callFetchAPI(type, namespace, name);
     if (retry === 0) {
+      console.log("retry is " + retry);
       if (response?.status === 404) {
         return <Response>{};
       }
@@ -402,10 +403,9 @@ export class VerrazzanoApi {
     }
 
     if (!response || response.status >= 400) {
-      console.log("coming here");
-      setTimeout(() => {
-        return this.getKubernetesResource(type, namespace, name, retry - 1);
-      }, interval);
+      return this.delay().then(() =>
+        this.getKubernetesResource(type, namespace, name, retry - 1)
+      );
     } else {
       return response;
     }
