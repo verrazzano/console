@@ -104,8 +104,8 @@ export class VerrazzanoApi {
 
       const mcApps = mcAppsObj.items || [];
       const mcComponents = mcComponentsObj.items || [];
-      const apps = appsObj.items;
-      const components = componentsObj.items;
+      const apps = appsObj.items || [];
+      const components = componentsObj.items || [];
 
       const mcApplicationsByClusterAndNamespace = this.collectMulticlusterAppsByClusterAndNamespace(
         mcApps
@@ -303,7 +303,9 @@ export class VerrazzanoApi {
         return clusterResponse.json ? clusterResponse.json() : [empty];
       })
       .then((clustersResponse) => {
-        return processClusterData(clustersResponse.items);
+        return clustersResponse.items
+          ? processClusterData(clustersResponse.items)
+          : [empty];
       })
       .catch((error) => {
         throw this.wrapWithVzError(error);
@@ -537,7 +539,7 @@ export class VerrazzanoApi {
           throw new Error(Messages.Error.errProjectsFetchError());
         }
 
-        return processProjectsData(projects.items);
+        return projects.items ? processProjectsData(projects.items) : [empty];
       })
       .catch((error) => {
         throw this.wrapWithVzError(error);
