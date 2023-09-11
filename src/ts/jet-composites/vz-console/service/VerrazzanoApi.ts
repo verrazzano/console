@@ -23,7 +23,6 @@ import * as Messages from "vz-console/utils/Messages";
 import { VzError } from "vz-console/utils/error";
 
 export const ServicePrefix = "instances";
-var empty: Object = {};
 
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
@@ -36,7 +35,7 @@ export class VerrazzanoApi {
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([this.getKubernetesResource(ResourceType.Verrazzano)])
       .then(([vzResponse]) => {
-        return Promise.all([vzResponse.json ? vzResponse.json() : [empty]]);
+        return Promise.all([vzResponse.json()]);
       })
       .then(([vzs]) => {
         // There can be only one installed Verrazzano instance, but we don't know
@@ -62,8 +61,8 @@ export class VerrazzanoApi {
         this.getKubernetesResource(ResourceType.Component),
       ]);
 
-      let mcAppsResponse = <Response>empty;
-      let mcCompsResponse = <Response>empty;
+      let mcAppsResponse = <Response>{};
+      let mcCompsResponse = <Response>{};
 
       if (this.cluster === "local") {
         [mcAppsResponse, mcCompsResponse] = await Promise.all([
@@ -80,10 +79,10 @@ export class VerrazzanoApi {
         mcAppsObj,
         mcComponentsObj,
       ] = await Promise.all([
-        appsResponse.json ? appsResponse.json() : [empty],
-        compsResponse.json ? compsResponse.json() : [empty],
-        mcAppsResponse.json ? mcAppsResponse.json() : [empty],
-        mcCompsResponse.json ? mcCompsResponse.json() : [empty],
+        appsResponse.json(),
+        compsResponse.json(),
+        mcAppsResponse.json ? mcAppsResponse.json() : [{}],
+        mcCompsResponse.json ? mcCompsResponse.json() : [{}],
       ]);
 
       if (!appsObj) {
@@ -104,8 +103,8 @@ export class VerrazzanoApi {
 
       const mcApps = mcAppsObj.items || [];
       const mcComponents = mcComponentsObj.items || [];
-      const apps = appsObj.items || [];
-      const components = componentsObj.items || [];
+      const apps = appsObj.items;
+      const components = componentsObj.items;
 
       const mcApplicationsByClusterAndNamespace = this.collectMulticlusterAppsByClusterAndNamespace(
         mcApps
@@ -258,7 +257,7 @@ export class VerrazzanoApi {
               namespace,
               name
             );
-            const app = await resource?.json();
+            const app = await resource.json();
             mcApps.set(name, app);
             const appComponents = this.findComponentsForMcApp(
               app,
@@ -300,12 +299,10 @@ export class VerrazzanoApi {
   public async listClusters(): Promise<Cluster[]> {
     return this.getKubernetesResource(ResourceType.Cluster)
       .then((clusterResponse) => {
-        return clusterResponse.json ? clusterResponse.json() : [empty];
+        return clusterResponse.json();
       })
       .then((clustersResponse) => {
-        return clustersResponse.items
-          ? processClusterData(clustersResponse.items)
-          : [empty];
+        return processClusterData(clustersResponse.items);
       })
       .catch((error) => {
         throw this.wrapWithVzError(error);
@@ -384,6 +381,10 @@ export class VerrazzanoApi {
     const interval = 1000;
     const response = await this.callFetchAPI(type, namespace, name);
     if (retry === 0) {
+      if (response?.status === 404) {
+        return <Response>{};
+      }
+
       throw new VzError(
         Messages.Error.errFetchingKubernetesResource(
           `${type.ApiVersion}/${type.Kind}`,
@@ -503,7 +504,7 @@ export class VerrazzanoApi {
       clusterName
     )
       .then((vmcResponse) => {
-        return vmcResponse.json ? vmcResponse.json() : Object;
+        return vmcResponse.json();
       })
       .then((vmc) => {
         if (!vmc) {
@@ -532,14 +533,14 @@ export class VerrazzanoApi {
   public async listProjects(): Promise<Project[]> {
     return this.getKubernetesResource(ResourceType.VerrazzanoProject)
       .then((projectsResponse) => {
-        return projectsResponse.json ? projectsResponse.json() : [empty];
+        return projectsResponse.json();
       })
       .then((projects) => {
         if (!projects) {
           throw new Error(Messages.Error.errProjectsFetchError());
         }
 
-        return projects.items ? processProjectsData(projects.items) : [empty];
+        return processProjectsData(projects.items);
       })
       .catch((error) => {
         throw this.wrapWithVzError(error);
