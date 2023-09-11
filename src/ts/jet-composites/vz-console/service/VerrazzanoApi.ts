@@ -23,7 +23,7 @@ import * as Messages from "vz-console/utils/Messages";
 import { VzError } from "vz-console/utils/error";
 
 export const ServicePrefix = "instances";
-var empty: Object = {}
+var empty: Object = {};
 
 export class VerrazzanoApi {
   private fetchApi: FetchApiSignature;
@@ -353,14 +353,18 @@ export class VerrazzanoApi {
   ): Promise<Response> {
     return Promise.resolve(
       this.fetchApi(
-        `${this.url}/${type.ApiVersion}/${namespace
-          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
-          }`
-          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
-          }`
-        }${name ? `/${name}` : ""}${this.cluster && this.cluster !== "local"
-          ? `?cluster=${this.cluster}`
-          : ""
+        `${this.url}/${type.ApiVersion}/${
+          namespace
+            ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
+            : `${type.Kind.toLowerCase()}${
+                type.Kind.endsWith("s") ? "es" : "s"
+              }`
+        }${name ? `/${name}` : ""}${
+          this.cluster && this.cluster !== "local"
+            ? `?cluster=${this.cluster}`
+            : ""
         }`,
         { credentials: "include" }
       )
@@ -409,10 +413,12 @@ export class VerrazzanoApi {
     namespace?: string
   ): Promise<Response> {
     const response = await this.fetchApi(
-      `${this.url}/${type.ApiVersion}/${namespace
-        ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"
-        }`
-        : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"}`
+      `${this.url}/${type.ApiVersion}/${
+        namespace
+          ? `namespaces/${namespace}/${type.Kind.toLowerCase()}${
+              type.Kind.endsWith("s") ? "es" : "s"
+            }`
+          : `${type.Kind.toLowerCase()}${type.Kind.endsWith("s") ? "es" : "s"}`
       }`,
       {
         method: "POST",
