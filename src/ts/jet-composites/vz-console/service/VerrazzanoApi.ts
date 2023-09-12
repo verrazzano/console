@@ -380,6 +380,8 @@ export class VerrazzanoApi {
     retry = 5
   ): Promise<Response> {
     const response = await this.callFetchAPI(type, namespace, name);
+    const emptyElement = {};
+    const emptyCollection = { items: [] };
     if (retry === 0) {
       throw new VzError(
         Messages.Error.errFetchingKubernetesResource(
@@ -399,9 +401,9 @@ export class VerrazzanoApi {
 
     if (response && response.status === 404) {
       if (name) {
-        return new Response(JSON.parse("{}"));
+        return new Response(JSON.stringify(emptyElement));
       }
-      return new Response(JSON.parse('{"items": []}'));
+      return new Response(JSON.stringify(emptyCollection));
     }
 
     if (!response || response.status >= 400) {
