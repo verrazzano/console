@@ -383,7 +383,6 @@ export class VerrazzanoApi {
   ): Promise<Response> {
     const response = await this.callFetchAPI(type, namespace, name);
     if (retry === 0) {
-      console.log("retry is " + retry);
       if (response?.status === 404) {
         if (name) {
           return <Response>{};
