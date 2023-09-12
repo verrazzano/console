@@ -104,8 +104,8 @@ export class VerrazzanoApi {
 
       const mcApps = mcAppsObj.items || [];
       const mcComponents = mcComponentsObj.items || [];
-      const apps = appsObj.items;
-      const components = componentsObj.items;
+      const apps = appsObj.items || [];
+      const components = componentsObj.items || [];
 
       const mcApplicationsByClusterAndNamespace = this.collectMulticlusterAppsByClusterAndNamespace(
         mcApps
@@ -385,7 +385,10 @@ export class VerrazzanoApi {
     if (retry === 0) {
       console.log("retry is " + retry);
       if (response?.status === 404) {
-        return <Response>{};
+        if (name) {
+          return <Response>{};
+        }
+        return <Response>(<{}>[]);
       }
 
       throw new VzError(
