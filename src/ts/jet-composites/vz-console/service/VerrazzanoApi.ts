@@ -36,7 +36,7 @@ export class VerrazzanoApi {
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([this.getKubernetesResource(ResourceType.Verrazzano)])
       .then(([vzResponse]) => {
-        return Promise.all([vzResponse.json ? vzResponse.json() : [{}]]);
+        return Promise.all([vzResponse.json()]);
       })
       .then(([vzs]) => {
         // There can be only one installed Verrazzano instance, but we don't know
@@ -80,10 +80,10 @@ export class VerrazzanoApi {
         mcAppsObj,
         mcComponentsObj,
       ] = await Promise.all([
-        appsResponse.json ? appsResponse.json() : [{}],
-        compsResponse.json ? compsResponse.json() : [{}],
-        mcAppsResponse.json ? mcAppsResponse.json() : [{}],
-        mcCompsResponse.json ? mcCompsResponse.json() : [{}],
+        appsResponse.json(),
+        compsResponse.json(),
+        mcAppsResponse.json ? mcAppsResponse.json() : [],
+        mcCompsResponse.json ? mcCompsResponse.json() : [],
       ]);
 
       if (!appsObj) {
@@ -104,8 +104,8 @@ export class VerrazzanoApi {
 
       const mcApps = mcAppsObj.items || [];
       const mcComponents = mcComponentsObj.items || [];
-      const apps = appsObj.items || [];
-      const components = componentsObj.items || [];
+      const apps = appsObj.items;
+      const components = componentsObj.items;
 
       const mcApplicationsByClusterAndNamespace = this.collectMulticlusterAppsByClusterAndNamespace(
         mcApps
@@ -236,7 +236,7 @@ export class VerrazzanoApi {
             const resource = await new VerrazzanoApi(
               cluster
             ).getKubernetesResource(ResourceType.Component, namespace, name);
-            const component = await (resource.json ? resource.json() : {});
+            const component = await resource.json();
             mcComponents.set(name, component);
           } catch (error) {
             console.log(
@@ -258,7 +258,7 @@ export class VerrazzanoApi {
               namespace,
               name
             );
-            const app = await (resource.json ? resource.json() : {});
+            const app = await resource.json();
             mcApps.set(name, app);
             const appComponents = this.findComponentsForMcApp(
               app,
@@ -271,9 +271,7 @@ export class VerrazzanoApi {
                   namespace,
                   appComp.metadata.name
                 );
-                const comp = await (compResource?.json
-                  ? compResource?.json()
-                  : {});
+                const comp = await compResource?.json();
                 appComponentsPerNS.push(comp);
               }
             }
@@ -302,7 +300,7 @@ export class VerrazzanoApi {
   public async listClusters(): Promise<Cluster[]> {
     return this.getKubernetesResource(ResourceType.Cluster)
       .then((clusterResponse) => {
-        return clusterResponse.json ? clusterResponse.json() : [{}];
+        return clusterResponse.json();
       })
       .then((clustersResponse) => {
         return processClusterData(clustersResponse.items);
@@ -383,13 +381,6 @@ export class VerrazzanoApi {
   ): Promise<Response> {
     const response = await this.callFetchAPI(type, namespace, name);
     if (retry === 0) {
-      if (response?.status === 404) {
-        if (name) {
-          return new Response(JSON.stringify("{}"));
-        }
-        return new Response(JSON.stringify('{"items": []}'));
-      }
-
       throw new VzError(
         Messages.Error.errFetchingKubernetesResource(
           `${type.ApiVersion}/${type.Kind}`,
@@ -404,6 +395,13 @@ export class VerrazzanoApi {
     if (response && response.status === 401) {
       this.showRefreshPageDialog();
       return response;
+    }
+
+    if (response && response.status === 404) {
+      if (name) {
+        return new Response(JSON.stringify("{}"));
+      }
+      return new Response(JSON.stringify('{"items": []}'));
     }
 
     if (!response || response.status >= 400) {
@@ -509,7 +507,7 @@ export class VerrazzanoApi {
       clusterName
     )
       .then((vmcResponse) => {
-        return vmcResponse.json ? vmcResponse.json() : { Object };
+        return vmcResponse.json();
       })
       .then((vmc) => {
         if (!vmc) {
@@ -538,7 +536,7 @@ export class VerrazzanoApi {
   public async listProjects(): Promise<Project[]> {
     return this.getKubernetesResource(ResourceType.VerrazzanoProject)
       .then((projectsResponse) => {
-        return projectsResponse.json ? projectsResponse.json() : [{}];
+        return projectsResponse.json();
       })
       .then((projects) => {
         if (!projects) {
@@ -555,7 +553,7 @@ export class VerrazzanoApi {
   public async listImageBuildRequests(): Promise<ImageBuildRequest[]> {
     return this.getKubernetesResource(ResourceType.VerrazzanoImageBuildRequest)
       .then((buildRequestResponse) => {
-        return buildRequestResponse.json ? buildRequestResponse.json() : [{}];
+        return buildRequestResponse.json();
       })
       .then((imageBuildRequests) => {
         if (!imageBuildRequests) {
@@ -571,7 +569,7 @@ export class VerrazzanoApi {
   public async listRoleBindings(namespace: string): Promise<RoleBinding[]> {
     return this.getKubernetesResource(ResourceType.RoleBinding, namespace)
       .then((rbResponse) => {
-        return rbResponse.json ? rbResponse.json() : [{}];
+        return rbResponse.json();
       })
       .then((roleBindings) => {
         if (!roleBindings) {
