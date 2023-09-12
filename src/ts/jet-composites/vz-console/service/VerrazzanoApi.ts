@@ -31,6 +31,7 @@ export class VerrazzanoApi {
   private defaultUrl: string;
   private url: string;
   private cluster: string = "local";
+  private delay = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
   public async getInstance(instanceId: string): Promise<Instance> {
     return Promise.all([this.getKubernetesResource(ResourceType.Verrazzano)])
@@ -81,8 +82,8 @@ export class VerrazzanoApi {
       ] = await Promise.all([
         appsResponse.json(),
         compsResponse.json(),
-        mcAppsResponse.json ? mcAppsResponse.json() : {},
-        mcCompsResponse.json ? mcCompsResponse.json() : {},
+        mcAppsResponse.json ? mcAppsResponse.json() : [],
+        mcCompsResponse.json ? mcCompsResponse.json() : [],
       ]);
 
       if (!appsObj) {
@@ -378,8 +379,9 @@ export class VerrazzanoApi {
     name?: string,
     retry = 5
   ): Promise<Response> {
-    const interval = 1000;
     const response = await this.callFetchAPI(type, namespace, name);
+    const emptyElement = {};
+    const emptyCollection = { items: [] };
     if (retry === 0) {
       throw new VzError(
         Messages.Error.errFetchingKubernetesResource(
@@ -397,13 +399,20 @@ export class VerrazzanoApi {
       return response;
     }
 
-    if (!response || response.status >= 400) {
-      setTimeout(() => {
-        return this.getKubernetesResource(type, namespace, name, retry - 1);
-      }, interval);
+    if (response && response.status === 404) {
+      if (name) {
+        return new Response(JSON.stringify(emptyElement));
+      }
+      return new Response(JSON.stringify(emptyCollection));
     }
 
-    return response;
+    if (!response || response.status >= 400) {
+      return this.delay().then(() =>
+        this.getKubernetesResource(type, namespace, name, retry - 1)
+      );
+    } else {
+      return response;
+    }
   }
 
   public async postKubernetesResource(
