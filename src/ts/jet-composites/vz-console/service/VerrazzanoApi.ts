@@ -399,9 +399,9 @@ export class VerrazzanoApi {
 
     if (response && response.status === 404) {
       if (name) {
-        return new Response(JSON.stringify("{}"));
+        return new Response(JSON.parse("{}"));
       }
-      return new Response(JSON.stringify('{"items": []}'));
+      return new Response(JSON.parse('{"items": []}'));
     }
 
     if (!response || response.status >= 400) {
