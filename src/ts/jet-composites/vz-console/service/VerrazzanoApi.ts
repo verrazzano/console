@@ -387,7 +387,7 @@ export class VerrazzanoApi {
         if (name) {
           return new Response(JSON.stringify("{}"));
         }
-        return new Response(JSON.stringify("[]"));
+        return new Response(JSON.stringify('{"items": []}'));
       }
 
       throw new VzError(
