@@ -385,9 +385,9 @@ export class VerrazzanoApi {
     if (retry === 0) {
       if (response?.status === 404) {
         if (name) {
-          return <Response>{};
+          return new Response(JSON.stringify("{}"));
         }
-        return <Response>(<{}>[]);
+        return new Response(JSON.stringify("[]"));
       }
 
       throw new VzError(
