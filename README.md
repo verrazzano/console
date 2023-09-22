@@ -11,7 +11,7 @@ The Verrazzano Console repository includes:
 
 ## Prerequisites
 
-- [Node.js](http://nodejs.org/) 14.x+ (with [npm](https://docs.npmjs.com/cli/npm) v6.14.x+)
+- [Node.js](http://nodejs.org/) 18.17.1 (with [npm](https://docs.npmjs.com/cli/npm) v6.14.x+)
 
   To install Node.js, use [nvm](https://github.com/nvm-sh/nvm):
 
@@ -19,7 +19,7 @@ The Verrazzano Console repository includes:
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    nvm install 14.15
+    nvm install 18.17.1
   ```
 
 - [Oracle JET CLI](https://github.com/oracle/ojet-cli) 10.1.x+
@@ -48,7 +48,7 @@ Clone the `git` repository and install `npm` dependencies:
 ```bash
   git clone https://github.com/verrazzano/console.git
   cd console
-  nvm use 14.15
+  nvm use 18.17.1
   npm install
 ```
 
